@@ -1,0 +1,30 @@
+﻿{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Enrich": [
+        "FromLogContext"
+      ]
+    },
+    "WriteTo": [
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "File",
+              "Args": {
+                "path": "log.txt",
+                "rollingInterval": "Day"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "Properties": {
+      "Application": "PikTools.Example",
+      "Instance": "Debug"
+    }
+  }
+}
