@@ -27,7 +27,17 @@
         public T InvokeCommand(Container container, string methodName)
         {
             _logger.Debug("Started");
-            var result = _decorated.InvokeCommand(container, methodName);
+            T result;
+            try
+            {
+                result = _decorated.InvokeCommand(container, methodName);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Error!!!!", e);
+                throw;
+            }
+
             _logger.Debug("Completed");
 
             return result;
