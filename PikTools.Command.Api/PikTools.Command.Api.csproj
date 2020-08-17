@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1"/>
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime"/>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all"/>
     </ItemGroup>
 

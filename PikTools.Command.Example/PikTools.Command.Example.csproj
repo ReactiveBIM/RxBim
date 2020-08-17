@@ -6,6 +6,7 @@
         <PlatformTarget>x64</PlatformTarget>
         <NoWarn>NU1701</NoWarn>
         <RootNamespace>PikTools.CommandExample</RootNamespace>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -16,11 +17,16 @@
     <ItemGroup>
       <ProjectReference Include="..\PikTools.Command.Api\PikTools.Command.Api.csproj" />
       <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
-      <ProjectReference Include="..\PikTools.Logs\PikTools.Logs.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="application.settings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

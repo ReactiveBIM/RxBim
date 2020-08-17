@@ -1,5 +1,6 @@
 ﻿namespace PikTools.Di
 {
+    using System;
     using SimpleInjector;
 
     /// <summary>
@@ -7,6 +8,11 @@
     /// </summary>
     public interface IMethodCaller<T>
     {
+        /// <summary>
+        /// Тип объекта у которого вызыается метод
+        /// </summary>
+        public Type SourceObjectType { get; }
+
         /// <summary>
         /// Вызывает комманду
         /// </summary>

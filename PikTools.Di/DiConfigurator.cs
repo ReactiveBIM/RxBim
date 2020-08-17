@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Di
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using SimpleInjector;
@@ -16,9 +17,7 @@
         protected DiConfigurator()
         {
             Container = new Container();
-#if DEBUG
             Container.Options.EnableAutoVerification = false;
-#endif
         }
 
         /// <summary>

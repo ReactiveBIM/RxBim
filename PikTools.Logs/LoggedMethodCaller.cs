@@ -1,7 +1,6 @@
 ﻿namespace PikTools.Logs
 {
     using System;
-    using System.Diagnostics;
     using Di;
     using Serilog;
     using SimpleInjector;
@@ -24,9 +23,11 @@
         }
 
         /// <inheritdoc />
+        public Type SourceObjectType => _decorated.SourceObjectType;
+
+        /// <inheritdoc />
         public T InvokeCommand(Container container, string methodName)
         {
-            _logger.Debug("Started");
             T result;
             try
             {
@@ -34,11 +35,11 @@
             }
             catch (Exception e)
             {
-                _logger.Error("Error!!!!", e);
+                _logger.Error($"Ошибка выполнения метода {methodName} объекта {SourceObjectType.FullName}.", e);
                 throw;
             }
 
-            _logger.Debug("Completed");
+            _logger.Information($"Метод {methodName} объекта {SourceObjectType.FullName} выполнен.");
 
             return result;
         }

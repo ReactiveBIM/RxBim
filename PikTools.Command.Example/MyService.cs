@@ -2,7 +2,6 @@
 {
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using Serilog;
 
     /// <summary>
     /// my service
@@ -10,17 +9,15 @@
     public class MyService : IMyService
     {
         private readonly Document _doc;
-        private readonly ILogger _logger;
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="doc">doc</param>
         /// <param name="logger">logger</param>
-        public MyService(Document doc, ILogger logger)
+        public MyService(Document doc)
         {
             _doc = doc;
-            _logger = logger;
         }
 
         /// <summary>
@@ -29,7 +26,6 @@
         public void Go()
         {
             TaskDialog.Show(GetType().FullName, _doc.Title + $" slnsajnsdanlk");
-            _logger.Information(nameof(MyService.Go));
         }
     }
 }

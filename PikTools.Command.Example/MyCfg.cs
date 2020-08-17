@@ -1,7 +1,6 @@
 ﻿namespace PikTools.CommandExample
 {
     using Di;
-    using Logs;
     using SimpleInjector;
 
     /// <inheritdoc />

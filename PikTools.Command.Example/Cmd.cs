@@ -1,8 +1,11 @@
 ﻿namespace PikTools.CommandExample
 {
+    using Autodesk.Revit.Attributes;
     using Command.Api;
 
     /// <inheritdoc />
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public class Cmd : PikToolsCommand
     {
         /// <summary>

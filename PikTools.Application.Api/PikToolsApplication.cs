@@ -10,7 +10,7 @@
     /// </summary>
     public class PikToolsApplication : IExternalApplication
     {
-        private bool _contextCreated = false;
+        private bool _contextCreated;
         private UIControlledApplication _application;
         private ApplicationDiConfigurator _diConfigurator;
 
@@ -44,15 +44,12 @@
                     methodCaller.InvokeCommand(_diConfigurator.Container, "Start");
 
                     _contextCreated = true;
+                    _application.Idling -= ApplicationIdling;
                 }
                 catch (Exception exception)
                 {
                     TaskDialog.Show("Error", exception.ToString());
                 }
-            }
-            else
-            {
-                _application.Idling -= ApplicationIdling;
             }
         }
     }
