@@ -14,7 +14,6 @@
         /// ctor
         /// </summary>
         /// <param name="doc">doc</param>
-        /// <param name="logger">logger</param>
         public MyService(Document doc)
         {
             _doc = doc;
