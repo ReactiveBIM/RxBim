@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PikTools.Application.Api\PikTools.Application.Api.csproj" />
-        <ProjectReference Include="..\PikTools.Logs\PikTools.Logs.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,13 +8,17 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SimpleInjector" Version="5.0.3" />
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -24,9 +28,9 @@
         <Authors>BimLab BimTeam</Authors>
         <Product>BimLab.PikTools</Product>
         <Copyright>Copyright ©2020 PIK Group</Copyright>
-        <Description>PikTools DI Library</Description>
+        <Description>PikTools Application api Library</Description>
         <PackageTags>BIM BimLab</PackageTags>
-        <PackageId>BimLab.PikTools.Di</PackageId>
+        <PackageId>BimLab.PikTools.Application.Api</PackageId>
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
         <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>

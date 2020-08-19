@@ -8,17 +8,25 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+        <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
+        <PackageReference Include="Serilog.Sinks.Http" Version="7.0.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+      <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -28,9 +36,9 @@
         <Authors>BimLab BimTeam</Authors>
         <Product>BimLab.PikTools</Product>
         <Copyright>Copyright ©2020 PIK Group</Copyright>
-        <Description>PikTools Application api Library</Description>
+        <Description>PikTools logs Library</Description>
         <PackageTags>BIM BimLab</PackageTags>
-        <PackageId>BimLab.PikTools.Application.Api</PackageId>
+        <PackageId>BimLab.PikTools.Logs</PackageId>
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
         <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
