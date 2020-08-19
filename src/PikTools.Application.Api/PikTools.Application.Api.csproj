@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+        <ProjectReference Include="..\PikTools.Shared\PikTools.Shared.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

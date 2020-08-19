@@ -1,19 +1,17 @@
-﻿namespace PikTools.Command.Api
+﻿namespace PikTools.Shared
 {
     using System.Collections.Generic;
-    using Autodesk.Revit.DB;
-    using Autodesk.Revit.UI;
 
     /// <summary>
     /// Результат выполнения команды
     /// </summary>
-    public class CommandResult
+    public class PluginResult
     {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="message">message</param>
-        public CommandResult(string message)
+        public PluginResult(string message)
         {
             Message = message;
         }
@@ -22,14 +20,14 @@
         /// ctor
         /// </summary>
         /// <param name="message">message</param>
-        /// <param name="elements">elements</param>
-        public CommandResult(string message, List<Element> elements)
+        /// <param name="elementIdIds">element ids</param>
+        public PluginResult(string message, List<int> elementIdIds)
         {
             Message = message;
-            Elements = elements;
+            ElementIds = elementIdIds;
         }
 
-        private CommandResult(Result result)
+        private PluginResult(Result result)
         {
             Result = result;
         }
@@ -37,17 +35,17 @@
         /// <summary>
         /// Succeced
         /// </summary>
-        public static CommandResult Succeeded => new CommandResult(Result.Succeeded);
+        public static PluginResult Succeeded => new PluginResult(Result.Succeeded);
 
         /// <summary>
         /// Failed
         /// </summary>
-        public static CommandResult Failed => new CommandResult(Result.Failed);
+        public static PluginResult Failed => new PluginResult(Result.Failed);
 
         /// <summary>
         /// Cancelled
         /// </summary>
-        public static CommandResult Cancelled => new CommandResult(Result.Cancelled);
+        public static PluginResult Cancelled => new PluginResult(Result.Cancelled);
 
         /// <summary>
         /// adf
@@ -57,7 +55,7 @@
         /// <summary>
         /// adf
         /// </summary>
-        public List<Element> Elements { get; set; } = new List<Element>();
+        public List<int> ElementIds { get; set; } = new List<int>();
 
         /// <summary>
         /// sa

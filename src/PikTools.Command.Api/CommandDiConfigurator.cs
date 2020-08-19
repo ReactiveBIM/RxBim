@@ -2,6 +2,7 @@
 {
     using Autodesk.Revit.UI;
     using Di;
+    using Shared;
 
     /// <summary>
     /// Конфигуратор зависимостей комманды
@@ -30,7 +31,7 @@
             Container.RegisterInstance(_commandData.Application.Application);
             Container.RegisterInstance(_commandData.Application.ActiveUIDocument);
             Container.RegisterInstance(_commandData.Application.ActiveUIDocument.Document);
-            Container.Register<IMethodCaller<CommandResult>>(() => new MethodCaller<CommandResult>(_commandObject));
+            Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
 }

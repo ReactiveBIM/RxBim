@@ -2,6 +2,7 @@
 {
     using Api;
     using Autodesk.Revit.UI;
+    using Shared;
 
     /// <summary>
     /// app
@@ -12,19 +13,19 @@
         /// start
         /// </summary>
         /// <param name="service">service</param>
-        public Result Start(IService service)
+        public PluginResult Start(IService service)
         {
             service.Go();
-            return Result.Succeeded;
+            return PluginResult.Succeeded;
         }
 
         /// <summary>
         /// shutdown
         /// </summary>
-        public Result ShutDown()
+        public PluginResult ShutDown()
         {
             TaskDialog.Show("ddd", "Googby");
-            return Result.Succeeded;
+            return PluginResult.Succeeded;
         }
     }
 }

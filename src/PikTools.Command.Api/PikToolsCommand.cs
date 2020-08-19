@@ -6,6 +6,8 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Di;
+    using Shared;
+    using Result = Autodesk.Revit.UI.Result;
 
     /// <summary>
     /// Команда Revit
@@ -17,7 +19,10 @@
         private const string MethodName = "ExecuteCommand";
 
         /// <inheritdoc />
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        public Result Execute(
+            ExternalCommandData commandData,
+            ref string message,
+            ElementSet elements)
         {
             var assembly = GetType().Assembly;
 
@@ -25,8 +30,8 @@
 
             var commandResult = CallCommandMethod(di);
 
-            SetMessageAndElements(ref message, elements, commandResult);
-            return commandResult.Result;
+            SetMessageAndElements(ref message, elements, commandResult, di);
+            return commandResult.MapResultToRevitResult();
         }
 
         private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)
@@ -36,9 +41,9 @@
             return di;
         }
 
-        private CommandResult CallCommandMethod(CommandDiConfigurator di)
+        private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Container.GetInstance<IMethodCaller<CommandResult>>();
+            var methodCaller = di.Container.GetInstance<IMethodCaller<PluginResult>>();
             var commandResult = methodCaller.InvokeCommand(di.Container, MethodName);
             return commandResult;
         }
@@ -46,17 +51,20 @@
         private void SetMessageAndElements(
             ref string message,
             ElementSet elements,
-            CommandResult commandResult)
+            PluginResult commandResult,
+            CommandDiConfigurator di)
         {
             if (!string.IsNullOrEmpty(commandResult.Message))
             {
                 message = commandResult.Message;
             }
 
-            if (commandResult.Elements.Any())
+            if (commandResult.ElementIds.Any())
             {
-                foreach (var element in commandResult.Elements)
+                var doc = di.Container.GetInstance<Document>();
+                foreach (var id in commandResult.ElementIds)
                 {
+                    var element = doc.GetElement(new ElementId(id));
                     elements.Insert(element);
                 }
             }

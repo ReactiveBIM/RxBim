@@ -4,31 +4,33 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
+    using Shared;
+    using Result = Shared.Result;
 
     /// <summary>
     /// Revit application
     /// </summary>
-    public class PikToolsApplication : IExternalApplication
+    public abstract class PikToolsApplication : IExternalApplication
     {
         private bool _contextCreated;
         private UIControlledApplication _application;
         private ApplicationDiConfigurator _diConfigurator;
 
         /// <inheritdoc />
-        public Result OnStartup(UIControlledApplication application)
+        public Autodesk.Revit.UI.Result OnStartup(UIControlledApplication application)
         {
             _application = application;
             application.Idling += ApplicationIdling;
 
-            return Result.Succeeded;
+            return Autodesk.Revit.UI.Result.Succeeded;
         }
 
         /// <inheritdoc />
-        public Result OnShutdown(UIControlledApplication application)
+        public Autodesk.Revit.UI.Result OnShutdown(UIControlledApplication application)
         {
-            var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<Result>>();
-            methodCaller.InvokeCommand(_diConfigurator.Container, "Shutdown");
-            return Result.Succeeded;
+            var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<PluginResult>>();
+            var result = methodCaller.InvokeCommand(_diConfigurator.Container, "Shutdown");
+            return result.MapResultToRevitResult();
         }
 
         private void ApplicationIdling(object sender, IdlingEventArgs e)
@@ -40,7 +42,7 @@
                     _diConfigurator = new ApplicationDiConfigurator(this, uiApp);
                     _diConfigurator.Configure(GetType().Assembly);
 
-                    var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<Result>>();
+                    var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeCommand(_diConfigurator.Container, "Start");
 
                     _contextCreated = true;
