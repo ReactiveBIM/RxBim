@@ -24,7 +24,7 @@
         }
 
         /// <inheritdoc />
-        protected override void ConfigureBaseRevitDependencies()
+        protected override void ConfigureBaseDependencies()
         {
             Container.RegisterInstance(_commandData);
             Container.RegisterInstance(_commandData.Application);

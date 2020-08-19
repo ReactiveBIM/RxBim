@@ -31,14 +31,14 @@
         /// <param name="assembly">сборка для поиска зависимостей</param>
         public void Configure(Assembly assembly)
         {
-            ConfigureBaseRevitDependencies();
+            ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);
         }
 
         /// <summary>
         /// Конфигурирование основных зависимостей Revit
         /// </summary>
-        protected abstract void ConfigureBaseRevitDependencies();
+        protected abstract void ConfigureBaseDependencies();
 
         private void ConfigureAdditionalDependencies(Assembly assembly)
         {

@@ -23,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        protected override void ConfigureBaseRevitDependencies()
+        protected override void ConfigureBaseDependencies()
         {
             Container.RegisterInstance(_uiApp);
             Container.RegisterInstance(_uiApp.Application);
