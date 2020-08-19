@@ -90,4 +90,11 @@ class Build : NukeBuild
                     .SetOutputDirectory(path));
             }
         });
+
+    Target Test => _ => _
+        .Executes(() =>
+        {
+            DotNetTest(settings => settings
+                .SetProjectFile(Solution));
+        });
 }
