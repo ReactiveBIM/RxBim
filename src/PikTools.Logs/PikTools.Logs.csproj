@@ -13,15 +13,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
+        <PackageReference Include="Serilog" Version="2.9.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-        <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-        <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
-        <PackageReference Include="Serilog.Sinks.Http" Version="7.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>
 
@@ -30,7 +25,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>2020.08.1</Version>
+        <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
         <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
         <Authors>BimLab BimTeam</Authors>

@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Microsoft.Extensions.Configuration;
     using SimpleInjector;
 
     /// <summary>
@@ -33,6 +34,7 @@
         {
             ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);
+            AddConfigurations(assembly);
         }
 
         /// <summary>
@@ -51,6 +53,36 @@
             {
                 cfg.Configure(Container);
             }
+        }
+
+        private void AddConfigurations(Assembly assembly)
+        {
+            var configurationBuilder = GetBaseConfigurationBuilder(assembly);
+            AddUserConfigurations(configurationBuilder);
+        }
+
+        private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
+        {
+            var basePath = Path.GetDirectoryName(assembly.Location);
+            return new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
+                .AddJsonFile("appsettings.json");
+        }
+
+        private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
+        {
+            Container.Register<IConfiguration>(() =>
+            {
+                if (Container.GetCurrentRegistrations()
+                    .Any(x => x.ServiceType == typeof(Func<ConfigurationBuilder, IConfiguration>)))
+                {
+                    var userConfigurationBuilder = Container.GetInstance<Func<ConfigurationBuilder, IConfiguration>>();
+                    configurationBuilder.AddConfiguration(userConfigurationBuilder(new ConfigurationBuilder()));
+                }
+
+                return configurationBuilder.Build();
+            }, Lifestyle.Singleton);
         }
     }
 }

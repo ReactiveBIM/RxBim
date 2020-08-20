@@ -1,0 +1,5 @@
+﻿<Project>
+    <PropertyGroup>
+        <ApiVersion>2020.08.1-dev01</ApiVersion>
+    </PropertyGroup>
+</Project>

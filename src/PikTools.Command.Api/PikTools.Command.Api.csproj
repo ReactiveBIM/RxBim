@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>2020.08.1</Version>
+        <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
         <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
         <Authors>BimLab BimTeam</Authors>

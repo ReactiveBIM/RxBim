@@ -13,24 +13,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj" />
-        <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj"/>
+        <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" ExcludeAssets="runtime"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Configuration, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2019\AddIns\FabricationPartBrowser\Microsoft.Extensions.Configuration.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="application.settings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

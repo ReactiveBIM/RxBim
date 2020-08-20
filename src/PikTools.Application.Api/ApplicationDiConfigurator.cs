@@ -2,6 +2,8 @@
 {
     using Autodesk.Revit.UI;
     using Di;
+    using Shared;
+    using Result = Autodesk.Revit.UI.Result;
 
     /// <summary>
     /// Конфигуратор зависимостей приложения
@@ -29,7 +31,7 @@
             Container.RegisterInstance(_uiApp.Application);
             Container.Register(() => _uiApp.ActiveUIDocument);
             Container.Register(() => _uiApp.ActiveUIDocument.Document);
-            Container.Register<IMethodCaller<Result>>(() => new MethodCaller<Result>(_applicationObject));
+            Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

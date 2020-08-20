@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Application.Api
 {
     using System;
+    using System.Reflection;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
@@ -20,6 +21,15 @@
         public Autodesk.Revit.UI.Result OnStartup(UIControlledApplication application)
         {
             _application = application;
+            /*AppDomain.CurrentDomain.AssemblyResolve +=
+                (sender, args) =>
+                {
+                    if (args.Name.Contains("Tasks.Extensions"))
+                    {
+                    }
+
+                    return Assembly.Load(args.RequestingAssembly.GetName());
+                };*/
             application.Idling += ApplicationIdling;
 
             return Autodesk.Revit.UI.Result.Succeeded;
@@ -46,11 +56,15 @@
                     methodCaller.InvokeCommand(_diConfigurator.Container, "Start");
 
                     _contextCreated = true;
-                    _application.Idling -= ApplicationIdling;
                 }
                 catch (Exception exception)
                 {
                     TaskDialog.Show("Error", exception.ToString());
+                    throw;
+                }
+                finally
+                {
+                    _application.Idling -= ApplicationIdling;
                 }
             }
         }

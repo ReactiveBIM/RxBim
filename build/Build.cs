@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
@@ -26,7 +27,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var addinFile = "PikTools.App.Example.addin";
-            var addinPath = Solution.Directory / "PikTools.Application.Example" / addinFile;
+            var addinPath = Solution.Directory / "examples" / "PikTools.Application.Example" / addinFile;
             var revitPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Autodesk", "Revit", "Addins", "2019", addinFile
@@ -35,12 +36,27 @@ class Build : NukeBuild
             CopyFile(addinPath, revitPath, FileExistsPolicy.Overwrite);
         });
 
-    Target CopyOutput => _ => _
-        .DependsOn(CopyDebugAddin, Compile)
+    Target CleanOutput => _ => _
         .Executes(() =>
         {
             var appPath = "PikTools.Application.Example";
-            var outputPath = Solution.Directory / appPath / "bin" / "Debug" / "net471";
+            var revitPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Autodesk", "Revit", "Addins", "2019", appPath
+            );
+
+            foreach (var file in Directory.EnumerateFiles(revitPath, "*", SearchOption.AllDirectories))
+            {
+                DeleteFile(file);
+            }
+        });
+
+    Target CopyOutput => _ => _
+        .DependsOn(CleanOutput, CopyDebugAddin, Compile)
+        .Executes(() =>
+        {
+            var appPath = "PikTools.Application.Example";
+            var outputPath = Solution.Directory / "examples" / appPath / "bin" / "Debug" / "net471";
 
             var revitPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -51,7 +67,6 @@ class Build : NukeBuild
         });
 
     Target Clean => _ => _
-        .Before(Restore)
         .Executes(() =>
         {
             GlobDirectories(Solution.Directory, "**/bin", "**/obj")
@@ -60,6 +75,7 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
+        .DependsOn(Clean)
         .Executes(() =>
         {
             DotNetRestore(s => s
@@ -80,7 +96,8 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var path = Solution.Directory / "out";
-            foreach (var project in Solution.Projects.Where(x => !x.Name.Contains("Example")))
+            var sourceProjects = Solution.AllProjects.Where(x => x.Path.ToString().Contains("\\src\\"));
+            foreach (var project in sourceProjects)
             {
                 DotNetPack(settings => settings
                     .SetConfiguration(Configuration)

@@ -1,36 +1,46 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Command.Api", "src\PikTools.Command.Api\PikTools.Command.Api.csproj", "{247B18BF-145A-4A82-821E-55AFEE43C38A}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Command.Api", "src\PikTools.Command.Api\PikTools.Command.Api.csproj", "{247B18BF-145A-4A82-821E-55AFEE43C38A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Command.Example", "examples\PikTools.Command.Example\PikTools.Command.Example.csproj", "{5BE0CC3D-9E55-471B-B004-2C6D0FC3D0C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Command.Example", "examples\PikTools.Command.Example\PikTools.Command.Example.csproj", "{5BE0CC3D-9E55-471B-B004-2C6D0FC3D0C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Application.Api", "src\PikTools.Application.Api\PikTools.Application.Api.csproj", "{C55CBDBD-321A-4FCF-B732-1CB800D826F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Application.Api", "src\PikTools.Application.Api\PikTools.Application.Api.csproj", "{C55CBDBD-321A-4FCF-B732-1CB800D826F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Di", "src\PikTools.Di\PikTools.Di.csproj", "{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Di", "src\PikTools.Di\PikTools.Di.csproj", "{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Application.Example", "examples\PikTools.Application.Example\PikTools.Application.Example.csproj", "{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Application.Example", "examples\PikTools.Application.Example\PikTools.Application.Example.csproj", "{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{EACB12AC-29CE-439B-8B8E-519350597E7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Logs", "src\PikTools.Logs\PikTools.Logs.csproj", "{117003E9-2D65-4B0B-8380-24175AFC0729}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Logs", "src\PikTools.Logs\PikTools.Logs.csproj", "{117003E9-2D65-4B0B-8380-24175AFC0729}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{E613D0DE-1441-4995-BF35-1F06C8289C55}"
-ProjectSection(SolutionItems) = preProject
-	.gitignore = .gitignore
-	stylecop.ruleset = stylecop.ruleset
-	stylecopTests.ruleset = stylecopTests.ruleset
-	Readme.md = Readme.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Readme.md = Readme.md
+		stylecop.ruleset = stylecop.ruleset
+		stylecopTests.ruleset = stylecopTests.ruleset
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{829C26B5-29F4-497B-B059-1AFA81CD1506}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared", "src\PikTools.Shared\PikTools.Shared.csproj", "{5F1C96A4-11E2-4004-BFF4-6C463A4F9D6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared", "src\PikTools.Shared\PikTools.Shared.csproj", "{5F1C96A4-11E2-4004-BFF4-6C463A4F9D6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C83365AF-13D9-400D-9CEF-6CD12607BEBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Di.Tests", "tests\PikTools.Di.Tests\PikTools.Di.Tests.csproj", "{DE0A4C60-36C3-4330-BA06-88DF150E70AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Di.Tests", "tests\PikTools.Di.Tests\PikTools.Di.Tests.csproj", "{DE0A4C60-36C3-4330-BA06-88DF150E70AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Analyzers", "src\PikTools.Analyzers\PikTools.Analyzers.csproj", "{1CB08C53-D180-4693-93FC-17223EDFAAE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Analyzers.Test", "tests\PikTools.Analyzers.Test\PikTools.Analyzers.Test.csproj", "{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "analyzers", "analyzers", "{57BCF18C-32B2-496D-9B94-568B4789C60E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,8 +48,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EACB12AC-29CE-439B-8B8E-519350597E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EACB12AC-29CE-439B-8B8E-519350597E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{247B18BF-145A-4A82-821E-55AFEE43C38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{247B18BF-145A-4A82-821E-55AFEE43C38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{247B18BF-145A-4A82-821E-55AFEE43C38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,9 +57,9 @@ Global
 		{5BE0CC3D-9E55-471B-B004-2C6D0FC3D0C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BE0CC3D-9E55-471B-B004-2C6D0FC3D0C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C55CBDBD-321A-4FCF-B732-1CB800D826F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C55CBDBD-321A-4FCF-B732-1CB800D826F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C55CBDBD-321A-4FCF-B732-1CB800D826F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C55CBDBD-321A-4FCF-B732-1CB800D826F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C55CBDBD-321A-4FCF-B732-1CB800D826F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,6 +68,8 @@ Global
 		{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACB12AC-29CE-439B-8B8E-519350597E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACB12AC-29CE-439B-8B8E-519350597E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{117003E9-2D65-4B0B-8380-24175AFC0729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{117003E9-2D65-4B0B-8380-24175AFC0729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{117003E9-2D65-4B0B-8380-24175AFC0729}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,15 +82,31 @@ Global
 		{DE0A4C60-36C3-4330-BA06-88DF150E70AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE0A4C60-36C3-4330-BA06-88DF150E70AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE0A4C60-36C3-4330-BA06-88DF150E70AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CB08C53-D180-4693-93FC-17223EDFAAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CB08C53-D180-4693-93FC-17223EDFAAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CB08C53-D180-4693-93FC-17223EDFAAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CB08C53-D180-4693-93FC-17223EDFAAE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C55CBDBD-321A-4FCF-B732-1CB800D826F6} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{247B18BF-145A-4A82-821E-55AFEE43C38A} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
-		{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
-		{117003E9-2D65-4B0B-8380-24175AFC0729} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
-		{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 		{5BE0CC3D-9E55-471B-B004-2C6D0FC3D0C8} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
+		{C55CBDBD-321A-4FCF-B732-1CB800D826F6} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
+		{C8BA38BA-80C2-48BE-AC7B-33F43A9CE5CE} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
+		{8D542F6F-8A9A-4AE0-98EC-0EF60A007AFC} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
+		{117003E9-2D65-4B0B-8380-24175AFC0729} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{5F1C96A4-11E2-4004-BFF4-6C463A4F9D6C} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{DE0A4C60-36C3-4330-BA06-88DF150E70AA} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
+		{1CB08C53-D180-4693-93FC-17223EDFAAE6} = {57BCF18C-32B2-496D-9B94-568B4789C60E}
+		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}
 	EndGlobalSection
 EndGlobal

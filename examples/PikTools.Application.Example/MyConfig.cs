@@ -12,12 +12,11 @@
         /// <inheritdoc />
         public void Configure(Container container)
         {
-            var cfg = new ConfigurationBuilder()
+            container.Register<IService, Service>();
+            /*container.AddConfiguration(builder => builder
                 .SetBasePath(Path.GetDirectoryName(GetType().Assembly.Location))
                 .AddJsonFile("application.settings.json")
-                .Build();
-
-            container.Register<IService, Service>();
+                .Build());*/
             container.AddLogs();
         }
     }

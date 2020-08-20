@@ -13,12 +13,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SimpleInjector" Version="5.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+        <PackageReference Include="SimpleInjector" Version="4.10.2" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PikTools.Analyzers\PikTools.Analyzers.csproj" />
+    </ItemGroup>
+
     <PropertyGroup>
-        <Version>2020.08.1</Version>
+        <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
         <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
         <Authors>BimLab BimTeam</Authors>

@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1"/>
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime"/>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>2020.08.1</Version>
+        <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
         <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
         <Authors>BimLab BimTeam</Authors>

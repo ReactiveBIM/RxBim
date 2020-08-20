@@ -1,9 +1,11 @@
 ﻿namespace PikTools.Logs
 {
+    using System;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Serilog;
     using Serilog.Core;
+    using Serilog.Events;
     using SimpleInjector;
 
     /// <summary>
@@ -27,11 +29,30 @@
 
         private static void RegisterLogger(Container container, IConfiguration cfg)
         {
-            var logger = CreateLogger(cfg);
-            container.RegisterInstance<ILogger>(logger);
+            container.Register(() =>
+            {
+                if (cfg == null)
+                {
+                    TryGetConfigurationFromContainer(container, ref cfg);
+                }
+
+                return CreateLogger(cfg);
+            });
         }
 
-        private static Logger CreateLogger(IConfiguration cfg)
+        private static void TryGetConfigurationFromContainer(Container container, ref IConfiguration cfg)
+        {
+            try
+            {
+                cfg = container.GetInstance<IConfiguration>();
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        private static ILogger CreateLogger(IConfiguration cfg)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -42,11 +63,10 @@
             {
                 config
                     .WriteTo.Debug()
-                    .WriteTo.File("log.txt");
+                    .WriteTo.File("log.txt", LogEventLevel.Information, fileSizeLimitBytes: 1024 * 10);
             }
 
-            var logger = config.CreateLogger();
-            return logger;
+            return config.CreateLogger();
         }
     }
 }
