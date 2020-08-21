@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
@@ -13,11 +13,14 @@
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Version>2020.0.8.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
       <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
+      <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+      <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace PikTools.CommandExample
+﻿namespace PikTools.CommandExample.Abstractions
 {
     /// <summary>
     /// my service

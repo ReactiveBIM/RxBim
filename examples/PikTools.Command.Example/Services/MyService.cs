@@ -1,7 +1,8 @@
-﻿namespace PikTools.CommandExample
+﻿namespace PikTools.CommandExample.Services
 {
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using PikTools.CommandExample.Abstractions;
 
     /// <summary>
     /// my service
