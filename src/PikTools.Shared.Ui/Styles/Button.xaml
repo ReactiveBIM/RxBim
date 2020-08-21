@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Assets/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- общий стиль Button -->
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DefaultLinksColor}"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+    
+    <!--<Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource PrimaryButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryButtonBackground}"/>
+        <Setter Property="FontFamily" Value="Graphik Regular"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="12,5"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="8">
+                        <ContentPresenter x:Name="contentPresenter" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                          Content="{TemplateBinding Content}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    
+    <!-- кнопка с функционалом навигации (стиль обычной кнопки) -->
+    <Style TargetType="{x:Type controls:NavigateButton}"
+           BasedOn="{StaticResource {x:Type Button}}"/>
+</ResourceDictionary>

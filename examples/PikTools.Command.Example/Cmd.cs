@@ -1,18 +1,22 @@
 ﻿namespace PikTools.CommandExample
 {
+    using Autodesk.Revit.Attributes;
     using Command.Api;
+    using PikTools.CommandExample.Views;
     using Shared;
 
     /// <inheritdoc />
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public class Cmd : PikToolsCommand
     {
         /// <summary>
         /// cmd
         /// </summary>
-        /// <param name="service">service</param>
-        public PluginResult ExecuteCommand(IMyService service)
+        /// <param name="mainWindow">main window</param>
+        public PluginResult ExecuteCommand(MainWindow mainWindow)
         {
-            service.Go();
+            mainWindow.Show();
             return PluginResult.Succeeded;
         }
     }
