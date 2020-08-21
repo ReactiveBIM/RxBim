@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <LangVersion>8</LangVersion>
+        <PlatformTarget>x64</PlatformTarget>
+        <NoWarn>NU1701</NoWarn>
+  </PropertyGroup>
+
+	<PropertyGroup>
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>BimLab.PikTools.Shared.RevitExtensions</PackageId>
+        <Version>2020.08.1-dev01</Version>
+        <Authors>BimLab BimTeam</Authors>
+        <Company>pik-group.com</Company>
+        <Product>BimLab.PikTools</Product>
+        <Description>PikTools Revit extensions Library</Description>
+        <Copyright>Copyright ©2020 PIK Group</Copyright>
+        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
+        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
+        <PackageTags>BIM BimLab</PackageTags>
+    </PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
+    <PackageReference Include="RevitTask" Version="3.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Collectors\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Storages\" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+  </ItemGroup>
+
+</Project>

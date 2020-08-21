@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "analyzers", "analyzers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.Ui", "src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj", "{8B6DB9CA-ED75-41DE-A4DB-BFFC4D6E3FCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared.RevitExtensions", "src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj", "{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{8B6DB9CA-ED75-41DE-A4DB-BFFC4D6E3FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6DB9CA-ED75-41DE-A4DB-BFFC4D6E3FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6DB9CA-ED75-41DE-A4DB-BFFC4D6E3FCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{1CB08C53-D180-4693-93FC-17223EDFAAE6} = {57BCF18C-32B2-496D-9B94-568B4789C60E}
 		{8DBB1080-FA55-4C94-91DE-9ECDCFD50CCA} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
 		{8B6DB9CA-ED75-41DE-A4DB-BFFC4D6E3FCF} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
+		{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}
