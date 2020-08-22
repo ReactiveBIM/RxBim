@@ -1,22 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
-
-//todo implement fixes
 namespace PikTools.Analyzers
 {
-    //ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PikToolsAnalyzersCodeFixProvider)), Shared]
+    using System.Collections.Immutable;
+    using System.Composition;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeActions;
+    using Microsoft.CodeAnalysis.CodeFixes;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Rename;
+
+    //[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PikToolsAnalyzersCodeFixProvider)), Shared]
     public class PikToolsAnalyzersCodeFixProvider : CodeFixProvider
     {
         private const string title = "Make uppercase";
