@@ -20,6 +20,7 @@
       <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
       <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
       <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+      <ProjectReference Include="..\..\src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj" />
       <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
     </ItemGroup>
 

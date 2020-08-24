@@ -6,6 +6,8 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModels="clr-namespace:PikTools.CommandExample.ViewModels"
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui"
+        xmlns:collectors="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions"
+        xmlns:converters="clr-namespace:PikTools.Shared.Ui.Converters;assembly=PikTools.Shared.Ui"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Title="{Binding Title}" 
@@ -15,6 +17,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <!--<converters:EnumToIntConverter x:Key="EnumToIntConverter"/>-->
         </ResourceDictionary>
     </Window.Resources>
     
@@ -26,11 +30,23 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <Grid Grid.Row="0"
+        <ComboBox Grid.Row="0"
+                  SelectedIndex="{Binding Scope, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type collectors:ScopeType}, Mode=TwoWay}"
+                  ToolTip="Какую часть модели обрабатывать"
+                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                  MinWidth="200"
+                  Margin="15,5">
+                <ComboBoxItem Content="Вся модель"/>
+                <ComboBoxItem Content="Видимые элементы на виде"/>
+                <ComboBoxItem Content="Выбранные элементы"/>
+            </ComboBox>
+        
+        <Grid Grid.Row="1"
               Margin="15,10,5,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -48,7 +64,7 @@
                                              Margin="5,0"/>
         </Grid>
         
-        <Button Grid.Row="1"
+        <Button Grid.Row="2"
                 Content="Выполнить"
                 Command="{Binding DoCommand}"
                 HorizontalAlignment="Center" VerticalAlignment="Center"

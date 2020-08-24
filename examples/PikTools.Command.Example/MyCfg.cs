@@ -16,6 +16,7 @@
         public void Configure(Container container)
         {
             container.Register<IMyService, MyService>();
+            container.AddRevitHelpers();
             container.AddUi();
 
             container.Register<MainWindowViewModel>();

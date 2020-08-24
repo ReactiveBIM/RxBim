@@ -1,5 +1,7 @@
 ﻿namespace PikTools.CommandExample.Abstractions
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// my service
     /// </summary>
@@ -8,6 +10,6 @@
         /// <summary>
         /// go
         /// </summary>
-        void Go();
+        Task Go();
     }
 }

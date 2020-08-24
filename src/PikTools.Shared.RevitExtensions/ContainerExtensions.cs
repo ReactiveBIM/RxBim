@@ -18,7 +18,9 @@
         {
             container.Register<IProblemElementsStorage, ProblemElementsStorage>(Lifestyle.Singleton);
             container.Register<IDocumentsCollector, DocumentsCollector>(Lifestyle.Singleton);
-            container.Register<ScopedElementsCollector>(Lifestyle.Singleton);
+            var collectorRegistration = Lifestyle.Singleton.CreateRegistration<ScopedElementsCollector>(container);
+            container.AddRegistration<IElementsCollector>(collectorRegistration);
+            container.AddRegistration<IScopedElementsCollector>(collectorRegistration);
             container.Register<RevitTask>(Lifestyle.Singleton);
         }
     }
