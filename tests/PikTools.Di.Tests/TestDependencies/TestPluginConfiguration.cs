@@ -2,7 +2,7 @@
 {
     using SimpleInjector;
 
-    public class TestPluginConfiguration : IPluginConfiguration
+    public class TestPluginConfiguration : IApplicationConfiguration
     {
         public void Configure(Container container)
         {

@@ -7,7 +7,7 @@
     /// <summary>
     /// Конфигуратор зависимостей комманды
     /// </summary>
-    public class CommandDiConfigurator : DiConfigurator
+    internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
         private readonly object _commandObject;
         private readonly ExternalCommandData _commandData;

@@ -2,7 +2,7 @@
 {
     using TestDependencies;
 
-    public class TestDiConfigurator : DiConfigurator
+    public class TestDiConfigurator : DiConfigurator<IPluginConfiguration>
     {
         protected override void ConfigureBaseDependencies()
         {

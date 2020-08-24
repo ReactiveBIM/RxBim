@@ -14,17 +14,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Application.Ui.Api\PikTools.Application.Ui.Api.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
         <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" ExcludeAssets="runtime" />
     </ItemGroup>
-
-    <ItemGroup>
-        <None Update="appsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
+    
 </Project>

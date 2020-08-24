@@ -8,6 +8,8 @@ using PikTools.Analyzers;
 
 namespace PikTools.Analyzers.Test
 {
+    using PikTools.Analyzers;
+
     [TestClass]
     public class UnitTest : CodeFixVerifier
     {
@@ -33,7 +35,7 @@ namespace PikTools.CommandExample
     }";
             var expected = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersCommand",
                 Message = String.Format("Command type '{0}' not contains \"ExecuteCommand\" method", "Cmd"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -63,7 +65,7 @@ namespace PikTools.CommandExample
     }";
             var expected = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersCommandReturnType",
                 Message = String.Format("Method '{0}' not returns \"PluginResult\" type", "ExecuteCommand"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -90,7 +92,7 @@ namespace PikTools.CommandExample
     }";
             var expected = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersAppStart",
                 Message = String.Format("App type '{0}' not contains \"Start\" method", "App"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -102,7 +104,7 @@ namespace PikTools.CommandExample
             
             var expected2 = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersAppShutdown",
                 Message = String.Format("App type '{0}' not contains \"Shutdown\" method", "App"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -136,7 +138,7 @@ namespace PikTools.CommandExample
     }";
             var expected = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersAppMethodReturType",
                 Message = String.Format("Method '{0}' not returns \"PluginResult\" type", "Start"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -148,7 +150,7 @@ namespace PikTools.CommandExample
             
             var expected2 = new DiagnosticResult
             {
-                Id = "PikToolsAnalyzers",
+                Id = "PikToolsAnalyzersAppMethodReturType",
                 Message = String.Format("Method '{0}' not returns \"PluginResult\" type", "Shutdown"),
                 Severity = DiagnosticSeverity.Error,
                 Locations =
@@ -164,7 +166,22 @@ namespace PikTools.CommandExample
         [TestMethod]
         public void Fix()
         {
-            /*var fixtest = @"
+            var test = @"
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Diagnostics;
+
+    namespace ConsoleApplication1
+    {
+        class typename
+        {   
+        }
+    }";
+            
+            var fixtest = @"
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -178,7 +195,7 @@ namespace PikTools.CommandExample
         {   
         }
     }";
-            VerifyCSharpFix(test, fixtest);*/
+            VerifyCSharpFix(test, fixtest);
         }
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()

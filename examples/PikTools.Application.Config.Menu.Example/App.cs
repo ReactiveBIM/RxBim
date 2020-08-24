@@ -1,4 +1,4 @@
-﻿namespace PikTools.Application.Example
+﻿namespace PikTools.Application.Config.Menu.Example
 {
     using Api;
     using Autodesk.Revit.UI;
@@ -12,10 +12,9 @@
         /// <summary>
         /// start
         /// </summary>
-        /// <param name="service">service</param>
-        public PluginResult Start(IService service)
+        public PluginResult Start()
         {
-            service.Go();
+            TaskDialog.Show("PikTools.Application.Menu.Config.Example", "App started");
             return PluginResult.Succeeded;
         }
 
@@ -24,7 +23,7 @@
         /// </summary>
         public PluginResult ShutDown()
         {
-            TaskDialog.Show("PikTools.Application.Example", "App finished");
+            TaskDialog.Show("PikTools.Application.Menu.Config.Example", "App finished");
             return PluginResult.Succeeded;
         }
     }

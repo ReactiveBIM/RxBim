@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+    <AddIn Type="Application">
+        <Name>PikTools.Application.Config.Menu.Example</Name>
+        <Assembly>PikTools.Application.Config.Menu.Example\PikTools.Application.Config.Menu.Example.dll</Assembly>
+        <AddInId>579d2ffd-eaec-461d-bb5d-ed04fd61c271</AddInId>
+        <FullClassName>PikTools.Application.Config.Menu.Example.App</FullClassName>
+        <VendorId>PIK</VendorId>
+        <VendorDescription>PIK, http://pik.ru</VendorDescription>
+    </AddIn>
+</RevitAddIns>

@@ -5,7 +5,7 @@
     /// <inheritdoc />
     public class Service : IService
     {
-        private UIApplication _app;
+        private readonly UIApplication _app;
 
         /// <summary>
         /// ctor

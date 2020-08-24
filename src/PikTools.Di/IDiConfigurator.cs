@@ -5,7 +5,7 @@
     /// <summary>
     /// Конфигурато di контейнера
     /// </summary>
-    public interface IDiConfigurator
+    public interface IDiConfigurator<T>
     {
         /// <summary>
         /// Configure
