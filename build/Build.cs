@@ -21,13 +21,16 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Parameter("project for debug")] string Project;
+
     [Solution] readonly Solution Solution;
 
     Target CopyDebugAddin => _ => _
+        .Requires(() => Project)
         .Executes(() =>
         {
-            var addinFile = "PikTools.App.Example.addin";
-            var addinPath = Solution.Directory / "examples" / "PikTools.Application.Example" / addinFile;
+            var addinFile = $"{Project}.addin";
+            var addinPath = Solution.Directory / "examples" / Project / addinFile;
             var revitPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Autodesk", "Revit", "Addins", "2019", addinFile
@@ -37,25 +40,30 @@ class Build : NukeBuild
         });
 
     Target CleanOutput => _ => _
+        .Requires(() => Project)
         .Executes(() =>
         {
-            var appPath = "PikTools.Application.Example";
+            var appPath = Project;
             var revitPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Autodesk", "Revit", "Addins", "2019", appPath
             );
 
-            foreach (var file in Directory.EnumerateFiles(revitPath, "*", SearchOption.AllDirectories))
+            if (Directory.Exists(revitPath))
             {
-                DeleteFile(file);
+                foreach (var file in Directory.EnumerateFiles(revitPath, "*", SearchOption.AllDirectories))
+                {
+                    DeleteFile(file);
+                }
             }
         });
 
     Target CopyOutput => _ => _
+        .Requires(() => Project)
         .DependsOn(CleanOutput, CopyDebugAddin, Compile)
         .Executes(() =>
         {
-            var appPath = "PikTools.Application.Example";
+            var appPath = Project;
             var outputPath = Solution.Directory / "examples" / appPath / "bin" / "Debug" / "net471";
 
             var revitPath = Path.Combine(
