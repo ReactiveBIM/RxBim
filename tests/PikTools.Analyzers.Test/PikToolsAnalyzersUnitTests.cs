@@ -8,6 +8,8 @@ using PikTools.Analyzers;
 
 namespace PikTools.Analyzers.Test
 {
+    using PikTools.Analyzers;
+
     [TestClass]
     public class UnitTest : CodeFixVerifier
     {

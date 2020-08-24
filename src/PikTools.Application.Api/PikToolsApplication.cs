@@ -21,17 +21,7 @@
         public Autodesk.Revit.UI.Result OnStartup(UIControlledApplication application)
         {
             _application = application;
-            /*AppDomain.CurrentDomain.AssemblyResolve +=
-                (sender, args) =>
-                {
-                    if (args.Name.Contains("Tasks.Extensions"))
-                    {
-                    }
-
-                    return Assembly.Load(args.RequestingAssembly.GetName());
-                };*/
             application.Idling += ApplicationIdling;
-
             return Autodesk.Revit.UI.Result.Succeeded;
         }
 
@@ -49,7 +39,7 @@
             {
                 try
                 {
-                    _diConfigurator = new ApplicationDiConfigurator(this, uiApp);
+                    _diConfigurator = new ApplicationDiConfigurator(this, _application, uiApp);
                     _diConfigurator.Configure(GetType().Assembly);
 
                     var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<PluginResult>>();

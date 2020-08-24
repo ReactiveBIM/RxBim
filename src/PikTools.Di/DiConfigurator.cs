@@ -10,7 +10,8 @@
     /// <summary>
     /// DiWrapper
     /// </summary>
-    public abstract class DiConfigurator : IDiConfigurator
+    public abstract class DiConfigurator<T> : IDiConfigurator<T>
+        where T : IPluginConfiguration
     {
         /// <summary>
         /// ctor
@@ -45,7 +46,7 @@
         private void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
-                .Where(x => x.GetInterface(nameof(IPluginConfiguration)) != null)
+                .Where(x => x.GetInterface(typeof(T).Name) != null)
                 .Select(Activator.CreateInstance)
                 .Cast<IPluginConfiguration>();
 

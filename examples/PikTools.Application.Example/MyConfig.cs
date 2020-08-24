@@ -7,16 +7,18 @@
     using SimpleInjector;
 
     /// <inheritdoc />
-    public class MyConfig : IPluginConfiguration
+    public class MyConfig : IApplicationConfiguration
     {
         /// <inheritdoc />
         public void Configure(Container container)
         {
             container.Register<IService, Service>();
-            /*container.AddConfiguration(builder => builder
+
+            container.AddConfiguration(builder => builder
                 .SetBasePath(Path.GetDirectoryName(GetType().Assembly.Location))
                 .AddJsonFile("application.settings.json")
-                .Build());*/
+                .Build());
+
             container.AddLogs();
         }
     }
