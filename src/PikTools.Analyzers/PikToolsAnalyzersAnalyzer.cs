@@ -5,6 +5,9 @@ namespace PikTools.Analyzers
     using Microsoft.CodeAnalysis.Diagnostics;
     using SymbolActions;
 
+    /// <summary>
+    /// Анализатор плагина
+    /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class PikToolsAnalyzersAnalyzer : DiagnosticAnalyzer
     {
@@ -13,6 +16,9 @@ namespace PikTools.Analyzers
         private readonly CmdMethodAction _cmdMethodAction;
         private readonly AppAction _appAction;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public PikToolsAnalyzersAnalyzer()
         {
             _cmdAction = new CmdAction();
@@ -21,10 +27,15 @@ namespace PikTools.Analyzers
             _appAction = new AppAction();
         }
 
+        /// <inheritdoc />
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(_cmdAction.Rule, _appMethodAction.Rule, _cmdMethodAction.Rule,
-                _appAction.AppStartMethodRule, _appAction.AppShutdownMethodRule);
+            ImmutableArray.Create(_cmdAction.Rule,
+                _appMethodAction.Rule,
+                _cmdMethodAction.Rule,
+                _appAction.AppStartMethodRule,
+                _appAction.AppShutdownMethodRule);
 
+        /// <inheritdoc />
         public override void Initialize(AnalysisContext context)
         {
             context.RegisterSymbolAction(_cmdAction.Analyze, SymbolKind.NamedType);

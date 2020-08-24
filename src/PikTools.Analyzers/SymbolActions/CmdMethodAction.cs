@@ -3,8 +3,13 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
 
+    /// <summary>
+    /// Инспекция возвращаемого значения комманды.
+    /// </summary>
     public class CmdMethodAction
     {
+        private const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
+
         private static readonly LocalizableString Title = "Method returns \"PluginResult\" method.";
 
         private static readonly LocalizableString MessageFormat =
@@ -13,14 +18,22 @@
         private static readonly LocalizableString Description =
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
-        private const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
-
-        public readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+        /// <summary>
+        /// Правило
+        /// </summary>
+        public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
             Title,
             MessageFormat,
-            Constants.Category, DiagnosticSeverity.Error, isEnabledByDefault: true, description: Description);
+            Constants.Category,
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true,
+            description: Description);
 
+        /// <summary>
+        /// Проверка
+        /// </summary>
+        /// <param name="context">контекст</param>
         public void Analyze(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;

@@ -3,8 +3,13 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
 
+    /// <summary>
+    /// Инспекция возвращаемого значения методов приложения. 
+    /// </summary>
     public class AppMethodAction
     {
+        private const string DiagnosticId = Constants.DiagnosticId + "AppMethodReturType";
+
         private static readonly LocalizableString Title = "Method returns \"PluginResult\" method.";
 
         private static readonly LocalizableString MessageFormat =
@@ -13,9 +18,10 @@
         private static readonly LocalizableString Description =
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
-        private const string DiagnosticId = Constants.DiagnosticId + "AppMethodReturType";
-
-        public readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+        /// <summary>
+        /// Правило
+        /// </summary>
+        public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
             Title,
             MessageFormat,
@@ -24,11 +30,19 @@
             isEnabledByDefault: true,
             description: Description);
 
+        /// <summary>
+        /// Проверка метода Start
+        /// </summary>
+        /// <param name="context">контекст</param>
         public void AnalyzeAppStartMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, "Start");
         }
 
+        /// <summary>
+        /// Проверка метода Shutdown
+        /// </summary>
+        /// <param name="context">контекст</param>
         public void AnalyzeAppShutdownMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, "Shutdown");

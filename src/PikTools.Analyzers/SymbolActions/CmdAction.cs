@@ -4,8 +4,13 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
 
+    /// <summary>
+    /// Инспекция проверяющая наличие метода ExecuteCommand
+    /// </summary>
     public class CmdAction
     {
+        private const string DiagnosticId = Constants.DiagnosticId + "Command";
+
         private static readonly LocalizableString Title = "Command type contains \"ExecuteCommand\" method.";
 
         private static readonly LocalizableString MessageFormat =
@@ -14,14 +19,22 @@
         private static readonly LocalizableString
             Description = "Command type should contain \"ExecuteCommand\" method.";
 
-        private const string DiagnosticId = Constants.DiagnosticId + "Command";
-
-        public readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+        /// <summary>
+        /// Правило
+        /// </summary>
+        public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
             Title,
             MessageFormat,
-            Constants.Category, DiagnosticSeverity.Error, isEnabledByDefault: true, description: Description);
+            Constants.Category,
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true,
+            description: Description);
 
+        /// <summary>
+        /// Проверка
+        /// </summary>
+        /// <param name="context">контекст</param>
         public void Analyze(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
