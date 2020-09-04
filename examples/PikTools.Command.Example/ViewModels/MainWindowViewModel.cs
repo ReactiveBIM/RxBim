@@ -118,7 +118,9 @@
                     return;
                 }
 
-                await _myService.Go();
+                var goResult = await _myService.Go();
+                if (goResult.IsFailure)
+                    _notificationService.ShowMessage("Внимание!", goResult.Error);
             }
             catch (Exception exception)
             {

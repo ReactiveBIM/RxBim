@@ -1,8 +1,10 @@
 ﻿namespace PikTools.CommandExample.Services
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Autodesk.Revit.DB;
+    using CSharpFunctionalExtensions;
     using PikTools.CommandExample.Abstractions;
     using PikTools.Shared.RevitExtensions.Abstractions;
     using PikTools.Shared.Ui.Abstractions;
@@ -43,25 +45,34 @@
         /// <summary>
         /// go
         /// </summary>
-        public async Task Go()
+        public async Task<Result> Go()
         {
-            var elements = _elementsCollector
-                .GetFilteredElementCollector(_doc)
-                .WhereElementIsNotElementType()
-                .ToElements()
-                .ToList();
-
-            await _revitTask.Run((app) =>
+            try
             {
-                // Use Transaction
+                var elements = _elementsCollector
+                    .GetFilteredElementCollector(_doc)
+                    .WhereElementIsNotElementType()
+                    .ToElements()
+                    .ToList();
 
-                // Add problem element to storage
-                var problemElem = elements.FirstOrDefault();
-                if (problemElem != null)
-                    _problemElementsStorage.AddProblemElement(problemElem.Id.IntegerValue, "problem description");
-            });
+                await _revitTask.Run((app) =>
+                {
+                    // Use Transaction
 
-            _notificationService.ShowMessage(GetType().FullName, _doc.Title + $" slnsajnsdanlk");
+                    // Add problem element to storage
+                    var problemElem = elements.FirstOrDefault();
+                    if (problemElem != null)
+                        _problemElementsStorage.AddProblemElement(problemElem.Id.IntegerValue, "problem description");
+                });
+
+                _notificationService.ShowMessage(GetType().FullName, _doc.Title + $" slnsajnsdanlk");
+
+                return Result.Success();
+            }
+            catch (Exception exception)
+            {
+                return Result.Failure(exception.Message);
+            }
         }
     }
 }

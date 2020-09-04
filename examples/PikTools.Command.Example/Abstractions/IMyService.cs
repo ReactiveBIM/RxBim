@@ -1,6 +1,7 @@
 ﻿namespace PikTools.CommandExample.Abstractions
 {
     using System.Threading.Tasks;
+    using CSharpFunctionalExtensions;
 
     /// <summary>
     /// my service
@@ -10,6 +11,6 @@
         /// <summary>
         /// go
         /// </summary>
-        Task Go();
+        Task<Result> Go();
     }
 }
