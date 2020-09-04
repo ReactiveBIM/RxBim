@@ -7,18 +7,17 @@
         xmlns:viewModels="clr-namespace:PikTools.CommandExample.ViewModels"
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui"
         xmlns:collectors="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions"
-        xmlns:converters="clr-namespace:PikTools.Shared.Ui.Converters;assembly=PikTools.Shared.Ui"
+        xmlns:behaviors="clr-namespace:PikTools.CommandExample.Views.Behaviors"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Title="{Binding Title}" 
-        Height="200" Width="400">
+        Height="300" Width="400"
+        MinHeight="200" MinWidth="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <!--<converters:EnumToIntConverter x:Key="EnumToIntConverter"/>-->
         </ResourceDictionary>
     </Window.Resources>
     
@@ -48,16 +47,36 @@
         
         <Grid Grid.Row="1"
               Margin="15,10,5,10">
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="100"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <TextBlock Grid.Column="0"
+            <ListBox Grid.Row="0" Grid.Column="0"
+                     Style="{DynamicResource ListBoxWithoutScrolling}"
+                     ItemsSource="{Binding Indexes}"
+                     HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                     Margin="10,5"/>
+            
+            <ListBox Grid.Row="0" Grid.Column="1"
+                     ItemsSource="{Binding AvailableChoises}"
+                     SelectionMode="Multiple"
+                     HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                     Margin="10,5">
+                <b:Interaction.Behaviors>
+                    <behaviors:StringListBoxSelectionBehavior SelectedItems="{Binding SelectedChoises}"/>
+                </b:Interaction.Behaviors>
+            </ListBox>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="Введите значение"
                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
             
-            <controls:TextBoxWithPlaceholder Grid.Column="1"
+            <controls:TextBoxWithPlaceholder Grid.Row="1" Grid.Column="1"
                                              Text="{Binding IntValue, Mode=TwoWay, StringFormat=N0}"
                                              Placeholder="Число от 0 до 10"
                                              HorizontalAlignment="Left" VerticalAlignment="Center"

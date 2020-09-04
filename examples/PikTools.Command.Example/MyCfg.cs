@@ -10,7 +10,7 @@
     using SimpleInjector;
 
     /// <inheritdoc />
-    public class MyCfg : IApplicationConfiguration
+    public class MyCfg : ICommandConfiguration
     {
         /// <inheritdoc />
         public void Configure(Container container)
