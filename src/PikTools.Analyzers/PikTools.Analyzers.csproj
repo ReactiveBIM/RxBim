@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>netstandard1.3</TargetFramework>
         <IncludeBuildOutput>false</IncludeBuildOutput>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <PropertyGroup>

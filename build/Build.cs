@@ -1,20 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
+using PikTools.Nuke;
+using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tooling.ProcessTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : NukeBuild
+class Build : PikToolsBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
@@ -121,5 +128,30 @@ class Build : NukeBuild
         {
             DotNetTest(settings => settings
                 .SetProjectFile(Solution));
+        });
+
+    Target PublishMsiBuildTool => _ => _
+        .Executes(() =>
+        {
+            var projectName = "PikTools.MsiBuilder.Bin";
+            var project = Solution.AllProjects.FirstOrDefault(x => x.Name == projectName);
+
+            DotNetPublish(settings => settings
+                .SetProject(project)
+                .SetConfiguration(Configuration.Release));
+
+            var publishDir = project.Directory / "bin" / Configuration.Release /
+                             project.GetProperty("TargetFramework") / "publish";
+
+            var zipFilePath = Solution.Directory / "out" / $"{project.Name}_{project.GetProperty("Version")}.zip";
+            if (FileExists(zipFilePath))
+            {
+                DeleteFile(zipFilePath);
+            }
+
+            CompressZip(publishDir,
+                zipFilePath,
+                fileMode: FileMode.CreateNew,
+                compressionLevel: CompressionLevel.Optimal);
         });
 }

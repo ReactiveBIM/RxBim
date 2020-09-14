@@ -13,7 +13,7 @@
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Version>2020.0.8.1</Version>
+        <Version>1.0.8.1</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -35,4 +35,8 @@
     <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\PikTools.Nuke\PikTools.Nuke.csproj" />
+  </ItemGroup>
+
 </Project>

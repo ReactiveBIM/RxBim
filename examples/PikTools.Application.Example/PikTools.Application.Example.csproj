@@ -13,12 +13,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj" />
-        <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj"/>
+        <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" ExcludeAssets="runtime" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" ExcludeAssets="runtime"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -26,5 +26,9 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+
+    <PropertyGroup>
+        <AddInId>f5868e5a-d6b2-4bde-9994-e6b27f167445</AddInId>
+    </PropertyGroup>
 
 </Project>
