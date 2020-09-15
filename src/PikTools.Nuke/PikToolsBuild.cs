@@ -1,6 +1,5 @@
 ﻿namespace PikTools.Nuke
 {
-    using System;
     using System.Linq;
     using global::Nuke.Common;
     using global::Nuke.Common.ProjectModel;
@@ -12,7 +11,6 @@
     public abstract class PikToolsBuild : NukeBuild
     {
         private Project _project;
-        [Solution] public Solution Solution;
         private string _config;
         private Wix _wix;
 
@@ -23,6 +21,12 @@
         {
             _wix = new Wix();
         }
+
+        /// <summary>
+        /// Solution
+        /// </summary>
+        [Solution]
+        public Solution Solution { get; set; }
 
         /// <summary>
         /// Project
@@ -47,14 +51,6 @@
             set => _project = value;
         }
 
-        [Parameter("Select configuration")]
-        private string Config
-        {
-            get => _config ??=
-                ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-            set => _config = value;
-        }
-
         /// <summary>
         /// BuildMsi
         /// </summary>
@@ -62,9 +58,14 @@
             .Description("Собирает MSi пакет из указанного проекта")
             .Requires(() => Project)
             .Requires(() => Config)
-            .Executes(() =>
-            {
-                _wix.BuildMsi(Project, Config);
-            });
+            .Executes(() => { _wix.BuildMsi(Project, Config); });
+
+        [Parameter("Select configuration")]
+        private string Config
+        {
+            get => _config ??=
+                ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
+            set => _config = value;
+        }
     }
 }

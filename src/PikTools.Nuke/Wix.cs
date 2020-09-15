@@ -24,10 +24,13 @@
         private const string TempWixFolder = ".wixSharp";
         private const string WixSourceFileName = "wixSharp.7z";
         private const string WixBin = nameof(WixBin);
+        private readonly AssemblyScanner _assemblyScanner;
         private AbsolutePath _wixSharpBinPath;
         private AbsolutePath _wixBin;
-        private readonly AssemblyScanner _assemblyScanner;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public Wix()
         {
             _assemblyScanner = new AssemblyScanner();

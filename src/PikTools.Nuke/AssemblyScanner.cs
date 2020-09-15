@@ -6,8 +6,16 @@
     using System.Reflection.Metadata;
     using System.Reflection.PortableExecutable;
 
+    /// <summary>
+    /// Класс для извлечения всех типов из сборки
+    /// </summary>
     public class AssemblyScanner
     {
+        /// <summary>
+        /// Сканирует сборку
+        /// </summary>
+        /// <param name="file">Файл сборки</param>
+        /// <returns></returns>
         public IEnumerable<AssemblyType> Scan(string file)
         {
             if (File.Exists(file))
@@ -52,7 +60,7 @@
                 }
                 catch
                 {
-                    //ignore
+                    // ignore
                 }
             }
 
@@ -69,7 +77,7 @@
             }
             catch
             {
-                //ignore
+                // ignore
             }
 
             return null;

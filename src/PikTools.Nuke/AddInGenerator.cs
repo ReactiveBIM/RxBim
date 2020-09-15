@@ -6,21 +6,30 @@
     using System.Linq;
     using global::Nuke.Common.ProjectModel;
 
+    /// <summary>
+    /// Генератор манифест файлов для Revit
+    /// </summary>
     public class AddInGenerator
     {
         private string _commandTypeName = "PikToolsCommand";
         private string _applicationTypeName = "PikToolsApplication";
 
-        public string GenerateAddInFile(Project project, IReadOnlyCollection<AssemblyType> addInTypes, string output)
+        /// <summary>
+        /// Генерирует addin файл
+        /// </summary>
+        /// <param name="project">проект</param>
+        /// <param name="addInTypes">Типы для регистрации в Revit</param>
+        /// <param name="outputDirectory">папка для сохранения addin файла</param>
+        public string GenerateAddInFile(Project project, IReadOnlyCollection<AssemblyType> addInTypes, string outputDirectory)
         {
             if (addInTypes.Any(x => x.BaseTypeName == _applicationTypeName))
             {
-                return GenerateAddIn(project, addInTypes, _applicationTypeName, PluginType.Application, output);
+                return GenerateAddIn(project, addInTypes, _applicationTypeName, PluginType.Application, outputDirectory);
             }
 
             if (addInTypes.Any(x => x.BaseTypeName == _commandTypeName))
             {
-                return GenerateAddIn(project, addInTypes, _commandTypeName, PluginType.Command, output);
+                return GenerateAddIn(project, addInTypes, _commandTypeName, PluginType.Command, outputDirectory);
             }
 
             throw new ArgumentException(
