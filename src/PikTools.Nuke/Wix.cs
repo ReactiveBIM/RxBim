@@ -1,14 +1,19 @@
 ﻿namespace PikTools.Nuke
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
+    using Application.Api;
+    using Command.Api;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
+    using Microsoft.Win32;
     using MsiBuilder;
+    using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -18,9 +23,6 @@
     /// </summary>
     public class Wix
     {
-        private const string WixSourceUrl =
-            "https://github.com/oleg-shilo/wixsharp/releases/download/v1.12.0.0/WixSharp.1.12.0.0.7z";
-
         private const string TempWixFolder = ".wixSharp";
         private const string WixSourceFileName = "wixSharp.7z";
         private const string WixBin = nameof(WixBin);
@@ -41,9 +43,11 @@
         /// </summary>
         /// <param name="project">Проект</param>
         /// <param name="configuration">Конфигурация</param>
-        public void BuildMsi(Project project, string configuration)
+        public void BuildMsi(global::Nuke.Common.ProjectModel.Project project, string configuration)
         {
-            Setup();
+            CheckNetFramework();
+
+            SetupWixTools();
 
             var output = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             var @out = Path.Combine(output, "bin");
@@ -55,49 +59,112 @@
 
             if (Directory.Exists(@out))
             {
-                var file = Path.Combine(@out, $"{project.Name}.dll");
+                var types = GetAssemblyTypes(project, @out);
 
-                var types = _assemblyScanner.Scan(file)
-                    .Where(x => x.BaseTypeName == "PikToolsCommand" ||
-                                x.BaseTypeName == "PikToolsApplication")
-                    .ToList();
+                GenerateRevitManifestFile(project, types, output);
 
-                var addInGenerator = new AddInGenerator();
-                addInGenerator.GenerateAddInFile(project, types, output);
+                var options = GetBuildMsiOptions(project, output, configuration);
 
-                var options = new Options()
-                {
-                    Comments = project.GetProperty("Comments"),
-                    Description = project.GetProperty("Description"),
-                    Version = project.GetProperty("Version") ?? string.Empty,
-                    BundleDir = output,
-                    InstallDir = "%AppDataFolder%/Autodesk/ApplicationPlugins",
-                    ManifestDir = output,
-                    OutDir = project.Solution.Directory / "out",
-                    PackageGuid = project.GetProperty("PackageGuid") ?? Guid.NewGuid().ToString(),
-                    UpgradeCode = project.GetProperty("UpgradeCode") ?? Guid.NewGuid().ToString(),
-                    ProjectName = project.Name,
-                    SourceDir = Path.Combine(output, "bin"),
-                    OutFileName = project.Name
-                };
+                var toolPath = GetMsiBuilderToolPath();
 
-                var toolPath = Environment.GetEnvironmentVariable("PIKTOOLS_MSIBUILDER_BIN");
-                var p = ProcessTasks.StartProcess(
-                    toolPath,
-                    options.ToString(),
-                    project.Solution.Directory / "out");
-                p.WaitForExit();
-
-                if (p.ExitCode != 0)
-                {
-                    throw new ApplicationException("Не удалось собрать msi пакет!!!");
-                }
+                InnerBuildMsi(project, toolPath, options);
 
                 FileSystemTasks.DeleteDirectory(output);
             }
         }
 
-        private void Setup()
+        private void CheckNetFramework()
+        {
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5");
+            if (key == null)
+            {
+                throw new ApplicationException(
+                    ".NET Framework v3.5 not find on system!");
+            }
+        }
+
+        private void InnerBuildMsi(global::Nuke.Common.ProjectModel.Project project, string toolPath, Options options)
+        {
+            var p = ProcessTasks.StartProcess(
+                toolPath,
+                options.ToString(),
+                project.Solution.Directory / "out");
+            p.WaitForExit();
+
+            if (p.ExitCode != 0)
+            {
+                throw new ApplicationException("Building MSI package failed!!!");
+            }
+        }
+
+        private string GetMsiBuilderToolPath()
+        {
+            var toolPath = Environment.GetEnvironmentVariable("PIKTOOLS_MSIBUILDER_BIN");
+            if (toolPath == null)
+            {
+                throw new ArgumentException($"Environment has no 'PIKTOOLS_MSIBUILDER_BIN' variable!");
+            }
+
+            return toolPath;
+        }
+
+        private Options GetBuildMsiOptions(
+            global::Nuke.Common.ProjectModel.Project project,
+            string output,
+            string configuration)
+        {
+            var installDir = configuration switch
+            {
+                "Debug" => "%AppDataFolder%/Autodesk/Revit/Addins/2019",
+                "Release" => "%AppDataFolder%/Autodesk/ApplicationPlugins",
+                _ => throw new ArgumentException("Configuration not setted!")
+            };
+
+            var options = new Options()
+            {
+                Comments = project.GetProperty("Comments"),
+                Description = project.GetProperty("Description"),
+                Version = project.GetProperty("Version") ??
+                          throw new ArgumentException(
+                              $"Project {project.Name} should contain 'Version' property with valid value!"),
+                BundleDir = output,
+                InstallDir = installDir,
+                ManifestDir = output,
+                OutDir = project.Solution.Directory / "out",
+                PackageGuid = project.GetProperty("PackageGuid") ??
+                              throw new ArgumentException(
+                                  $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!"),
+                UpgradeCode = project.GetProperty("UpgradeCode") ??
+                              throw new ArgumentException(
+                                  $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
+                ProjectName = project.Name,
+                SourceDir = Path.Combine(output, "bin"),
+                OutFileName = project.Name
+            };
+            return options;
+        }
+
+        private void GenerateRevitManifestFile(
+            global::Nuke.Common.ProjectModel.Project project,
+            List<AssemblyType> types,
+            string output)
+        {
+            var addInGenerator = new AddInGenerator();
+            addInGenerator.GenerateAddInFile(project, types, output);
+        }
+
+        private List<AssemblyType> GetAssemblyTypes(global::Nuke.Common.ProjectModel.Project project, string @out)
+        {
+            var file = Path.Combine(@out, $"{project.Name}.dll");
+
+            var types = _assemblyScanner.Scan(file)
+                .Where(x => x.BaseTypeName == nameof(PikToolsCommand) ||
+                            x.BaseTypeName == nameof(PikToolsApplication))
+                .ToList();
+            return types;
+        }
+
+        private void SetupWixTools()
         {
             var tmpPath = (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             _wixSharpBinPath = tmpPath / WixBin;
@@ -126,6 +193,8 @@
 
         private string DownloadWixSharp()
         {
+            var browserDownloadUrl = GetLatestReleaseUrl();
+
             var tmpPath = (AbsolutePath)Path.GetTempPath();
             var tempFolder = tmpPath / TempWixFolder;
             var result = tmpPath / TempWixFolder / WixSourceFileName;
@@ -136,13 +205,22 @@
 
             if (!Directory.EnumerateFiles(tempFolder).Any())
             {
-                Console.WriteLine("Downloading " + WixSourceUrl + "...");
+                Console.WriteLine("Downloading " + browserDownloadUrl + "...");
                 var webClient = new WebClient();
-                webClient.DownloadFile(WixSourceUrl, result);
+                webClient.DownloadFile(browserDownloadUrl, result);
                 Console.WriteLine("Done.");
             }
 
             return result;
+        }
+
+        private string GetLatestReleaseUrl()
+        {
+            var gitHubClient = new GitHubClient(new ProductHeaderValue("PikTools"));
+            var releases = gitHubClient.Repository.Release.GetAll("oleg-shilo", "wixsharp").GetAwaiter().GetResult();
+            var latest = releases[0];
+            var browserDownloadUrl = latest.Assets[0].BrowserDownloadUrl;
+            return browserDownloadUrl;
         }
     }
 }

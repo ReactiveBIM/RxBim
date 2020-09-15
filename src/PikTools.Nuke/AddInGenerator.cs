@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Application.Api;
+    using Command.Api;
     using global::Nuke.Common.ProjectModel;
 
     /// <summary>
@@ -11,8 +13,8 @@
     /// </summary>
     public class AddInGenerator
     {
-        private string _commandTypeName = "PikToolsCommand";
-        private string _applicationTypeName = "PikToolsApplication";
+        private const string CommandTypeName = nameof(PikToolsCommand);
+        private const string ApplicationTypeName = nameof(PikToolsApplication);
 
         /// <summary>
         /// Генерирует addin файл
@@ -20,21 +22,24 @@
         /// <param name="project">проект</param>
         /// <param name="addInTypes">Типы для регистрации в Revit</param>
         /// <param name="outputDirectory">папка для сохранения addin файла</param>
-        public string GenerateAddInFile(Project project, IReadOnlyCollection<AssemblyType> addInTypes, string outputDirectory)
+        public string GenerateAddInFile(
+            Project project,
+            IReadOnlyCollection<AssemblyType> addInTypes,
+            string outputDirectory)
         {
-            if (addInTypes.Any(x => x.BaseTypeName == _applicationTypeName))
+            if (addInTypes.Any(x => x.BaseTypeName == ApplicationTypeName))
             {
-                return GenerateAddIn(project, addInTypes, _applicationTypeName, PluginType.Application, outputDirectory);
+                return GenerateAddIn(project, addInTypes, ApplicationTypeName, PluginType.Application, outputDirectory);
             }
 
-            if (addInTypes.Any(x => x.BaseTypeName == _commandTypeName))
+            if (addInTypes.Any(x => x.BaseTypeName == CommandTypeName))
             {
-                return GenerateAddIn(project, addInTypes, _commandTypeName, PluginType.Command, outputDirectory);
+                return GenerateAddIn(project, addInTypes, CommandTypeName, PluginType.Command, outputDirectory);
             }
 
             throw new ArgumentException(
-                $"Project {project.Name} should contain any {_commandTypeName} " +
-                $"or {_applicationTypeName} type!");
+                $"Project {project.Name} should contain any {CommandTypeName} " +
+                $"or {ApplicationTypeName} type!");
         }
 
         private string GenerateAddIn(
@@ -45,6 +50,12 @@
             string output)
         {
             var addInId = project.GetProperty("AddInId");
+            if (addInId == null)
+            {
+                throw new ArgumentException(
+                    $"Project {project.Name} should contain 'AddIn' property with valid guid value!");
+            }
+
             var pluginTypes = addinTypes.Where(x => x.BaseTypeName == typeName).ToList();
 
             var revitAddIns = new RevitAddIns()

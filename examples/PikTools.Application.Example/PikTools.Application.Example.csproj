@@ -29,6 +29,8 @@
 
     <PropertyGroup>
         <AddInId>f5868e5a-d6b2-4bde-9994-e6b27f167445</AddInId>
+        <PackageGuid>be517819-1079-45a2-8709-a539d04cb0f6</PackageGuid>
+        <UpgradeCode>15ad8274-6ba0-4155-8090-902b1709c8c1</UpgradeCode>
     </PropertyGroup>
 
 </Project>
