@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
@@ -13,6 +14,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using PikTools.Nuke;
+using static Bimlab.Nuke.Nuget.PackageExtensions;
 using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -21,16 +23,21 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : PikToolsBuild
+partial class Build : PikToolsBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("project for debug")] string Project;
-
     [Solution] readonly Solution Solution;
+    
+    PackageInfoProvider _packageInfoProvider;
+
+    public Build()
+    {
+        _packageInfoProvider = new PackageInfoProvider(() => Solution);
+    }
 
     Target CopyDebugAddin => _ => _
         .Requires(() => Project)
@@ -104,23 +111,6 @@ class Build : PikToolsBuild
             DotNetBuild(settings => settings
                 .SetProjectFile(Solution.Directory)
                 .SetConfiguration(Configuration));
-        });
-
-    Target Pack => _ => _
-        .DependsOn(Compile)
-        .Executes(() =>
-        {
-            var path = Solution.Directory / "out";
-            var sourceProjects = Solution.AllProjects.Where(x => x.Path.ToString().Contains("\\src\\"));
-            foreach (var project in sourceProjects)
-            {
-                DotNetPack(settings => settings
-                    .SetConfiguration(Configuration)
-                    .SetNoBuild(true)
-                    .SetNoRestore(true)
-                    .SetProject(project)
-                    .SetOutputDirectory(path));
-            }
         });
 
     Target Test => _ => _
