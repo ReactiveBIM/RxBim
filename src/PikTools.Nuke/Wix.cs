@@ -16,6 +16,7 @@
     using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;
+    using static global::Nuke.Common.IO.FileSystemTasks;
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <summary>
@@ -69,7 +70,7 @@
 
                 InnerBuildMsi(project, toolPath, options);
 
-                FileSystemTasks.DeleteDirectory(output);
+                DeleteDirectory(output);
             }
         }
 
@@ -100,9 +101,16 @@
         private string GetMsiBuilderToolPath()
         {
             var toolPath = Environment.GetEnvironmentVariable("PIKTOOLS_MSIBUILDER_BIN");
+
             if (toolPath == null)
             {
                 throw new ArgumentException($"Environment has no 'PIKTOOLS_MSIBUILDER_BIN' variable!");
+            }
+
+            if (!FileExists((AbsolutePath)toolPath))
+            {
+                throw new ArgumentException(
+                    $"PikTools.MsiBuilder tool not found in {toolPath}!");
             }
 
             return toolPath;
