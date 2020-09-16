@@ -153,5 +153,7 @@ class Build : PikToolsBuild
                 zipFilePath,
                 fileMode: FileMode.CreateNew,
                 compressionLevel: CompressionLevel.Optimal);
+
+           Logger.Info($"PikTools.MsiBuilder.Bin created successfully!\nResult placed in {zipFilePath}");
         });
 }
