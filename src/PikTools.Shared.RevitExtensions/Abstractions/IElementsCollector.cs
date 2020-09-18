@@ -1,5 +1,6 @@
 ﻿namespace PikTools.Shared.RevitExtensions.Abstractions
 {
+    using System;
     using Autodesk.Revit.DB;
 
     /// <summary>
@@ -26,5 +27,13 @@
         /// </summary>
         /// <param name="id">Идентификатор элемента</param>
         void ZoomElement(int id);
+
+        /// <summary>
+        /// Включает в Revit режим выбора элементов с учетом заданного фильтра
+        /// </summary>
+        /// <param name="filterElement">Фильтр для выбора элементов</param>
+        /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
+        /// <returns>Выбранный элемент</returns>
+        Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
     }
 }

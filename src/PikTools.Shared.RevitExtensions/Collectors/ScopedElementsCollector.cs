@@ -5,7 +5,9 @@
     using System.Linq;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using Autodesk.Revit.UI.Selection;
     using PikTools.Shared.RevitExtensions.Abstractions;
+    using PikTools.Shared.RevitExtensions.Helpers;
 
     /// <summary>
     /// Коллектор части элементов
@@ -154,6 +156,29 @@
         public void SetScope(ScopeType scope)
         {
             Scope = scope;
+        }
+
+        /// <inheritdoc/>
+        public Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        {
+            try
+            {
+                var pickRef = _uiDoc.Selection.PickObject(
+                    ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt);
+
+                // Обновляем сохраненные элементы для выбора
+                if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
+                    _selectedElementsIds[_uiDoc.Document.Title] = new List<ElementId> { pickRef.ElementId };
+                else
+                    _selectedElementsIds.Add(_uiDoc.Document.Title, new List<ElementId> { pickRef.ElementId });
+
+                return _uiDoc.Document.GetElement(pickRef.ElementId);
+            }
+            catch
+            {
+                // cansel pick
+                return null;
+            }
         }
     }
 }

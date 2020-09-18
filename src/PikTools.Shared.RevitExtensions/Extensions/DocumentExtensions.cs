@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using Autodesk.Revit.DB;
+    using PikTools.Shared.RevitExtensions.Helpers;
 
     /// <summary>
     /// Расширения для документа Revit
@@ -119,6 +120,29 @@
                 .Except(excludeCategories)
                 .Distinct()
                 .ToList();
+        }
+
+        /// <summary>
+        /// Получить список видов с листами по заданным именам
+        /// </summary>
+        /// <param name="doc">Документ Revit</param>
+        /// <param name="viewsNames">Имена листов в документе</param>
+        /// <param name="isOrder">Флаг упорядочивания листов</param>
+        /// <returns>Список видов</returns>
+        public static IEnumerable<View> GetViews(
+            this Document doc,
+            IEnumerable<string> viewsNames,
+            bool isOrder = true)
+        {
+            var views = new FilteredElementCollector(doc)
+                .OfClass(typeof(ViewSheet))
+                .Cast<ViewSheet>()
+                .Where(sheet => viewsNames.Contains(sheet.Title));
+
+            if (isOrder)
+                views = views.OrderBy(view => view.SheetNumber, new SemiNumericComparer());
+
+            return views;
         }
 
         /// <summary>
