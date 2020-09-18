@@ -22,13 +22,6 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <Folder Include="Abstractions\" />
-    <Folder Include="Collectors\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Storages\" />
-  </ItemGroup>
-	
-  <ItemGroup>
     <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
   </ItemGroup>
 	

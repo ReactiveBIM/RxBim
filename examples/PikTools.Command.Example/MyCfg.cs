@@ -6,6 +6,7 @@
     using PikTools.CommandExample.ViewModels;
     using PikTools.CommandExample.Views;
     using PikTools.Logs;
+    using PikTools.Shared.RevitExtensions;
     using PikTools.Shared.Ui;
     using SimpleInjector;
 

@@ -1,4 +1,4 @@
-﻿namespace PikTools.Shared.Ui
+﻿namespace PikTools.Shared.RevitExtensions
 {
     using PikTools.Shared.RevitExtensions.Abstractions;
     using PikTools.Shared.RevitExtensions.Collectors;
@@ -18,6 +18,7 @@
         {
             container.Register<IProblemElementsStorage, ProblemElementsStorage>(Lifestyle.Singleton);
             container.Register<IDocumentsCollector, DocumentsCollector>(Lifestyle.Singleton);
+            container.Register<ISheetsCollector, SheetsCollector>(Lifestyle.Singleton);
             var collectorRegistration = Lifestyle.Singleton.CreateRegistration<ScopedElementsCollector>(container);
             container.AddRegistration<IElementsCollector>(collectorRegistration);
             container.AddRegistration<IScopedElementsCollector>(collectorRegistration);
