@@ -1,29 +1,43 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
+using PikTools.Nuke;
+using static Bimlab.Nuke.Nuget.PackageExtensions;
+using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tooling.ProcessTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : NukeBuild
+partial class Build : PikToolsBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("project for debug")] string Project;
-
     [Solution] readonly Solution Solution;
+
+    PackageInfoProvider _packageInfoProvider;
+
+    public Build()
+    {
+        _packageInfoProvider = new PackageInfoProvider(() => Solution);
+    }
 
     Target CopyDebugAddin => _ => _
         .Requires(() => Project)
@@ -99,27 +113,59 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration));
         });
 
-    Target Pack => _ => _
-        .DependsOn(Compile)
-        .Executes(() =>
-        {
-            var path = Solution.Directory / "out";
-            var sourceProjects = Solution.AllProjects.Where(x => x.Path.ToString().Contains("\\src\\"));
-            foreach (var project in sourceProjects)
-            {
-                DotNetPack(settings => settings
-                    .SetConfiguration(Configuration)
-                    .SetNoBuild(true)
-                    .SetNoRestore(true)
-                    .SetProject(project)
-                    .SetOutputDirectory(path));
-            }
-        });
-
     Target Test => _ => _
         .Executes(() =>
         {
             DotNetTest(settings => settings
                 .SetProjectFile(Solution));
+        });
+
+    const string MsiBuilderProjectName = "PikTools.MsiBuilder.Bin";
+    const string MsiBuilderEnv = "PIKTOOLS_MSIBUILDER_BIN";
+
+    Project MsiBuilderProject =>
+        Solution.AllProjects.FirstOrDefault(x => x.Name == MsiBuilderProjectName);
+
+    string MsiBuilderArtifactPath => Solution.Directory / "out" /
+                                             $"{MsiBuilderProject.Name}_{MsiBuilderProject.GetProperty("Version")}.zip";
+
+    Target PublishMsiBuildTool => _ => _
+        .Executes(() =>
+        {
+            DotNetPublish(settings => settings
+                .SetProject(MsiBuilderProject)
+                .SetConfiguration(Configuration.Release));
+
+            var publishDir = MsiBuilderProject.Directory / "bin" / Configuration.Release /
+                             MsiBuilderProject.GetProperty("TargetFramework") / "publish";
+
+            if (FileExists((AbsolutePath)MsiBuilderArtifactPath))
+            {
+                DeleteFile(MsiBuilderArtifactPath);
+            }
+
+            CompressZip(publishDir,
+                MsiBuilderArtifactPath,
+                fileMode: FileMode.CreateNew,
+                compressionLevel: CompressionLevel.Optimal);
+
+            Logger.Info($"PikTools.MsiBuilder.Bin created successfully!\nResult placed in {MsiBuilderArtifactPath}");
+        });
+
+    Target InstallMsiBuildTool => _ => _
+        .DependsOn(PublishMsiBuildTool)
+        .Executes(() =>
+        {
+            var installDir = (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) /
+                             MsiBuilderProjectName;
+
+            UncompressZip(MsiBuilderArtifactPath, installDir);
+
+            Environment.SetEnvironmentVariable(
+                MsiBuilderEnv,
+                installDir / $"{MsiBuilderProjectName}.exe",
+                EnvironmentVariableTarget.Machine);
+
+            Logger.Info($"PikTools.MsiBuilder.Bin installed successfully!");
         });
 }
