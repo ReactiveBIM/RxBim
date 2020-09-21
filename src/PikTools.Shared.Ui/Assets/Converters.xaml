@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:PikTools.Shared.Ui.Converters">
+    <!-- Инвертирует True в False или наоборот -->
+    <converters:BooleanInverseConverter x:Key="BooleanInverseConverter"/>
+    
+    <!-- Конвертирует True в Visibility.Visible, а False в Visibility.Collapsed -->
+    <!-- Если значение параметра "inverse", то будет инверсия при ковертировании -->
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    
+    <!-- Делит значение на значение указанное в параметре -->
+    <converters:DivideValueByParameterConverter x:Key="DivideValueByParameterConverter"/>
+    
+    <!-- Преобразует число в Enum и наоборот -->
+    <!-- В качестве параметра необходимо указывать тип перечисления -->
+    <converters:EnumToIntConverter x:Key="EnumToIntConverter"/>
+    
+    <!-- Проверяет наличие элементов в коллекции -->
+    <converters:IsAnyAndContainsToBooleanMultiConverter x:Key="IsAnyAndContainsToBooleanMultiConverter"/>
+    
+    <!-- Если значение null то выдает Visibility.Collapsed, иначе Visibility.Visible -->
+    <!-- Если значение параметра "inverse", то будет инверсия при ковертировании -->
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+</ResourceDictionary>

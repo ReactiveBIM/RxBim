@@ -1,1 +1,2 @@
-﻿### PikTools API framework
+﻿# PikTools API framework
+**PikTools API framework** - набор базовых пакетов для построения каркаса плагина Autodesk Revit. Подробную информацию смотри в [wiki](https://gitlab.com/pik_tools/shared/piktools.apiframework/-/wikis/home).
