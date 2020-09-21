@@ -1,37 +1,38 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
-    <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <LangVersion>8</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1701</NoWarn>
-        <RootNamespace>PikTools.CommandExample</RootNamespace>
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <UseWpf>true</UseWpf>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Version>2020.0.8.1</Version>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
-      <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
-      <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
-      <ProjectReference Include="..\..\src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj" />
-      <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="application.settings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>8</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <NoWarn>NU1701</NoWarn>
+    <RootNamespace>PikTools.CommandExample</RootNamespace>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <UseWpf>true</UseWpf>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.0.8.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="application.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <Command__PikTools_CommandExample_Cmd>a1a8803e-ecc4-4645-be99-c0f288fd043c</Command__PikTools_CommandExample_Cmd>
+    <Command__PikTools_CommandExample_Cmd2>f85424a7-af75-4c03-8e8b-be017d028dc5</Command__PikTools_CommandExample_Cmd2>
+    <PackageGuid>80df5344-56d8-4800-93ae-2ec7bc2141d8</PackageGuid>
+    <UpgradeCode>41987f37-8e8d-4cd4-a99c-d71c5cc38935</UpgradeCode>
+  </PropertyGroup>
 </Project>

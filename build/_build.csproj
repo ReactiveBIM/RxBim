@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BimLab.Nuke" Version="2020.9.1" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2020.9.1" />
     <PackageReference Include="Nuke.Common" Version="0.24.11" />
   </ItemGroup>
 
@@ -33,6 +35,10 @@
     <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
     <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
     <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\PikTools.Nuke\PikTools.Nuke.csproj" />
   </ItemGroup>
 
 </Project>

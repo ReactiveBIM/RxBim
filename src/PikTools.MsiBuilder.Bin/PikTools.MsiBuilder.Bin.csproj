@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net472</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="Figgle" Version="0.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Company>pik-group.com</Company>
+        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
+        <Authors>BimLab BimTeam</Authors>
+        <Product>BimLab.PikTools</Product>
+        <Copyright>Copyright ©2020 PIK Group</Copyright>
+        <Description>PikTools msi build tool</Description>
+        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
+    </PropertyGroup>
+
+</Project>
