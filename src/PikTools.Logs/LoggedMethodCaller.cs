@@ -35,7 +35,7 @@
             }
             catch (Exception e)
             {
-                _logger.Error($"Ошибка выполнения метода {methodName} объекта {SourceObjectType.FullName}.", e);
+                _logger.Error(e, $"Ошибка выполнения метода {methodName} объекта {SourceObjectType.FullName}.");
                 throw;
             }
 

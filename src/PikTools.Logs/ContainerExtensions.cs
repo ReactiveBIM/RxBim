@@ -1,11 +1,16 @@
 ﻿namespace PikTools.Logs
 {
     using System;
+    using System.Reflection;
+    using Autodesk.Revit.UI;
     using Di;
+    using Enrichers;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyModel;
     using Serilog;
     using Serilog.Core;
     using Serilog.Events;
+    using Settings;
     using SimpleInjector;
 
     /// <summary>
@@ -36,7 +41,7 @@
                     TryGetConfigurationFromContainer(container, ref cfg);
                 }
 
-                return CreateLogger(cfg);
+                return CreateLogger(cfg, container);
             });
         }
 
@@ -52,12 +57,13 @@
             }
         }
 
-        private static ILogger CreateLogger(IConfiguration cfg)
+        private static ILogger CreateLogger(IConfiguration cfg, Container container)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
             {
-                config.ReadFrom.Configuration(cfg);
+                var dependencyContext = DependencyContext.Load(typeof(LoggedMethodCaller<>).Assembly);
+                config.ReadFrom.Configuration(cfg, dependencyContext);
             }
             else
             {
@@ -66,7 +72,33 @@
                     .WriteTo.File("log.txt", LogEventLevel.Information, fileSizeLimitBytes: 1024 * 10);
             }
 
+            AddLogEnrichers(container, config);
+
             return config.CreateLogger();
+        }
+
+        private static void AddLogEnrichers(Container container, LoggerConfiguration config)
+        {
+            config
+                .Enrich.FromLogContext()
+                .Enrich.WithMachineName()
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.With<StackTraceEnricher>()
+                .Enrich.With<OsEnricher>();
+            EnrichWithRevitData(container, config);
+        }
+
+        private static void EnrichWithRevitData(Container container, LoggerConfiguration config)
+        {
+            try
+            {
+                var uiApp = container.GetInstance<UIApplication>();
+                config.Enrich.With(new RevitEnricher(uiApp));
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }

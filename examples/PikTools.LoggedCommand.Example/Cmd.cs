@@ -1,5 +1,6 @@
 ﻿namespace PikTools.LoggedCommand.Example
 {
+    using System;
     using System.Threading.Tasks;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
@@ -12,7 +13,7 @@
     {
         public PluginResult ExecuteCommand()
         {
-            TaskDialog.Show(GetType().FullName, "Test!");
+            throw new Exception("KUKU EPTA!!!!");
             return PluginResult.Succeeded;
         }
     }
