@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Nuke
 {
     using System.Linq;
+    using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Utilities;
@@ -68,7 +69,7 @@
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
             .Requires(() => Config)
-            .Executes(() => new ProjectPropertriesGenerator().GenerateProperties(Project, Config));
+            .Executes(() => new ProjectPropertiesGenerator().GenerateProperties(Project, Config));
 
         [Parameter("Select configuration")]
         private string Config
