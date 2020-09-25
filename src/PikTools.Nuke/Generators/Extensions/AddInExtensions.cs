@@ -1,8 +1,9 @@
-﻿namespace PikTools.Nuke
+﻿namespace PikTools.Nuke.Generators.Extensions
 {
     using System.Linq;
     using System.Xml.Linq;
     using JetBrains.Annotations;
+    using Models;
 
     /// <summary>
     /// Расширение для <see cref="AddIn"/>

@@ -1,8 +1,9 @@
-﻿namespace PikTools.Nuke
+﻿namespace PikTools.Nuke.Generators.Extensions
 {
     using System;
     using Application.Api;
     using Command.Api;
+    using Models;
 
     /// <summary>
     /// Расширения для строк

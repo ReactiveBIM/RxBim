@@ -1,4 +1,4 @@
-﻿namespace PikTools.Nuke
+﻿namespace PikTools.Nuke.Generators.Models
 {
     using System.Collections.Generic;
 

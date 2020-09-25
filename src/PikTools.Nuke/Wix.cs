@@ -7,6 +7,7 @@
     using System.Net;
     using Application.Api;
     using Command.Api;
+    using Generators;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tooling;
@@ -64,6 +65,8 @@
 
                 GenerateRevitManifestFile(project, types, output);
 
+                GeneratePackageContentsFile(project, configuration, output);
+
                 var options = GetBuildMsiOptions(project, output, configuration);
 
                 var toolPath = GetMsiBuilderToolPath();
@@ -71,6 +74,18 @@
                 InnerBuildMsi(project, toolPath, options);
 
                 DeleteDirectory(output);
+            }
+        }
+
+        private void GeneratePackageContentsFile(
+            global::Nuke.Common.ProjectModel.Project project,
+            string configuration,
+            string output)
+        {
+            if (configuration == "Release")
+            {
+                var packageContentsGenerator = new PackageContentsGenerator();
+                packageContentsGenerator.Generate(project, output);
             }
         }
 
