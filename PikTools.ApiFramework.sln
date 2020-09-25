@@ -50,11 +50,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.Ui", "src\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.RevitExtensions", "src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj", "{F4DC5D07-C9C0-4C7F-9832-3CA57D3B4013}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Nuke", "src\PikTools.Nuke\PikTools.Nuke.csproj", "{B6A4F913-DB81-4E71-9487-72870A6C49AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Nuke", "src\PikTools.Nuke\PikTools.Nuke.csproj", "{B6A4F913-DB81-4E71-9487-72870A6C49AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.MsiBuilder", "src\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj", "{7EE6B791-4CB5-4F70-B33E-8F0FE0CADACE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.MsiBuilder", "src\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj", "{7EE6B791-4CB5-4F70-B33E-8F0FE0CADACE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.MsiBuilder.Bin", "src\PikTools.MsiBuilder.Bin\PikTools.MsiBuilder.Bin.csproj", "{2B75275B-2DFE-457A-9CF5-AAA36408A041}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.MsiBuilder.Bin", "src\PikTools.MsiBuilder.Bin\PikTools.MsiBuilder.Bin.csproj", "{2B75275B-2DFE-457A-9CF5-AAA36408A041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared.FmHelpers", "src\PikTools.Shared.FmHelpers\PikTools.Shared.FmHelpers.csproj", "{7DEFA2EC-D2B3-4E62-A423-773F90931B95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +138,10 @@ Global
 		{2B75275B-2DFE-457A-9CF5-AAA36408A041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B75275B-2DFE-457A-9CF5-AAA36408A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B75275B-2DFE-457A-9CF5-AAA36408A041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DEFA2EC-D2B3-4E62-A423-773F90931B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEFA2EC-D2B3-4E62-A423-773F90931B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DEFA2EC-D2B3-4E62-A423-773F90931B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DEFA2EC-D2B3-4E62-A423-773F90931B95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{B6A4F913-DB81-4E71-9487-72870A6C49AE} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{7EE6B791-4CB5-4F70-B33E-8F0FE0CADACE} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{2B75275B-2DFE-457A-9CF5-AAA36408A041} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
+		{7DEFA2EC-D2B3-4E62-A423-773F90931B95} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}
