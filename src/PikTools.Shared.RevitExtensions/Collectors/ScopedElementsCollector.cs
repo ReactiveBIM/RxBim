@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
-    using PikTools.Shared.RevitExtensions.Abstractions;
-    using PikTools.Shared.RevitExtensions.Helpers;
+    using Helpers;
 
     /// <summary>
     /// Коллектор части элементов
@@ -15,6 +15,7 @@
     public class ScopedElementsCollector : IScopedElementsCollector
     {
         private readonly UIDocument _uiDoc;
+        private readonly IElementsDisplay _elementsDisplay;
 
         private readonly Dictionary<string, List<ElementId>> _selectedElementsIds
             = new Dictionary<string, List<ElementId>>();
@@ -23,18 +24,24 @@
         /// Конструктор
         /// </summary>
         /// <param name="uiDoc">Текущий видимый документ</param>
-        public ScopedElementsCollector(UIDocument uiDoc)
+        /// <param name="elementsDisplay">Сервис показа элементов в модели</param>
+        public ScopedElementsCollector(UIDocument uiDoc, IElementsDisplay elementsDisplay)
         {
             _uiDoc = uiDoc;
+            _elementsDisplay = elementsDisplay;
         }
 
         /// <inheritdoc/>
         public ScopeType Scope { get; private set; } = ScopeType.AllModel;
 
         /// <inheritdoc/>
-        public FilteredElementCollector GetFilteredElementCollector(Document doc, bool ignoreFilter = false)
+        public FilteredElementCollector GetFilteredElementCollector(
+            Document doc, bool ignoreScope = false, bool includeSubFamilies = true)
         {
-            if (ignoreFilter)
+            SaveSelectedElements();
+            _elementsDisplay.ResetSelection();
+
+            if (ignoreScope)
                 return new FilteredElementCollector(doc);
 
             switch (Scope)
@@ -49,12 +56,8 @@
                     var nestedSelectedIds = new List<ElementId>();
                     foreach (var selectedId in selectedIds)
                     {
-                        if (!(doc.GetElement(selectedId) is FamilyInstance selectedEl))
-                            continue;
-                        var nestedIds = selectedEl.GetSubComponentIds();
-                        if (nestedIds != null
-                            && nestedIds.Any())
-                            nestedSelectedIds.AddRange(nestedIds);
+                        if (includeSubFamilies)
+                            nestedSelectedIds.AddRange(GetSubFamilies(selectedId));
                     }
 
                     selectedIds.AddRange(nestedSelectedIds);
@@ -79,77 +82,13 @@
         }
 
         /// <inheritdoc/>
-        public void SaveSelectedElements()
+        public void SetBackSelectedElements()
         {
-            var selectedIds = _uiDoc.Selection.GetElementIds().ToList();
-
             if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
-                _selectedElementsIds[_uiDoc.Document.Title] = selectedIds;
-            else
-                _selectedElementsIds.Add(_uiDoc.Document.Title, selectedIds);
-
-            _uiDoc.Selection.SetElementIds(new List<ElementId>());
-        }
-
-        /// <inheritdoc/>
-        public void SelectElement(int id)
-        {
-            _uiDoc.Selection.SetElementIds(new List<ElementId> { new ElementId(id) });
-        }
-
-        /// <inheritdoc/>
-        public void ZoomElement(int id)
-        {
-            var activeView = _uiDoc.ActiveView;
-            if (activeView == null)
-                return;
-
-            var openUiViews = _uiDoc.GetOpenUIViews();
-
-            var currentUiView = openUiViews
-                .FirstOrDefault(x => x.ViewId == activeView.Id);
-            if (currentUiView == null)
-                return;
-
-            var document = activeView.Document;
-            var transform = Transform.Identity;
-            transform.BasisX = activeView.RightDirection;
-            transform.BasisY = activeView.UpDirection;
-            transform.BasisZ = activeView.ViewDirection;
-            transform = transform.Inverse;
-            transform = Transform.Identity;
-            var transfromedXyzs = new List<XYZ>();
-
-            var element = document.GetElement(new ElementId(id));
-            var boundingBox = element.get_BoundingBox(null);
-            if (boundingBox == null)
-                return;
-
-            transfromedXyzs.Add(transform.OfPoint(boundingBox.Max));
-            transfromedXyzs.Add(transform.OfPoint(boundingBox.Min));
-
-            var min = transfromedXyzs.First();
-            var max = transfromedXyzs.First();
-
-            foreach (var xyz in transfromedXyzs)
             {
-                if (xyz.X < min.X
-                    && xyz.Y < min.Y)
-                    min = xyz;
-                else if (xyz.X > max.X
-                    && xyz.Y > max.Y)
-                    max = xyz;
+                _elementsDisplay.SetSelectedElements(
+                    _selectedElementsIds[_uiDoc.Document.Title].Select(e => e.IntegerValue).ToList());
             }
-
-            currentUiView.ZoomAndCenterRectangle(min, max);
-            currentUiView.Zoom(0.25);
-        }
-
-        /// <inheritdoc/>
-        public void SelectSavedElements()
-        {
-            if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
-                _uiDoc.Selection.SetElementIds(_selectedElementsIds[_uiDoc.Document.Title]);
         }
 
         /// <inheritdoc/>
@@ -174,10 +113,66 @@
 
                 return _uiDoc.Document.GetElement(pickRef.ElementId);
             }
-            catch
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
-                // cansel pick
                 return null;
+            }
+        }
+
+        /// <inheritdoc />
+        public List<Element> PickElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        {
+            try
+            {
+                var pickElements = _uiDoc.Selection.PickObjects(
+                    ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt)
+                    .Select(r => _uiDoc.Document.GetElement(r))
+                    .ToList();
+
+                // Обновляем сохраненные элементы для выбора
+                if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
+                    _selectedElementsIds[_uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
+                else
+                    _selectedElementsIds.Add(_uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
+
+                return pickElements;
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            {
+                return null;
+            }
+        }
+
+        private void SaveSelectedElements()
+        {
+            var selectedIds = _uiDoc.Selection.GetElementIds().ToList();
+
+            if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
+                _selectedElementsIds[_uiDoc.Document.Title] = selectedIds;
+            else
+                _selectedElementsIds.Add(_uiDoc.Document.Title, selectedIds);
+        }
+
+        private IEnumerable<ElementId> GetSubFamilies(ElementId familyId)
+        {
+            if (!(_uiDoc.Document.GetElement(familyId) is FamilyInstance familyInstance))
+                yield break;
+
+            var subFamilyIds = familyInstance.GetSubComponentIds();
+            if (subFamilyIds == null) 
+                yield break;
+
+            foreach (var subFamilyId in subFamilyIds)
+            {
+                if (!(_uiDoc.Document.GetElement(subFamilyId) is FamilyInstance)) 
+                    continue;
+
+                yield return subFamilyId;
+
+                foreach (var family in GetSubFamilies(subFamilyId))
+                {
+                    yield return family;
+                }
             }
         }
     }
