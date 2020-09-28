@@ -78,7 +78,10 @@
                 var client = new FamilyManagerClient(httpClient, AppType.Revit, new Version(FamilyManagerVersion));
 
                 var quickSearch = await client.Families.QuickSearch(new QuickSearchFilter() { FamilyName = name, AppType = AppType.Revit });
-                var family = quickSearch.First();
+                var family = quickSearch.FirstOrDefault();
+                if (family == null)
+                    return string.Empty;
+
                 var bytes = await client.FamilyVersions.GetFamilyFile(family.CurrentVersion.VersionId, FileTypes.Rvt);
 
                 var tempPath = Path.Combine(Path.GetTempPath(), "FamilyManager");
