@@ -7,7 +7,7 @@
     /// <inheritdoc/>
     internal class ElementSelectionFilter : ISelectionFilter
     {
-        private Func<Element, bool> _filterElement;
+        private readonly Func<Element, bool> _filterElement;
 
         /// <summary>
         /// ctor
