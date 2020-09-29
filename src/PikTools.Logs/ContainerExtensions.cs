@@ -83,7 +83,7 @@
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .Enrich.WithEnvironmentUserName()
-                .Enrich.With<StackTraceEnricher>()
+                .Enrich.With<ExceptionEnricher>()
                 .Enrich.With<OsEnricher>();
             EnrichWithRevitData(container, config);
         }
