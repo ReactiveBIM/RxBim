@@ -21,42 +21,65 @@
     /// </summary>
     public class FamilyManagerService : IFamilyManagerService
     {
-        private const string CachePath = @"\PIK\Auth\cache.json";
-        private const string FamilyManagerVersion = "2020.7.4";
-
-        private readonly IConfiguration _config;
+        private readonly FmSettings _settings;
 
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="config">Конфигурация</param>
-        public FamilyManagerService(IConfiguration config)
+        /// <param name="settings">Конфигурация</param>
+        public FamilyManagerService(FmSettings settings)
         {
-            _config = config;
+            _settings = settings;
         }
 
         /// <inheritdoc/>
-        public FamilySymbol GetTargetFamilySymbol(Document doc, string familyName)
+        public FamilySymbol GetTargetFamilySymbol(
+            Document doc, string familyName, string symbolName, bool useTransaction = true)
+        {
+            var fileResult = Task.Run(() => GetFamilyFromFamilyManager(familyName)).Result;
+            if (string.IsNullOrWhiteSpace(fileResult))
+                return null;
+
+            FamilySymbol familySymbol = null;
+            TransactionMethod(
+                    doc,
+                    () => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol),
+                    $"FM - Загрузка семейства {familyName}",
+                    useTransaction);
+
+            return familySymbol;
+        }
+
+        /// <inheritdoc/>
+        public Family GetTargetFamily(Document doc, string familyName, bool useTransaction = true)
         {
             var fileResult = Task.Run(() => GetFamilyFromFamilyManager(familyName)).Result;
             if (string.IsNullOrWhiteSpace(fileResult))
                 return null;
 
             Family family = null;
-            using (var trans = new Transaction(doc, $"FM - Загрузка семейства {familyName}"))
+            TransactionMethod(
+                    doc,
+                    () => doc.LoadFamily(fileResult, out family),
+                    $"FM - Загрузка семейства {familyName}",
+                    useTransaction);
+
+            return family;
+        }
+
+        private void TransactionMethod(Document doc, Action action, string transTitle, bool useTransaction)
+        {
+            if (useTransaction)
             {
+                using var trans = new Transaction(doc, transTitle);
                 trans.Start();
-
-                doc.LoadFamily(fileResult, out family);
-
+                action?.Invoke();
                 trans.Commit();
             }
-
-            var loadedFamilySymbolId = family.GetFamilySymbolIds().FirstOrDefault();
-            if (loadedFamilySymbolId == null)
-                return null;
-
-            return doc.GetElement(loadedFamilySymbolId) as FamilySymbol;
+            else
+            {
+                action?.Invoke();
+            }
         }
 
         private async Task<string> GetFamilyFromFamilyManager(string name)
@@ -64,18 +87,17 @@
             try
             {
                 var localAppPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var readText = File.ReadAllText(localAppPath + CachePath);
+                var readText = File.ReadAllText(localAppPath + _settings.AuthCachePath);
                 var loginResult = JsonConvert.DeserializeObject<TokenModel>(readText);
 
-                var familyManagerConnectionString = _config.GetSection("FmEndPoint").Value;
                 var httpClient = new HttpClient()
                 {
-                    BaseAddress = new Uri(familyManagerConnectionString)
+                    BaseAddress = new Uri(_settings.FmEndPoint)
                 };
                 httpClient.DefaultRequestHeaders.Authorization =
                        new AuthenticationHeaderValue(loginResult.TokenType, loginResult.AccessToken);
 
-                var client = new FamilyManagerClient(httpClient, AppType.Revit, new Version(FamilyManagerVersion));
+                var client = new FamilyManagerClient(httpClient, AppType.Revit, new Version(_settings.FmEndPoint));
 
                 var quickSearch = await client.Families.QuickSearch(new QuickSearchFilter() { FamilyName = name, AppType = AppType.Revit });
                 var family = quickSearch.FirstOrDefault();
