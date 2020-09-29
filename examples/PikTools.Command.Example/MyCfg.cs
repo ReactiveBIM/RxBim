@@ -8,6 +8,7 @@
     using PikTools.Logs;
     using PikTools.Shared.RevitExtensions;
     using PikTools.Shared.Ui;
+    using Shared;
     using SimpleInjector;
 
     /// <inheritdoc />
@@ -19,6 +20,7 @@
             container.Register<IMyService, MyService>();
             container.AddRevitHelpers();
             container.AddUi();
+            container.AddSharedTools();
 
             container.Register<MainWindowViewModel>();
             container.Register<MainWindow>();

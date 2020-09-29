@@ -6,7 +6,7 @@
     public static class PluginResultExtensions
     {
         /// <summary>
-        /// Переобразует результат в результат Revit
+        /// Преобразует результат в результат Revit
         /// </summary>
         /// <param name="commandResult">результат</param>
         public static Autodesk.Revit.UI.Result MapResultToRevitResult(this PluginResult commandResult)
