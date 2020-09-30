@@ -163,6 +163,7 @@ namespace PikTools.CommandExample
             VerifyCSharpDiagnostic(test, expected, expected2);
         }
 
+        [Ignore]
         [TestMethod]
         public void Fix()
         {
