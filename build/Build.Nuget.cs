@@ -2,7 +2,10 @@
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.NuGet;
 
 partial class Build
 {
@@ -22,8 +25,9 @@ partial class Build
     const string NugetApiKey = "oy2iwdrmpblvtmbp5twam4vhwa3sfqaezclap3dk2fuwc4";
 
     AbsolutePath OutputDirectory => RootDirectory / "out";
-    
+
     string _projectForPublish;
+
     [Parameter("Project name")]
     public string ProjectForPublish
     {
@@ -59,7 +63,20 @@ partial class Build
         .Executes(() =>
         {
             _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
-                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
+                .ForEach(x =>
+                {
+                    var project = Solution.AllProjects.FirstOrDefault(p => p.Path == x.ProjectName);
+                    if (project != null)
+                    {
+                        var package = Solution.Directory / "out" /
+                                      $"{project.GetProperty("PackageId")}.{project.GetProperty("Version")}.nupkg";
+                        NuGetTasks.NuGetPush(settings => settings
+                            .SetWorkingDirectory(project.Directory)
+                            .SetApiKey(NugetApiKey)
+                            .SetSource(NugetSource)
+                            .SetTargetPath(package));
+                    }
+                });
         });
 
     Target Tag => _ => _
