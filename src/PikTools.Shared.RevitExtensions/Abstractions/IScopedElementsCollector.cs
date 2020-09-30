@@ -47,14 +47,8 @@
         bool HasElements(Document doc);
 
         /// <summary>
-        /// Сохранить выделенные в моделе элементы и снять выделение
-        /// </summary>
-        /// <remarks>Это нужно, т.к. выделенные элементы блокируют контекст Revit</remarks>
-        void SaveSelectedElements();
-
-        /// <summary>
         /// Вернуть выделение сохраненным ранее элементам
         /// </summary>
-        void SelectSavedElements();
+        void SetBackSelectedElements();
     }
 }

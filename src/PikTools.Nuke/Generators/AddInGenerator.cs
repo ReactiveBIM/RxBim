@@ -1,4 +1,4 @@
-﻿namespace PikTools.Nuke
+﻿namespace PikTools.Nuke.Generators
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,9 @@
     using System.Linq;
     using Application.Api;
     using Command.Api;
+    using Extensions;
     using global::Nuke.Common.ProjectModel;
+    using Models;
 
     /// <summary>
     /// Генератор манифест файлов для Revit

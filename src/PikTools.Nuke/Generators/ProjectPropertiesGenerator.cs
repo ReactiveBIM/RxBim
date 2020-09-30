@@ -1,4 +1,4 @@
-﻿namespace PikTools.Nuke
+﻿namespace PikTools.Nuke.Generators
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Xml.Linq;
     using Application.Api;
     using Command.Api;
+    using Extensions;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
@@ -17,7 +18,7 @@
     /// <summary>
     /// Генератор свойств проектв csproj
     /// </summary>
-    public class ProjectPropertriesGenerator
+    public class ProjectPropertiesGenerator
     {
         /// <summary>
         /// Генерирует свойства проекта

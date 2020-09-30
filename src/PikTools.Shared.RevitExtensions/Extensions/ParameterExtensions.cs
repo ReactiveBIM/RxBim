@@ -54,7 +54,7 @@
             switch (stp)
             {
                 case StorageType.Integer:
-                    return !param.HasValue ? 1 : param.AsInteger();
+                    return !param.HasValue ? 0 : param.AsInteger();
                 case StorageType.Double:
                     {
                         var valueDouble = param.AsDouble();
