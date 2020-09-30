@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard1.3</TargetFramework>
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup>
