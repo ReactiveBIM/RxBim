@@ -143,6 +143,8 @@
                 _ => throw new ArgumentException("Configuration not setted!")
             };
 
+            var outputFileName = configuration == "Debug" ? $"PikTools.{project.Name}" : project.Name;
+
             var options = new Options()
             {
                 Comments = project.GetProperty("Comments"),
@@ -162,7 +164,7 @@
                                   $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
                 ProjectName = project.Name,
                 SourceDir = Path.Combine(output, "bin"),
-                OutFileName = project.Name
+                OutFileName = outputFileName
             };
             return options;
         }
