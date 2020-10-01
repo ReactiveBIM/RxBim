@@ -33,6 +33,7 @@
   <PropertyGroup>
     <Command__PikTools_CommandExample_Cmd>a1a8803e-ecc4-4645-be99-c0f288fd043c</Command__PikTools_CommandExample_Cmd>
     <Command__PikTools_CommandExample_Cmd2>f85424a7-af75-4c03-8e8b-be017d028dc5</Command__PikTools_CommandExample_Cmd2>
+    <Command__PikTools_CommandExample_Cmd3>6714e3e0-6d5f-40b7-ae52-d1443c685387</Command__PikTools_CommandExample_Cmd3>
     <PackageGuid>80df5344-56d8-4800-93ae-2ec7bc2141d8</PackageGuid>
     <UpgradeCode>41987f37-8e8d-4cd4-a99c-d71c5cc38935</UpgradeCode>
   </PropertyGroup>
