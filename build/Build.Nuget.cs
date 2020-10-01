@@ -63,20 +63,7 @@ partial class Build
         .Executes(() =>
         {
             _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
-                .ForEach(x =>
-                {
-                    var project = Solution.AllProjects.FirstOrDefault(p => p.Path == x.ProjectName);
-                    if (project != null)
-                    {
-                        var package = Solution.Directory / "out" /
-                                      $"{project.GetProperty("PackageId")}.{project.GetProperty("Version")}.nupkg";
-                        NuGetTasks.NuGetPush(settings => settings
-                            .SetWorkingDirectory(project.Directory)
-                            .SetApiKey(NugetApiKey)
-                            .SetSource(NugetSource)
-                            .SetTargetPath(package));
-                    }
-                });
+                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
     Target Tag => _ => _

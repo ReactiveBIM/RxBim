@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
@@ -36,6 +37,7 @@ partial class Build : PikToolsBuild
 
     public Build()
     {
+        Console.OutputEncoding = Encoding.UTF8;
         _packageInfoProvider = new PackageInfoProvider(() => Solution);
     }
 
