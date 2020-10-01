@@ -126,6 +126,10 @@
             {
                 _notificationService.ShowMessage("Внимание!", exception.ToString());
             }
+            finally
+            {
+                _scopedElementsCollector.SetBackSelectedElements();
+            }
         }
     }
 }

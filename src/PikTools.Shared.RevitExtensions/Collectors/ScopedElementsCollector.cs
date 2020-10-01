@@ -38,8 +38,8 @@
         public FilteredElementCollector GetFilteredElementCollector(
             Document doc, bool ignoreScope = false, bool includeSubFamilies = true)
         {
-            SaveSelectedElements();
-            _elementsDisplay.ResetSelection();
+            // Снимаем выделение, чтобы избежать блокировки контекста Revit
+            SaveAndResetSelectedElements();
 
             if (ignoreScope)
                 return new FilteredElementCollector(doc);
@@ -48,7 +48,7 @@
             {
                 case ScopeType.SelectedElements:
                     if (!_selectedElementsIds.ContainsKey(doc.Title))
-                        throw new ArgumentException("The selected elements must first be saved!");
+                        return null;
 
                     var selectedIds = _selectedElementsIds[doc.Title];
 
@@ -79,6 +79,21 @@
             return GetFilteredElementCollector(doc)
                 ?.WhereElementIsNotElementType()
                 .Any() ?? false;
+        }
+
+        /// <inheritdoc/>
+        public void SaveAndResetSelectedElements()
+        {
+            var selectedIds = _uiDoc.Selection.GetElementIds().ToList();
+            if (!selectedIds.Any())
+                return;
+
+            if (_selectedElementsIds.ContainsKey(_uiDoc.Document.Title))
+                _selectedElementsIds[_uiDoc.Document.Title] = selectedIds;
+            else
+                _selectedElementsIds.Add(_uiDoc.Document.Title, selectedIds);
+
+            _elementsDisplay.ResetSelection();
         }
 
         /// <inheritdoc/>
@@ -159,12 +174,12 @@
                 yield break;
 
             var subFamilyIds = familyInstance.GetSubComponentIds();
-            if (subFamilyIds == null) 
+            if (subFamilyIds == null)
                 yield break;
 
             foreach (var subFamilyId in subFamilyIds)
             {
-                if (!(_uiDoc.Document.GetElement(subFamilyId) is FamilyInstance)) 
+                if (!(_uiDoc.Document.GetElement(subFamilyId) is FamilyInstance))
                     continue;
 
                 yield return subFamilyId;
