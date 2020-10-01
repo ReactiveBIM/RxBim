@@ -145,13 +145,20 @@
 
             var outputFileName = configuration == "Debug" ? $"PikTools.{project.Name}" : project.Name;
 
+            var version = project.GetProperty("Version") ??
+                          throw new ArgumentException(
+                              $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!");
+            if (configuration == "Debug")
+            {
+                var unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                version += $".{unixTimestamp}";
+            }
+
             var options = new Options()
             {
                 Comments = project.GetProperty("Comments"),
                 Description = project.GetProperty("Description"),
-                Version = project.GetProperty("Version") ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain 'Version' property with valid value!"),
+                Version = version,
                 BundleDir = output,
                 InstallDir = installDir,
                 ManifestDir = output,

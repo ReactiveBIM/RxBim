@@ -13,7 +13,7 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.8.1</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
