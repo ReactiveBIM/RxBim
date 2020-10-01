@@ -49,7 +49,7 @@
                 Encoding = Encoding.UTF8,
                 Codepage = "1251",
                 OutDir = options.OutDir,
-                OutFileName = options.ProjectName + "_" + options.Version
+                OutFileName = options.OutFileName + "_" + options.Version
             };
 
             var attributesDefinition = $"AdminImage=yes;";

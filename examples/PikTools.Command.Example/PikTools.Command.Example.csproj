@@ -37,4 +37,7 @@
     <PackageGuid>80df5344-56d8-4800-93ae-2ec7bc2141d8</PackageGuid>
     <UpgradeCode>41987f37-8e8d-4cd4-a99c-d71c5cc38935</UpgradeCode>
   </PropertyGroup>
+  <PropertyGroup>
+    <Command__PikTools_CommandExample_Cmd4>6dba98a8-23e6-46f4-8280-de37c29e97f8</Command__PikTools_CommandExample_Cmd4>
+  </PropertyGroup>
 </Project>
