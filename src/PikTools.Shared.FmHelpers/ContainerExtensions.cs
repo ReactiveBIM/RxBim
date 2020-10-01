@@ -18,12 +18,9 @@
         /// <param name="cfg">Конфигурация</param>
         public static void AddFmHelpers(this Container container, IConfiguration cfg = null)
         {
-            container.Register(() =>
-            {
-                return cfg == null
-                    ? new FmSettings()
-                    : cfg.GetSection("FmSettings").Get<FmSettings>();
-            });
+            container.Register(() => cfg == null
+                ? new FmSettings()
+                : cfg.GetSection("FmSettings").Get<FmSettings>(), Lifestyle.Singleton);
 
             container.Register<IFamilyManagerService, FamilyManagerService>(Lifestyle.Singleton);
         }
