@@ -6,7 +6,7 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModels="clr-namespace:PikTools.CommandExample.ViewModels"
         xmlns:behaviors="clr-namespace:PikTools.CommandExample.Views.Behaviors"
-        xmlns:abstractions="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions.1.3.2"
+        xmlns:abstractions="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions.1.3.3"
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.3.2"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
@@ -16,7 +16,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.3.2;component;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.3.2;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -35,9 +35,9 @@
         </Grid.RowDefinitions>
         
         <ComboBox Grid.Row="0"
-                  SelectedIndex="{Binding Scope, 
-                  Converter={StaticResource EnumToIntConverter}, 
-                  ConverterParameter={x:Type abstractions:ScopeType}, Mode=TwoWay}"
+                  SelectedIndex="{Binding Scope,
+                                  Converter={StaticResource EnumToIntConverter},
+                                  ConverterParameter={x:Type abstractions:ScopeType}, Mode=TwoWay}"
                   ToolTip="Какую часть модели обрабатывать"
                   HorizontalAlignment="Left" VerticalAlignment="Center"
                   MinWidth="200"

@@ -47,6 +47,14 @@
         bool HasElements(Document doc);
 
         /// <summary>
+        /// Сохраняет выделенные элементы и снимает выделение на модели
+        /// </summary>
+        /// <remarks>
+        /// Используется для явного вызова снятия выделения, в противовес скрытому снятию в <see cref="IElementsCollector.GetFilteredElementCollector(Document, bool, bool)"/>
+        /// </remarks>
+        void SaveAndResetSelectedElements();
+
+        /// <summary>
         /// Вернуть выделение сохраненным ранее элементам
         /// </summary>
         void SetBackSelectedElements();

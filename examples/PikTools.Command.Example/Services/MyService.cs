@@ -49,14 +49,14 @@
         {
             try
             {
-                var elements = _elementsCollector
-                    .GetFilteredElementCollector(_doc)
-                    .WhereElementIsNotElementType()
-                    .ToElements()
-                    .ToList();
-
                 await _revitTask.Run((app) =>
                 {
+                    var elements = _elementsCollector
+                        .GetFilteredElementCollector(_doc)
+                        .WhereElementIsNotElementType()
+                        .ToElements()
+                        .ToList();
+
                     // Use Transaction
 
                     // Add problem element to storage
