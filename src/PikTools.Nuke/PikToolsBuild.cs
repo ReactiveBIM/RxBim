@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Nuke
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using Generators;
@@ -65,7 +66,16 @@
             .Description("Собирает MSi пакет из указанного проекта")
             .Requires(() => Project)
             .Requires(() => Config)
-            .Executes(() => { _wix.BuildMsi(ProjectForMsiBuild, Config); });
+            .Executes(() =>
+            {
+                var @out = Solution.Directory / "out";
+                if (!Directory.Exists(@out))
+                {
+                    Directory.CreateDirectory(@out);
+                }
+
+                _wix.BuildMsi(ProjectForMsiBuild, Config);
+            });
 
         /// <summary>
         /// Проверяет текущюю ветку
