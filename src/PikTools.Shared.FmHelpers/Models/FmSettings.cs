@@ -21,6 +21,6 @@
         /// Версия клиента FM
         /// </summary>
         public string ClientVersion { get; set; }
-            = "2.2";
+            = "2.3";
     }
 }
