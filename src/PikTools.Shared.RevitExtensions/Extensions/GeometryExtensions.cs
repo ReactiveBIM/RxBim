@@ -36,14 +36,24 @@
         }
 
         /// <summary>
+        /// Tries the create line.
+        /// </summary>
+        /// <param name="firstPoint">The first point.</param>
+        /// <param name="secondPoint">The second point.</param>
+        public static Line TryCreateLine(XYZ firstPoint, XYZ secondPoint)
+        {
+            if (firstPoint.DistanceTo(secondPoint) < 1.MmToFt())
+                return null;
+            return Line.CreateBound(firstPoint, secondPoint);
+        }
+
+        /// <summary>
         /// Средняя точка линии
         /// </summary>
         /// <param name="line">The line.</param>
         public static XYZ GetCenterPoint(this Line line)
         {
-            var pt1 = line.GetEndPoint(0);
-            var pt2 = line.GetEndPoint(1);
-            return (pt1 + pt2) / 2;
+            return line.Evaluate(0.5, true);
         }
 
         /// <summary>
