@@ -3,39 +3,38 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using PikTools.Shared.RevitExtensions.Abstractions;
-    using PikTools.Shared.RevitExtensions.Extensions;
-    using PikTools.Shared.RevitExtensions.Helpers;
+    using Extensions;
+    using Helpers;
 
     /// <summary>
     /// Репозиторий листов
     /// </summary>
     public class SheetsCollector : ISheetsCollector
     {
-        private readonly UIDocument _uiDoc;
-        private readonly Document _rootDoc;
+        private readonly UIApplication _uiApplication;
 
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="uiDoc">Основной документ проекта</param>
-        public SheetsCollector(
-            UIDocument uiDoc)
+        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
+        public SheetsCollector(UIApplication uiApplication)
         {
-            _uiDoc = uiDoc;
-            _rootDoc = uiDoc.Document;
+            _uiApplication = uiApplication;
         }
 
         /// <inheritdoc />
         public Dictionary<string, List<string>> GetSheets()
         {
+            var doc = _uiApplication.ActiveUIDocument.Document;
+
             // Получаем листы для основного документа
-            var sheets = AddViewSheetByDoc(_rootDoc);
+            var sheets = AddViewSheetByDoc(doc);
 
             // Выбираем связанные документы относительно основного документа
-            var linkTypeNames = new FilteredElementCollector(_rootDoc)
+            var linkTypeNames = new FilteredElementCollector(doc)
                 .WhereElementIsElementType()
                 .OfCategory(BuiltInCategory.OST_RvtLinks)
                 .OfClass(typeof(RevitLinkType))
@@ -44,11 +43,11 @@
                 .ToList();
 
             // Получение листов из связанных документов
-            foreach (Document doc in _rootDoc.Application.Documents)
+            foreach (Document d in doc.Application.Documents)
             {
-                if (linkTypeNames.Contains(doc.Title))
+                if (linkTypeNames.Contains(d.Title))
                 {
-                    var linkedSheets = AddViewSheetByDoc(doc);
+                    var linkedSheets = AddViewSheetByDoc(d);
                     foreach (var linkedDocSheets in linkedSheets)
                         sheets.Add(linkedDocSheets.Key, linkedDocSheets.Value);
                 }
@@ -60,13 +59,14 @@
         /// <inheritdoc />
         public Dictionary<string, Dictionary<string, List<string>>> GetSheets(string groupSheetParam)
         {
+            var doc = _uiApplication.ActiveUIDocument.Document;
             var sheets = new Dictionary<string, Dictionary<string, List<string>>>
             {
-                { _rootDoc.Title, GetGroupedViewSheets(_rootDoc, groupSheetParam) }
+                { doc.Title, GetGroupedViewSheets(doc, groupSheetParam) }
             };
 
             // Выбираем связанные документы относительно основного документа
-            var linkTypeNames = new FilteredElementCollector(_rootDoc)
+            var linkTypeNames = new FilteredElementCollector(doc)
                 .WhereElementIsElementType()
                 .OfCategory(BuiltInCategory.OST_RvtLinks)
                 .OfClass(typeof(RevitLinkType))
@@ -75,10 +75,10 @@
                 .ToList();
 
             // Получение листов из связанных документов
-            foreach (Document doc in _rootDoc.Application.Documents)
+            foreach (Document d in doc.Application.Documents)
             {
-                if (linkTypeNames.Contains(doc.Title))
-                    sheets.Add(doc.Title, GetGroupedViewSheets(doc, groupSheetParam));
+                if (linkTypeNames.Contains(d.Title))
+                    sheets.Add(d.Title, GetGroupedViewSheets(d, groupSheetParam));
             }
 
             return sheets;
@@ -87,8 +87,10 @@
         /// <inheritdoc />
         public IEnumerable<string> GetSelectedSheets()
         {
-            var selectedElementIds = _uiDoc.Selection.GetElementIds();
-            return GetViewSheets(_rootDoc, selectedElementIds)
+            var uiDoc = _uiApplication.ActiveUIDocument;
+            var doc = uiDoc.Document;
+            var selectedElementIds = uiDoc.Selection.GetElementIds();
+            return GetViewSheets(doc, selectedElementIds)
                 .Select(sheet => sheet.Title);
         }
 

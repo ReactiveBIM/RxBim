@@ -9,43 +9,43 @@
     /// <inheritdoc />
     public class ElementsDisplayService : IElementsDisplay
     {
-        private readonly UIDocument _uiDocument;
+        private readonly UIApplication _uiApplication;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementsDisplayService"/> class.
         /// </summary>
-        /// <param name="uiDocument"><see cref="UIDocument"/></param>
-        public ElementsDisplayService(UIDocument uiDocument)
+        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
+        public ElementsDisplayService(UIApplication uiApplication)
         {
-            _uiDocument = uiDocument;
+            _uiApplication = uiApplication;
         }
 
         /// <inheritdoc />
         public void SetSelectedElements(IList<int> elementIds)
         {
-            _uiDocument.Selection.SetElementIds(elementIds.Select(e => new ElementId(e)).ToList());
+            _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds.Select(e => new ElementId(e)).ToList());
         }
 
         /// <inheritdoc />
         public void SetSelectedElement(int elementId)
         {
-            _uiDocument.Selection.SetElementIds(new List<ElementId> { new ElementId(elementId) });
+            _uiApplication.ActiveUIDocument.Selection.SetElementIds(new List<ElementId> { new ElementId(elementId) });
         }
 
         /// <inheritdoc />
         public void ResetSelection()
         {
-            _uiDocument.Selection.SetElementIds(new List<ElementId>());
+            _uiApplication.ActiveUIDocument.Selection.SetElementIds(new List<ElementId>());
         }
 
         /// <inheritdoc />
         public void ZoomElement(int elementId, double zoomFactor = 0.25)
         {
-            var activeView = _uiDocument.ActiveView;
+            var activeView = _uiApplication.ActiveUIDocument.ActiveView;
             if (activeView == null)
                 return;
 
-            var openUiViews = _uiDocument.GetOpenUIViews();
+            var openUiViews = _uiApplication.ActiveUIDocument.GetOpenUIViews();
 
             var currentUiView = openUiViews
                 .FirstOrDefault(x => x.ViewId == activeView.Id);
