@@ -29,6 +29,6 @@
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
-        bool IsParameterExistInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch);
+        bool ParameterExistsInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch);
     }
 }

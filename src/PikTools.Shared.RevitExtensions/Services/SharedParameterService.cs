@@ -32,7 +32,7 @@
                 throw new ArgumentNullException(nameof(sharedParameterInfo.Definition), "Не задано описание общего параметра");
             if (sharedParameterInfo.CreateData == null)
                 throw new ArgumentNullException(nameof(sharedParameterInfo.CreateData), "Не заданы данные для создания общего параметра");
-            if (IsParameterExist(sharedParameterInfo.Definition, fullMatch))
+            if (ParameterExists(sharedParameterInfo.Definition, fullMatch))
                 return;
 
             if (sharedParameterInfo.CreateData.CategoriesForBind == null ||
@@ -68,7 +68,7 @@
         }
 
         /// <inheritdoc />
-        public bool IsParameterExistInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch)
+        public bool ParameterExistsInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch)
         {
             try
             {
@@ -88,7 +88,7 @@
         /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
         /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
         /// False - параметр ищется только по имени</param>
-        private bool IsParameterExist(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
+        private bool ParameterExists(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
         {
             var doc = _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)

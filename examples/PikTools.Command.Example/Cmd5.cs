@@ -56,11 +56,11 @@
 
             notificationService.ShowMessage(
                 title,
-                $"Проверка параметра BDS_Mark в ФОП только по имени: {sharedParameterService.IsParameterExistInSpf(sharedParameterInfo, false)}");
+                $"Проверка параметра BDS_Mark в ФОП только по имени: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, false)}");
 
             notificationService.ShowMessage(
                 title,
-                $"Проверка параметра BDS_Mark в ФОП по всем данным: {sharedParameterService.IsParameterExistInSpf(sharedParameterInfo, true)}");
+                $"Проверка параметра BDS_Mark в ФОП по всем данным: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, true)}");
             
             notificationService.ShowMessage(title, "Создаем параметр BDS_Mark для стен. Проверяем по всем данным");
             
@@ -70,7 +70,7 @@
 
             notificationService.ShowMessage(
                 title,
-                $"Проверка параметра BDS_Mark в ФОП по всем данным с неверным GUID: {sharedParameterService.IsParameterExistInSpf(sharedParameterInfo, true)}");
+                $"Проверка параметра BDS_Mark в ФОП по всем данным с неверным GUID: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, true)}");
 
             return PluginResult.Succeeded;
         }
