@@ -26,7 +26,8 @@
         }
 
         /// <inheritdoc />
-        public void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false)
+        public void AddSharedParameter(
+            DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false)
         {
             void InternalAddSharedParameter(Document document, DefinitionFile definitionFile1)
             {
@@ -60,7 +61,6 @@
                 throw new ArgumentException("Не указаны категории для привязки параметра");
 
             var doc = _uiApplication.ActiveUIDocument.Document;
-            var definitionFile = GetDefinitionFile();
 
             if (useTransaction)
             {
@@ -80,17 +80,31 @@
         }
 
         /// <inheritdoc />
-        public bool ParameterExistsInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch)
+        public bool ParameterExistsInSpf(
+            DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch)
         {
             try
             {
-                var definitionFile = GetDefinitionFile();
                 return GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile) != null;
             }
             catch
             {
                 return false;
             }
+        }
+
+        /// <inheritdoc />
+        public DefinitionFile GetDefinitionFile()
+        {
+            var doc = _uiApplication.ActiveUIDocument.Document;
+            var sharedParameterFilename = doc.Application.SharedParametersFilename;
+
+            if (string.IsNullOrEmpty(sharedParameterFilename) || !File.Exists(sharedParameterFilename))
+            {
+                throw new FileNotFoundException("Не найден файл общих параметров");
+            }
+
+            return doc.Application.OpenSharedParameterFile();
         }
 
         /// <summary>
@@ -199,19 +213,6 @@
                     }
                 }
             }
-        }
-
-        private DefinitionFile GetDefinitionFile()
-        {
-            var doc = _uiApplication.ActiveUIDocument.Document;
-            var sharedParameterFilename = doc.Application.SharedParametersFilename;
-
-            if (string.IsNullOrEmpty(sharedParameterFilename) || !File.Exists(sharedParameterFilename))
-            {
-                throw new FileNotFoundException("Не найден файл общих параметров");
-            }
-
-            return doc.Application.OpenSharedParameterFile();
         }
 
         private bool IsFullMatch(

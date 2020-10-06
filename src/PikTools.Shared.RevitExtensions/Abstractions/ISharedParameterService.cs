@@ -13,6 +13,7 @@
         /// каких-либо действий над параметром
         /// </summary>
         /// <remarks>Метод создает транзакцию</remarks>
+        /// <param name="definitionFile">ФОП</param>
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени
@@ -21,15 +22,22 @@
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
         /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
-        void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false);
+        void AddSharedParameter(
+            DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false);
 
         /// <summary>
         /// Проверка параметра, представленного экземпляром <see cref="SharedParameterElement"/>, на существование
         /// в файле общих параметров
         /// </summary>
+        /// <param name="definitionFile">ФОП</param>
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
-        bool ParameterExistsInSpf(SharedParameterInfo sharedParameterInfo, bool fullMatch);
+        bool ParameterExistsInSpf(DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch);
+
+        /// <summary>
+        /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
+        /// </summary>
+        public DefinitionFile GetDefinitionFile();
     }
 }

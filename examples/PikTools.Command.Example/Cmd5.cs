@@ -54,23 +54,25 @@
                 }
             };
 
-            notificationService.ShowMessage(
-                title,
-                $"Проверка параметра BDS_Mark в ФОП только по имени: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, false)}");
+            var definitionFile = sharedParameterService.GetDefinitionFile();
 
             notificationService.ShowMessage(
                 title,
-                $"Проверка параметра BDS_Mark в ФОП по всем данным: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, true)}");
+                $"Проверка параметра BDS_Mark в ФОП только по имени: {sharedParameterService.ParameterExistsInSpf(definitionFile, sharedParameterInfo, false)}");
+
+            notificationService.ShowMessage(
+                title,
+                $"Проверка параметра BDS_Mark в ФОП по всем данным: {sharedParameterService.ParameterExistsInSpf(definitionFile, sharedParameterInfo, true)}");
             
             notificationService.ShowMessage(title, "Создаем параметр BDS_Mark для стен. Проверяем по всем данным");
             
-            sharedParameterService.AddSharedParameter(sharedParameterInfo, true);
+            sharedParameterService.AddSharedParameter(definitionFile, sharedParameterInfo, true);
 
             sharedParameterInfo.Definition.Guid = Guid.NewGuid();
 
             notificationService.ShowMessage(
                 title,
-                $"Проверка параметра BDS_Mark в ФОП по всем данным с неверным GUID: {sharedParameterService.ParameterExistsInSpf(sharedParameterInfo, true)}");
+                $"Проверка параметра BDS_Mark в ФОП по всем данным с неверным GUID: {sharedParameterService.ParameterExistsInSpf(definitionFile, sharedParameterInfo, true)}");
 
             return PluginResult.Succeeded;
         }
