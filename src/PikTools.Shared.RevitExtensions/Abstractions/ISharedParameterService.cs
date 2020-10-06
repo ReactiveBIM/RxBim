@@ -38,6 +38,8 @@
         /// <summary>
         /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
         /// </summary>
-        public DefinitionFile GetDefinitionFile();
+        /// <param name="document">Документ, из которого требуется получить ФОП.
+        /// Если задано null, то ФОП будет браться из текущего документа</param>
+        public DefinitionFile GetDefinitionFile(Document document = null);
     }
 }

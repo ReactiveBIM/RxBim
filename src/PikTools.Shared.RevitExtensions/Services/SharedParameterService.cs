@@ -94,9 +94,9 @@
         }
 
         /// <inheritdoc />
-        public DefinitionFile GetDefinitionFile()
+        public DefinitionFile GetDefinitionFile(Document document = null)
         {
-            var doc = _uiApplication.ActiveUIDocument.Document;
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             var sharedParameterFilename = doc.Application.SharedParametersFilename;
 
             if (string.IsNullOrEmpty(sharedParameterFilename) || !File.Exists(sharedParameterFilename))
