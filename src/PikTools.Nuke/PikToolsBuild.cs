@@ -68,11 +68,7 @@
             .Requires(() => Config)
             .Executes(() =>
             {
-                var @out = Solution.Directory / "out";
-                if (!Directory.Exists(@out))
-                {
-                    Directory.CreateDirectory(@out);
-                }
+                CreateOutDirectory();
 
                 _wix.BuildMsi(ProjectForMsiBuild, Config);
             });
@@ -125,6 +121,38 @@
             .Executes(() => new ProjectPropertiesGenerator().GenerateProperties(ProjectForMsiBuild, Config));
 
         /// <summary>
+        /// Собирает проект из тэга Testing{ProjectName}
+        /// </summary>
+        public Target BuildFromTag => _ => _
+            .Executes(() =>
+            {
+                CreateOutDirectory();
+
+                var regex = new Regex("Testing(?<projectName>.*)");
+                var projectsForBuild = GitTasks.Git("tag --points-at HEAD")
+                    .Select(x => x.Text)
+                    .Where(x => regex.IsMatch(x))
+                    .Select(x => regex.Match(x).Groups["projectName"].Value);
+
+                foreach (var projectName in projectsForBuild)
+                {
+                    var project = Solution.AllProjects.Single(x => x.Name == projectName);
+                    _wix.BuildMsi(project, "Debug");
+                }
+            });
+
+        /// <summary>
+        /// Ставит тэг проекта который необходимо собрать для тестирования
+        /// </summary>
+        public Target TagProject => _ => _
+            .Requires(() => Project)
+            .Executes(() =>
+            {
+                var tag = $"Testing{Project}";
+                GitTasks.Git($"tag {tag}");
+            });
+
+        /// <summary>
         /// Конфигурация
         /// </summary>
         [Parameter("Select configuration")]
@@ -136,5 +164,14 @@
         }
 
         private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
+
+        private void CreateOutDirectory()
+        {
+            var @out = Solution.Directory / "out";
+            if (!Directory.Exists(@out))
+            {
+                Directory.CreateDirectory(@out);
+            }
+        }
     }
 }
