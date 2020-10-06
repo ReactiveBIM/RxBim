@@ -26,8 +26,28 @@
         }
 
         /// <inheritdoc />
-        public void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch)
+        public void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false)
         {
+            void InternalAddSharedParameter(Document document, DefinitionFile definitionFile1)
+            {
+                var categorySet =
+                    GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(document, c)));
+
+                var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile1);
+
+                Binding binding;
+                if (sharedParameterInfo.CreateData.IsCreateForInstance)
+                    binding = document.Application.Create.NewInstanceBinding(categorySet);
+                else
+                    binding = document.Application.Create.NewTypeBinding(categorySet);
+
+                var map = document.ParameterBindings;
+                map.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup);
+
+                if (sharedParameterInfo.CreateData.AllowVaryBetweenGroups)
+                    SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName);
+            }
+
             if (sharedParameterInfo.Definition == null)
                 throw new ArgumentNullException(nameof(sharedParameterInfo.Definition), "Не задано описание общего параметра");
             if (sharedParameterInfo.CreateData == null)
@@ -42,28 +62,20 @@
             var doc = _uiApplication.ActiveUIDocument.Document;
             var definitionFile = GetDefinitionFile();
 
-            using (var tr = new Transaction(doc, "Добавление параметров"))
+            if (useTransaction)
             {
-                tr.Start();
+                using (var tr = new Transaction(doc, "Добавление параметров"))
+                {
+                    tr.Start();
 
-                var categorySet =
-                    GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(doc, c)));
+                    InternalAddSharedParameter(doc, definitionFile);
 
-                var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
-
-                Binding binding;
-                if (sharedParameterInfo.CreateData.IsCreateForInstance)
-                    binding = doc.Application.Create.NewInstanceBinding(categorySet);
-                else
-                    binding = doc.Application.Create.NewTypeBinding(categorySet);
-
-                var map = doc.ParameterBindings;
-                map.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup);
-
-                if (sharedParameterInfo.CreateData.AllowVaryBetweenGroups)
-                    SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName);
-
-                tr.Commit();
+                    tr.Commit();
+                }
+            }
+            else
+            {
+                InternalAddSharedParameter(doc, definitionFile);
             }
         }
 
@@ -225,7 +237,7 @@
             if (!string.IsNullOrEmpty(sharedParameterDefinition.Description) &&
                 !externalDefinition.Description.Equals(sharedParameterDefinition.Description, StringComparison.OrdinalIgnoreCase))
                 return false;
-            
+
             return true;
         }
 

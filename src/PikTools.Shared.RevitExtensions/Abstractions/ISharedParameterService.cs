@@ -20,7 +20,8 @@
         /// <para/>При поиске в текущем документе, если задано true, происходит проверка только по свойствам:
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
-        void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch);
+        /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
+        void AddSharedParameter(SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false);
 
         /// <summary>
         /// Проверка параметра, представленного экземпляром <see cref="SharedParameterElement"/>, на существование
