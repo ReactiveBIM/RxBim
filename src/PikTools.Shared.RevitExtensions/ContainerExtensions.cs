@@ -1,10 +1,10 @@
 ﻿namespace PikTools.Shared.RevitExtensions
 {
-    using PikTools.Shared.RevitExtensions.Abstractions;
-    using PikTools.Shared.RevitExtensions.Collectors;
-    using PikTools.Shared.RevitExtensions.Services;
-    using PikTools.Shared.RevitExtensions.Storages;
+    using Abstractions;
+    using Collectors;
+    using Services;
     using SimpleInjector;
+    using Storages;
 
     /// <summary>
     /// Расширения для контейнера
@@ -21,6 +21,7 @@
             container.Register<IDocumentsCollector, DocumentsCollector>(Lifestyle.Singleton);
             container.Register<ISheetsCollector, SheetsCollector>(Lifestyle.Singleton);
             container.Register<IElementsDisplay, ElementsDisplayService>(Lifestyle.Singleton);
+            container.Register<ISharedParameterService, SharedParameterService>(Lifestyle.Singleton);
             var collectorRegistration = Lifestyle.Singleton.CreateRegistration<ScopedElementsCollector>(container);
             container.AddRegistration<IElementsCollector>(collectorRegistration);
             container.AddRegistration<IScopedElementsCollector>(collectorRegistration);
