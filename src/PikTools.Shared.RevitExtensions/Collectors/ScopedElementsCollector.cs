@@ -115,13 +115,16 @@
         }
 
         /// <inheritdoc/>
-        public Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public Element PickElement(
+            Func<Element, bool> filterElement = null,
+            string statusPrompt = "",
+            ObjectType objectType = ObjectType.Element)
         {
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
                 var pickRef = uiDoc.Selection.PickObject(
-                    ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt);
+                    objectType, new ElementSelectionFilter(filterElement), statusPrompt);
 
                 // Обновляем сохраненные элементы для выбора
                 if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
@@ -138,13 +141,16 @@
         }
 
         /// <inheritdoc />
-        public List<Element> PickElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public List<Element> PickElements(
+            Func<Element, bool> filterElement = null,
+            string statusPrompt = "",
+            ObjectType objectType = ObjectType.Element)
         {
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
                 var pickElements = uiDoc.Selection.PickObjects(
-                    ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt)
+                    objectType, new ElementSelectionFilter(filterElement), statusPrompt)
                     .Select(r => uiDoc.Document.GetElement(r))
                     .ToList();
 

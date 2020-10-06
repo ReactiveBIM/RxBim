@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
+    using Autodesk.Revit.UI.Selection;
 
     /// <summary>
     /// Интерфейс коллектора элементов
@@ -25,15 +26,23 @@
         /// </summary>
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
+        /// <param name="objectType">Тип выбираемого объекта</param>
         /// <returns>Выбранный элемент</returns>
-        Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        Element PickElement(
+            Func<Element, bool> filterElement = null,
+            string statusPrompt = "",
+            ObjectType objectType = ObjectType.Element);
 
         /// <summary>
         /// Включает в Revit режим выбора элементов с учетом заданного фильтра
         /// </summary>
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
+        /// <param name="objectType">Тип выбираемого объекта</param>
         /// <returns>Выбранный элемент</returns>
-        List<Element> PickElements(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        List<Element> PickElements(
+            Func<Element, bool> filterElement = null,
+            string statusPrompt = "",
+            ObjectType objectType = ObjectType.Element);
     }
 }
