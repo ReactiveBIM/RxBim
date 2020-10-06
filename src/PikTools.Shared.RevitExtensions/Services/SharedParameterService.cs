@@ -32,7 +32,7 @@
                 throw new ArgumentNullException(nameof(sharedParameterInfo.Definition), "Не задано описание общего параметра");
             if (sharedParameterInfo.CreateData == null)
                 throw new ArgumentNullException(nameof(sharedParameterInfo.CreateData), "Не заданы данные для создания общего параметра");
-            if (CheckForExistParameter(sharedParameterInfo.Definition, fullMatch))
+            if (IsParameterExist(sharedParameterInfo.Definition, fullMatch))
                 return;
 
             if (sharedParameterInfo.CreateData.CategoriesForBind == null ||
@@ -40,13 +40,7 @@
                 throw new ArgumentException("Не указаны категории для привязки параметра");
 
             var doc = _uiApplication.ActiveUIDocument.Document;
-
-            var sharedParameterFilename = doc.Application.SharedParametersFilename;
-
-            if (string.IsNullOrEmpty(sharedParameterFilename) || !File.Exists(sharedParameterFilename))
-            {
-                throw new FileNotFoundException("Не найден файл общих параметров");
-            }
+            var definitionFile = GetDefinitionFile();
 
             using (var tr = new Transaction(doc, "Добавление параметров"))
             {
@@ -55,7 +49,7 @@
                 var categorySet =
                     GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(doc, c)));
 
-                var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch);
+                var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
 
                 Binding binding;
                 if (sharedParameterInfo.CreateData.IsCreateForInstance)
@@ -78,7 +72,8 @@
         {
             try
             {
-                return GetSharedExternalDefinition(sharedParameterInfo, fullMatch) != null;
+                var definitionFile = GetDefinitionFile();
+                return GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile) != null;
             }
             catch
             {
@@ -93,7 +88,7 @@
         /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
         /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
         /// False - параметр ищется только по имени</param>
-        private bool CheckForExistParameter(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
+        private bool IsParameterExist(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
         {
             var doc = _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
@@ -103,10 +98,8 @@
                 if (!fullMatch && sharedParameterElement.Name == sharedParameterDefinition.ParameterName)
                     return true;
 
-                if (fullMatch && !IsFullMatch(sharedParameterDefinition, sharedParameterElement))
-                    continue;
-
-                return true;
+                if (fullMatch && IsFullMatch(sharedParameterDefinition, sharedParameterElement))
+                    return true;
             }
 
             return false;
@@ -136,12 +129,12 @@
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
+        /// <param name="definitionFile">ФОП</param>
         private ExternalDefinition GetSharedExternalDefinition(
             SharedParameterInfo sharedParameterInfo,
-            bool fullMatch)
+            bool fullMatch,
+            DefinitionFile definitionFile)
         {
-            var doc = _uiApplication.ActiveUIDocument.Document;
-            var definitionFile = doc.Application.OpenSharedParameterFile();
             foreach (var defGroup in definitionFile.Groups)
             {
                 foreach (var def in defGroup.Definitions)
@@ -194,6 +187,19 @@
                     }
                 }
             }
+        }
+
+        private DefinitionFile GetDefinitionFile()
+        {
+            var doc = _uiApplication.ActiveUIDocument.Document;
+            var sharedParameterFilename = doc.Application.SharedParametersFilename;
+
+            if (string.IsNullOrEmpty(sharedParameterFilename) || !File.Exists(sharedParameterFilename))
+            {
+                throw new FileNotFoundException("Не найден файл общих параметров");
+            }
+
+            return doc.Application.OpenSharedParameterFile();
         }
 
         private bool IsFullMatch(
