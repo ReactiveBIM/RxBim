@@ -19,7 +19,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Update="appsettings.PikTools.Application.Example.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
