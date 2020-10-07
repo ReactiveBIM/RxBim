@@ -10,7 +10,7 @@
         private readonly Func<Element, bool> _filterElement;
 
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="ElementSelectionFilter"/> class.
         /// </summary>
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         public ElementSelectionFilter(Func<Element, bool> filterElement = null)
