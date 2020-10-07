@@ -16,7 +16,7 @@
       <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <None Update="appsettings.json">
+      <None Update="appsettings.PikTools.LoggedCommand.Example.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

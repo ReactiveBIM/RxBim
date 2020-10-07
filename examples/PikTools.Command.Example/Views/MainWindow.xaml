@@ -16,7 +16,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.3.2;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.3.3;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
