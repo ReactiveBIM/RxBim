@@ -36,8 +36,11 @@
 
         /// <inheritdoc/>
         public FilteredElementCollector GetFilteredElementCollector(
-            Document doc, bool ignoreScope = false, bool includeSubFamilies = true)
+            Document doc = null, bool ignoreScope = false, bool includeSubFamilies = true)
         {
+            if (doc == null)
+                doc = _uiApplication.ActiveUIDocument.Document;
+
             // Снимаем выделение, чтобы избежать блокировки контекста Revit
             SaveAndResetSelectedElements();
 
@@ -158,7 +161,53 @@
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
+                return new List<Element>();
+            }
+        }
+
+        /// <inheritdoc />
+        public Element PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        {
+            try
+            {
+                var uiDoc = _uiApplication.ActiveUIDocument;
+                var pickRef = uiDoc.Selection.PickObject(
+                    ObjectType.LinkedElement,
+                    new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
+                    statusPrompt);
+
+                //// Сохранять этот элемент в _selectedElementsIds нельзя, так как RevitAPI не позволяет его добавить
+                //// в UiDocument.Selection
+
+                return uiDoc.Document.GetElement(pickRef.ElementId);
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            {
                 return null;
+            }
+        }
+
+        /// <inheritdoc />
+        public List<Element> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        {
+            try
+            {
+                var uiDoc = _uiApplication.ActiveUIDocument;
+                var pickElements = uiDoc.Selection.PickObjects(
+                        ObjectType.LinkedElement,
+                        new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
+                        statusPrompt)
+                    .Select(r => uiDoc.Document.GetElement(r))
+                    .ToList();
+
+                //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
+                //// в UiDocument.Selection
+
+                return pickElements;
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            {
+                return new List<Element>();
             }
         }
 
