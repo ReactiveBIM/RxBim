@@ -39,8 +39,8 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DefaultLinksColor}"/>
-        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource DefaultLinksColor}"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DataGridBorderBrush}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource DataGridBorderBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>

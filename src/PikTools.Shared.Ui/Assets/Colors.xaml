@@ -32,11 +32,56 @@
                      Color="{StaticResource Blue}"/>
     <SolidColorBrush x:Key="PrimaryButtonForeground"
                      Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="IconButtonBackground"
+                     Color="{StaticResource Grey4}"/>
+    
+    <!-- ComboBox colors -->
+    <SolidColorBrush x:Key="ComboBoxBackground"
+                     Color="{StaticResource Grey4}"/>
+    <SolidColorBrush x:Key="ComboBoxForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="ComboBoxPopupBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="ComboBoxItemMouseOverBackground"
+                     Color="{StaticResource Grey5}"/>
+    <SolidColorBrush x:Key="ComboBoxItemSelectedBackground"
+                     Color="{StaticResource Grey4}"/>
+    
+    <!-- TextBox colors -->
+    <SolidColorBrush x:Key="TextBoxBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="TextBoxBorderBrush"
+                     Color="{StaticResource Grey3}"/>
+    <SolidColorBrush x:Key="TextBoxForeground"
+                     Color="{StaticResource DarkBlue}"/>
     
     <!-- Text colors -->
     <SolidColorBrush x:Key="DisabledText"
                      Color="{StaticResource Grey2}"/>
     
+    <!-- ListBox colors -->
+    <SolidColorBrush x:Key="ListBoxBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="ListBoxBorderBrush"
+                     Color="{StaticResource Grey3}"/>
+    <SolidColorBrush x:Key="ListBoxItemMouseOverBackground"
+                     Color="{StaticResource Grey5}"/>
+    <SolidColorBrush x:Key="ListBoxItemSelectedBackground"
+                     Color="{StaticResource Grey3}"/>
+    
+    <!-- DataGrid colors -->
+    <SolidColorBrush x:Key="DataGridBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="DataGridBorderBrush"
+                     Color="{StaticResource Grey3}"/>
+    
+    <!-- Дополнительные цвета -->
+    <SolidColorBrush x:Key="SuccessColor"
+                     Color="{StaticResource Green}"/>
+    <SolidColorBrush x:Key="DefaultColor"
+                     Color="{StaticResource Grey2}"/>
+    
+    <!-- Старый набор цветов (оставлен для совместимости) -->
     <SolidColorBrush x:Key="DefaultTextColor"
                      Color="Black"/>
     <SolidColorBrush x:Key="DefaultLinksColor" 
@@ -47,6 +92,4 @@
                      Color="#FFBEE6FD"/>
     <SolidColorBrush x:Key="DefaultBackgroundColor"
                      Color="White"/>
-    <SolidColorBrush x:Key="SuccessColor"
-                     Color="ForestGreen"/>
 </ResourceDictionary>

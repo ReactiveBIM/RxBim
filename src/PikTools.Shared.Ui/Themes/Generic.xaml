@@ -3,8 +3,10 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
         <ResourceDictionary Source="../Assets/Converters.xaml"/>
+        <ResourceDictionary Source="../Assets/Icons.xaml"/>
         
         <ResourceDictionary Source="../Styles/Button.xaml"/>
+        <ResourceDictionary Source="../Styles/ComboBox.xaml"/>
         <ResourceDictionary Source="../Styles/TextBox.xaml"/>
         <ResourceDictionary Source="../Styles/SearchBox.xaml"/>
         <ResourceDictionary Source="../Styles/ListBox.xaml"/>

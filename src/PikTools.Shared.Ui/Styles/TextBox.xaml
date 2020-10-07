@@ -5,6 +5,42 @@
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- общий стиль TextBox -->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontStretch" Value="Normal"/>
+        <!--<Setter Property="FontFamily" Value="./Fonts/#Graphik LCG"/>-->
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}"/>
+        <Setter Property="Padding" Value="12,8,12,4"/>
+        <Setter Property="Margin" Value="4"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8">
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                      Background="Transparent"
+                                      Padding="{TemplateBinding Padding}"/>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- стиль TextBox с текстом по-умолчанию -->
     <Style TargetType="{x:Type controls:TextBoxWithPlaceholder}"
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Template">
@@ -12,18 +48,22 @@
                 <ControlTemplate TargetType="{x:Type controls:TextBoxWithPlaceholder}">
                     <Grid>
                         <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="{TemplateBinding Background}"
                                  BorderThickness="{TemplateBinding BorderThickness}"
                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                 Padding="2"/>
+                                 Margin="0"/>
                         
                         <TextBlock Name="Placeholder"
+                                   Style="{x:Null}"
                                    Text="{TemplateBinding Placeholder}"
                                    Foreground="{DynamicResource DisabledText}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="{TemplateBinding FontSize}"
                                    FontStyle="Italic"
                                    IsHitTestVisible="False"
                                    Visibility="Hidden"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="5,0"/>
+                                   Margin="{TemplateBinding Padding}"/>
                     </Grid>
 
                     <ControlTemplate.Triggers>
@@ -35,6 +75,10 @@
                             <Setter TargetName="Placeholder"
                                     Property="Visibility" Value="Visible"/>
                         </MultiTrigger>
+                        
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

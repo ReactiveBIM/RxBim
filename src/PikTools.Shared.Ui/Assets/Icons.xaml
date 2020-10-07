@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Assets/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Path x:Key="SuccessIcon" 
+          x:Shared="False"
+          Stroke="{DynamicResource SuccessColor}" 
+          Stretch="Fill"
+          StrokeLineJoin="Round" 
+          StrokeStartLineCap="Round" 
+          StrokeEndLineCap="Round">
+        <Path.Data>
+            <PathGeometry Figures="M42 20.3231V22.1631C41.9975 26.4759 40.601 30.6724 38.0187 34.1267C35.4363 37.581 31.8066 40.108 27.6707 41.3309C23.5349 42.5537 19.1145 42.4069 15.0689 40.9123C11.0234 39.4176 7.56931 36.6553 5.22192 33.0372C2.87453 29.4192 1.75958 25.1392 2.04335 20.8357C2.32712 16.5322 3.99441 12.4357 6.79656 9.15723C9.5987 5.87873 13.3856 3.59385 17.5924 2.64338C21.7992 1.69291 26.2005 2.12776 30.14 3.88309 M 41.696872 6.9739154 21.696898 26.99383 15.696906 20.994012" 
+                          FillRule="NonZero"/>
+        </Path.Data>
+    </Path>
+    
+    <Path x:Key="SearchIcon"
+          x:Shared="False"
+          Stretch="Fill"
+          Fill="{DynamicResource DefaultColor}"
+          Data="M811.648 235.648c-21.888 20.821-42.837 42.539-58.325 59.051-15.872 16.128-25.429 27.861-25.429 27.861l-119.467 57.045c46.080 52.608 74.24 121.173 74.24 196.395 0 164.651-133.973 298.667-298.667 298.667s-298.667-134.016-298.667-298.667 133.973-298.667 298.667-298.667c75.221 0 143.787 28.16 196.395 74.197l57.045-119.467c0 0 11.733-9.557 27.861-25.429 16.512-15.488 38.229-36.437 59.051-58.325 21.077-21.589 42.155-43.179 57.941-59.392 15.445-16.555 25.771-27.563 25.771-27.563l90.496 90.496c0 0-11.008 10.325-27.563 25.771-16.171 15.872-37.76 36.949-59.349 58.027zM384 362.667c-117.632 0-213.333 95.701-213.333 213.333s95.701 213.333 213.333 213.333 213.333-95.701 213.333-213.333-95.701-213.333-213.333-213.333z"
+          RenderTransformOrigin=".5,.5"
+          VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Path.RenderTransform>
+            <RotateTransform Angle="90"/>
+        </Path.RenderTransform>
+    </Path>
+</ResourceDictionary>
