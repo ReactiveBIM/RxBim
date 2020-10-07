@@ -2,10 +2,12 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using Builder;
     using Configurations;
     using Di;
+    using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
     using SimpleInjector;
 
@@ -51,7 +53,7 @@
                                 //// todo доделать обработку других типов кнопок
                                 p.Buttons.ForEach(b =>
                                 {
-                                    var commandType = assembly.GetType(b.CommandType);
+                                    var commandType = GetType(b.CommandType, assembly);
                                     panel.Button(b.Name,
                                         b.Title,
                                         commandType,
@@ -62,6 +64,22 @@
                 };
             });
             container.RegisterDecorator(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+        }
+
+        private static Type GetType(string commandType, [NotNull] Assembly assembly)
+        {
+            var strings = commandType.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim())
+                .ToArray();
+
+            return strings.Length switch
+            {
+                1 => assembly.GetType(commandType),
+                2 => Assembly
+                    .LoadFrom(Path.Combine(Path.GetDirectoryName(assembly.Location), strings[1] + ".dll"))
+                    .GetType(strings[0]),
+                _ => throw new ArgumentException()
+            };
         }
 
         private static void SetupButton(Assembly assembly, Button button, ButtonConfiguration b)
