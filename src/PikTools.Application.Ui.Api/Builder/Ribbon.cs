@@ -47,7 +47,7 @@
                 Application.CreateRibbonTab(tabTitle);
             }
 
-            return new Tab(this);
+            return new Tab(this, tabTitle);
         }
 
         private bool TryFindTab(string tabTitle, out Tab tab)
