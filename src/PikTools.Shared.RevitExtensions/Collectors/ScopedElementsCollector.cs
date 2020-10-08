@@ -171,6 +171,7 @@
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
+                var doc = uiDoc.Document;
                 var pickRef = uiDoc.Selection.PickObject(
                     ObjectType.LinkedElement,
                     new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
@@ -178,8 +179,14 @@
 
                 //// Сохранять этот элемент в _selectedElementsIds нельзя, так как RevitAPI не позволяет его добавить
                 //// в UiDocument.Selection
+                _elementsDisplay.ResetSelection();
 
-                return uiDoc.Document.GetElement(pickRef.ElementId);
+                if (doc.GetElement(pickRef) is RevitLinkInstance linkInstance)
+                {
+                    return linkInstance.GetLinkDocument().GetElement(pickRef.LinkedElementId);
+                }
+
+                return null;
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
@@ -193,15 +200,17 @@
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
+                var doc = uiDoc.Document;
                 var pickElements = uiDoc.Selection.PickObjects(
                         ObjectType.LinkedElement,
                         new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
                         statusPrompt)
-                    .Select(r => uiDoc.Document.GetElement(r))
+                    .Select(r => ((RevitLinkInstance)doc.GetElement(r)).GetLinkDocument().GetElement(r.LinkedElementId))
                     .ToList();
 
                 //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
                 //// в UiDocument.Selection
+                _elementsDisplay.ResetSelection();
 
                 return pickElements;
             }
