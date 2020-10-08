@@ -6,7 +6,7 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModels="clr-namespace:PikTools.CommandExample.ViewModels"
         xmlns:behaviors="clr-namespace:PikTools.CommandExample.Views.Behaviors"
-        xmlns:abstractions="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions.1.3.7"
+        xmlns:abstractions="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions.1.3.8"
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.3.4"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"

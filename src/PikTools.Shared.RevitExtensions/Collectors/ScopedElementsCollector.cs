@@ -8,6 +8,7 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
     using Helpers;
+    using Models;
 
     /// <summary>
     /// Коллектор части элементов
@@ -166,11 +167,12 @@
         }
 
         /// <inheritdoc />
-        public Element PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public LinkedElement PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
         {
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
+                var doc = uiDoc.Document;
                 var pickRef = uiDoc.Selection.PickObject(
                     ObjectType.LinkedElement,
                     new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
@@ -178,8 +180,14 @@
 
                 //// Сохранять этот элемент в _selectedElementsIds нельзя, так как RevitAPI не позволяет его добавить
                 //// в UiDocument.Selection
+                _elementsDisplay.ResetSelection();
 
-                return uiDoc.Document.GetElement(pickRef.ElementId);
+                if (doc.GetElement(pickRef) is RevitLinkInstance linkInstance)
+                {
+                    return new LinkedElement(pickRef.LinkedElementId, linkInstance);
+                }
+
+                return null;
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
@@ -188,26 +196,28 @@
         }
 
         /// <inheritdoc />
-        public List<Element> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public List<LinkedElement> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
         {
             try
             {
                 var uiDoc = _uiApplication.ActiveUIDocument;
+                var doc = uiDoc.Document;
                 var pickElements = uiDoc.Selection.PickObjects(
                         ObjectType.LinkedElement,
                         new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
                         statusPrompt)
-                    .Select(r => uiDoc.Document.GetElement(r))
+                    .Select(r => new LinkedElement(r.LinkedElementId, (RevitLinkInstance)doc.GetElement(r)))
                     .ToList();
 
                 //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
                 //// в UiDocument.Selection
+                _elementsDisplay.ResetSelection();
 
                 return pickElements;
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
-                return new List<Element>();
+                return new List<LinkedElement>();
             }
         }
 
