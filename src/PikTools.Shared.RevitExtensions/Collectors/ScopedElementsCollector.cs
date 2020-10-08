@@ -8,6 +8,7 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
     using Helpers;
+    using Models;
 
     /// <summary>
     /// Коллектор части элементов
@@ -166,7 +167,7 @@
         }
 
         /// <inheritdoc />
-        public Element PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public LinkedElement PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
         {
             try
             {
@@ -183,7 +184,7 @@
 
                 if (doc.GetElement(pickRef) is RevitLinkInstance linkInstance)
                 {
-                    return linkInstance.GetLinkDocument().GetElement(pickRef.LinkedElementId);
+                    return new LinkedElement(pickRef.LinkedElementId, linkInstance);
                 }
 
                 return null;
@@ -195,7 +196,7 @@
         }
 
         /// <inheritdoc />
-        public List<Element> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public List<LinkedElement> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
         {
             try
             {
@@ -205,7 +206,7 @@
                         ObjectType.LinkedElement,
                         new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
                         statusPrompt)
-                    .Select(r => ((RevitLinkInstance)doc.GetElement(r)).GetLinkDocument().GetElement(r.LinkedElementId))
+                    .Select(r => new LinkedElement(r.LinkedElementId, (RevitLinkInstance)doc.GetElement(r)))
                     .ToList();
 
                 //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
@@ -216,7 +217,7 @@
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {
-                return new List<Element>();
+                return new List<LinkedElement>();
             }
         }
 
