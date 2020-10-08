@@ -33,14 +33,14 @@
 
             notificationService.ShowMessage(
                 title,
-                $"Выбран тип: {pickedElement.GetType().Name}");
+                $"Выбран тип: {pickedElement.Element.GetType().Name} из связи {pickedElement.LinkInstance.Name}");
 
             var peckedElements =
                 elementsCollector.PickLinkedElements(element => element is Room, "Pick rooms");
 
             notificationService.ShowMessage(
                 title,
-                $"Выбрано элементов: {peckedElements.Count} типов: {string.Join(", ", peckedElements.Select(e => e.GetType().Name).Distinct())}");
+                $"Выбрано элементов: {peckedElements.Count} типов: {string.Join(", ", peckedElements.Select(e => e.Element.GetType().Name).Distinct())}");
 
             return PluginResult.Succeeded;
         }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
+    using Models;
 
     /// <summary>
     /// Интерфейс коллектора элементов
@@ -42,7 +43,7 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        Element PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        LinkedElement PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
 
         /// <summary>
         /// Включает в Revit режим выбора элементов в модели связанного документа с учетом заданного фильтра
@@ -50,6 +51,6 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        List<Element> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        List<LinkedElement> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "");
     }
 }
