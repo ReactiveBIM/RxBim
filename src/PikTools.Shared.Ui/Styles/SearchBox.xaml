@@ -34,7 +34,7 @@
                                                              Placeholder="{TemplateBinding SearchTitle}"
                                                              Background="Transparent"
                                                              BorderThickness="0"
-                                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                             HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                                              Margin="0">
                                 <controls:TextBoxWithPlaceholder.InputBindings>
                                     <KeyBinding Key="Enter"
@@ -51,7 +51,10 @@
                                     BorderThickness="0"
                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                     HorizontalAlignment="Right" VerticalAlignment="Center"
-                                    Width="{Binding ActualHeight, ElementName=searchButton}"/>
+                                    Width="{Binding ActualHeight, ElementName=searchTextBox}"
+                                    Height="{Binding ActualHeight, ElementName=searchTextBox}"
+                                    Padding="4"
+                                    Margin="0"/>
 
                             <Popup Grid.Column="0" Grid.ColumnSpan="2" 
                                    x:Name="popup"  

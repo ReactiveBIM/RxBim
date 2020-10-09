@@ -35,6 +35,26 @@
     <SolidColorBrush x:Key="IconButtonBackground"
                      Color="{StaticResource Grey4}"/>
     
+    <!-- CheckBox colors -->
+    <SolidColorBrush x:Key="CheckBoxBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="CheckBoxBorderBrush"
+                     Color="{StaticResource Grey3}"/>
+    <SolidColorBrush x:Key="CheckBoxForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="CheckBoxMark"
+                     Color="{StaticResource Orange}"/>
+    
+    <!-- RadioButton colors -->
+    <SolidColorBrush x:Key="RadioButtonBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="RadioButtonBorderBrush"
+                     Color="{StaticResource Grey3}"/>
+    <SolidColorBrush x:Key="RadioButtonForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="RadioButtonMark"
+                     Color="{StaticResource Orange}"/>
+    
     <!-- ComboBox colors -->
     <SolidColorBrush x:Key="ComboBoxBackground"
                      Color="{StaticResource Grey4}"/>
@@ -53,6 +73,16 @@
     <SolidColorBrush x:Key="TextBoxBorderBrush"
                      Color="{StaticResource Grey3}"/>
     <SolidColorBrush x:Key="TextBoxForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    
+    <!-- ProgressBar colors -->
+    <SolidColorBrush x:Key="ProgressBarBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="ProgressBarValueBackground"
+                     Color="{StaticResource RedOrange}"/>
+    
+    <!-- TextBlock colors -->
+    <SolidColorBrush x:Key="TextBlockForeground"
                      Color="{StaticResource DarkBlue}"/>
     
     <!-- Text colors -->
