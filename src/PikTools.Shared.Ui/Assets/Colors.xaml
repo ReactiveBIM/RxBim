@@ -89,6 +89,12 @@
     <SolidColorBrush x:Key="DisabledText"
                      Color="{StaticResource Grey2}"/>
     
+    <!-- ScrollBar colors -->
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroung"
+                     Color="{StaticResource Grey3}"/>
+    <SolidColorBrush x:Key="ScrollBarThumbMouseOverBackgroung"
+                     Color="{StaticResource Grey2}"/>
+    
     <!-- ListBox colors -->
     <SolidColorBrush x:Key="ListBoxBackground"
                      Color="{StaticResource White}"/>
@@ -104,6 +110,10 @@
                      Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="DataGridBorderBrush"
                      Color="{StaticResource Grey3}"/>
+    
+    <!-- BusyIndicator colors -->
+    <SolidColorBrush x:Key="BusyIndicatorSpinnerBackground"
+                     Color="{StaticResource RedOrange}"/>
     
     <!-- Дополнительные цвета -->
     <SolidColorBrush x:Key="SuccessColor"

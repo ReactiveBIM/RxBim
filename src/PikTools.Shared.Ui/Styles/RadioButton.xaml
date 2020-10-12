@@ -4,6 +4,7 @@
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!-- общий стиль RadioButton -->
     <Style TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="{DynamicResource RadioButtonBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource RadioButtonBorderBrush}"/>

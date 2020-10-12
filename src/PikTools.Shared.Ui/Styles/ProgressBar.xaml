@@ -4,6 +4,7 @@
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!-- общий стиль ProgressBar -->
     <Style TargetType="{x:Type ProgressBar}">
         <Setter Property="Background" Value="{DynamicResource ProgressBarBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource ProgressBarValueBackground}"/>

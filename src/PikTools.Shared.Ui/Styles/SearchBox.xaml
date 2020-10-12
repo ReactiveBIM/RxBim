@@ -13,6 +13,7 @@
         <ResourceDictionary Source="TextBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- общий стиль SearchBox -->
     <Style TargetType="{x:Type controls:SearchBox}"
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Template">

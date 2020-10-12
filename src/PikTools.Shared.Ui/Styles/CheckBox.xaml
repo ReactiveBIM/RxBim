@@ -4,6 +4,7 @@
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!-- общий стиль CheckBox -->
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="Background" Value="{DynamicResource CheckBoxBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource CheckBoxBorderBrush}"/>

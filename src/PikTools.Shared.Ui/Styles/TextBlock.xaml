@@ -4,6 +4,7 @@
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!-- общий стиль TextBlock -->
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="Graphik LCG"/>
         <Setter Property="FontStretch" Value="Normal"/>

@@ -10,7 +10,6 @@
     public partial class BusyIndicator : UserControl
     {
         private Timer timer;
-        private bool loaded;
 
         /// <summary>
         /// ctor
@@ -18,8 +17,6 @@
         public BusyIndicator()
         {
             InitializeComponent();
-
-            Loaded += OnLoaded;
         }
 
         private delegate void VoidDelegete();
@@ -29,7 +26,6 @@
             timer = new Timer(100);
             timer.Elapsed += OnTimerElapsed;
             timer.Start();
-            loaded = true;
         }
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
@@ -38,11 +34,9 @@
                 new VoidDelegete(
                     delegate
                         {
-                            SpinnerRotate.Angle += 30;
+                            SpinnerRotate.Angle += 45;
                             if (SpinnerRotate.Angle == 360)
-                            {
                                 SpinnerRotate.Angle = 0;
-                            }
                         }),
                 null);
         }
