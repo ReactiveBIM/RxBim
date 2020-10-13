@@ -144,6 +144,10 @@
                             <Setter TargetName="PART_EditableTextBox"
                                     Property="Visibility" Value="Visible"/>
                         </Trigger>
+                        
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -178,6 +182,10 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Border"
                                     Property="Background" Value="{DynamicResource ComboBoxItemSelectedBackground}"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

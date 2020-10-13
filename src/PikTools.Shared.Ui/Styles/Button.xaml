@@ -9,9 +9,8 @@
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource PrimaryButtonBackground}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <!--<Setter Property="FontFamily" Value="./Fonts/#GraphikLCG-Medium"/>-->
         <Setter Property="FontFamily" Value="Graphik LCG"/>
-        <Setter Property="FontStretch" Value="Medium"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
         <Setter Property="Height" Value="32"/>

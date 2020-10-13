@@ -10,8 +10,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource CheckBoxBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontFamily" Value="Graphik LCG"/>
-        <Setter Property="FontStretch" Value="Normal"/>
-        <!--<Setter Property="FontFamily" Value="./Fonts/#Graphik LCG"/>-->
+        <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource CheckBoxForeground}"/>
         <Setter Property="Padding" Value="12,8,12,4"/>

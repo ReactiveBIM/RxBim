@@ -38,8 +38,7 @@
     <Style TargetType="{x:Type ListBoxItem}">
         <Setter Property="Background" Value="{DynamicResource ListBoxBackground}"/>
         <Setter Property="FontFamily" Value="Graphik LCG"/>
-        <Setter Property="FontStretch" Value="Normal"/>
-        <!--<Setter Property="FontFamily" Value="./Fonts/#Graphik LCG"/>-->
+        <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

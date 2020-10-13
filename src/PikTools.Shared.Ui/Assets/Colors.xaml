@@ -85,10 +85,6 @@
     <SolidColorBrush x:Key="TextBlockForeground"
                      Color="{StaticResource DarkBlue}"/>
     
-    <!-- Text colors -->
-    <SolidColorBrush x:Key="DisabledText"
-                     Color="{StaticResource Grey2}"/>
-    
     <!-- ScrollBar colors -->
     <SolidColorBrush x:Key="ScrollBarThumbBackgroung"
                      Color="{StaticResource Grey3}"/>
@@ -109,17 +105,53 @@
     <SolidColorBrush x:Key="DataGridBackground"
                      Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="DataGridBorderBrush"
-                     Color="{StaticResource Grey3}"/>
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="DataGridForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="DataGridRowMouseOverBorderBrush"
+                     Color="{StaticResource Orange}"
+                     Opacity="0.7"/>
+    <SolidColorBrush x:Key="DataGridRowSelectedBorderBrush"
+                     Color="{StaticResource Orange}"/>
+    
+    <!-- Expander colors -->
+    <SolidColorBrush x:Key="ExpanderBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="ExpanderForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="ExpanderToggleButtonIsExpand"
+                     Color="{StaticResource Orange}"/>
+    <SolidColorBrush x:Key="ExpanderToggleButtonIsNotExpand"
+                     Color="{StaticResource Grey2}"/>
+    <SolidColorBrush x:Key="ExpanderToggleButtonMouseOver"
+                     Color="{StaticResource DarkBlue}"/>
     
     <!-- BusyIndicator colors -->
     <SolidColorBrush x:Key="BusyIndicatorSpinnerBackground"
                      Color="{StaticResource RedOrange}"/>
     
+    <!-- ToolTip colors -->
+    <SolidColorBrush x:Key="ToolTipBackground"
+                     Color="{StaticResource DarkBlue}"
+                     Opacity="0.8"/>
+    <SolidColorBrush x:Key="ToolTipForeground"
+                     Color="{StaticResource White}"/>
+    
     <!-- Дополнительные цвета -->
     <SolidColorBrush x:Key="SuccessColor"
                      Color="{StaticResource Green}"/>
+    <SolidColorBrush x:Key="ErrorColor"
+                     Color="{StaticResource Magenta}"/>
     <SolidColorBrush x:Key="DefaultColor"
                      Color="{StaticResource Grey2}"/>
+    <SolidColorBrush x:Key="FocusVisualBorderBrush"
+                     Color="{StaticResource Blue}"
+                     Opacity="0.5"/>
+    <SolidColorBrush x:Key="ValidationError"
+                     Color="{StaticResource Magenta}"/>
+    <SolidColorBrush x:Key="DisabledText"
+                     Color="{StaticResource Grey2}"/>
+    
     
     <!-- Старый набор цветов (оставлен для совместимости) -->
     <SolidColorBrush x:Key="DefaultTextColor"
