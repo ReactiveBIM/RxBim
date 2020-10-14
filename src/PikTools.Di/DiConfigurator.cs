@@ -68,7 +68,7 @@
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile($"appsettings.{assembly.GetName().Name}.json", true);
         }
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)

@@ -80,7 +80,7 @@ partial class Build : PikToolsBuild
         .Executes(() =>
         {
             var appPath = Project;
-            var outputPath = Solution.Directory / "examples" / appPath / "bin" / "Debug" / "net471";
+            var outputPath = Solution.Directory / "examples" / appPath / "bin" / "Debug" / "net472";
 
             var revitPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
