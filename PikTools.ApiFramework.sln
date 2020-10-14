@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.FmHelpers",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.LoggedCommand.Example", "examples\PikTools.LoggedCommand.Example\PikTools.LoggedCommand.Example.csproj", "{D1140508-F2A6-49D0-8E79-E6EE4BB7D874}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikWpfStyleTestApp", "tests\PikWpfStyleTestApp\PikWpfStyleTestApp.csproj", "{8C4F2944-0D49-47E8-B892-FB3E9A76D468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.WpfStyles.Example", "examples\PikTools.WpfStyles.Example\PikTools.WpfStyles.Example.csproj", "{8C4F2944-0D49-47E8-B892-FB3E9A76D468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,7 +178,7 @@ Global
 		{2B75275B-2DFE-457A-9CF5-AAA36408A041} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{7DEFA2EC-D2B3-4E62-A423-773F90931B95} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{D1140508-F2A6-49D0-8E79-E6EE4BB7D874} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
-		{8C4F2944-0D49-47E8-B892-FB3E9A76D468} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
+		{8C4F2944-0D49-47E8-B892-FB3E9A76D468} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}

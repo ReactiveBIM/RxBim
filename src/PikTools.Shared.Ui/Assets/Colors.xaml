@@ -67,6 +67,16 @@
     <SolidColorBrush x:Key="ComboBoxItemSelectedBackground"
                      Color="{StaticResource Grey4}"/>
     
+    <!-- TabControl colors -->
+    <SolidColorBrush x:Key="TabControlBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="TabItemSelectedBorderBrush"
+                     Color="{StaticResource Blue}"/>
+    <SolidColorBrush x:Key="TabItemForeground"
+                     Color="{StaticResource Grey2}"/>
+    <SolidColorBrush x:Key="TabItemSelectedForeground"
+                     Color="{StaticResource Blue}"/>
+    
     <!-- TextBox colors -->
     <SolidColorBrush x:Key="TextBoxBackground"
                      Color="{StaticResource White}"/>
