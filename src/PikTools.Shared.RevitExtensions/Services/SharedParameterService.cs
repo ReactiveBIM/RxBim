@@ -80,6 +80,71 @@
         }
 
         /// <inheritdoc />
+        public void AddOrUpdateParameter(
+            DefinitionFile definitionFile,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch)
+        {
+            if (!ParameterExists(sharedParameterInfo.Definition, fullMatch))
+            {
+                AddSharedParameter(
+                    definitionFile,
+                    sharedParameterInfo,
+                    fullMatch,
+                    useTransaction: false);
+
+                return;
+            }
+
+            var definition = GetSharedExternalDefinition(
+                sharedParameterInfo,
+                fullMatch,
+                definitionFile);
+
+            var document = _uiApplication.ActiveUIDocument.Document;
+
+            var createService = document.Application.Create;
+
+            var map = document.ParameterBindings;
+
+            var binding = (ElementBinding)map.get_Item(definition);
+
+            var cs = binding?.Categories ?? new CategorySet();
+
+            var cats = sharedParameterInfo.CreateData
+                .CategoriesForBind
+                .Select(bic => Category.GetCategory(document, bic));
+
+            cats.Where(c => !cs.Contains(c))
+                .Select(c => cs.Insert(c))
+                .ToArray();
+
+            ElementBinding updatedBinding;
+
+            var isInstance = sharedParameterInfo.CreateData.IsCreateForInstance;
+
+            if (binding is InstanceBinding || isInstance)
+            {
+                updatedBinding = createService.NewInstanceBinding(cs);
+            }
+            else if (binding is TypeBinding || !isInstance)
+            {
+                updatedBinding = createService.NewTypeBinding(cs);
+            }
+            else
+            {
+                throw new Exception();
+            }
+
+            map.Remove(definition);
+
+            var res = map.Insert(
+                definition,
+                updatedBinding,
+                sharedParameterInfo.CreateData.ParameterGroup);
+        }
+
+        /// <inheritdoc />
         public bool ParameterExistsInSpf(
             DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch)
         {
