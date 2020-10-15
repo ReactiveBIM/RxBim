@@ -11,6 +11,7 @@
     <IsPackable>False</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
   </ItemGroup>
 </Project>

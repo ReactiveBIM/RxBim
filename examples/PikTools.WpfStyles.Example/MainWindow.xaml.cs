@@ -1,21 +1,8 @@
 ﻿using PikTools.Shared.Ui.Abstractions;
 using PikTools.Shared.Ui.Controls;
-using PikTools.Shared.Ui.Services;
-using PikTools.Shared.Ui.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PikTools.WpfStyles.Example
 {
@@ -28,8 +15,9 @@ namespace PikTools.WpfStyles.Example
 
         public MainWindow()
         {
-            _notificationService = new NotificationService(
-                new UIDispatcher(), new NotificationViewModel());
+            var config = new DiConfig();
+            config.Configure(GetType().Assembly);
+            _notificationService = config.Container.GetInstance<INotificationService>();
             
             InitializeComponent();
 
