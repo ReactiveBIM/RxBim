@@ -1,24 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:converters="clr-namespace:PikTools.Shared.Ui.Converters"
                     xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Icons.xaml"/>
+        <ResourceDictionary Source="../Assets/Converters.xaml"/>
 
         <ResourceDictionary Source="Button.xaml"/>
         <ResourceDictionary Source="ListBox.xaml"/>
         <ResourceDictionary Source="TextBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <converters:IsAnyAndContainsToBooleanMultiConverter x:Key="IsAnyAndContainsToBooleanMultiConverter"/>
-
-    <Style TargetType="{x:Type controls:SearchBox}">
+    <!-- общий стиль SearchBox -->
+    <Style TargetType="{x:Type controls:SearchBox}"
+           BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:SearchBox}">
-                    <Border BorderThickness="1"
-                            BorderBrush="{DynamicResource DefaultLinksColor}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -29,8 +32,10 @@
                                                              x:Name="searchTextBox" 
                                                              Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Placeholder="{TemplateBinding SearchTitle}"
+                                                             Background="Transparent"
                                                              BorderThickness="0"
-                                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                             HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                                             Margin="0">
                                 <controls:TextBoxWithPlaceholder.InputBindings>
                                     <KeyBinding Key="Enter"
                                                 Command="{Binding SearchCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -39,11 +44,17 @@
 
                             <Button Grid.Column="1" 
                                     Name="searchButton"  
-                                    Style="{DynamicResource SearchButton}"
+                                    Style="{DynamicResource IconButton}"
+                                    Content="{StaticResource SearchIcon}"
                                     Command="{TemplateBinding SearchCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                     HorizontalAlignment="Right" VerticalAlignment="Center"
-                                    Width="{Binding ActualHeight, ElementName=searchButton}"
-                                    Margin="2"/>
+                                    Width="{Binding ActualHeight, ElementName=searchTextBox}"
+                                    Height="{Binding ActualHeight, ElementName=searchTextBox}"
+                                    Padding="4"
+                                    Margin="0"/>
 
                             <Popup Grid.Column="0" Grid.ColumnSpan="2" 
                                    x:Name="popup"  
@@ -58,7 +69,7 @@
                                 </Popup.IsOpen>
 
                                 <Border BorderThickness="1"
-                                        BorderBrush="{DynamicResource DefaultLinksColor}">
+                                        BorderBrush="{TemplateBinding BorderBrush}">
                                     <ListBox Name="previewListBox"  
                                              ItemsSource="{TemplateBinding PreviewSearchList}"
                                              SelectedItem="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWayToSource}">
@@ -77,6 +88,10 @@
                         <Trigger Property="IsKeyboardFocusWithin" Value="False">
                             <Setter TargetName="popup"
                                     Property="IsOpen" Value="False"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

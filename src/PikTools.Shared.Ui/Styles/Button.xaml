@@ -7,19 +7,16 @@
 
     <!-- общий стиль Button -->
     <Style TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource DefaultLinksColor}"/>
-        <Setter Property="Padding" Value="5"/>
-    </Style>
-    
-    <!--<Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource PrimaryButtonBackground}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryButtonBackground}"/>
-        <Setter Property="FontFamily" Value="Graphik Regular"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForeground}"/>
         <Setter Property="Height" Value="32"/>
-        <Setter Property="Padding" Value="12,5"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Padding" Value="12,4"/>
+        <Setter Property="Margin" Value="4"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -28,17 +25,37 @@
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             CornerRadius="8">
-                        <ContentPresenter x:Name="contentPresenter" 
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
+                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" 
                                           Content="{TemplateBinding Content}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Margin="{TemplateBinding Padding}" />
                     </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.9" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
+    
+    <!-- кнопка для размещения внутрь иконки -->
+    <Style x:Key="IconButton" 
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="{DynamicResource IconButtonBackground}"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Padding" Value="8"/>
+    </Style>
     
     <!-- кнопка с функционалом навигации (стиль обычной кнопки) -->
     <Style TargetType="{x:Type controls:NavigateButton}"

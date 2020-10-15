@@ -12,6 +12,11 @@
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Fonts\GraphikLCG-Medium.ttf" />
+      <None Remove="Fonts\GraphikLCG-Regular.ttf" />
+    </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
@@ -24,6 +29,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\GraphikLCG-Medium.ttf" />
+    <Resource Include="Fonts\GraphikLCG-Regular.ttf" />
   </ItemGroup>
 
   <PropertyGroup>

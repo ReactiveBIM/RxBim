@@ -10,7 +10,8 @@
         /// </summary>
         /// <param name="title">Заголовок сообщения</param>
         /// <param name="text">Текст сообщения</param>
-        void SetMessage(string title, string text);
+        /// <param name="type">Тип уведомления</param>
+        void SetMessage(string title, string text, NotificationType? type = null);
 
         /// <summary>
         /// Задать сообщение с вопросом

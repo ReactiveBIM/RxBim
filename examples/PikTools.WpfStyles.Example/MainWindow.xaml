@@ -1,0 +1,174 @@
+﻿<Window x:Class="PikTools.WpfStyles.Example.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.0"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        SizeToContent="WidthAndHeight"
+        MinHeight="400" MinWidth="600">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.4.0;component/Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="Текстовые поля">
+            <StackPanel>
+                <TextBlock Text="Простой TextBlock"/>
+                
+                <TextBlock Text="TextBlock c IsEnabled = False"
+                           IsEnabled="False"/>
+                
+                <controls:EditableTextBlock Text="Изменяемый TextBlock"
+                                            MouseLeftButtonDown="EditableTextBlock_MouseLeftButtonDown"/>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Поля ввода">
+            <StackPanel>
+                <TextBox Width="100"/>
+                
+                <controls:TextBoxWithPlaceholder Placeholder="Placeholder"
+                                                 Width="150"/>
+        
+                <controls:SearchBox SearchTitle="Поиск"
+                                    Width="200"/>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Кнопки">
+            <StackPanel>
+                <Button Content="Кнопка"
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        ToolTip="Описание кнопки"/>
+                <Button Content="Кнопка"
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"/>
+                <Button Style="{DynamicResource IconButton}"
+                        Content="{StaticResource SuccessIcon}"/>
+                <Button Style="{DynamicResource IconButton}"
+                        Content="{StaticResource SuccessIcon}"
+                        IsEnabled="False"/>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Списки и таблицы">
+            <StackPanel>
+                <ListBox Height="75">
+                    <ListBoxItem Content="Элемент 1"/>
+                    <ListBoxItem Content="Элемент 2"/>
+                    <ListBoxItem Content="Элемент 3"/>
+                    <ListBoxItem Content="Элемент 4"/>
+                    <ListBoxItem Content="Элемент 5"/>
+                    <ListBoxItem Content="Элемент 6"/>
+                </ListBox>
+            
+                <DataGrid Name="dg"
+                          Height="100">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Заголовок 1" 
+                                            Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Заголовок 2"
+                                            Binding="{Binding Role}"/>
+                        <DataGridTextColumn Header="Заголовок 3"
+                                            Binding="{Binding Access}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Элементы выбора">
+            <StackPanel>
+                <ComboBox IsEditable="True">
+                    <ComboBoxItem Content="Элемент 1"/>
+                    <ComboBoxItem Content="Элемент 2"/>
+                    <ComboBoxItem Content="Элемент 3"/>
+                </ComboBox>
+                
+                <CheckBox Content="Выбери меня"
+                          IsChecked="{x:Null}"/>
+                
+                <RadioButton Content="Выбери меня"
+                             GroupName="g1"
+                             IsChecked="True"/>
+                <RadioButton Content="Выбери меня"
+                             GroupName="g1"/>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Прогресс и ожидание">
+            <StackPanel>
+                <ProgressBar Value="30"/>
+                
+                <controls:BusyIndicator IsBusy="True">
+                    <StackPanel>
+                        <TextBlock Text="Всем Привет!!!"/>
+                        <TextBlock Text="Всем Привет!!!"
+                                   IsEnabled="False"/>
+                    </StackPanel>
+                </controls:BusyIndicator>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Группировка">
+            <StackPanel>
+                <Expander Header="Раскрывающийся набор"
+                          IsExpanded="True">
+                    <StackPanel>
+                        <TextBlock Text="Текст 1"/>
+                        <TextBlock Text="Текст 2"/>
+                    </StackPanel>
+                </Expander>
+                
+                <GroupBox Header="Блок элементов">
+                    <StackPanel>
+                        <TextBlock Text="Текст 1"/>
+                        <TextBlock Text="Текст 2"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Окна и иконки">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{StaticResource SuccessIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource ErrorIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource QuestionIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource SearchIcon}"
+                                    Height="40" Width="40"/>
+                </StackPanel>
+                
+                <Button Content="Окно простого оповещения"
+                        Click="Button_Click"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно с ошибкой"
+                        Click="Button_Click1"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно об успешном выполнении"
+                        Click="Button_Click2"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно с вопросом"
+                        Click="Button_Click3"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>
