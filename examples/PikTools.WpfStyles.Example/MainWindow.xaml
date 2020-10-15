@@ -51,6 +51,13 @@
                         Width="Auto"
                         HorizontalAlignment="Left"
                         IsEnabled="False"/>
+                <Button Style="{DynamicResource SecondaryButton}"
+                        Content="Второстепенная Кнопка"
+                        HorizontalAlignment="Left"/>
+                <Button Style="{DynamicResource SecondaryButton}"
+                        Content="Второстепенная Кнопка"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"/>
                 <Button Style="{DynamicResource IconButton}"
                         Content="{StaticResource SuccessIcon}"/>
                 <Button Style="{DynamicResource IconButton}"
@@ -68,6 +75,12 @@
                     <ListBoxItem Content="Элемент 4"/>
                     <ListBoxItem Content="Элемент 5"/>
                     <ListBoxItem Content="Элемент 6"/>
+                </ListBox>
+                
+                <ListBox Style="{DynamicResource NonSelectableHorizontalListBox}">
+                    <ListBoxItem Content="Элемент 1"/>
+                    <ListBoxItem Content="Элемент 2"/>
+                    <ListBoxItem Content="Элемент 3"/>
                 </ListBox>
             
                 <DataGrid Name="dg"

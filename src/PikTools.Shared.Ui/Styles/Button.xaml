@@ -48,6 +48,15 @@
         </Setter>
     </Style>
     
+    <Style x:Key="SecondaryButton"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryButtonBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryButtonForeground}"/>
+    </Style>
+    
     <!-- кнопка для размещения внутрь иконки -->
     <Style x:Key="IconButton" 
            TargetType="{x:Type Button}"

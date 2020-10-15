@@ -32,6 +32,10 @@
                      Color="{StaticResource Blue}"/>
     <SolidColorBrush x:Key="PrimaryButtonForeground"
                      Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="SecondaryButtonBorderBrush"
+                     Color="{StaticResource Blue}"/>
+    <SolidColorBrush x:Key="SecondaryButtonForeground"
+                     Color="{StaticResource Blue}"/>
     <SolidColorBrush x:Key="IconButtonBackground"
                      Color="{StaticResource Grey4}"/>
     
