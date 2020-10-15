@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.0"
+        xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.1"
         mc:Ignorable="d"
         Title="MainWindow"
         SizeToContent="WidthAndHeight"
@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.4.0;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.4.1;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -51,6 +51,13 @@
                         Width="Auto"
                         HorizontalAlignment="Left"
                         IsEnabled="False"/>
+                <Button Style="{DynamicResource SecondaryButton}"
+                        Content="Второстепенная Кнопка"
+                        HorizontalAlignment="Left"/>
+                <Button Style="{DynamicResource SecondaryButton}"
+                        Content="Второстепенная Кнопка"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"/>
                 <Button Style="{DynamicResource IconButton}"
                         Content="{StaticResource SuccessIcon}"/>
                 <Button Style="{DynamicResource IconButton}"
@@ -68,6 +75,12 @@
                     <ListBoxItem Content="Элемент 4"/>
                     <ListBoxItem Content="Элемент 5"/>
                     <ListBoxItem Content="Элемент 6"/>
+                </ListBox>
+                
+                <ListBox Style="{DynamicResource NonSelectableHorizontalListBox}">
+                    <ListBoxItem Content="Элемент 1"/>
+                    <ListBoxItem Content="Элемент 2"/>
+                    <ListBoxItem Content="Элемент 3"/>
                 </ListBox>
             
                 <DataGrid Name="dg"
