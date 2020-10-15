@@ -11,6 +11,7 @@
     public class NotificationViewModel : ViewModelBase, INotificationViewModel
     {
         private string _title;
+        private NotificationType? _type;
         private string _text;
         private bool _isQuestion;
         private bool _answerResult;
@@ -24,6 +25,19 @@
             private set
             {
                 _title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Тип уведомления
+        /// </summary>
+        public NotificationType? Type
+        {
+            get => _type;
+            set
+            {
+                _type = value;
                 RaisePropertyChanged();
             }
         }
@@ -61,9 +75,10 @@
             => new RelayCommand<IClosable>(ConfirmCommandExecute);
 
         /// <inheritdoc />
-        public void SetMessage(string title, string text)
+        public void SetMessage(string title, string text, NotificationType? type = null)
         {
             Title = title;
+            Type = type;
             Text = text;
             _answerResult = false;
             IsQuestion = false;
@@ -73,6 +88,7 @@
         public void SetQuestion(string title, string text)
         {
             Title = title;
+            Type = null;
             Text = text;
             _answerResult = false;
             IsQuestion = true;

@@ -27,11 +27,11 @@
         }
 
         /// <inheritdoc />
-        public void ShowMessage(string title, string text)
+        public void ShowMessage(string title, string text, NotificationType? type = null)
         {
             _uiDispatcher.Invoke(() =>
             {
-                _notificationViewModel.SetMessage(title, text);
+                _notificationViewModel.SetMessage(title, text, type);
                 ShowDialog();
             });
         }

@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Assets/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Path x:Key="SuccessIcon" 
+          x:Shared="False"
+          StrokeThickness="2"
+          Stroke="{DynamicResource SuccessColor}" 
+          Stretch="Fill"
+          StrokeLineJoin="Round" 
+          StrokeStartLineCap="Round" 
+          StrokeEndLineCap="Round">
+        <Path.Data>
+            <PathGeometry Figures="M42 20.3231V22.1631C41.9975 26.4759 40.601 30.6724 38.0187 34.1267C35.4363 37.581 31.8066 40.108 27.6707 41.3309C23.5349 42.5537 19.1145 42.4069 15.0689 40.9123C11.0234 39.4176 7.56931 36.6553 5.22192 33.0372C2.87453 29.4192 1.75958 25.1392 2.04335 20.8357C2.32712 16.5322 3.99441 12.4357 6.79656 9.15723C9.5987 5.87873 13.3856 3.59385 17.5924 2.64338C21.7992 1.69291 26.2005 2.12776 30.14 3.88309 M 41.696872 6.9739154 21.696898 26.99383 15.696906 20.994012" 
+                          FillRule="NonZero"/>
+        </Path.Data>
+    </Path>
+    
+    <Path x:Key="ErrorIcon" 
+          x:Shared="False"
+          StrokeThickness="2"
+          Stroke="{DynamicResource ErrorColor}" 
+          Stretch="Fill"
+          StrokeLineJoin="Round" 
+          StrokeStartLineCap="Round" 
+          StrokeEndLineCap="Round">
+        <Path.Data>
+            <PathGeometry Figures="M19.5805 3.71681L2.64053 31.9968C2.29127 32.6017 2.10646 33.2874 2.10451 33.9858C2.10255 34.6843 2.28351 35.3711 2.62938 35.9779C2.97525 36.5847 3.47398 37.0903 4.07595 37.4445C4.67791 37.7987 5.36213 37.9891 6.06053 37.9968H39.9405C40.6389 37.9891 41.3231 37.7987 41.9251 37.4445C42.5271 37.0903 43.0258 36.5847 43.3717 35.9779C43.7175 35.3711 43.8985 34.6843 43.8966 33.9858C43.8946 33.2874 43.7098 32.6017 43.3605 31.9968L26.4205 3.71681C26.064 3.12902 25.562 2.64305 24.9629 2.30578C24.3639 1.9685 23.688 1.79132 23.0005 1.79132C22.3131 1.79132 21.6372 1.9685 21.0381 2.30578C20.4391 2.64305 19.9371 3.12902 19.5805 3.71681V3.71681 3.7Z M 22.859587 12.049197 v 8 M 23.016724 28.617028 h 0.02" 
+                          FillRule="NonZero"/>
+        </Path.Data>
+    </Path>
+    
+    <Path x:Key="QuestionIcon" 
+          x:Shared="False"
+          StrokeThickness="2"
+          Stroke="{DynamicResource DefaultColor}" 
+          Stretch="Fill"
+          StrokeLineJoin="Round" 
+          StrokeStartLineCap="Round" 
+          StrokeEndLineCap="Round">
+        <Path.Data>
+            <PathGeometry Figures="M22.1631 42.4731C33.2088 42.4731 42.1631 33.5188 42.1631 22.4731C42.1631 11.4274 33.2088 2.47314 22.1631 2.47314C11.1174 2.47314 2.16309 11.4274 2.16309 22.4731C2.16309 33.5188 11.1174 42.4731 22.1631 42.4731Z M 15.328065 13.525659 c 0.527689 -1.312792 1.569241 -2.416884 2.940172 -3.123772 1.370941 -0.7035222 2.982783 -0.9627142 4.550071 -0.7270852 1.567289 0.235629 2.988832 0.9492502 4.012878 2.0129482 1.024157 1.063698 1.584605 2.410152 1.582248 3.702747 0 4.039361 -6.733482 6.059041 -6.733482 6.059041 M 22.537555 30.161016 h 0.02" 
+                          FillRule="NonZero"/>
+        </Path.Data>
+    </Path>
+    
+    <Path x:Key="SearchIcon"
+          x:Shared="False"
+          Stretch="Fill"
+          Fill="{DynamicResource DefaultColor}"
+          Data="M811.648 235.648c-21.888 20.821-42.837 42.539-58.325 59.051-15.872 16.128-25.429 27.861-25.429 27.861l-119.467 57.045c46.080 52.608 74.24 121.173 74.24 196.395 0 164.651-133.973 298.667-298.667 298.667s-298.667-134.016-298.667-298.667 133.973-298.667 298.667-298.667c75.221 0 143.787 28.16 196.395 74.197l57.045-119.467c0 0 11.733-9.557 27.861-25.429 16.512-15.488 38.229-36.437 59.051-58.325 21.077-21.589 42.155-43.179 57.941-59.392 15.445-16.555 25.771-27.563 25.771-27.563l90.496 90.496c0 0-11.008 10.325-27.563 25.771-16.171 15.872-37.76 36.949-59.349 58.027zM384 362.667c-117.632 0-213.333 95.701-213.333 213.333s95.701 213.333 213.333 213.333 213.333-95.701 213.333-213.333-95.701-213.333-213.333-213.333z"
+          RenderTransformOrigin=".5,.5"
+          VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Path.RenderTransform>
+            <RotateTransform Angle="90"/>
+        </Path.RenderTransform>
+    </Path>
+</ResourceDictionary>

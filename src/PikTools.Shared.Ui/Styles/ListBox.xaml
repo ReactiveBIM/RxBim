@@ -6,23 +6,77 @@
 
     <!-- общий стиль ListBox -->
     <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{DynamicResource ListBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorderBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8">
+                        <ScrollViewer SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
+                            <StackPanel IsItemsHost="True" 
+                                        Margin="2"/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     
     <!-- общий стиль ListBoxItem -->
     <Style TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="{DynamicResource ListBoxBackground}"/>
+        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="12,8,12,4"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Name="Border"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" 
+                                    Property="Background" Value="{DynamicResource ListBoxItemMouseOverBackground}"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border"
+                                    Property="Background" Value="{DynamicResource ListBoxItemSelectedBackground}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- ListBoxItem, для ListBox, у которого нельзя выбрать элемент -->
     <Style x:Key="NonSelectableListBoxItem" 
-           TargetType="{x:Type ListBoxItem}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-
+           TargetType="{x:Type ListBoxItem}"
+           BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -39,7 +93,7 @@
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource DefaultLinksColor}"/>
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -75,11 +129,12 @@
            BasedOn="{StaticResource NonSelectableListBox}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListBox">
+                <ControlTemplate TargetType="{x:Type ListBox}">
                     <Border Name="Border"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8">
                         <StackPanel IsItemsHost="True" 
                                     Margin="2"/>
                     </Border>

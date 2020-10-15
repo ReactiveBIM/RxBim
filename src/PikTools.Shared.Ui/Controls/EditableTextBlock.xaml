@@ -1,29 +1,32 @@
 ﻿<UserControl x:Class="PikTools.Shared.Ui.Controls.EditableTextBlock"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
              x:Name="MainControl">
     <UserControl.Resources>
-
         <DataTemplate x:Key="EditModeTemplate">
-            <TextBox KeyDown="TextBox_KeyDown" Loaded="TextBox_Loaded" LostFocus="TextBox_LostFocus"
-                     Text="{Binding ElementName=MainControl, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding ElementName=MainControl, Path=Text, UpdateSourceTrigger=PropertyChanged}"
                      TextAlignment="Center"
+                     KeyDown="TextBox_KeyDown" 
+                     Loaded="TextBox_Loaded" 
+                     LostFocus="TextBox_LostFocus"
                      BorderThickness="0"
-                     HorizontalAlignment="Stretch"
-                     Margin="0"/>
+                     HorizontalAlignment="Stretch"/>
         </DataTemplate>
         
         <DataTemplate x:Key="DisplayModeTemplate">
+            <DataTemplate.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles/TextBlock.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>    
+            </DataTemplate.Resources>
+                
             <TextBlock Text="{Binding ElementName=MainControl, Path=FormattedText}" 
                        TextAlignment="Center"
                        TextWrapping="Wrap"
-                       HorizontalAlignment="Stretch"
-                       Margin="5,3,5,3"/>
+                       HorizontalAlignment="Stretch"/>
         </DataTemplate>
         
         <Style TargetType="{x:Type controls:EditableTextBlock}">
@@ -31,6 +34,7 @@
                 <Trigger Property="IsInEditMode" Value="True">
                     <Setter Property="ContentTemplate" Value="{StaticResource EditModeTemplate}" />
                 </Trigger>
+                    
                 <Trigger Property="IsInEditMode" Value="False">
                     <Setter Property="ContentTemplate" Value="{StaticResource DisplayModeTemplate}" />
                 </Trigger>
