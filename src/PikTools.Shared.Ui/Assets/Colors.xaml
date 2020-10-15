@@ -136,6 +136,12 @@
     <SolidColorBrush x:Key="ExpanderToggleButtonMouseOver"
                      Color="{StaticResource DarkBlue}"/>
     
+    <!-- GroupBox colors -->
+    <SolidColorBrush x:Key="GroupBoxBackground"
+                     Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="GroupBoxForeground"
+                     Color="{StaticResource DarkBlue}"/>
+    
     <!-- BusyIndicator colors -->
     <SolidColorBrush x:Key="BusyIndicatorSpinnerBackground"
                      Color="{StaticResource RedOrange}"/>

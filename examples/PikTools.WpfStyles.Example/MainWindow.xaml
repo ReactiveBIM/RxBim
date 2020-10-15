@@ -46,7 +46,6 @@
                 <Button Content="Кнопка"
                         Width="Auto"
                         HorizontalAlignment="Left"
-                        Click="Button_Click"
                         ToolTip="Описание кнопки"/>
                 <Button Content="Кнопка"
                         Width="Auto"
@@ -96,16 +95,11 @@
                 <CheckBox Content="Выбери меня"
                           IsChecked="{x:Null}"/>
                 
-                <Expander Header="Раскрывающийся набор"
-                          IsExpanded="True">
-                    <StackPanel>
-                        <RadioButton Content="Выбери меня"
-                                     GroupName="g1"
-                                     IsChecked="True"/>
-                        <RadioButton Content="Выбери меня"
-                                     GroupName="g1"/>
-                    </StackPanel>
-                </Expander>
+                <RadioButton Content="Выбери меня"
+                             GroupName="g1"
+                             IsChecked="True"/>
+                <RadioButton Content="Выбери меня"
+                             GroupName="g1"/>
             </StackPanel>
         </TabItem>
         
@@ -120,6 +114,60 @@
                                    IsEnabled="False"/>
                     </StackPanel>
                 </controls:BusyIndicator>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Группировка">
+            <StackPanel>
+                <Expander Header="Раскрывающийся набор"
+                          IsExpanded="True">
+                    <StackPanel>
+                        <TextBlock Text="Текст 1"/>
+                        <TextBlock Text="Текст 2"/>
+                    </StackPanel>
+                </Expander>
+                
+                <GroupBox Header="Блок элементов">
+                    <StackPanel>
+                        <TextBlock Text="Текст 1"/>
+                        <TextBlock Text="Текст 2"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Окна и иконки">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{StaticResource SuccessIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource ErrorIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource QuestionIcon}"
+                                    Height="40" Width="40"/>
+                    <ContentControl Content="{StaticResource SearchIcon}"
+                                    Height="40" Width="40"/>
+                </StackPanel>
+                
+                <Button Content="Окно простого оповещения"
+                        Click="Button_Click"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно с ошибкой"
+                        Click="Button_Click1"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно об успешном выполнении"
+                        Click="Button_Click2"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
+                
+                <Button Content="Окно с вопросом"
+                        Click="Button_Click3"
+                        HorizontalAlignment="Left"
+                        Width="250"/>
             </StackPanel>
         </TabItem>
     </TabControl>
