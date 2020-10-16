@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Shared.Ui.Services
 {
     using System;
+    using System.Threading.Tasks;
     using System.Windows.Threading;
     using PikTools.Shared.Ui.Abstractions;
 
@@ -21,12 +22,12 @@
         }
 
         /// <inheritdoc />
-        public void InvokeAsync(Action action)
+        public async Task InvokeAsync(Action action)
         {
             if (action == null)
                 return;
 
-            _uiDispatcher?.InvokeAsync(action);
+            await _uiDispatcher?.InvokeAsync(action);
         }
     }
 }
