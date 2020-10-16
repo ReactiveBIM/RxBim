@@ -23,7 +23,8 @@
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
         /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
-        void AddSharedParameter(
+        /// <returns>true - если параметр был добавлен</returns>
+        bool AddSharedParameter(
             DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false);
 
         /// <summary>
@@ -46,7 +47,8 @@
         /// если задано true, происходит проверка только по свойствам:
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
-        public void AddOrUpdateParameter(
+        /// <returns>true - если параметр был добавлен или обновлён</returns>
+        public bool AddOrUpdateParameter(
             DefinitionFile definitionFile,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch);
