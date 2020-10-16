@@ -26,9 +26,11 @@
         }
 
         /// <inheritdoc />
-        public void AddSharedParameter(
+        public bool AddSharedParameter(
             DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false)
         {
+            bool inserted = false;
+
             void InternalAddSharedParameter(Document document, DefinitionFile definitionFile1)
             {
                 var categorySet =
@@ -43,7 +45,8 @@
                     binding = document.Application.Create.NewTypeBinding(categorySet);
 
                 var map = document.ParameterBindings;
-                map.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup);
+
+                inserted = map.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup);
 
                 if (sharedParameterInfo.CreateData.AllowVaryBetweenGroups)
                     SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName);
@@ -54,7 +57,7 @@
             if (sharedParameterInfo.CreateData == null)
                 throw new ArgumentNullException(nameof(sharedParameterInfo.CreateData), "Не заданы данные для создания общего параметра");
             if (ParameterExists(sharedParameterInfo.Definition, fullMatch))
-                return;
+                return false;
 
             if (sharedParameterInfo.CreateData.CategoriesForBind == null ||
                 !sharedParameterInfo.CreateData.CategoriesForBind.Any())
@@ -77,23 +80,27 @@
             {
                 InternalAddSharedParameter(doc, definitionFile);
             }
+
+            return inserted;
         }
 
         /// <inheritdoc />
-        public void AddOrUpdateParameter(
+        public bool AddOrUpdateParameter(
             DefinitionFile definitionFile,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch)
         {
+            bool updated = false;
+
             if (!ParameterExists(sharedParameterInfo.Definition, fullMatch))
             {
-                AddSharedParameter(
+                updated = AddSharedParameter(
                     definitionFile,
                     sharedParameterInfo,
                     fullMatch,
                     useTransaction: false);
 
-                return;
+                return updated;
             }
 
             var definition = GetSharedExternalDefinition(
@@ -138,10 +145,12 @@
 
             map.Remove(definition);
 
-            var res = map.Insert(
+            updated = map.Insert(
                 definition,
                 updatedBinding,
                 sharedParameterInfo.CreateData.ParameterGroup);
+
+            return updated;
         }
 
         /// <inheritdoc />
