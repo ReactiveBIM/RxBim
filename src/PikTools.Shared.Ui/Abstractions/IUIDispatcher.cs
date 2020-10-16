@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Shared.Ui.Abstractions
 {
     using System;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Интерфейс диспетчера UI потока
@@ -17,6 +18,6 @@
         /// Выполнить асинхронное действие в UI потоке
         /// </summary>
         /// <param name="action">Действие</param>
-        void InvokeAsync(Action action);
+        Task InvokeAsync(Action action);
     }
 }
