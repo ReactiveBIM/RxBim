@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <BooleanToVisibilityConverter x:Key="bool2VisibilityConverter" />
@@ -11,7 +12,7 @@
         <Setter Property="Background" Value="{DynamicResource DataGridBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -120,7 +121,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -155,7 +156,7 @@
     <Style TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="{DynamicResource DataGridBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -266,7 +267,7 @@
     <Style TargetType="{x:Type DataGridRowHeader}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -327,7 +328,7 @@
     <Style TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Background" Value="{DynamicResource DataGridBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="BorderThickness" Value="0"/>

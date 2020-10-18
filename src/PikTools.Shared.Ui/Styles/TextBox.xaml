@@ -3,6 +3,7 @@
                     xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- общий стиль TextBox -->
@@ -10,7 +11,7 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}"/>

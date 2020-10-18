@@ -2,13 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <!-- общий стиль RadioButton -->
     <Style TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="{DynamicResource RadioButtonBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource RadioButtonBorderBrush}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource RadioButtonForeground}"/>

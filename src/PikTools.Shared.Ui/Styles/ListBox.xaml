@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- общий стиль ListBox -->
@@ -44,7 +45,7 @@
     <!-- общий стиль ListBoxItem -->
     <Style TargetType="{x:Type ListBoxItem}">
         <Setter Property="Background" Value="{DynamicResource ListBoxBackground}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}"/>

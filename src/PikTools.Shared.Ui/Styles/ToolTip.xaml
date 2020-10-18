@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <Style x:Key="{x:Type ToolTip}"
@@ -11,7 +12,7 @@
         <Setter Property="Background" Value="{DynamicResource ToolTipBackground}"/>
         <Setter Property="Foreground" Value="{DynamicResource ToolTipForeground}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="12,8"/>
