@@ -6,8 +6,11 @@
     using System.Text.RegularExpressions;
     using Generators;
     using global::Nuke.Common;
+    using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Tools.SignTool;
     using global::Nuke.Common.Utilities;
     using JetBrains.Annotations;
 
@@ -70,7 +73,12 @@
             {
                 CreateOutDirectory();
 
-                _wix.BuildMsi(ProjectForMsiBuild, Config);
+                _wix.BuildMsi(ProjectForMsiBuild,
+                    Config,
+                    (AbsolutePath)Cert,
+                    Password,
+                    Algorithm,
+                    ServerUrl);
             });
 
         /// <summary>
@@ -162,6 +170,30 @@
                 ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
             set => _config = value;
         }
+
+        /// <summary>
+        /// путь к сертификату
+        /// </summary>
+        [Parameter("Путь до сертификата")]
+        public string Cert { get; set; }
+
+        /// <summary>
+        /// Пароль от сертификату
+        /// </summary>
+        [Parameter("Пароль от сертификата")]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Алгоритм сертификата
+        /// </summary>
+        [Parameter("Алгоритм сертификата")]
+        public string Algorithm { get; set; }
+
+        /// <summary>
+        /// сервер url
+        /// </summary>
+        [Parameter("Сервер проверки сертификата")]
+        public string ServerUrl { get; set; }
 
         private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
 

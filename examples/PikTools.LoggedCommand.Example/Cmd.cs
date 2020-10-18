@@ -13,7 +13,6 @@
     {
         public PluginResult ExecuteCommand()
         {
-            throw new Exception("KUKU EPTA!!!!");
             return PluginResult.Succeeded;
         }
     }

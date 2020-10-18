@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
@@ -267,7 +268,7 @@
     <Style TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{DynamicResource ExpanderForeground}"/>
         <Setter Property="Background" Value="{DynamicResource ExpanderBackground}"/>
-        <Setter Property="FontFamily" Value="Graphik LCG"/>
+        <Setter Property="FontFamily" Value="{StaticResource GraphikLcg}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
