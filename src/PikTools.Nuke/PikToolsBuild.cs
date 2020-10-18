@@ -73,7 +73,12 @@
             {
                 CreateOutDirectory();
 
-                _wix.BuildMsi(ProjectForMsiBuild, Config);
+                _wix.BuildMsi(ProjectForMsiBuild,
+                    Config,
+                    (AbsolutePath)Cert,
+                    Password,
+                    Algorithm,
+                    ServerUrl);
             });
 
         /// <summary>
@@ -166,6 +171,30 @@
             set => _config = value;
         }
 
+        /// <summary>
+        /// путь к сертификату
+        /// </summary>
+        [Parameter("Путь до сертификата")]
+        public string Cert { get; set; }
+
+        /// <summary>
+        /// Пароль от сертификату
+        /// </summary>
+        [Parameter("Пароль от сертификата")]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Алгоритм сертификата
+        /// </summary>
+        [Parameter("Алгоритм сертификата")]
+        public string Algorithm { get; set; }
+
+        /// <summary>
+        /// сервер url
+        /// </summary>
+        [Parameter("Сервер проверки сертификата")]
+        public string ServerUrl { get; set; }
+
         private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
 
         private void CreateOutDirectory()
@@ -175,37 +204,6 @@
             {
                 Directory.CreateDirectory(@out);
             }
-        }
-
-        private void SignAssembly(
-            Project project,
-            AbsolutePath cert,
-            string password,
-            string digestAlgorithm,
-            string timestampServerUrl)
-        {
-            var fileName = project.Directory / "bin" / Configuration.Release / project.GetProperty("TargetFramework") /
-                           "publish" / $"{project.GetProperty("AssemblyName")}.dll";
-
-            var settings = new SignToolSettings()
-                .SetFileDigestAlgorithm(digestAlgorithm)
-                .SetFile(cert)
-                .SetFiles(fileName)
-                .SetPassword(password)
-                .SetTimestampServerDigestAlgorithm(digestAlgorithm)
-                .SetRfc3161TimestampServerUrl(timestampServerUrl);
-
-            if (!settings.HasValidToolPath())
-            {
-                var programFilesPath =
-                    (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-                settings = settings
-                    .SetToolPath(programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
-            }
-
-            Logger.Info($"ToolPath: {settings.ToolPath}");
-
-            SignToolTasks.SignTool(settings);
         }
     }
 }

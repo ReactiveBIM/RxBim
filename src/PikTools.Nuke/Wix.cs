@@ -8,10 +8,12 @@
     using Application.Api;
     using Command.Api;
     using Generators;
+    using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Tools.SignTool;
     using Microsoft.Win32;
     using MsiBuilder;
     using Octokit;
@@ -45,7 +47,17 @@
         /// </summary>
         /// <param name="project">Проект</param>
         /// <param name="configuration">Конфигурация</param>
-        public void BuildMsi(global::Nuke.Common.ProjectModel.Project project, string configuration)
+        /// <param name="cert">Путь к сертификату</param>
+        /// <param name="password">пароль к сертификату</param>
+        /// <param name="digestAlgorithm">Алгоритм сертификата</param>
+        /// <param name="timestampServerUrl">сервер url</param>
+        public void BuildMsi(
+            global::Nuke.Common.ProjectModel.Project project,
+            string configuration,
+            AbsolutePath cert = null,
+            string password = null,
+            string digestAlgorithm = null,
+            string timestampServerUrl = null)
         {
             CheckNetFramework();
 
@@ -58,6 +70,11 @@
                 .SetProjectFile(project.Path)
                 .SetOutputDirectory(@out)
                 .SetConfiguration(configuration));
+
+            if (configuration == "Release")
+            {
+                SignAssembly(project, (AbsolutePath)@out, cert, password, digestAlgorithm, timestampServerUrl);
+            }
 
             if (Directory.Exists(@out))
             {
@@ -253,6 +270,47 @@
             var latest = releases[0];
             var browserDownloadUrl = latest.Assets[0].BrowserDownloadUrl;
             return browserDownloadUrl;
+        }
+
+        private void SignAssembly(
+            global::Nuke.Common.ProjectModel.Project project,
+            AbsolutePath outputDirectory,
+            AbsolutePath cert,
+            string password,
+            string digestAlgorithm,
+            string timestampServerUrl)
+        {
+            cert = cert ??
+                   throw new ArgumentException("Не указал сертификат");
+
+            password = password ??
+                       throw new ArgumentException("Не указан пароль сертификата");
+            digestAlgorithm = digestAlgorithm ??
+                              throw new ArgumentException("Не указан алгоритм сертификата");
+            timestampServerUrl = timestampServerUrl ??
+                                 throw new ArgumentException("Не указан сервер проверки сертификата");
+
+            var fileName = outputDirectory / $"{project.GetProperty("AssemblyName")}.dll";
+
+            var settings = new SignToolSettings()
+                .SetFileDigestAlgorithm(digestAlgorithm)
+                .SetFile(cert)
+                .SetFiles(fileName)
+                .SetPassword(password)
+                .SetTimestampServerDigestAlgorithm(digestAlgorithm)
+                .SetRfc3161TimestampServerUrl(timestampServerUrl);
+
+            if (!settings.HasValidToolPath())
+            {
+                var programFilesPath =
+                    (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                settings = settings
+                    .SetToolPath(programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
+            }
+
+            Logger.Info($"ToolPath: {settings.ToolPath}");
+
+            SignToolTasks.SignTool(settings);
         }
     }
 }
