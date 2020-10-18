@@ -6,8 +6,11 @@
     using System.Text.RegularExpressions;
     using Generators;
     using global::Nuke.Common;
+    using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Tools.SignTool;
     using global::Nuke.Common.Utilities;
     using JetBrains.Annotations;
 
@@ -172,6 +175,37 @@
             {
                 Directory.CreateDirectory(@out);
             }
+        }
+
+        private void SignAssembly(
+            Project project,
+            AbsolutePath cert,
+            string password,
+            string digestAlgorithm,
+            string timestampServerUrl)
+        {
+            var fileName = project.Directory / "bin" / Configuration.Release / project.GetProperty("TargetFramework") /
+                           "publish" / $"{project.GetProperty("AssemblyName")}.dll";
+
+            var settings = new SignToolSettings()
+                .SetFileDigestAlgorithm(digestAlgorithm)
+                .SetFile(cert)
+                .SetFiles(fileName)
+                .SetPassword(password)
+                .SetTimestampServerDigestAlgorithm(digestAlgorithm)
+                .SetRfc3161TimestampServerUrl(timestampServerUrl);
+
+            if (!settings.HasValidToolPath())
+            {
+                var programFilesPath =
+                    (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                settings = settings
+                    .SetToolPath(programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
+            }
+
+            Logger.Info($"ToolPath: {settings.ToolPath}");
+
+            SignToolTasks.SignTool(settings);
         }
     }
 }
