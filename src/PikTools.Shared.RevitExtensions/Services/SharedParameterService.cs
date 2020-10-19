@@ -116,14 +116,21 @@
 
             var binding = (ElementBinding)map.get_Item(definition);
 
-            var cs = binding?.Categories ?? new CategorySet();
+            var set = binding?.Categories ?? new CategorySet();
 
-            var cats = sharedParameterInfo.CreateData
+            var categories = sharedParameterInfo.CreateData
                 .CategoriesForBind
-                .Select(bic => Category.GetCategory(document, bic));
+                .Select(bic => Category.GetCategory(document, bic))
+                .ToArray();
 
-            cats.Where(c => !cs.Contains(c))
-                .Select(c => cs.Insert(c))
+            if (categories.All(c => set.Contains(c)))
+            {
+                return false;
+            }
+
+            categories
+                .Where(c => !set.Contains(c))
+                .Select(c => set.Insert(c))
                 .ToArray();
 
             ElementBinding updatedBinding;
@@ -132,11 +139,11 @@
 
             if (binding is InstanceBinding || isInstance)
             {
-                updatedBinding = createService.NewInstanceBinding(cs);
+                updatedBinding = createService.NewInstanceBinding(set);
             }
             else if (binding is TypeBinding || !isInstance)
             {
-                updatedBinding = createService.NewTypeBinding(cs);
+                updatedBinding = createService.NewTypeBinding(set);
             }
             else
             {
