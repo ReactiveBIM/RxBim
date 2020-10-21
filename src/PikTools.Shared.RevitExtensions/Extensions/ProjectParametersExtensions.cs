@@ -49,24 +49,31 @@
         {
             var app = doc.Application;
             var oriFile = app.SharedParametersFilename;
-            var tempFile = $"{Path.GetTempFileName()}.txt";
-            File.Create(tempFile);
-
-            app.SharedParametersFilename = tempFile;
-
-            var defOptions = new ExternalDefinitionCreationOptions(name, type)
+            ExternalDefinition def;
+            try
             {
-                Visible = visible
-            };
-            var def = app
-                .OpenSharedParameterFile()
-                .Groups
-                .Create("TemporaryDefintionGroup")
-                .Definitions
-                .Create(defOptions) as ExternalDefinition;
+                var tempFile = $"{Path.Combine(Path.GetTempPath(), Path.GetRandomFileName())}.txt";
+                File.Create(tempFile).Close();
 
-            app.SharedParametersFilename = oriFile;
-            File.Delete(tempFile);
+                app.SharedParametersFilename = tempFile;
+
+                var defOptions = new ExternalDefinitionCreationOptions(name, type)
+                {
+                    Visible = visible
+                };
+                def = app
+                    .OpenSharedParameterFile()
+                    .Groups
+                    .Create("TemporaryDefintionGroup")
+                    .Definitions
+                    .Create(defOptions) as ExternalDefinition;
+
+                File.Delete(tempFile);
+            }
+            finally
+            {
+                app.SharedParametersFilename = oriFile;
+            }
 
             Binding binding = app.Create.NewTypeBinding(cats);
             if (inst)
