@@ -12,11 +12,6 @@
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
-
-    <ItemGroup>
-      <None Remove="Fonts\GraphikLCG-Medium.ttf" />
-      <None Remove="Fonts\GraphikLCG-Regular.ttf" />
-    </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
@@ -32,8 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Fonts\GraphikLCG-Medium.ttf" />
-    <Resource Include="Fonts\GraphikLCG-Regular.ttf" />
+    <None Update="Fonts\GraphikLCG-Medium.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\GraphikLCG-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <PropertyGroup>
