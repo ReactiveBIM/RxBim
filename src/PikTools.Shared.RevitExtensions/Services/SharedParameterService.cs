@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using Models;
+    using PikTools.Shared.RevitExtensions.Abstractions;
+    using PikTools.Shared.RevitExtensions.Models;
 
     /// <summary>
     /// Сервис по работе с общими параметрами
@@ -27,7 +27,10 @@
 
         /// <inheritdoc />
         public bool AddSharedParameter(
-            DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false)
+            DefinitionFile definitionFile,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch,
+            bool useTransaction = false)
         {
             bool inserted = false;
 
@@ -37,6 +40,11 @@
                     GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(document, c)));
 
                 var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile1);
+
+                if (externalDefinition == null)
+                {
+                    return;
+                }
 
                 Binding binding;
                 if (sharedParameterInfo.CreateData.IsCreateForInstance)
@@ -56,7 +64,7 @@
                 throw new ArgumentNullException(nameof(sharedParameterInfo.Definition), "Не задано описание общего параметра");
             if (sharedParameterInfo.CreateData == null)
                 throw new ArgumentNullException(nameof(sharedParameterInfo.CreateData), "Не заданы данные для создания общего параметра");
-            if (ParameterExists(sharedParameterInfo.Definition, fullMatch))
+            if (ParameterExistsInDocument(sharedParameterInfo.Definition, fullMatch))
                 return false;
 
             if (sharedParameterInfo.CreateData.CategoriesForBind == null ||
@@ -85,83 +93,7 @@
         }
 
         /// <inheritdoc />
-        public bool AddOrUpdateParameter(
-            DefinitionFile definitionFile,
-            SharedParameterInfo sharedParameterInfo,
-            bool fullMatch)
-        {
-            bool updated = false;
-
-            if (!ParameterExists(sharedParameterInfo.Definition, fullMatch))
-            {
-                updated = AddSharedParameter(
-                    definitionFile,
-                    sharedParameterInfo,
-                    fullMatch,
-                    useTransaction: false);
-
-                return updated;
-            }
-
-            var definition = GetSharedExternalDefinition(
-                sharedParameterInfo,
-                fullMatch,
-                definitionFile);
-
-            var document = _uiApplication.ActiveUIDocument.Document;
-
-            var createService = document.Application.Create;
-
-            var map = document.ParameterBindings;
-
-            var binding = (ElementBinding)map.get_Item(definition);
-
-            var set = binding?.Categories ?? new CategorySet();
-
-            var categories = sharedParameterInfo.CreateData
-                .CategoriesForBind
-                .Select(bic => Category.GetCategory(document, bic))
-                .ToArray();
-
-            if (categories.All(c => set.Contains(c)))
-            {
-                return false;
-            }
-
-            categories
-                .Where(c => !set.Contains(c))
-                .Select(c => set.Insert(c))
-                .ToArray();
-
-            ElementBinding updatedBinding;
-
-            var isInstance = sharedParameterInfo.CreateData.IsCreateForInstance;
-
-            if (binding is InstanceBinding || isInstance)
-            {
-                updatedBinding = createService.NewInstanceBinding(set);
-            }
-            else if (binding is TypeBinding || !isInstance)
-            {
-                updatedBinding = createService.NewTypeBinding(set);
-            }
-            else
-            {
-                throw new Exception();
-            }
-
-            map.Remove(definition);
-
-            updated = map.Insert(
-                definition,
-                updatedBinding,
-                sharedParameterInfo.CreateData.ParameterGroup);
-
-            return updated;
-        }
-
-        /// <inheritdoc />
-        public bool ParameterExistsInSpf(
+        public bool ParameterExistsInDefinitionFile(
             DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch)
         {
             try
@@ -189,13 +121,184 @@
         }
 
         /// <summary>
+        /// Считывает файлы общих параметров используя информацию
+        /// из <see cref="SharedParameterFileSource"/>
+        /// </summary>
+        /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
+        public DefinitionFile[] TryGetDefinitionFiles(
+            SharedParameterFileSource fileSource)
+        {
+            var document = _uiApplication
+                .ActiveUIDocument
+                .Document;
+
+            var oldDefinitionFilePath = string.Empty;
+
+            bool wasInitiallySet;
+
+            try
+            {
+                oldDefinitionFilePath =
+                    document
+                        .Application
+                        .SharedParametersFilename;
+
+                wasInitiallySet = true;
+            }
+            catch (Exception ex)
+            {
+                wasInitiallySet = false;
+            }
+
+            var definitionFiles = new List<DefinitionFile>();
+
+            foreach (var filePath in fileSource.FilePaths)
+            {
+                try
+                {
+                    var fileInfo = new FileInfo(filePath);
+
+                    document
+                        .Application
+                        .SharedParametersFilename =
+                        fileInfo.FullName;
+
+                    definitionFiles.Add(
+                        document
+                            .Application
+                            .OpenSharedParameterFile());
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            if (wasInitiallySet)
+            {
+                document
+                    .Application
+                    .SharedParametersFilename =
+                    oldDefinitionFilePath;
+            }
+
+            return definitionFiles.ToArray();
+        }
+
+        /// <inheritdoc />
+        public bool AddOrUpdateParameter(
+            DefinitionFile[] definitionFiles,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch)
+        {
+            bool existsInDocument = ParameterExistsInDocument(
+                sharedParameterInfo.Definition,
+                fullMatch);
+
+            var externalDefinitionInFile = definitionFiles
+                .Select(df => new
+                {
+                    ExternalDefinition = GetSharedExternalDefinition(
+                        sharedParameterInfo,
+                        fullMatch,
+                        df),
+                    DefinitionFile = df
+                })
+                .Where(a => a.ExternalDefinition != null)
+                .ToArray();
+
+            if (externalDefinitionInFile.Length < 1)
+            {
+                return false;
+            }
+
+            if (externalDefinitionInFile.Length > 1)
+            {
+                throw new ApplicationException(
+                    $"Параметр с одинаковым именем " +
+                    $"{sharedParameterInfo.Definition.ParameterName} " +
+                    $"обнаружен в нескольких ФОП!");
+            }
+
+            if (existsInDocument)
+            {
+                return UpdateParameterBindings(
+                    externalDefinitionInFile[0].ExternalDefinition,
+                    sharedParameterInfo.CreateData);
+            }
+            else
+            {
+                return AddSharedParameter(
+                    externalDefinitionInFile[0].DefinitionFile,
+                    sharedParameterInfo,
+                    fullMatch,
+                    useTransaction: false);
+            }
+        }
+
+        private bool UpdateParameterBindings(
+            ExternalDefinition definition,
+            SharedParameterCreateData createData)
+        {
+            var document = _uiApplication.ActiveUIDocument.Document;
+
+            var createService = document.Application.Create;
+
+            var map = document.ParameterBindings;
+
+            var binding = (ElementBinding)map.get_Item(definition);
+
+            var set = binding?.Categories ?? new CategorySet();
+
+            var categories = createData
+                .CategoriesForBind
+                .Select(bic => Category.GetCategory(document, bic))
+                .ToArray();
+
+            if (categories.All(c => set.Contains(c)))
+            {
+                return false;
+            }
+
+            categories
+                .Where(c => !set.Contains(c))
+                .Select(c => set.Insert(c))
+                .ToArray();
+
+            ElementBinding updatedBinding;
+
+            var isInstance = createData.IsCreateForInstance;
+
+            if (binding is InstanceBinding || isInstance)
+            {
+                updatedBinding = createService.NewInstanceBinding(set);
+            }
+            else if (binding is TypeBinding || !isInstance)
+            {
+                updatedBinding = createService.NewTypeBinding(set);
+            }
+            else
+            {
+                throw new Exception();
+            }
+
+            map.Remove(definition);
+
+            var updated = map.Insert(
+                definition,
+                updatedBinding,
+                createData.ParameterGroup);
+
+            return updated;
+        }
+
+        /// <summary>
         /// Проверка существования параметра указанного имени в документе
         /// </summary>
         /// <param name="sharedParameterDefinition">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
         /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
         /// False - параметр ищется только по имени</param>
-        private bool ParameterExists(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
+        private bool ParameterExistsInDocument(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
         {
             var doc = _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
@@ -242,6 +345,8 @@
             bool fullMatch,
             DefinitionFile definitionFile)
         {
+            ExternalDefinition definition = null;
+
             foreach (var defGroup in definitionFile.Groups)
             {
                 foreach (var def in defGroup.Definitions)
@@ -262,7 +367,19 @@
                 }
             }
 
-            throw new KeyNotFoundException($"В ФОП не найден параметр \"{sharedParameterInfo.Definition.ParameterName}\"");
+            return definition;
+
+            /*
+              var guid =
+                  sharedParameterInfo.Definition.Guid == null ?
+                  string.Empty :
+                  $" c GUID {sharedParameterInfo.Definition.Guid}";
+
+              throw new KeyNotFoundException(
+                  $"В ФОП {definitionFile.Filename} не найден параметр " +
+                  $"\"{sharedParameterInfo.Definition.ParameterName}\"" +
+                  $"{guid}");
+            */
         }
 
         /// <summary>
