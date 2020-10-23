@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text;
     using WixSharp;
+    using WixSharp.CommonTasks;
     using File = WixSharp.File;
 
     public class WixInstaller
@@ -25,7 +26,8 @@
                         {
                             new Dir(projectName, FillEntities(null, new[] { sourceDir }).ToArray())
                         }).ToArray()
-                ))
+                )
+            )
             {
                 Description = options.Description,
                 Package =
@@ -52,6 +54,10 @@
                 OutFileName = options.OutFileName + "_" + options.Version
             };
 
+            project.AddAction(
+                new ManagedAction(
+                    CustomActions.InstallFonts, GetType().Assembly.Location, Return.ignore, When.After, Step.InstallFinalize, Condition.Always));
+
             var attributesDefinition = $"AdminImage=yes;";
             if (!string.IsNullOrEmpty(options.Comments))
             {
@@ -68,7 +74,7 @@
             return project;
         }
 
-        private static IEnumerable<WixEntity> FillEntities(
+        private IEnumerable<WixEntity> FillEntities(
             Dir parent,
             IEnumerable<string> paths,
             bool withSubDirectories = true)

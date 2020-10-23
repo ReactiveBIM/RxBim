@@ -40,4 +40,8 @@
   <PropertyGroup>
     <Command__PikTools_CommandExample_Cmd4>6dba98a8-23e6-46f4-8280-de37c29e97f8</Command__PikTools_CommandExample_Cmd4>
   </PropertyGroup>
+  <PropertyGroup>
+    <Command__PikTools_CommandExample_Cmd5>20ec43be-87c1-49b0-b0af-c5b012b26d2b</Command__PikTools_CommandExample_Cmd5>
+    <Command__PikTools_CommandExample_Cmd6>bca56ef3-86fa-4469-86c2-21aff2ddcfce</Command__PikTools_CommandExample_Cmd6>
+  </PropertyGroup>
 </Project>
