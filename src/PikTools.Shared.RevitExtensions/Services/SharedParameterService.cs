@@ -211,7 +211,7 @@
                 return false;
             }
 
-            if (externalDefinitionInFile.Length > 1)
+            if (externalDefinitionInFile.Length > 1 && !fullMatch)
             {
                 throw new ApplicationException(
                     $"Параметр с одинаковым именем " +
