@@ -88,12 +88,12 @@
 
             if (TryGetImagePath(assembly, b.LargeImage, out var largeImagePath))
             {
-                button.SetLargeImage(largeImagePath);
+                button.SetLargeImage(new Uri(largeImagePath, UriKind.RelativeOrAbsolute));
             }
 
             if (TryGetImagePath(assembly, b.SmallImage, out var smallImagePath))
             {
-                button.SetSmallImage(smallImagePath);
+                button.SetSmallImage(new Uri(smallImagePath, UriKind.RelativeOrAbsolute));
             }
         }
 
