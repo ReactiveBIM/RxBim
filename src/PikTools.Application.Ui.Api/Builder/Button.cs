@@ -64,12 +64,12 @@ namespace PikTools.Application.Ui.Api.Builder
         /// <summary>
         /// Устанавливает большое изображение
         /// </summary>
-        /// <param name="imagePath">imagePath</param>
-        public Button SetLargeImage(string imagePath)
+        /// <param name="imageUri">imageUri</param>
+        public Button SetLargeImage(Uri imageUri)
         {
-            if (!string.IsNullOrEmpty(imagePath))
+            if (imageUri != null)
             {
-                LargeImage = new BitmapImage(new Uri(imagePath));
+                LargeImage = new BitmapImage(imageUri);
             }
 
             return this;
@@ -78,12 +78,12 @@ namespace PikTools.Application.Ui.Api.Builder
         /// <summary>
         /// Устанавливает маленькое изображение
         /// </summary>
-        /// <param name="imagePath">изображение</param>
-        public Button SetSmallImage(string imagePath)
+        /// <param name="imageUri">изображение</param>
+        public Button SetSmallImage(Uri imageUri)
         {
-            if (!string.IsNullOrEmpty(imagePath))
+            if (imageUri != null)
             {
-                SmallImage = new BitmapImage(new Uri(imagePath));
+                SmallImage = new BitmapImage(imageUri);
             }
 
             return this;
