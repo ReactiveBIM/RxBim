@@ -36,7 +36,7 @@
         /// производится с учетом аргумента fullMatch.
         /// </summary>
         /// <remarks>Метод не создает транзакцию</remarks>
-        /// <param name="definitionFile">Файл общих параметров документа</param>
+        /// <param name="definitionFiles">Файлы общих параметров документа</param>
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени
@@ -49,7 +49,7 @@
         /// </param>
         /// <returns>true - если параметр был добавлен или обновлён</returns>
         public bool AddOrUpdateParameter(
-            DefinitionFile definitionFile,
+            DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch);
 
@@ -61,7 +61,7 @@
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
-        bool ParameterExistsInSpf(DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch);
+        bool ParameterExistsInDefinitionFile(DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch);
 
         /// <summary>
         /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
