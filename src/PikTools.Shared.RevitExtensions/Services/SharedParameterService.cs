@@ -145,7 +145,7 @@
 
                 wasInitiallySet = true;
             }
-            catch (Exception ex)
+            catch
             {
                 wasInitiallySet = false;
             }
@@ -168,8 +168,9 @@
                             .Application
                             .OpenSharedParameterFile());
                 }
-                catch (Exception ex)
+                catch
                 {
+                    // ignore
                 }
             }
 
