@@ -23,7 +23,15 @@
         /// <param name="action">метод создания меню</param>
         public static void AddMenu(this Container container, Action<Ribbon> action)
         {
-            container.RegisterInstance(action);
+            var menuCreated = false;
+            container.RegisterInstance<Action<Ribbon>>(ribbon =>
+            {
+                if (!menuCreated)
+                {
+                    action(ribbon);
+                    menuCreated = true;
+                }
+            });
             container.RegisterDecorator(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
@@ -37,12 +45,16 @@
         {
             assembly ??= Assembly.GetCallingAssembly();
 
+            var menuCreated = false;
             container.Register<Action<Ribbon>>(() =>
             {
                 var menuConfiguration = GetMenuConfiguration(container, cfg);
 
                 return ribbon =>
                 {
+                    if (menuCreated)
+                        return;
+
                     menuConfiguration.Tabs
                         .ForEach(t =>
                         {
@@ -61,6 +73,8 @@
                                 });
                             });
                         });
+
+                    menuCreated = true;
                 };
             });
             container.RegisterDecorator(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
