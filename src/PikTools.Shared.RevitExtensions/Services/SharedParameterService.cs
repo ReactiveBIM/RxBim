@@ -368,18 +368,6 @@
             }
 
             return definition;
-
-            /*
-              var guid =
-                  sharedParameterInfo.Definition.Guid == null ?
-                  string.Empty :
-                  $" c GUID {sharedParameterInfo.Definition.Guid}";
-
-              throw new KeyNotFoundException(
-                  $"В ФОП {definitionFile.Filename} не найден параметр " +
-                  $"\"{sharedParameterInfo.Definition.ParameterName}\"" +
-                  $"{guid}");
-            */
         }
 
         /// <summary>
