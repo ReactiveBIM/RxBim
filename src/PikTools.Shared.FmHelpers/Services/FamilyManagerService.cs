@@ -6,15 +6,15 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using Abstractions;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
     using FamilyManager.Shared.Enums;
     using FamilyManager.V2.Dto.Enums;
     using FamilyManager.V2.Dto.Filter;
     using FamilyManager.V2.SDK;
+    using Models;
     using Newtonsoft.Json;
-    using PikTools.Shared.FmHelpers.Abstractions;
-    using PikTools.Shared.FmHelpers.Models;
 
     /// <summary>
     /// Сервис работы с FM
@@ -88,7 +88,7 @@
                 var readText = File.ReadAllText(localAppPath + _settings.AuthCachePath);
                 var loginResult = JsonConvert.DeserializeObject<TokenModel>(readText);
 
-                var httpClient = new HttpClient()
+                var httpClient = new HttpClient
                 {
                     BaseAddress = new Uri(_settings.FmEndPoint)
                 };
@@ -99,20 +99,18 @@
                     httpClient, AppType.Revit, new Version(_settings.ClientVersion));
 
                 var quickSearch = await client.Families.QuickSearch(
-                    new QuickSearchFilter() { FamilyName = name, AppType = AppType.Revit });
-                var family = quickSearch.FirstOrDefault();
+                    new QuickSearchFilter { FamilyName = name, AppType = AppType.Revit });
+                var family = quickSearch.FirstOrDefault(f => f.Name == name);
                 if (family == null)
                     return Result.Failure<string>($"Семейство {name} не найдено");
 
+                var fileType = family.IsSystem ? FileTypes.Rvt : FileTypes.Rfa;
                 var bytes = await client.FamilyVersions.GetFamilyFile(
-                    family.CurrentVersion.VersionId, FileTypes.Rvt);
+                    family.CurrentVersion.VersionId, fileType);
 
                 var tempPath = Path.Combine(Path.GetTempPath(), "FamilyManager");
                 Directory.CreateDirectory(tempPath);
                 var tempFile = Path.Combine(tempPath, family.Name);
-                var fileType = family.IsSystem
-                    ? FileTypes.Rvt
-                    : FileTypes.Rfa;
                 tempFile += $".{fileType.ToString().ToLower()}";
                 File.WriteAllBytes(tempFile, bytes);
 
