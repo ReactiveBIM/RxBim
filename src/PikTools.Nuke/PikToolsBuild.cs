@@ -98,7 +98,7 @@
         /// <summary>
         /// Проверяет текущюю версию проектв и версию релиза
         /// </summary>
-        public Target CheckVersion => _ => _
+        public Target CheckStageVersion => _ => _
             .DependsOn(CheckCurrentBranch)
             .Executes(() =>
             {
@@ -112,12 +112,74 @@
             });
 
         /// <summary>
+        /// Проверяет версию на продакшене
+        /// </summary>
+        public Target CheckProductionVersion => _ => _
+            .Executes(() =>
+            {
+                if (GitTasks.GitCurrentBranch() != "master")
+                {
+                    throw new InvalidOperationException("Current branch should be master!");
+                }
+
+                var currentCommitHash = GitTasks.Git("log --pretty=format:%H -n 1")
+                    .FirstOrDefault().Text;
+                if (currentCommitHash == null)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                var tag = GitTasks.Git("for-each-ref --sort=-creatordate refs/tags")
+                    .Select(x => x.Text)
+                    .FirstOrDefault(x => !x.Contains("-rc"));
+                if (tag == null)
+                {
+                    throw new InvalidDataException("No any tag");
+                }
+
+                var pattern = @"\d+\.\d+\.\d+";
+                var regex = new Regex($@"(?<hash>[0-9a-f]+)\s+\w+\s+(refs\/tags\/)(?<tag>{pattern})");
+
+                if (!regex.IsMatch(tag))
+                {
+                    throw new InvalidDataException("Version is not valid");
+                }
+
+                var match = regex.Match(tag);
+                var tagValue = match.Groups["tag"].Value;
+
+                var hash = GitTasks.Git($"show {tagValue} --pretty=format:\"%H\" --quiet")
+                    .Select(x => x.Text)
+                    .Last();
+
+                if (hash != currentCommitHash)
+                {
+                    throw new InvalidDataException("Tag hash != current commit hash");
+                }
+
+                var projectVersion = ProjectForMsiBuild.GetProperty("Version");
+                if (tagValue != projectVersion)
+                {
+                    throw new ArgumentException("Project version is not equals git version!!!");
+                }
+            });
+
+        /// <summary>
         /// Собирает msi для тестирования
         /// </summary>
         public Target BuildMsiForTesting => _ => _
             .Requires(() => Project)
-            .DependsOn(CheckVersion)
+            .DependsOn(CheckStageVersion)
             .Executes(() => { Config = "Debug"; })
+            .Triggers(BuildMsi);
+
+        /// <summary>
+        /// Собирает msi для тестирования
+        /// </summary>
+        public Target BuildMsiForProduction => _ => _
+            .Requires(() => Project)
+            .DependsOn(CheckProductionVersion)
+            .Executes(() => { Config = "Release"; })
             .Triggers(BuildMsi);
 
         /// <summary>
