@@ -85,10 +85,14 @@
                                              Margin="5,0"/>
         </Grid>
         
-        <Button Grid.Row="2"
-                Content="Выполнить"
-                Command="{Binding DoCommand}"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Margin="10"/>
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Выполнить"
+                    Command="{Binding DoCommand}"/>
+            
+            <Button Content="Загрузить семейство"
+                    Command="{Binding LoadFamilyCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

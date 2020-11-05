@@ -15,7 +15,8 @@
 	
 	<ItemGroup>
     <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
-	<PackageReference Include="BimLab.FamilyManager.Client.SDK.V2" Version="2020.7.4" />
+	<PackageReference Include="BimLab.FamilyManager.Client.SDK.V2" Version="2020.10.1-dev013" />
+	<PackageReference Include="Bimlab.Security.Client" Version="2020.7.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
