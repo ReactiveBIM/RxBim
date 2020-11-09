@@ -10,8 +10,9 @@
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.5"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
+        Name="window"
         Title="{Binding Title}" 
-        Height="300" Width="400"
+        SizeToContent="WidthAndHeight"
         MinHeight="200" MinWidth="400">
     <Window.Resources>
         <ResourceDictionary>
@@ -23,7 +24,7 @@
     
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
-            <b:InvokeCommandAction Command="{Binding InitializeCommand}"/>
+            <b:InvokeCommandAction Command="{Binding ElementName=window, Path=DataContext.InitializeCommand}"/>
         </b:EventTrigger>
     </b:Interaction.Triggers>
     
