@@ -12,5 +12,11 @@
         /// go
         /// </summary>
         Task<Result> Go();
+
+        /// <summary>
+        /// Загрузка семейства
+        /// </summary>
+        /// <param name="familyName">Название семейства</param>
+        Result LoadFamily(string familyName);
     }
 }

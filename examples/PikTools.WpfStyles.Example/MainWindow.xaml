@@ -84,7 +84,8 @@
                 </ListBox>
             
                 <DataGrid Name="dg"
-                          Height="100">
+                          IsReadOnly="False"
+                          Height="150">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Заголовок 1" 
                                             Binding="{Binding Name}"/>
@@ -92,6 +93,9 @@
                                             Binding="{Binding Role}"/>
                         <DataGridTextColumn Header="Заголовок 3"
                                             Binding="{Binding Access}"/>
+                        <DataGridCheckBoxColumn ElementStyle="{StaticResource {x:Type CheckBox}}" 
+                                                Header="Выбор"
+                                                Binding="{Binding IsChecked}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
