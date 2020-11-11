@@ -25,7 +25,7 @@ namespace PikTools.WpfStyles.Example
             {
                 new TableRowData { Name = "Ползователь 1", Role = "Роль 1", Access = "Права 1"},
                 new TableRowData { Name = "Ползователь 2", Role = "Роль 2", Access = "Права 2"},
-                new TableRowData { Name = "Ползователь 3", Role = "Роль 3", Access = "Права 3"},
+                new TableRowData { Name = "Ползователь 3", Role = "Роль 3", Access = "Права 3", IsChecked = true},
                 new TableRowData { Name = "Ползователь 4", Role = "Роль 4", Access = "Права 4"},
                 new TableRowData { Name = "Ползователь 5", Role = "Роль 5", Access = "Права 5"}
             };

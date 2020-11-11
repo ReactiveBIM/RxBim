@@ -12,15 +12,33 @@
             = "https://fm-api.bimteam.ru/";
 
         /// <summary>
-        /// Путь к кэшу авторизации
-        /// </summary>
-        public string AuthCachePath { get; set; }
-            = @"\PIK\Auth\cache.json";
-
-        /// <summary>
         /// Версия клиента FM
         /// </summary>
         public string ClientVersion { get; set; }
             = "2.3";
+
+        /// <summary>
+        /// Идентификатор клиента
+        /// </summary>
+        public string ClientId { get; set; }
+            = "fm_app";
+
+        /// <summary>
+        /// Клиентский ключ
+        /// </summary>
+        public string ClientSecret { get; set; }
+            = "xyQBKp7YEkZ2tmu7";
+
+        /// <summary>
+        /// Адрес авторизации
+        /// </summary>
+        public string AuthorityUri { get; set; }
+            = "https://auth.pik.ru";
+
+        /// <summary>
+        /// Область видимости
+        /// </summary>
+        public string Scope { get; set; }
+            = "openid email offline_access fm_api profile";
     }
 }

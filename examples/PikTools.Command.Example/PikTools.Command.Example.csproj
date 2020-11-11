@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Shared.FmHelpers\PikTools.Shared.FmHelpers.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Shared.RevitExtensions\PikTools.Shared.RevitExtensions.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
   </ItemGroup>
@@ -26,7 +27,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="application.PikTools.Command.Example.json">
+    <None Update="appsettings.PikTools.Command.Example.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

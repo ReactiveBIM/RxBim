@@ -6,17 +6,17 @@
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
     using PikTools.CommandExample.Abstractions;
+    using PikTools.Shared.FmHelpers.Abstractions;
     using PikTools.Shared.RevitExtensions.Abstractions;
     using PikTools.Shared.Ui.Abstractions;
 
-    /// <summary>
-    /// my service
-    /// </summary>
+    /// <inheritdoc/>
     public class MyService : IMyService
     {
         private readonly INotificationService _notificationService;
         private readonly IElementsCollector _elementsCollector;
         private readonly IProblemElementsStorage _problemElementsStorage;
+        private readonly IFamilyManagerService _familyManagerService;
         private readonly Document _doc;
         private readonly RevitTask _revitTask;
 
@@ -26,25 +26,26 @@
         /// <param name="notificationService">notification</param>
         /// <param name="elementsCollector">collector</param>
         /// <param name="problemElementsStorage">problems elements</param>
+        /// <param name="familyManagerService">Сервис работы с FM</param>
         /// <param name="doc">doc</param>
         /// <param name="revitTask">revit task</param>
         public MyService(
             INotificationService notificationService,
             IElementsCollector elementsCollector,
             IProblemElementsStorage problemElementsStorage,
+            IFamilyManagerService familyManagerService,
             Document doc,
             RevitTask revitTask)
         {
             _notificationService = notificationService;
             _elementsCollector = elementsCollector;
             _problemElementsStorage = problemElementsStorage;
+            _familyManagerService = familyManagerService;
             _doc = doc;
             _revitTask = revitTask;
         }
 
-        /// <summary>
-        /// go
-        /// </summary>
+        /// <inheritdoc/>
         public async Task<Result> Go()
         {
             try
@@ -73,6 +74,12 @@
             {
                 return Result.Failure(exception.Message);
             }
+        }
+
+        /// <inheritdoc/>
+        public Result LoadFamily(string familyName)
+        {
+            return _familyManagerService.GetTargetFamily(_doc, familyName);
         }
     }
 }
