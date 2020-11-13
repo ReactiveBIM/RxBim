@@ -5,7 +5,7 @@
     using Shared;
 
     /// <summary>
-    /// Конфигуратор зависимостей комманды
+    /// Конфигуратор зависимостей команды
     /// </summary>
     internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
@@ -13,10 +13,10 @@
         private readonly ExternalCommandData _commandData;
 
         /// <summary>
-        /// ctor
+        /// Создает экземпляр класса <see cref="CommandDiConfigurator"/>
         /// </summary>
-        /// <param name="commandObject">Объект комманды</param>
-        /// <param name="commandData">ExternalCommandData</param>
+        /// <param name="commandObject">Объект команды</param>
+        /// <param name="commandData">Объект, содержащий ссылки на приложение и интерфейс Revit</param>
         public CommandDiConfigurator(object commandObject, ExternalCommandData commandData)
         {
             _commandObject = commandObject;
@@ -29,8 +29,8 @@
             Container.RegisterInstance(_commandData);
             Container.RegisterInstance(_commandData.Application);
             Container.RegisterInstance(_commandData.Application.Application);
-            Container.RegisterInstance(_commandData.Application.ActiveUIDocument);
-            Container.RegisterInstance(_commandData.Application.ActiveUIDocument.Document);
+            Container.Register(() => _commandData.Application.ActiveUIDocument);
+            Container.Register(() => _commandData.Application.ActiveUIDocument?.Document);
             Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
