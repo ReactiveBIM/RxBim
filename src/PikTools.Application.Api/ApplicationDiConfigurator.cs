@@ -14,11 +14,11 @@
         private readonly UIApplication _uiApp;
 
         /// <summary>
-        /// ctor
+        /// Создает экземпляр класса <see cref="ApplicationDiConfigurator"/>
         /// </summary>
-        /// <param name="applicationObject">aplication object</param>
-        /// <param name="uiControlledApp">revit ui controlled application</param>
-        /// <param name="uiApp">revit ui application</param>
+        /// <param name="applicationObject">Объект приложения</param>
+        /// <param name="uiControlledApp">Пользовательский интерфейс Revit</param>
+        /// <param name="uiApp">Активная сессия пользовательского интерфейса Revit</param>
         public ApplicationDiConfigurator(
             object applicationObject,
             UIControlledApplication uiControlledApp,
@@ -36,7 +36,7 @@
             Container.RegisterInstance(_uiApp);
             Container.RegisterInstance(_uiApp.Application);
             Container.Register(() => _uiApp.ActiveUIDocument);
-            Container.Register(() => _uiApp.ActiveUIDocument.Document);
+            Container.Register(() => _uiApp.ActiveUIDocument?.Document);
             Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }

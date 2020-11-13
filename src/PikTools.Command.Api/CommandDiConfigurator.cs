@@ -30,7 +30,7 @@
             Container.RegisterInstance(_commandData.Application);
             Container.RegisterInstance(_commandData.Application.Application);
             Container.Register(() => _commandData.Application.ActiveUIDocument);
-            Container.Register(() => _commandData.Application.ActiveUIDocument.Document);
+            Container.Register(() => _commandData.Application.ActiveUIDocument?.Document);
             Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
