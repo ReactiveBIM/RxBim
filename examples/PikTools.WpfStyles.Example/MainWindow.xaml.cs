@@ -1,6 +1,7 @@
 ﻿using PikTools.Shared.Ui.Abstractions;
 using PikTools.Shared.Ui.Controls;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,7 +22,7 @@ namespace PikTools.WpfStyles.Example
             
             InitializeComponent();
 
-            var table = new List<TableRowData> 
+            var data = new ObservableCollection<TableRowData> 
             {
                 new TableRowData { Name = "Ползователь 1", Role = "Роль 1", Access = "Права 1"},
                 new TableRowData { Name = "Ползователь 2", Role = "Роль 2", Access = "Права 2"},
@@ -30,7 +31,8 @@ namespace PikTools.WpfStyles.Example
                 new TableRowData { Name = "Ползователь 5", Role = "Роль 5", Access = "Права 5"}
             };
 
-            dg.ItemsSource = table;
+            dragDropLb.ItemsSource = data;
+            dg.ItemsSource = data;
         }
 
         private void EditableTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

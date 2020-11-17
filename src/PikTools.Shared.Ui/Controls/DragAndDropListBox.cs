@@ -41,6 +41,12 @@
                         ListBoxItem.DropEvent,
                         new DragEventHandler(ListBoxItem_Drop)));
 
+            // TODO: Нужно отлаживать корректую подстановку картинки вместо курсора Drag&Drop
+            /*style.Setters.Add(
+                    new EventSetter(
+                        ListBoxItem.GiveFeedbackEvent,
+                        new GiveFeedbackEventHandler(ListBoxItem_GiveFeedback)));*/
+
             ItemContainerStyle = style;
         }
 
@@ -66,7 +72,8 @@
                     Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 var lbi = FindVisualParent<ListBoxItem>(((DependencyObject)e.OriginalSource));
-                if (lbi != null)
+                if (lbi != null
+                    && lbi.DataContext != null)
                 {
                     DragDrop.DoDragDrop(lbi, lbi.DataContext, DragDropEffects.Move);
                 }

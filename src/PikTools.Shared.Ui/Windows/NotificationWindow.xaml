@@ -12,9 +12,10 @@
         MaxHeight="500" MaxWidth="400"
         MinHeight="200" MinWidth="300"
         SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="ToolWindow">
+        WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
