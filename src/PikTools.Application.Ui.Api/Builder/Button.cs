@@ -152,6 +152,7 @@ namespace PikTools.Application.Ui.Api.Builder
         internal virtual ButtonData Finish()
         {
             PushButtonData pushButtonData = new PushButtonData(Name, Text, _assemblyLocation, _className);
+            pushButtonData.AvailabilityClassName = _className;
 
             if (ToolTip != null)
             {
