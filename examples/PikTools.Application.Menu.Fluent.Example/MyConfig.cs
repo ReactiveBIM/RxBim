@@ -27,6 +27,7 @@
                                     new Uri(Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"img\large.png"),
                                     UriKind.Absolute))
                                 .SetLongDescription("Button1 description")
+                                .SetToolTip("Example button")
                                 .SetHelpUrl("https://pikipedia.pik.ru/wiki/PIK_Tools")));
         }
     }
