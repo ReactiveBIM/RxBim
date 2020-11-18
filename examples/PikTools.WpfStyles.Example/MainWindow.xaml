@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.5"
+        xmlns:local="clr-namespace:PikTools.WpfStyles.Example"
         mc:Ignorable="d"
         Title="MainWindow"
         SizeToContent="WidthAndHeight"
@@ -77,11 +78,37 @@
                     <ListBoxItem Content="Элемент 6"/>
                 </ListBox>
                 
+                <TextBlock Text="Горизонтальный ListBox без выбора элементов"
+                           FontWeight="Medium"/>
                 <ListBox Style="{DynamicResource NonSelectableHorizontalListBox}">
                     <ListBoxItem Content="Элемент 1"/>
                     <ListBoxItem Content="Элемент 2"/>
                     <ListBoxItem Content="Элемент 3"/>
                 </ListBox>
+                
+                <TextBlock Text="ListBox с DragAndDrop"
+                           FontWeight="Medium"/>
+                <local:RowDatasDragAndDropListBox x:Name="dragDropLb" 
+                                                  Style="{DynamicResource NonSelectableListBox}">
+                    <local:RowDatasDragAndDropListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:TableRowData}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Text="{Binding Name}"/>
+                                
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Vertical">
+                                    <TextBlock Text="{Binding Role}"/>
+                                    <TextBlock Text="{Binding Access}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </local:RowDatasDragAndDropListBox.ItemTemplate>
+                </local:RowDatasDragAndDropListBox>
             
                 <DataGrid Name="dg"
                           IsReadOnly="False"
