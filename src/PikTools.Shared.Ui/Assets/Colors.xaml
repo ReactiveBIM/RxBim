@@ -171,6 +171,8 @@
                      Color="{StaticResource Magenta}"/>
     <SolidColorBrush x:Key="DisabledText"
                      Color="{StaticResource Grey2}"/>
+    <SolidColorBrush x:Key="DefaultIconColor"
+                     Color="{StaticResource DarkBlue}"/>
     
     
     <!-- Старый набор цветов (оставлен для совместимости) -->

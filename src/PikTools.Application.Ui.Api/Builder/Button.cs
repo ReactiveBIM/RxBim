@@ -12,6 +12,7 @@ namespace PikTools.Application.Ui.Api.Builder
     {
         private readonly string _className;
         private readonly string _assemblyLocation;
+        private readonly Type _externalCommandType;
 
         /// <summary>
         /// ctor
@@ -23,6 +24,7 @@ namespace PikTools.Application.Ui.Api.Builder
         {
             Name = name;
             Text = text;
+            _externalCommandType = externalCommandType;
 
             if (externalCommandType != null)
             {
@@ -40,6 +42,11 @@ namespace PikTools.Application.Ui.Api.Builder
         /// Текст кнопки
         /// </summary>
         protected string Text { get; private set; }
+
+        /// <summary>
+        /// Всплывающий текст с описанием кнопки
+        /// </summary>
+        protected string ToolTip { get; private set; }
 
         /// <summary>
         /// Большое изображение
@@ -60,6 +67,25 @@ namespace PikTools.Application.Ui.Api.Builder
         /// Справка
         /// </summary>
         protected ContextualHelp ContextualHelp { get; private set; }
+
+        /// <summary>
+        /// Добавляет всплывающее описание кнопки
+        /// </summary>
+        /// <param name="toolTip">Текст всплывающего описания</param>
+        /// <param name="addVersion">Флаг добавления версии</param>
+        public Button SetToolTip(string toolTip, bool addVersion = true)
+        {
+            ToolTip = toolTip;
+            if (_externalCommandType != null
+                && addVersion)
+            {
+                if (!string.IsNullOrEmpty(toolTip))
+                    ToolTip += Environment.NewLine;
+                ToolTip += $"Версия: {_externalCommandType.Assembly.GetName().Version}";
+            }
+
+            return this;
+        }
 
         /// <summary>
         /// Устанавливает большое изображение
@@ -126,6 +152,12 @@ namespace PikTools.Application.Ui.Api.Builder
         internal virtual ButtonData Finish()
         {
             PushButtonData pushButtonData = new PushButtonData(Name, Text, _assemblyLocation, _className);
+            pushButtonData.AvailabilityClassName = _className;
+
+            if (ToolTip != null)
+            {
+                pushButtonData.ToolTip = ToolTip;
+            }
 
             if (LargeImage != null)
             {

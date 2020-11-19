@@ -32,6 +32,7 @@
     </ItemGroup>
 	
   <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.12.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

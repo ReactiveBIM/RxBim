@@ -17,6 +17,7 @@
         public static void AddUi(this Container container)
         {
             container.Register<IUIDispatcher, UIDispatcher>(Lifestyle.Singleton);
+            container.Register<IExternalDialogs, ExternalDialogsService>(Lifestyle.Singleton);
             container.Register<INotificationService, NotificationService>(Lifestyle.Singleton);
             container.RegisterInstance<INotificationViewModel>(new NotificationViewModel());
         }

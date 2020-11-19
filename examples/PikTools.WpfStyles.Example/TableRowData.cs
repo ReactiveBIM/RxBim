@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PikTools.WpfStyles.Example
+﻿namespace PikTools.WpfStyles.Example
 {
     public class TableRowData
     {
@@ -12,5 +6,14 @@ namespace PikTools.WpfStyles.Example
         public string Role { get; set; }
         public string Access { get; set; }
         public bool IsChecked { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as TableRowData;
+            if (other == null)
+                return false;
+
+            return Name?.Equals(other.Name) ?? false;
+        }
     }
 }

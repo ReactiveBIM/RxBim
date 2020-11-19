@@ -63,7 +63,11 @@
         /// </summary>
         /// <param name="rootDoc">Основной документ Revit</param>
         /// <param name="linkedDocument">Ранее открытый связанный документ</param>
-        public static void CloseLinkedDocument(this Document rootDoc, Document linkedDocument)
+        /// <param name="isSynchronized">Флаг синхронизации рабочих наборов перед закрытием</param>
+        public static void CloseLinkedDocument(
+            this Document rootDoc,
+            Document linkedDocument,
+            bool isSynchronized = false)
         {
             var linkType = rootDoc.GetLinkType(linkedDocument.Title);
             if (linkType == null)
@@ -77,7 +81,9 @@
 
             try
             {
-                /*linkedDocument.SynchronizeWithCentral(transactOptions, syncOptions);*/
+                if (isSynchronized)
+                    linkedDocument.SynchronizeWithCentral(transactOptions, syncOptions);
+
                 linkedDocument.Close(true);
             }
             catch
@@ -86,8 +92,7 @@
             }
 
             // Обновляем связанный документ, чтобы он остался доступен из основного файла
-            var method = linkType.GetType().GetMethod("Reload");
-            method?.Invoke(linkType, null);
+            linkType.Reload();
         }
 
         /// <summary>
