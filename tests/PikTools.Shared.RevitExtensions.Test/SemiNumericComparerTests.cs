@@ -144,7 +144,7 @@
         public void CompareStringWithNumberAndWithoutNumberFirstAreGreater()
         {
             int result = 0;
-            Action act = () => result = _comparer.Compare("num 1", "num");
+            Action act = () => result = _comparer.Compare("1 num", "z");
 
             act.Should().NotThrow();
             result.Should().BeGreaterThan(0);
@@ -161,6 +161,16 @@
         }
 
         [Fact]
+        public void CompareTwoDifferentStringsWithZeroNumbersLessLengthAreGreater()
+        {
+            int result = 0;
+            Action act = () => result = _comparer.Compare("000", "0000");
+
+            act.Should().NotThrow();
+            result.Should().BeNegative();
+        }
+
+        [Fact]
         public void CompareStringList()
         {
             var inList = new List<string>
@@ -170,29 +180,33 @@
                 "num",
                 string.Empty,
                 "num 11",
+                "0000",
                 "num 1.2",
                 "num 12",
                 "z",
-                "1 num"
+                "1 num",
+                "000"
             };
 
             var expectList = new List<string>
             {
+                string.Empty,
+                "num",
+                "z",
+                "000",
+                "0000",
                 "1 num",
                 "num 1.1",
                 "num 1.2",
                 "num 11",
                 "num 11",
-                "num 12",
-                "num",
-                "z",
-                string.Empty
+                "num 12"
             };
 
             Action act = () => inList.Sort(_comparer);
 
             act.Should().NotThrow();
-            inList.Should().BeEquivalentTo(expectList);
+            inList.Should().ContainInOrder(expectList);
         }
     }
 }
