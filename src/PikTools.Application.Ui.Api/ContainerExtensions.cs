@@ -99,6 +99,7 @@
         private static void SetupButton(Assembly assembly, Button button, ButtonConfiguration b)
         {
             button.SetLongDescription(b.Description);
+            button.SetToolTip(b.ToolTip);
 
             if (TryGetImagePath(assembly, b.LargeImage, out var largeImagePath))
             {

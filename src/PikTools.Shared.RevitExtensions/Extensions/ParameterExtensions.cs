@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Shared.RevitExtensions.Extensions
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using Autodesk.Revit.DB;
 
@@ -36,61 +37,93 @@
         /// Возвращает значение параметра
         /// </summary>
         /// <param name="param">Параметр</param>
+        /// <param name="digits">Количество цифр дробной части в возвращаемом значении</param>
+        /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
         /// <returns>Значение параметра</returns>
         public static object GetParameterValue(
-            this Parameter param)
+            this Parameter param,
+            int digits = 4,
+            bool getFeet = false)
         {
             if (param == null)
-                return string.Empty;
+                return default;
 
-            var doc = param.Element.Document;
             var paramName = param.Definition.Name;
-            var stp = param.StorageType;
+            var storageType = param.StorageType;
             if (paramName == "Рабочий набор"
                 || paramName == "Workset")
-                stp = StorageType.None;
+                storageType = StorageType.None;
 
-            string value;
-            switch (stp)
+            object value = null;
+            switch (storageType)
             {
-                case StorageType.Integer:
-                    return !param.HasValue ? 0 : param.AsInteger();
-                case StorageType.Double:
-                    {
-                        var valueDouble = param.AsDouble();
-                        try
-                        {
-                            valueDouble = UnitUtils.ConvertFromInternalUnits(param.AsDouble(), param.DisplayUnitType);
-                            valueDouble = Math.Round(valueDouble, 4, MidpointRounding.ToEven);
-                        }
-                        catch
-                        {
-                            // некоторые параметры падают в исключение при вызове DisplayUnitType
-                        }
-
-                        return valueDouble;
-                    }
-
                 case StorageType.String:
+                    value = param.AsString() ?? string.Empty;
+                    break;
+
+                case StorageType.Double:
+                    try
                     {
-                        value = param.AsString();
-                        break;
+                        value = getFeet
+                            ? Math.Round(param.AsDouble(), digits)
+                            : Math.Round(
+                                UnitUtils.ConvertFromInternalUnits(
+                                    param.AsDouble(),
+                                    param.DisplayUnitType), digits);
                     }
+                    catch (Autodesk.Revit.Exceptions.InvalidOperationException)
+                    {
+                        value = Math.Round(
+                            UnitUtils.ConvertFromInternalUnits(
+                                param.AsDouble(),
+                                DisplayUnitType.DUT_GENERAL), digits);
+                    }
+
+                    break;
+
+                case StorageType.Integer:
+                    value = param.HasValue ? param.AsInteger() : 0;
+                    break;
 
                 case StorageType.ElementId:
-                    {
-                        var el = doc.GetElement(param.AsElementId());
-                        return el == null ? param.AsValueString() : el.Name;
-                    }
-
-                default:
-                    value = param.AsValueString();
+                case StorageType.None:
+                    value = param.AsValueString() ?? string.Empty;
                     break;
             }
 
-            if (string.IsNullOrEmpty(value))
-                value = string.Empty;
             return value;
+        }
+
+        /// <summary>
+        /// Возвращает значение заданного параметра
+        /// </summary>
+        /// <typeparam name="T">Тип возвращаемого значения</typeparam>
+        /// <param name="element">Элемент Revit</param>
+        /// <param name="parameterName">Имя параметра элемента</param>
+        /// <param name="digits">Количество цифр дробной части в возвращаемом значении</param>
+        /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
+        /// <returns>Значение параметра</returns>
+        public static T GetParameterValue<T>(
+            this Element element,
+            string parameterName,
+            int digits = 4,
+            bool getFeet = false)
+        {
+            var foundParameter = element.GetParameterFromInstanceOrType(parameterName);
+
+            try
+            {
+                if (foundParameter == null)
+                    return default;
+
+                var value = foundParameter.GetParameterValue(digits, getFeet);
+
+                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            }
+            catch (Exception)
+            {
+                return default;
+            }
         }
 
         /// <summary>

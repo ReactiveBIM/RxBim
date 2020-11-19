@@ -29,6 +29,15 @@
     </None>
   </ItemGroup>
   <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Company>pik-group.com</Company>
+    <Authors>BimLab BimTeam</Authors>
+    <Product>BimLab.PikTools</Product>
+    <Copyright>Copyright ©2020 PIK Group</Copyright>
+    <Description>Пример построения ленты</Description>
+    <PackageTags>BIM BimLab</PackageTags>
+  </PropertyGroup>
+  <PropertyGroup>
     <Application__PikTools_Application_Menu_Fluent_Example_App>d78e14a4-f2c3-4e16-89a6-515d00ae9c35</Application__PikTools_Application_Menu_Fluent_Example_App>
     <Command__PikTools_Application_Menu_Fluent_Example_MyCmd>7efdee50-554a-48e0-b1b9-9992223d0966</Command__PikTools_Application_Menu_Fluent_Example_MyCmd>
     <PackageGuid>32c5fd61-9b6d-4354-aebd-03816d95ca3c</PackageGuid>

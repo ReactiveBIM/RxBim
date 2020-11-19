@@ -1,54 +1,49 @@
 ﻿namespace PikTools.Shared.RevitExtensions.Helpers
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Сравниватель чисел в строковом виде
     /// </summary>
-    /// <remarks>https://stackoverflow.com/a/6397287</remarks>
-    internal class SemiNumericComparer : IComparer<string>
+    /// <remarks>https://stackoverflow.com/a/33330715/8252345</remarks>
+    public class SemiNumericComparer : IComparer<string>
     {
+        private readonly string _numericPattern;
+
         /// <summary>
-        /// Method to determine if a string is a number
+        /// ctor
         /// </summary>
-        /// <param name="value">String to test</param>
-        /// <returns>True if numeric</returns>
-        public static bool IsNumeric(string value)
+        /// <param name="numericPattern">Регулярка для поиска числа в тексте</param>
+        public SemiNumericComparer(string numericPattern = @"[-+]?\d*\.\d+|\d+")
         {
-            return int.TryParse(value, out _);
+            _numericPattern = numericPattern;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public int Compare(string s1, string s2)
         {
-            const int s1GreaterThanS2 = 1;
-            const int s2GreaterThanS1 = -1;
+            var num1 = Regex.Match(s1, _numericPattern);
+            var num2 = Regex.Match(s2, _numericPattern);
 
-            var isNumeric1 = IsNumeric(s1);
-            var isNumeric2 = IsNumeric(s2);
-
-            if (isNumeric1
-                && isNumeric2)
+            if (num1.Success && num2.Success)
             {
-                var i1 = Convert.ToInt32(s1);
-                var i2 = Convert.ToInt32(s2);
+                var dNum1 = double.Parse(num1.Value, CultureInfo.InvariantCulture);
+                var dNum2 = double.Parse(num2.Value, CultureInfo.InvariantCulture);
 
-                if (i1 > i2)
-                    return s1GreaterThanS2;
+                // Если два числа одинаковые, то проверяем длину исходного текста,
+                // чтобы сравнить случаи "000" и "0000"
+                if (dNum1.Equals(dNum2))
+                    return s1.Length - s2.Length;
 
-                if (i1 < i2)
-                    return s2GreaterThanS1;
-
-                return 0;
+                return dNum1.CompareTo(dNum2);
             }
 
-            if (isNumeric1)
-                return s2GreaterThanS1;
-
-            if (isNumeric2)
-                return s1GreaterThanS2;
+            if (num1.Success)
+                return 1;
+            if (num2.Success)
+                return -1;
 
             return string.Compare(
                 s1, s2, true, CultureInfo.InvariantCulture);

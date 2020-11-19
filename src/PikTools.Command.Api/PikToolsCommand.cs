@@ -14,7 +14,7 @@
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public abstract class PikToolsCommand : IExternalCommand
+    public abstract class PikToolsCommand : IExternalCommand, IExternalCommandAvailability
     {
         private const string MethodName = "ExecuteCommand";
 
@@ -32,6 +32,12 @@
 
             SetMessageAndElements(ref message, elements, commandResult, di);
             return commandResult.MapResultToRevitResult();
+        }
+
+        /// <inheritdoc/>
+        public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
+        {
+            return false;
         }
 
         private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)

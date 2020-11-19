@@ -34,5 +34,10 @@
         /// Описание
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Всплывающее описание
+        /// </summary>
+        public string ToolTip { get; set; }
     }
 }
