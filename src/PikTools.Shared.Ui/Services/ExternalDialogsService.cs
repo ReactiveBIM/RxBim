@@ -29,10 +29,25 @@
                     FileName = fileName
                 };
 
-            if (fileDialog.ShowDialog() == true)
-                return fileDialog.FileName;
+            return fileDialog.ShowDialog() == true
+                ? fileDialog.FileName : Result.Failure<string>("Файл не выбран");
+        }
 
-            return Result.Failure<string>("Файл не выбран");
+        /// <inheritdoc/>
+        public Result<string[]> ShowOpenFileDialog(
+            string filter,
+            bool addExtension = true,
+            bool multiSelect = false)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter,
+                AddExtension = addExtension,
+                Multiselect = multiSelect
+            };
+
+            return openFileDialog.ShowDialog() == true
+                ? openFileDialog.FileNames : Result.Failure<string[]>("Файлы не выбраны");
         }
     }
 }
