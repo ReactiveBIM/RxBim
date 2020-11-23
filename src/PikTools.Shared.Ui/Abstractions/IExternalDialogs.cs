@@ -22,6 +22,18 @@
             string fileName = "");
 
         /// <summary>
+        /// Показать диалог открытия файлов
+        /// </summary>
+        /// <param name="filter">Фильтр файлов</param>
+        /// <param name="addExtension">Добавлять ли расширение к файлу автоматически</param>
+        /// <param name="multiSelect">Допускать выбор нескольких файлов</param>
+        /// <returns>Массив путей к выбранным файлам</returns>
+        Result<string[]> ShowOpenFileDialog(
+            string filter,
+            bool addExtension,
+            bool multiSelect);
+
+        /// <summary>
         /// Открывает проводник на заданной папке
         /// </summary>
         /// <param name="path">Путь к заданной папке</param>
