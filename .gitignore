@@ -269,3 +269,5 @@ out/
 !/_Profiles/*
 
 projectfiles.tar
+
+global.json
