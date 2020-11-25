@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using PikTools.Shared.RevitExtensions.Abstractions;
-    using PikTools.Shared.RevitExtensions.Models;
+    using Models;
 
     /// <summary>
     /// Сервис по работе с общими параметрами
@@ -93,6 +93,54 @@
         }
 
         /// <inheritdoc />
+        public bool AddOrUpdateParameter(
+            DefinitionFile[] definitionFiles,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch)
+        {
+            bool existsInDocument = ParameterExistsInDocument(
+                sharedParameterInfo.Definition,
+                fullMatch);
+
+            var externalDefinitionInFile = definitionFiles
+                .Select(df => new
+                {
+                    ExternalDefinition = GetSharedExternalDefinition(
+                        sharedParameterInfo,
+                        fullMatch,
+                        df),
+                    DefinitionFile = df
+                })
+                .Where(a => a.ExternalDefinition != null)
+                .ToArray();
+
+            if (externalDefinitionInFile.Length < 1)
+            {
+                return false;
+            }
+
+            if (externalDefinitionInFile.Length > 1 && !fullMatch)
+            {
+                throw new ApplicationException(
+                    "Параметр с одинаковым именем " +
+                    $"{sharedParameterInfo.Definition.ParameterName} " +
+                    "обнаружен в нескольких ФОП!");
+            }
+
+            if (existsInDocument)
+            {
+                return UpdateParameterBindings(
+                    externalDefinitionInFile[0].ExternalDefinition,
+                    sharedParameterInfo.CreateData);
+            }
+
+            return AddSharedParameter(
+                externalDefinitionInFile[0].DefinitionFile,
+                sharedParameterInfo,
+                fullMatch);
+        }
+
+        /// <inheritdoc />
         public bool ParameterExistsInDefinitionFile(
             DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch)
         {
@@ -120,13 +168,8 @@
             return doc.Application.OpenSharedParameterFile();
         }
 
-        /// <summary>
-        /// Считывает файлы общих параметров используя информацию
-        /// из <see cref="SharedParameterFileSource"/>
-        /// </summary>
-        /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
-        public DefinitionFile[] TryGetDefinitionFiles(
-            SharedParameterFileSource fileSource)
+        /// <inheritdoc/>
+        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource)
         {
             var document = _uiApplication
                 .ActiveUIDocument
@@ -185,57 +228,6 @@
             return definitionFiles.ToArray();
         }
 
-        /// <inheritdoc />
-        public bool AddOrUpdateParameter(
-            DefinitionFile[] definitionFiles,
-            SharedParameterInfo sharedParameterInfo,
-            bool fullMatch)
-        {
-            bool existsInDocument = ParameterExistsInDocument(
-                sharedParameterInfo.Definition,
-                fullMatch);
-
-            var externalDefinitionInFile = definitionFiles
-                .Select(df => new
-                {
-                    ExternalDefinition = GetSharedExternalDefinition(
-                        sharedParameterInfo,
-                        fullMatch,
-                        df),
-                    DefinitionFile = df
-                })
-                .Where(a => a.ExternalDefinition != null)
-                .ToArray();
-
-            if (externalDefinitionInFile.Length < 1)
-            {
-                return false;
-            }
-
-            if (externalDefinitionInFile.Length > 1 && !fullMatch)
-            {
-                throw new ApplicationException(
-                    $"Параметр с одинаковым именем " +
-                    $"{sharedParameterInfo.Definition.ParameterName} " +
-                    $"обнаружен в нескольких ФОП!");
-            }
-
-            if (existsInDocument)
-            {
-                return UpdateParameterBindings(
-                    externalDefinitionInFile[0].ExternalDefinition,
-                    sharedParameterInfo.CreateData);
-            }
-            else
-            {
-                return AddSharedParameter(
-                    externalDefinitionInFile[0].DefinitionFile,
-                    sharedParameterInfo,
-                    fullMatch,
-                    useTransaction: false);
-            }
-        }
-
         private bool UpdateParameterBindings(
             ExternalDefinition definition,
             SharedParameterCreateData createData)
@@ -260,10 +252,11 @@
                 return false;
             }
 
-            categories
-                .Where(c => !set.Contains(c))
-                .Select(c => set.Insert(c))
-                .ToArray();
+            foreach (var category in categories
+                .Where(c => !set.Contains(c)))
+            {
+                set.Insert(category);
+            }
 
             ElementBinding updatedBinding;
 
@@ -273,13 +266,9 @@
             {
                 updatedBinding = createService.NewInstanceBinding(set);
             }
-            else if (binding is TypeBinding || !isInstance)
-            {
-                updatedBinding = createService.NewTypeBinding(set);
-            }
             else
             {
-                throw new Exception();
+                updatedBinding = createService.NewTypeBinding(set);
             }
 
             map.Remove(definition);
@@ -346,8 +335,6 @@
             bool fullMatch,
             DefinitionFile definitionFile)
         {
-            ExternalDefinition definition = null;
-
             foreach (var defGroup in definitionFile.Groups)
             {
                 foreach (var def in defGroup.Definitions)
@@ -368,7 +355,7 @@
                 }
             }
 
-            return definition;
+            return null;
         }
 
         /// <summary>
