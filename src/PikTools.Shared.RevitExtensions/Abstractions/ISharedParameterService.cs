@@ -62,12 +62,19 @@
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
         bool ParameterExistsInDefinitionFile(DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch);
-
+        
         /// <summary>
         /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
         /// </summary>
         /// <param name="document">Документ, из которого требуется получить ФОП.
         /// Если задано null, то ФОП будет браться из текущего документа</param>
         public DefinitionFile GetDefinitionFile(Document document = null);
+
+        /// <summary>
+        /// Считывает файлы общих параметров используя информацию
+        /// из <see cref="SharedParameterFileSource"/>
+        /// </summary>
+        /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
+        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource);
     }
 }

@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		Readme.md = Readme.md
 		stylecop.ruleset = stylecop.ruleset
 		stylecopTests.ruleset = stylecopTests.ruleset
+		global.json = global.json
+		global.json.default = global.json.default
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{829C26B5-29F4-497B-B059-1AFA81CD1506}"
