@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Autodesk.Revit.DB;
+    using Autodesk.Revit.UI;
     using PikTools.Shared.RevitExtensions.Abstractions;
 
     /// <summary>
@@ -10,21 +11,22 @@
     /// </summary>
     public class DocumentsCollector : IDocumentsCollector
     {
-        private readonly Document _doc;
+        private readonly UIApplication _uiApplication;
 
         /// <summary>
-        /// Конструктор
+        /// ctor
         /// </summary>
-        /// <param name="doc">Основной документ Revit</param>
-        public DocumentsCollector(Document doc)
+        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
+        public DocumentsCollector(UIApplication uiApplication)
         {
-            _doc = doc;
+            _uiApplication = uiApplication;
         }
 
         /// <inheritdoc/>
         public IEnumerable<string> GetDocumentsTitles()
         {
-            var titles = new FilteredElementCollector(_doc)
+            var doc = _uiApplication.ActiveUIDocument.Document;
+            var titles = new FilteredElementCollector(doc)
                 .OfClass(typeof(RevitLinkInstance))
                 .Cast<RevitLinkInstance>()
                 .Where(l => IsNotNestedLib(l))
@@ -32,7 +34,7 @@
                 .Where(d => d != null)
                 .Select(d => d.Title)
                 .ToList();
-            titles.Insert(0, _doc.Title);
+            titles.Insert(0, doc.Title);
 
             return titles;
         }
@@ -40,12 +42,13 @@
         /// <inheritdoc/>
         public string GetMainDocumentTitle()
         {
-            return _doc.Title;
+            return _uiApplication.ActiveUIDocument.Document.Title;
         }
 
         private bool IsNotNestedLib(RevitLinkInstance linkInstance)
         {
-            var linkType = _doc.GetElement(linkInstance.GetTypeId()) as RevitLinkType;
+            var linkType = _uiApplication.ActiveUIDocument.Document
+                .GetElement(linkInstance.GetTypeId()) as RevitLinkType;
             return linkType.GetLinkedFileStatus() == LinkedFileStatus.Loaded
                    && !linkType.IsNestedLink;
         }
