@@ -37,7 +37,7 @@
         /// <inheritdoc/>
         public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
         {
-            return false;
+            return applicationData.ActiveUIDocument?.Document != null;
         }
 
         private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)
