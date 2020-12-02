@@ -6,8 +6,8 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModels="clr-namespace:PikTools.CommandExample.ViewModels"
         xmlns:behaviors="clr-namespace:PikTools.CommandExample.Views.Behaviors"
-        xmlns:abstractions="clr-namespace:PikTools.Shared.RevitExtensions.Abstractions;assembly=PikTools.Shared.RevitExtensions.1.4.3"
-        xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.7"
+        xmlns:btc="https://bimteam.ru/xaml/controls"
+        xmlns:ra="https://bimteam.ru/revit/abstractions"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Name="window"
@@ -38,7 +38,7 @@
         <ComboBox Grid.Row="0"
                   SelectedIndex="{Binding Scope,
                                   Converter={StaticResource EnumToIntConverter},
-                                  ConverterParameter={x:Type abstractions:ScopeType}, Mode=TwoWay}"
+                                  ConverterParameter={x:Type ra:ScopeType}, Mode=TwoWay}"
                   ToolTip="Какую часть модели обрабатывать"
                   HorizontalAlignment="Left" VerticalAlignment="Center"
                   MinWidth="200"
@@ -79,7 +79,7 @@
                        Text="Введите значение"
                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
             
-            <controls:TextBoxWithPlaceholder Grid.Row="1" Grid.Column="1"
+            <btc:TextBoxWithPlaceholder Grid.Row="1" Grid.Column="1"
                                              Text="{Binding IntValue, Mode=TwoWay, StringFormat=N0}"
                                              Placeholder="Число от 0 до 10"
                                              HorizontalAlignment="Left" VerticalAlignment="Center"
