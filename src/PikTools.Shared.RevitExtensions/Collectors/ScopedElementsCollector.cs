@@ -52,7 +52,7 @@
             {
                 case ScopeType.SelectedElements:
                     if (!_selectedElementsIds.ContainsKey(doc.Title))
-                        return null;
+                        return new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
 
                     var selectedIds = _selectedElementsIds[doc.Title];
 
@@ -67,7 +67,7 @@
                     selectedIds.AddRange(nestedSelectedIds);
                     return selectedIds.Any()
                         ? new FilteredElementCollector(doc, selectedIds)
-                        : null;
+                        : new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
 
                 case ScopeType.ActiveView:
                     return new FilteredElementCollector(doc, _uiApplication.ActiveUIDocument.ActiveGraphicalView.Id);
