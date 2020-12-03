@@ -25,7 +25,7 @@
             var collectorRegistration = Lifestyle.Singleton.CreateRegistration<ScopedElementsCollector>(container);
             container.AddRegistration<IElementsCollector>(collectorRegistration);
             container.AddRegistration<IScopedElementsCollector>(collectorRegistration);
-            container.Register<RevitTask>(Lifestyle.Singleton);
+            container.RegisterInstance(new RevitTask());
         }
     }
 }
