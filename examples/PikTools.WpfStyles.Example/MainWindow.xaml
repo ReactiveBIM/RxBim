@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:PikTools.Shared.Ui.Controls;assembly=PikTools.Shared.Ui.1.4.7"
         xmlns:local="clr-namespace:PikTools.WpfStyles.Example"
+        xmlns:btc="https://bimteam.ru/piktools/xaml/controls"
         mc:Ignorable="d"
         Title="MainWindow"
         SizeToContent="WidthAndHeight"
@@ -25,7 +25,7 @@
                 <TextBlock Text="TextBlock c IsEnabled = False"
                            IsEnabled="False"/>
                 
-                <controls:EditableTextBlock Text="Изменяемый TextBlock"
+                <btc:EditableTextBlock Text="Изменяемый TextBlock"
                                             MouseLeftButtonDown="EditableTextBlock_MouseLeftButtonDown"/>
             </StackPanel>
         </TabItem>
@@ -34,10 +34,10 @@
             <StackPanel>
                 <TextBox Width="100"/>
                 
-                <controls:TextBoxWithPlaceholder Placeholder="Placeholder"
+                <btc:TextBoxWithPlaceholder Placeholder="Placeholder"
                                                  Width="150"/>
         
-                <controls:SearchBox SearchTitle="Поиск"
+                <btc:SearchBox SearchTitle="Поиск"
                                     Width="200"/>
             </StackPanel>
         </TabItem>
@@ -151,13 +151,13 @@
             <StackPanel>
                 <ProgressBar Value="30"/>
                 
-                <controls:BusyIndicator IsBusy="True">
+                <btc:BusyIndicator IsBusy="True">
                     <StackPanel>
                         <TextBlock Text="Всем Привет!!!"/>
                         <TextBlock Text="Всем Привет!!!"
                                    IsEnabled="False"/>
                     </StackPanel>
-                </controls:BusyIndicator>
+                </btc:BusyIndicator>
             </StackPanel>
         </TabItem>
         
