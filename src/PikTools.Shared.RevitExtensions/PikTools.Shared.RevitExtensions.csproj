@@ -43,11 +43,11 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Windows.Markup.XmlnsPrefix">
-      <_Parameter1>https://bimteam.ru/revit/abstractions</_Parameter1>
+      <_Parameter1>https://bimteam.ru/piktools/revit/abstractions</_Parameter1>
       <_Parameter2>ra</_Parameter2>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Windows.Markup.XmlnsDefinition">
-      <_Parameter1>https://bimteam.ru/revit/abstractions</_Parameter1>
+      <_Parameter1>https://bimteam.ru/piktools/revit/abstractions</_Parameter1>
       <_Parameter2>PikTools.Shared.RevitExtensions.Abstractions</_Parameter2>
     </AssemblyAttribute>
   </ItemGroup>
