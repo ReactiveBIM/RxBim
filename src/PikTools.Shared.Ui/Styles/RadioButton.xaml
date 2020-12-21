@@ -34,7 +34,7 @@
                             </Grid>
                         </BulletDecorator.Bullet>
                         
-                        <ContentPresenter RecognizesAccessKey="True" 
+                        <ContentPresenter RecognizesAccessKey="False" 
                                           VerticalAlignment="Center" HorizontalAlignment="Left"
                                           Margin="8,0,0,0"/>
                     </BulletDecorator>

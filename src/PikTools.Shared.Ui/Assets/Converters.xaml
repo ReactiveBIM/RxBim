@@ -21,4 +21,8 @@
     <!-- Если значение null то выдает Visibility.Collapsed, иначе Visibility.Visible -->
     <!-- Если значение параметра "inverse", то будет инверсия при ковертировании -->
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    
+    <!-- Преобразует значение null в True -->
+    <!-- Если значение параметра "inverse", то будет инверсия при ковертировании -->
+    <converters:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
 </ResourceDictionary>

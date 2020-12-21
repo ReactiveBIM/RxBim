@@ -210,4 +210,17 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!-- ComboBox с виртуализацией списка -->
+    <Style x:Key="VirtualizingComboBox" 
+           TargetType="{x:Type ComboBox}"
+           BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
