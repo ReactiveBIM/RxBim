@@ -20,17 +20,11 @@
 
         /// <inheritdoc />
         public T GetInstance<T>()
-        {
-            var type = typeof(T);
-            var instance = _container.GetInstance(type);
-
-            return (T)instance;
-        }
+            where T : class
+            => _container.GetInstance<T>();
 
         /// <inheritdoc />
         public object GetInstance(Type type)
-        {
-            return _container.GetInstance(type);
-        }
+            => _container.GetInstance(type);
     }
 }
