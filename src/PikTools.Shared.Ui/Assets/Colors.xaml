@@ -160,6 +160,8 @@
     <!-- Дополнительные цвета -->
     <SolidColorBrush x:Key="SuccessColor"
                      Color="{StaticResource Green}"/>
+    <SolidColorBrush x:Key="WarningColor"
+                     Color="{DynamicResource Yellow}"/>
     <SolidColorBrush x:Key="ErrorColor"
                      Color="{StaticResource Magenta}"/>
     <SolidColorBrush x:Key="DefaultColor"
