@@ -54,7 +54,14 @@
                 }
             };
 
-            var definitionFile = sharedParameterService.GetDefinitionFile();
+            var definitionFileResult = sharedParameterService.GetDefinitionFile();
+            if (definitionFileResult.IsFailure)
+            {
+                notificationService.ShowMessage(title, definitionFileResult.Error);
+                return PluginResult.Failed;
+            }
+
+            var definitionFile = definitionFileResult.Value;
 
             notificationService.ShowMessage(
                 title,
