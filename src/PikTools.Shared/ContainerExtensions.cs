@@ -15,6 +15,7 @@
         public static void AddSharedTools(this Container container)
         {
             container.Register<IUserSettings, UserSettings>(Lifestyle.Singleton);
+            container.Register<IModelFactory>(() => new ModelFactory(container), Lifestyle.Singleton);
         }
     }
 }

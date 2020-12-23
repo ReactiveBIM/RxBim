@@ -12,6 +12,12 @@
     public static class GeometryExtensions
     {
         private const double Tolerance = 0.0001;
+        private const double LigthTolerance = 0.001;
+
+        private static readonly Options Options = new Options()
+        {
+            ComputeReferences = true,
+        };
 
         /// <summary>
         /// Получить базовую точку проекта
@@ -36,25 +42,23 @@
         }
 
         /// <summary>
-        /// Tries the create line.
+        /// Создает линию между двумя точками
         /// </summary>
-        /// <param name="firstPoint">The first point.</param>
-        /// <param name="secondPoint">The second point.</param>
-        public static Line TryCreateLine(XYZ firstPoint, XYZ secondPoint)
-        {
-            if (firstPoint.DistanceTo(secondPoint) < 1.MmToFt())
-                return null;
-            return Line.CreateBound(firstPoint, secondPoint);
-        }
+        /// <param name="firstPoint">Первая точка</param>
+        /// <param name="secondPoint">Вторая точка</param>
+        /// <returns>Созданная линия между двумя точками</returns>
+        /// <remarks>Если растояние между точками мало, то возвращает null</remarks>
+        public static Line GetLine(this XYZ firstPoint, XYZ secondPoint)
+            => firstPoint.DistanceTo(secondPoint) < 1.MmToFt()
+                    ? null
+                    : Line.CreateBound(firstPoint, secondPoint);
 
         /// <summary>
         /// Средняя точка линии
         /// </summary>
         /// <param name="line">The line.</param>
         public static XYZ GetCenterPoint(this Line line)
-        {
-            return line.Evaluate(0.5, true);
-        }
+            => line.Evaluate(0.5, true);
 
         /// <summary>
         /// Проверка что два отрезка параллельны
@@ -62,9 +66,7 @@
         /// <param name="line">Первый отрезок</param>
         /// <param name="otherLine">Второй отрезок</param>
         public static bool IsParallelTo(this Line line, Line otherLine)
-        {
-            return Math.Abs(Math.Abs(line.Direction.DotProduct(otherLine.Direction)) - 1) < Tolerance;
-        }
+            => Math.Abs(Math.Abs(line.Direction.DotProduct(otherLine.Direction)) - 1) < Tolerance;
 
         /// <summary>
         /// Проверка, что отрезок параллелен вектору
@@ -72,9 +74,7 @@
         /// <param name="line">Отрезок</param>
         /// <param name="vector">Вектор</param>
         public static bool IsParallelTo(this Line line, XYZ vector)
-        {
-            return Math.Abs(Math.Abs(line.Direction.DotProduct(vector.Normalize())) - 1) < Tolerance;
-        }
+            => Math.Abs(Math.Abs(line.Direction.DotProduct(vector.Normalize())) - 1) < Tolerance;
 
         /// <summary>
         /// Проверка наличия точки в списке через сверку расстояния
@@ -82,15 +82,7 @@
         /// <param name="points">Список точек</param>
         /// <param name="point">Проверяемая точка</param>
         public static bool HasSimilarPoint(this List<XYZ> points, XYZ point)
-        {
-            foreach (var xyz in points)
-            {
-                if (Math.Abs(xyz.DistanceTo(point)) < Tolerance)
-                    return true;
-            }
-
-            return false;
-        }
+            => points.Any(xyz => Math.Abs(xyz.DistanceTo(point)) < Tolerance);
 
         /// <summary>
         /// Получение наружного <see cref="Face"/> для стены
@@ -99,24 +91,14 @@
         /// <param name="shellLayerType">Тип получаемого Face</param>
         public static Face GetSideFaceFromWall(this Wall wall, ShellLayerType shellLayerType)
         {
-            Face face = null;
-            IList<Reference> sideFaces = null;
-            if (shellLayerType == ShellLayerType.Exterior)
+            var sideFaces = shellLayerType switch
             {
-                sideFaces = HostObjectUtils.GetSideFaces(wall, ShellLayerType.Exterior);
-            }
+                ShellLayerType.Exterior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Exterior),
+                ShellLayerType.Interior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Interior),
+                _ => throw new NotImplementedException($"Not implement {shellLayerType}"),
+            };
 
-            if (shellLayerType == ShellLayerType.Interior)
-            {
-                sideFaces = HostObjectUtils.GetSideFaces(wall, ShellLayerType.Interior);
-            }
-
-            if (sideFaces != null)
-            {
-                face = wall.GetGeometryObjectFromReference(sideFaces[0]) as Face;
-            }
-
-            return face;
+            return wall.GetGeometryObjectFromReference(sideFaces[0]) as Face;
         }
 
         /// <summary>
@@ -125,11 +107,9 @@
         /// <param name="plane">Плоскость</param>
         /// <param name="line">Исходный отрезок</param>
         public static Line ProjectOnto(this Plane plane, Line line)
-        {
-            return Line.CreateBound(
-                plane.ProjectOnto(line.GetEndPoint(0)),
-                plane.ProjectOnto(line.GetEndPoint(1)));
-        }
+            => Line.CreateBound(
+                    plane.ProjectOnto(line.GetEndPoint(0)),
+                    plane.ProjectOnto(line.GetEndPoint(1)));
 
         /// <summary>
         /// Возвращает 3D точку <see cref="XYZ"/>, спроецированную на плоскость <see cref="Plane"/> 
@@ -142,7 +122,6 @@
         public static XYZ ProjectOnto(this Plane plane, XYZ p)
         {
             var d = plane.SignedDistanceTo(p);
-
             var q = p - (d * plane.Normal);
 
             Debug.Assert(
@@ -150,6 +129,192 @@
                 "expected point on plane to have zero distance to plane");
 
             return q;
+        }
+
+        /// <summary>
+        /// Получить концевые точки линии
+        /// </summary>
+        /// <param name="line">Линия</param>
+        /// <returns>Концевые точки линии</returns>
+        public static XYZ[] GetEndpoints(this Line line)
+            => new XYZ[]
+            {
+                line.GetEndPoint(0),
+                line.GetEndPoint(1)
+            };
+
+        /// <summary>
+        /// Возвращает расстояние между точками
+        /// </summary>
+        /// <param name="p1">Эта точка</param>
+        /// <param name="p2">Точка, до которой нужно померить расстояние</param>
+        /// <returns>Растояние между точками</returns>
+        public static double GetLengthBetweenPoints(this XYZ p1, XYZ p2)
+            => GetVectorLength(GetVectorFromTwoPoints(p1, p2));
+
+        /// <summary>
+        /// Возвращает длину вектора
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Длина вектора</returns>
+        public static double GetVectorLength(this XYZ v)
+            => Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2) + Math.Pow(v.Z, 2));
+
+        /// <summary>
+        /// Возвращает вектор напрвления между точками
+        /// </summary>
+        /// <param name="p1">Эта точка</param>
+        /// <param name="p2">Точка, до которой необходимо построить вектор</param>
+        /// <returns>Вектор направления между точками</returns>
+        public static XYZ GetVectorFromTwoPoints(this XYZ p1, XYZ p2)
+            => new XYZ(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+
+        /// <summary>
+        /// Изменяет длину вектора по его направлению
+        /// </summary>
+        /// <param name="vector">Вектор</param>
+        /// <param name="length">Новая длина вектора</param>
+        /// <returns>Вектор с новой длиной</returns>
+        public static XYZ GetTransformedVector(this XYZ vector, double length)
+        {
+            var lengthFactor = length / vector.GetVectorLength();
+            return new XYZ(
+                vector.X * lengthFactor,
+                vector.Y * lengthFactor,
+                vector.Z * lengthFactor);
+        }
+
+        /// <summary>
+        /// Получить тело элемента
+        /// </summary>
+        /// <param name="element">Элемент Revit</param>
+        /// <param name="options">Опции</param>
+        /// <returns>Тело элемента</returns>
+        public static Solid GetSolid(
+            this Element element,
+            Options options = null)
+        {
+            var op = options ?? Options;
+            var geometryElement =
+                element.get_Geometry(op);
+
+            var solid = geometryElement
+                .OfType<Solid>()
+                .Single();
+
+            return solid;
+        }
+
+        /// <summary>
+        /// Получить вертикали
+        /// </summary>
+        /// <param name="element">Элемент Revit</param>
+        /// <param name="options">Опции</param>
+        /// <returns>Вертикали</returns>
+        public static ICollection<XYZ> GetVertices(
+            this Element element,
+            Options options = null)
+        {
+            var op = options ?? Options;
+
+            var solid = element.GetSolid(op);
+
+            var verticalFaces = solid
+                .Faces
+                .OfType<PlanarFace>()
+                .Where(pf => Math.Abs(pf.FaceNormal.DotProduct(XYZ.BasisZ)) < LigthTolerance
+                             && pf.Area > 0)
+                .OrderByDescending(pf => pf.Area)
+                .ToArray();
+
+            var mainVerticalFace = verticalFaces.FirstOrDefault();
+            if (mainVerticalFace == null)
+                return null;
+
+            double angle = 0;
+
+            if (Math.Abs(mainVerticalFace.FaceNormal.X) > LigthTolerance
+                && Math.Abs(mainVerticalFace.FaceNormal.Y) > LigthTolerance)
+                angle = Math.Acos(mainVerticalFace.FaceNormal.X);
+
+            Transform transform = Transform.Identity;
+
+            if (angle > Tolerance)
+                transform = Transform.CreateRotation(XYZ.BasisZ, -angle);
+
+            var edgeArrays = verticalFaces
+                .SelectMany(pf => pf.EdgeLoops.Cast<EdgeArray>())
+                .ToArray();
+
+            var points = edgeArrays
+                .SelectMany(ea => ea.Cast<Edge>()
+                                    .Select(e => e.AsCurve() as Line)
+                                    .Where(l => l != null))
+                .SelectMany(l => new XYZ[]
+                {
+                    l.GetEndPoint(0),
+                    l.GetEndPoint(1)
+                })
+                .GetUnique()
+                .OrderBy(pt => pt.Z)
+                .ToArray();
+
+            var minZ = points.First().Z;
+            var maxZ = points.Last().Z;
+
+            var tPoints = points
+                .Select(pt => transform.OfPoint(pt))
+                .ToArray();
+
+            var tPointsByX = tPoints
+                .OrderBy(pt => pt.X)
+                .ToArray();
+
+            var minX = tPointsByX.First().X;
+            var maxX = tPointsByX.Last().X;
+
+            var tPointsByY = tPoints
+                .OrderBy(pt => pt.Y)
+                .ToArray();
+
+            var minY = tPointsByY.First().Y;
+            var maxY = tPointsByY.Last().Y;
+
+            var extremesT = new XYZ[]
+            {
+                new XYZ(minX, minY, minZ),
+                new XYZ(minX, maxY, minZ),
+                new XYZ(maxX, minY, minZ),
+                new XYZ(maxX, maxY, minZ),
+                new XYZ(minX, minY, maxZ),
+                new XYZ(minX, maxY, maxZ),
+                new XYZ(maxX, minY, maxZ),
+                new XYZ(maxX, maxY, maxZ),
+            };
+
+            var extremes = extremesT
+                .Select(pt => transform.Inverse.OfPoint(pt))
+                .ToArray();
+
+            return extremes;
+        }
+
+        /// <summary>
+        /// Получить уникальные XYZ
+        /// </summary>
+        /// <param name="xyzs">Набор XYZ</param>
+        /// <returns>Уникальные XYZ</returns>
+        public static ICollection<XYZ> GetUnique(
+            this IEnumerable<XYZ> xyzs)
+        {
+            var unique = new List<XYZ>();
+            foreach (var xyz in xyzs)
+            {
+                if (unique.All(x => x.DistanceTo(xyz) > Tolerance))
+                    unique.Add(xyz);
+            }
+
+            return unique;
         }
 
         /// <summary>
@@ -168,13 +333,9 @@
         }
 
         private static bool IsZero(double a, double tolerance = 1.0e-9)
-        {
-            return tolerance > Math.Abs(a);
-        }
+            => tolerance > Math.Abs(a);
 
         private static bool IsEqual(double a, double b)
-        {
-            return IsZero(b - a);
-        }
+            => IsZero(b - a);
     }
 }

@@ -12,7 +12,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.4.8;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.1.4.9;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -144,6 +144,21 @@
                              IsChecked="True"/>
                 <RadioButton Content="Выбери меня"
                              GroupName="g1"/>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <CheckBox Content="Выбери _это"
+                              IsChecked="{x:Null}"/>
+                
+                    <RadioButton Grid.Row="1" 
+                                 Content="Выбери _это"
+                                 GroupName="g1"
+                                 IsChecked="True"/>
+                </Grid>
             </StackPanel>
         </TabItem>
         
