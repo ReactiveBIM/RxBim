@@ -15,6 +15,7 @@
     </PropertyGroup>
 	
   <ItemGroup>
+	<PackageReference Include="CSharpFunctionalExtensions" Version="2.12.2" />
     <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
     <PackageReference Include="RevitTask" Version="3.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

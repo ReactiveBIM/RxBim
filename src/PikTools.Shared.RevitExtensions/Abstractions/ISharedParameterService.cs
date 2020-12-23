@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Shared.RevitExtensions.Abstractions
 {
     using Autodesk.Revit.DB;
+    using CSharpFunctionalExtensions;
     using Models;
 
     /// <summary>
@@ -24,8 +25,11 @@
         /// </param>
         /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
         /// <returns>true - если параметр был добавлен</returns>
-        bool AddSharedParameter(
-            DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch, bool useTransaction = false);
+        Result AddSharedParameter(
+            DefinitionFile definitionFile,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch,
+            bool useTransaction = false);
 
         /// <summary>
         /// Метод добавляет общий параметр из указанного ФОП в текущий документ,
@@ -48,7 +52,7 @@
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
         /// <returns>true - если параметр был добавлен или обновлён</returns>
-        public bool AddOrUpdateParameter(
+        Result AddOrUpdateParameter(
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch);
@@ -61,14 +65,17 @@
         /// <param name="sharedParameterInfo">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
-        bool ParameterExistsInDefinitionFile(DefinitionFile definitionFile, SharedParameterInfo sharedParameterInfo, bool fullMatch);
-        
+        Result ParameterExistsInDefinitionFile(
+            DefinitionFile definitionFile,
+            SharedParameterInfo sharedParameterInfo,
+            bool fullMatch);
+
         /// <summary>
         /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
         /// </summary>
         /// <param name="document">Документ, из которого требуется получить ФОП.
         /// Если задано null, то ФОП будет браться из текущего документа</param>
-        public DefinitionFile GetDefinitionFile(Document document = null);
+        Result<DefinitionFile> GetDefinitionFile(Document document = null);
 
         /// <summary>
         /// Считывает файлы общих параметров используя информацию
