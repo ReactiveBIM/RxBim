@@ -46,6 +46,7 @@
         /// Упаковывает проект
         /// </summary>
         /// <param name="project">Проект</param>
+        /// <param name="allProject">Все проекты</param>
         /// <param name="configuration">Конфигурация</param>
         /// <param name="cert">Путь к сертификату</param>
         /// <param name="password">пароль к сертификату</param>
@@ -53,6 +54,7 @@
         /// <param name="timestampServerUrl">сервер url</param>
         public void BuildMsi(
             global::Nuke.Common.ProjectModel.Project project,
+            IReadOnlyCollection<global::Nuke.Common.ProjectModel.Project> allProject,
             string configuration,
             AbsolutePath cert = null,
             string password = null,
@@ -78,13 +80,13 @@
 
             if (Directory.Exists(@out))
             {
-                var types = GetAssemblyTypes(project, @out);
+                var options = GetBuildMsiOptions(project, output, configuration);
 
-                GenerateRevitManifestFile(project, types, output);
+                var types = GetAssemblyTypes(project, @out, options);
+
+                GenerateRevitManifestFile(project, allProject, types, output);
 
                 GeneratePackageContentsFile(project, configuration, output);
-
-                var options = GetBuildMsiOptions(project, output, configuration);
 
                 var toolPath = GetMsiBuilderToolPath();
 
@@ -188,27 +190,65 @@
                                   $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
                 ProjectName = project.Name,
                 SourceDir = Path.Combine(output, "bin"),
-                OutFileName = outputFileName
+                OutFileName = outputFileName,
+                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
+                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
             };
             return options;
         }
 
         private void GenerateRevitManifestFile(
-            global::Nuke.Common.ProjectModel.Project project,
-            List<AssemblyType> types,
+            global::Nuke.Common.ProjectModel.Project rootProject,
+            IReadOnlyCollection<global::Nuke.Common.ProjectModel.Project> allProject,
+            IReadOnlyList<AssemblyType> addInTypes,
             string output)
         {
             var addInGenerator = new AddInGenerator();
-            addInGenerator.GenerateAddInFile(project, types, output);
+            var addInTypesPerProjects = addInTypes
+                .Select(x => new KeyValuePair<global::Nuke.Common.ProjectModel.Project, AssemblyType>(
+                    allProject.FirstOrDefault(proj => proj.Name == x.AssemblyName), x))
+                .ToList();
+            addInGenerator.GenerateAddInFile(rootProject, addInTypesPerProjects, output);
         }
 
-        private List<AssemblyType> GetAssemblyTypes(global::Nuke.Common.ProjectModel.Project project, string @out)
+        private List<AssemblyType> GetAssemblyTypes(
+            global::Nuke.Common.ProjectModel.Project project,
+            string @out,
+            Options options)
         {
             var file = Path.Combine(@out, $"{project.Name}.dll");
 
+            var types = GetAssemblyTypes(file, new[] { nameof(PikToolsCommand), nameof(PikToolsApplication) });
+
+            var additionalFiles = new List<string>();
+            if (options.AddAllAppToManifest)
+            {
+                // Добавляем все сборки с Application из out папки
+                additionalFiles = Directory.GetFiles(@out, "*.dll")
+                    .Except(new[] { file })
+                    .ToList();
+            }
+            else if (!string.IsNullOrWhiteSpace(options.ProjectsAddingToManifest))
+            {
+                // Добавляе дополнительно Application только из заданных в опции сборок
+                var projects = options.ProjectsAddingToManifest.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                additionalFiles = projects
+                    .Select(p => Path.Combine(@out, $"{p.Trim()}.dll"))
+                    .ToList();
+                if (additionalFiles.Any(f => !File.Exists(f)))
+                    throw new FileNotFoundException($"Не найдена сборка указанная в параметре {nameof(Options.ProjectsAddingToManifest)}");
+            }
+
+            foreach (var f in additionalFiles)
+                types.AddRange(GetAssemblyTypes(f, new[] { nameof(PikToolsApplication) }));
+
+            return types;
+        }
+
+        private List<AssemblyType> GetAssemblyTypes(string file, string[] typeNames)
+        {
             var types = _assemblyScanner.Scan(file)
-                .Where(x => x.BaseTypeName == nameof(PikToolsCommand) ||
-                            x.BaseTypeName == nameof(PikToolsApplication))
+                .Where(x => typeNames.Contains(x.BaseTypeName))
                 .ToList();
             return types;
         }

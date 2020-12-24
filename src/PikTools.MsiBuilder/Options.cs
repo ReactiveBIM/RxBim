@@ -1,6 +1,5 @@
 ﻿namespace PikTools.MsiBuilder
 {
-    using System;
     using System.Linq;
     using System.Reflection;
     using CommandLine;
@@ -43,13 +42,19 @@
         [Option('f', "fileName", Required = true, HelpText = "Set msi file name.")]
         public string OutFileName { get; set; }
 
+        [Option('a', "addAllAppToManifest", Required = false, HelpText = "Set need add all Application from output to manifest.")]
+        public bool AddAllAppToManifest { get; set; }
+
+        [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
+        public string ProjectsAddingToManifest { get; set; }
+
         public override string ToString()
         {
             return string.Join(" ",
                 GetType()
                     .GetProperties()
                     .Select(p => (
-                        val: (string)p.GetValue(this),
+                        val: p.GetValue(this)?.ToString(),
                         shortName: ((OptionAttribute)p.GetCustomAttribute(typeof(OptionAttribute))).ShortName)
                     )
                     .Where(tuple => !string.IsNullOrEmpty(tuple.val))
