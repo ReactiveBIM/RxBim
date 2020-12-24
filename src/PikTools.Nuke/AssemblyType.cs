@@ -1,7 +1,7 @@
 ﻿namespace PikTools.Nuke
 {
     /// <summary>
-    /// Тип извлеченный из сборки 
+    /// Тип извлеченный из сборки
     /// </summary>
     public class AssemblyType
     {

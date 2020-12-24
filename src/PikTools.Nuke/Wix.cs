@@ -84,7 +84,7 @@
 
                 var types = GetAssemblyTypes(project, @out, options);
 
-                GenerateRevitManifestFile(project, allProject, types, output);
+                GenerateRevitManifestFile(project.Name, allProject, types, output);
 
                 GeneratePackageContentsFile(project, configuration, output);
 
@@ -198,17 +198,17 @@
         }
 
         private void GenerateRevitManifestFile(
-            global::Nuke.Common.ProjectModel.Project rootProject,
+            string rootProjectName,
             IReadOnlyCollection<global::Nuke.Common.ProjectModel.Project> allProject,
             IReadOnlyList<AssemblyType> addInTypes,
             string output)
         {
             var addInGenerator = new AddInGenerator();
             var addInTypesPerProjects = addInTypes
-                .Select(x => new KeyValuePair<global::Nuke.Common.ProjectModel.Project, AssemblyType>(
+                .Select(x => new ProjectWithAssemblyType(
                     allProject.FirstOrDefault(proj => proj.Name == x.AssemblyName), x))
                 .ToList();
-            addInGenerator.GenerateAddInFile(rootProject, addInTypesPerProjects, output);
+            addInGenerator.GenerateAddInFile(rootProjectName, addInTypesPerProjects, output);
         }
 
         private List<AssemblyType> GetAssemblyTypes(

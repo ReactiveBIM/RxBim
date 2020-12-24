@@ -16,7 +16,6 @@
     <ProjectReference Include="..\..\src\PikTools.Application.Ui.Api\PikTools.Application.Ui.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
-    <ProjectReference Include="..\PikTools.Application.Config.Menu.Example\PikTools.Application.Config.Menu.Example.csproj" />
     <ProjectReference Include="..\PikTools.Application.Example\PikTools.Application.Example.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +44,6 @@
     <PackageGuid>32c5fd61-9b6d-4354-aebd-03816d95ca3c</PackageGuid>
     <UpgradeCode>6c0d17c4-aa84-4dbc-8557-c9bed22363e3</UpgradeCode>
 	<!--<AddAllAppToManifest>True</AddAllAppToManifest>-->
-	<ProjectsAddingToManifest>PikTools.Application.Example, PikTools.Application.Config.Menu.Example</ProjectsAddingToManifest>
+	<ProjectsAddingToManifest>PikTools.Application.Example</ProjectsAddingToManifest>
   </PropertyGroup>
 </Project>

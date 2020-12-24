@@ -21,44 +21,44 @@
         /// <summary>
         /// Генерирует addin файл
         /// </summary>
-        /// <param name="project">проект</param>
+        /// <param name="rootProjectName">Название основного проекта</param>
         /// <param name="addInTypesPerProjects">Типы для регистрации в Revit</param>
         /// <param name="outputDirectory">папка для сохранения addin файла</param>
         public void GenerateAddInFile(
-            Project project,
-            IReadOnlyList<KeyValuePair<Project, AssemblyType>> addInTypesPerProjects,
+            string rootProjectName,
+            IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
-            var pluginTypes = addInTypesPerProjects.Where(x => x.Value.BaseTypeName == nameof(PikToolsCommand)
-                                                               || x.Value.BaseTypeName == nameof(PikToolsApplication))
+            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == nameof(PikToolsCommand)
+                                                               || x.AssemblyType.BaseTypeName == nameof(PikToolsApplication))
                 .ToList();
 
             if (!addInTypesPerProjects.Any())
             {
                 throw new ArgumentException(
-                    $"Project {project.Name} should contain any {CommandTypeName} " +
+                    $"Project {rootProjectName} should contain any {CommandTypeName} " +
                     $"or {ApplicationTypeName} type!");
             }
 
-            GenerateAddIn(project, pluginTypes, outputDirectory);
+            GenerateAddIn(rootProjectName, pluginTypes, outputDirectory);
         }
 
         private void GenerateAddIn(
-            Project rootProject,
-            IReadOnlyList<KeyValuePair<Project, AssemblyType>> addinTypesPerProjects,
+            string rootProjectName,
+            IReadOnlyList<ProjectWithAssemblyType> addinTypesPerProjects,
             string output)
         {
             var addIns = new List<AddIn>();
             foreach (var addinTypesPerProject in addinTypesPerProjects)
             {
-                var project = addinTypesPerProject.Key;
-                var assemblyType = addinTypesPerProject.Value;
+                var project = addinTypesPerProject.Project;
+                var assemblyType = addinTypesPerProject.AssemblyType;
 
                 var guid = GetAddInGuid(project, assemblyType);
 
                 addIns.Add(new AddIn(
                     project.Name,
-                    $"{project.Name}/{project.Name}.dll",
+                    $"{rootProjectName}/{project.Name}.dll",
                     guid.ToString(),
                     assemblyType.FullName,
                     assemblyType.BaseTypeName.ToPluginType()));
@@ -69,7 +69,7 @@
                 AddIn = addIns
             };
 
-            var addInFile = Path.Combine(output, $"{rootProject.Name}.addin");
+            var addInFile = Path.Combine(output, $"{rootProjectName}.addin");
             revitAddIns.ToXDocument().Save(addInFile);
         }
 
