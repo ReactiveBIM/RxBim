@@ -193,6 +193,7 @@
                 OutFileName = outputFileName,
                 AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
                 ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
+                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
             };
             return options;
         }
@@ -228,11 +229,11 @@
                     .Except(new[] { file })
                     .ToList();
             }
-            else if (!string.IsNullOrWhiteSpace(options.ProjectsAddingToManifest))
+            else if (options.ProjectsAddingToManifest != null
+                     && options.ProjectsAddingToManifest.Any())
             {
                 // Добавляе дополнительно Application только из заданных в опции сборок
-                var projects = options.ProjectsAddingToManifest.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                additionalFiles = projects
+                additionalFiles = options.ProjectsAddingToManifest
                     .Select(p => Path.Combine(@out, $"{p.Trim()}.dll"))
                     .ToList();
                 if (additionalFiles.Any(f => !File.Exists(f)))

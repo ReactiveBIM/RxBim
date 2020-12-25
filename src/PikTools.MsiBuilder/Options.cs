@@ -1,7 +1,10 @@
 ﻿namespace PikTools.MsiBuilder
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using CommandLine;
 
     public class Options
@@ -46,7 +49,7 @@
         public bool AddAllAppToManifest { get; set; }
 
         [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
-        public string ProjectsAddingToManifest { get; set; }
+        public IEnumerable<string> ProjectsAddingToManifest { get; set; }
 
         public override string ToString()
         {
@@ -54,11 +57,37 @@
                 GetType()
                     .GetProperties()
                     .Select(p => (
-                        val: p.GetValue(this)?.ToString(),
+                        val: ToString(p.GetValue(this)),
                         shortName: ((OptionAttribute)p.GetCustomAttribute(typeof(OptionAttribute))).ShortName)
                     )
                     .Where(tuple => !string.IsNullOrEmpty(tuple.val))
                     .Select(tuple => $"-{tuple.shortName} {tuple.val}"));
+        }
+
+        private string ToString(object value)
+        {
+            if (value == null)
+                return string.Empty;
+
+            switch (value)
+            {
+                case string _:
+                    return value.ToString();
+
+                case IEnumerable eValue:
+                    var result = new StringBuilder();
+                    foreach (var v in eValue)
+                    {
+                        if (result.Length > 0)
+                            result.Append(" ");
+                        result.Append(v.ToString());
+                    }
+
+                    return result.ToString();
+
+                default:
+                    return value.ToString();
+            }
         }
     }
 }
