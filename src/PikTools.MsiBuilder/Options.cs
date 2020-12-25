@@ -1,8 +1,10 @@
 ﻿namespace PikTools.MsiBuilder
 {
-    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using CommandLine;
 
     public class Options
@@ -43,17 +45,49 @@
         [Option('f', "fileName", Required = true, HelpText = "Set msi file name.")]
         public string OutFileName { get; set; }
 
+        [Option('a', "addAllAppToManifest", Required = false, HelpText = "Set need add all Application from output to manifest.")]
+        public bool AddAllAppToManifest { get; set; }
+
+        [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
+        public IEnumerable<string> ProjectsAddingToManifest { get; set; }
+
         public override string ToString()
         {
             return string.Join(" ",
                 GetType()
                     .GetProperties()
                     .Select(p => (
-                        val: (string)p.GetValue(this),
+                        val: ToString(p.GetValue(this)),
                         shortName: ((OptionAttribute)p.GetCustomAttribute(typeof(OptionAttribute))).ShortName)
                     )
                     .Where(tuple => !string.IsNullOrEmpty(tuple.val))
                     .Select(tuple => $"-{tuple.shortName} {tuple.val}"));
+        }
+
+        private string ToString(object value)
+        {
+            if (value == null)
+                return string.Empty;
+
+            switch (value)
+            {
+                case string _:
+                    return value.ToString();
+
+                case IEnumerable eValue:
+                    var result = new StringBuilder();
+                    foreach (var v in eValue)
+                    {
+                        if (result.Length > 0)
+                            result.Append(" ");
+                        result.Append(v.ToString());
+                    }
+
+                    return result.ToString();
+
+                default:
+                    return value.ToString();
+            }
         }
     }
 }

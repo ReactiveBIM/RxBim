@@ -1,20 +1,28 @@
 ﻿namespace PikTools.Nuke
 {
     /// <summary>
-    /// Тип извлеченный из сборки 
+    /// Тип извлеченный из сборки
     /// </summary>
     public class AssemblyType
     {
         /// <summary>
         /// ctor
         /// </summary>
+        /// <param name="assemblyName">Имя сборки</param>
         /// <param name="fullName">полное имя</param>
         /// <param name="baseTypeName">базовый тип</param>
-        public AssemblyType(string fullName, string baseTypeName)
+        public AssemblyType(
+            string assemblyName, string fullName, string baseTypeName)
         {
+            AssemblyName = assemblyName;
             FullName = fullName;
             BaseTypeName = baseTypeName;
         }
+
+        /// <summary>
+        /// Имя сборки
+        /// </summary>
+        public string AssemblyName { get; }
 
         /// <summary>
         /// Полное имя
