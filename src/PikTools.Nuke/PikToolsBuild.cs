@@ -74,6 +74,7 @@
                 CreateOutDirectory();
 
                 _wix.BuildMsi(ProjectForMsiBuild,
+                    Solution.AllProjects,
                     Config,
                     (AbsolutePath)Cert,
                     Password,
@@ -207,7 +208,7 @@
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    _wix.BuildMsi(project, "Debug");
+                    _wix.BuildMsi(project, Solution.AllProjects, "Debug");
                 }
             });
 

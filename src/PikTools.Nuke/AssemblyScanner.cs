@@ -33,7 +33,7 @@
                         continue;
                     }
 
-                    yield return new AssemblyType(fullName, baseTypeName);
+                    yield return new AssemblyType(Path.GetFileNameWithoutExtension(file), fullName, baseTypeName);
                 }
             }
         }
