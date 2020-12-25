@@ -1,0 +1,83 @@
+﻿namespace PikTools.Di
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
+    /// <summary>
+    /// Резолвер сборок
+    /// </summary>
+    public class AssemblyResolver : IDisposable
+    {
+        private readonly IEnumerable<Dll> _dlls;
+
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="assembly">assembly</param>
+        public AssemblyResolver(Assembly assembly)
+        {
+            var dir = Path.GetDirectoryName(assembly.Location);
+            _dlls = GetDlls(dir, SearchOption.TopDirectoryOnly);
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainOnAssemblyResolve;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
+        }
+
+        private Assembly CurrentDomainOnAssemblyResolve(object o, ResolveEventArgs args)
+        {
+            var dll = _dlls.FirstOrDefault(f => f.IsResolve(args.Name));
+            if (dll != null)
+            {
+                try
+                {
+                    return dll.LoadAssembly();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
+            return null;
+        }
+
+        private IEnumerable<Dll> GetDlls(string dllFolder, SearchOption mode)
+        {
+            foreach (var dllFile in Directory.EnumerateFiles(dllFolder, "*.dll", mode))
+            {
+                yield return new Dll(dllFile);
+            }
+        }
+
+        private class Dll
+        {
+            public Dll(string dllFile)
+            {
+                DllFile = dllFile;
+                DllName = Path.GetFileNameWithoutExtension(dllFile);
+            }
+
+            public string DllFile { get; }
+
+            public string DllName { get; }
+
+            public bool IsResolve(string dllRequest)
+            {
+                return dllRequest.StartsWith($"{DllName},", StringComparison.OrdinalIgnoreCase);
+            }
+
+            public Assembly LoadAssembly()
+            {
+                return Assembly.LoadFile(DllFile);
+            }
+        }
+    }
+}

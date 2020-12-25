@@ -10,9 +10,8 @@
     /// Декоратор, строящий ленту плагина
     /// </summary>
     /// <typeparam name="T">тип возвращаемого значения</typeparam>
-    public class MenuBuilderMethodCaller<T> : IMethodCaller<T>
+    public class MenuBuilderMethodCaller<T> : MethodCallerDecorator<T>
     {
-        private readonly IMethodCaller<T> _decorated;
         private readonly UIControlledApplication _controlledApp;
 
         /// <summary>
@@ -21,16 +20,13 @@
         /// <param name="decorated">Декорируемый объект</param>
         /// <param name="controlledApp">UIControlledApplication</param>
         public MenuBuilderMethodCaller(IMethodCaller<T> decorated, UIControlledApplication controlledApp)
+            : base(decorated)
         {
-            _decorated = decorated;
             _controlledApp = controlledApp;
         }
 
         /// <inheritdoc />
-        public Type SourceObjectType => _decorated.SourceObjectType;
-
-        /// <inheritdoc />
-        public T InvokeCommand(Container container, string methodName)
+        public override T InvokeCommand(Container container, string methodName)
         {
             try
             {
@@ -42,7 +38,7 @@
                 throw new MethodCallerException("Не удалось построить ленту", e);
             }
 
-            return _decorated.InvokeCommand(container, methodName);
+            return Decorated.InvokeCommand(container, methodName);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace PikTools.Application.Api
 {
+    using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
     using Shared;
@@ -27,6 +28,15 @@
             _applicationObject = applicationObject;
             _uiControlledApp = uiControlledApp;
             _uiApp = uiApp;
+        }
+
+        /// <inheritdoc/>
+        public override void Configure(Assembly assembly)
+        {
+            base.Configure(assembly);
+
+            Container.Register(() => new AssemblyResolver(assembly));
+            Container.RegisterDecorator(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
         }
 
         /// <inheritdoc />
