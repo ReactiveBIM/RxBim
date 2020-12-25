@@ -31,7 +31,7 @@
         /// Configure
         /// </summary>
         /// <param name="assembly">сборка для поиска зависимостей</param>
-        public void Configure(Assembly assembly)
+        public virtual void Configure(Assembly assembly)
         {
             ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);

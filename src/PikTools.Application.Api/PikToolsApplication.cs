@@ -1,12 +1,11 @@
 ﻿namespace PikTools.Application.Api
 {
     using System;
-    using System.Reflection;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
     using Shared;
-    using Result = Shared.Result;
+    using Result = Autodesk.Revit.UI.Result;
 
     /// <summary>
     /// Revit application
@@ -18,18 +17,18 @@
         private ApplicationDiConfigurator _diConfigurator;
 
         /// <inheritdoc />
-        public Autodesk.Revit.UI.Result OnStartup(UIControlledApplication application)
+        public Result OnStartup(UIControlledApplication application)
         {
             _application = application;
             application.Idling += ApplicationIdling;
-            return Autodesk.Revit.UI.Result.Succeeded;
+            return Result.Succeeded;
         }
 
         /// <inheritdoc />
-        public Autodesk.Revit.UI.Result OnShutdown(UIControlledApplication application)
+        public Result OnShutdown(UIControlledApplication application)
         {
             var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeCommand(_diConfigurator.Container, "Shutdown");
+            var result = methodCaller.InvokeCommand(_diConfigurator.Container, Constants.ShutdownMethodName);
             return result.MapResultToRevitResult();
         }
 
@@ -43,7 +42,7 @@
                     _diConfigurator.Configure(GetType().Assembly);
 
                     var methodCaller = _diConfigurator.Container.GetInstance<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeCommand(_diConfigurator.Container, "Start");
+                    methodCaller.InvokeCommand(_diConfigurator.Container, Constants.StartMethodName);
 
                     _contextCreated = true;
                 }
