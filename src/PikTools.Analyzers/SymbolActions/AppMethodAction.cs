@@ -8,7 +8,10 @@
     /// </summary>
     public class AppMethodAction
     {
-        private const string DiagnosticId = Constants.DiagnosticId + "AppMethodReturType";
+        /// <summary>
+        /// id
+        /// </summary>
+        public const string DiagnosticId = Constants.DiagnosticId + "AppMethodReturType";
 
         private static readonly LocalizableString Title = "Method returns \"PluginResult\" method.";
 
@@ -36,7 +39,7 @@
         /// <param name="context">контекст</param>
         public void AnalyzeAppStartMethods(SymbolAnalysisContext context)
         {
-            AnalyzeMethod(context, "Start");
+            AnalyzeMethod(context, Constants.Start);
         }
 
         /// <summary>
@@ -45,16 +48,16 @@
         /// <param name="context">контекст</param>
         public void AnalyzeAppShutdownMethods(SymbolAnalysisContext context)
         {
-            AnalyzeMethod(context, "Shutdown");
+            AnalyzeMethod(context, Constants.Shutdown);
         }
 
         private void AnalyzeMethod(SymbolAnalysisContext context, string methodName)
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (method.ContainingType.BaseType?.Name == "PikToolsApplication" &&
+            if (method.ContainingType.BaseType?.Name == Constants.PikToolsApplication &&
                 method.Name == methodName &&
-                method.ReturnType.Name != "PluginResult")
+                method.ReturnType.Name != Constants.PluginResult)
             {
                 var diagnostic = Diagnostic.Create(Rule, method.Locations[0], method.Name);
                 context.ReportDiagnostic(diagnostic);

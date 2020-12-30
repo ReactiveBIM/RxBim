@@ -9,6 +9,10 @@ using System.Linq;
 
 namespace TestHelper
 {
+    // using Autodesk.Revit.UI;
+    // using PikTools.Command.Api;
+    // using PikTools.Shared;
+
     /// <summary>
     /// Class for turning strings into documents and getting the diagnostics on them
     /// All methods are static
@@ -19,6 +23,8 @@ namespace TestHelper
         private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
         private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
         private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
+        // private static readonly MetadataReference PluginResultReference = MetadataReference.CreateFromFile(typeof(PluginResult).Assembly.Location);
+        // private static readonly MetadataReference PikToolsCommandReference = MetadataReference.CreateFromFile(typeof(PikToolsCommand).Assembly.Location);
 
         internal static string DefaultFilePathPrefix = "Test";
         internal static string CSharpDefaultFileExt = "cs";
@@ -153,6 +159,8 @@ namespace TestHelper
                 .AddMetadataReference(projectId, SystemCoreReference)
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
                 .AddMetadataReference(projectId, CodeAnalysisReference);
+                // .AddMetadataReference(projectId, PikToolsCommandReference)
+                // .AddMetadataReference(projectId, PluginResultReference);
 
             int count = 0;
             foreach (var source in sources)
