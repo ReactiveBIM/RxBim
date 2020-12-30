@@ -1,6 +1,7 @@
 ﻿namespace PikTools.Shared.Ui.Abstractions
 {
     using CSharpFunctionalExtensions;
+    using static System.Environment;
 
     /// <summary>
     /// Работа с внешними окнами и диалогами
@@ -32,6 +33,18 @@
             string filter,
             bool addExtension,
             bool multiSelect);
+
+        /// <summary>
+        /// Показать окно выбора папки
+        /// </summary>
+        /// <param name="description">Описание окна выбора</param>
+        /// <param name="rootFolder">Начальная папка</param>
+        /// <param name="selectedPath">Выбранная изначально папка</param>
+        /// <returns></returns>
+        Result<string> ShowFolderBrowserDialog(
+            string description,
+            SpecialFolder rootFolder = SpecialFolder.MyComputer,
+            string selectedPath = "");
 
         /// <summary>
         /// Открывает проводник на заданной папке
