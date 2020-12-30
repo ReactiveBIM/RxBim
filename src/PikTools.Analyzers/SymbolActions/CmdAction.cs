@@ -9,7 +9,10 @@
     /// </summary>
     public class CmdAction
     {
-        private const string DiagnosticId = Constants.DiagnosticId + "Command";
+        /// <summary>
+        /// шв
+        /// </summary>
+        public const string DiagnosticId = Constants.DiagnosticId + "Command";
 
         private static readonly LocalizableString Title = "Command type contains \"ExecuteCommand\" method.";
 

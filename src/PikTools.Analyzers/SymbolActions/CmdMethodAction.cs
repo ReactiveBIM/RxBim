@@ -8,7 +8,10 @@
     /// </summary>
     public class CmdMethodAction
     {
-        private const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
+        /// <summary>
+        /// id
+        /// </summary>
+        public const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
 
         private static readonly LocalizableString Title = "Method returns \"PluginResult\" method.";
 
@@ -40,7 +43,7 @@
 
             if (method.ContainingType.BaseType?.Name == "PikToolsCommand" &&
                 method.Name == "ExecuteCommand" &&
-                method.ReturnType.Name != "PluginResult")
+                method.ReturnType.Name != Constants.PluginResult)
             {
                 var diagnostic = Diagnostic.Create(Rule, method.Locations[0], method.Name);
                 context.ReportDiagnostic(diagnostic);

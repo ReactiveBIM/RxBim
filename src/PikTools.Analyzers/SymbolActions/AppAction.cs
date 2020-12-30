@@ -9,9 +9,15 @@
     /// </summary>
     public class AppAction
     {
-        private const string StartDiagnosticId = Constants.DiagnosticId + "AppStart";
+        /// <summary>
+        /// id
+        /// </summary>
+        public const string StartDiagnosticId = Constants.DiagnosticId + "AppStart";
 
-        private const string ShutdownDiagnosticId = Constants.DiagnosticId + "AppShutdown";
+        /// <summary>
+        /// id
+        /// </summary>
+        public const string ShutdownDiagnosticId = Constants.DiagnosticId + "AppShutdown";
 
         private static readonly LocalizableString StartMethodTitle = "App type contains \"Start\" method.";
 
@@ -60,8 +66,8 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == "PikToolsApplication" &&
-                namedTypeSymbol.MemberNames.All(x => x != "Start"))
+            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
+                namedTypeSymbol.MemberNames.All(x => x != Constants.Start))
             {
                 var diagnostic =
                     Diagnostic.Create(AppStartMethodRule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
@@ -78,8 +84,8 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == "PikToolsApplication" &&
-                namedTypeSymbol.MemberNames.All(x => x != "Shutdown"))
+            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
+                namedTypeSymbol.MemberNames.All(x => x != Constants.Shutdown))
             {
                 var diagnostic =
                     Diagnostic.Create(AppShutdownMethodRule,
