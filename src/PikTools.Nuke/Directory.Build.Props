@@ -1,5 +1,5 @@
 ﻿<Project>
     <PropertyGroup>
-        <ApiVersion>1.6.2</ApiVersion>
+        <ApiVersion>1.7.0</ApiVersion>
     </PropertyGroup>
 </Project>
