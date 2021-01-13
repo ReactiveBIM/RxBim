@@ -35,19 +35,21 @@
         {
             base.Configure(assembly);
 
-            Container.Register(() => new AssemblyResolver(assembly));
-            Container.RegisterDecorator(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
+            Container
+                .AddTransient(() => new AssemblyResolver(assembly))
+                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
         }
 
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container.RegisterInstance(_uiControlledApp);
-            Container.RegisterInstance(_uiApp);
-            Container.RegisterInstance(_uiApp.Application);
-            Container.Register(() => _uiApp.ActiveUIDocument);
-            Container.Register(() => _uiApp.ActiveUIDocument?.Document);
-            Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
+            Container
+                .AddInstance(_uiControlledApp)
+                .AddInstance(_uiApp)
+                .AddInstance(_uiApp.Application)
+                .AddTransient(() => _uiApp.ActiveUIDocument)
+                .AddTransient(() => _uiApp.ActiveUIDocument?.Document)
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

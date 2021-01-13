@@ -9,7 +9,6 @@
     using Di;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
-    using SimpleInjector;
 
     /// <summary>
     /// Расширения контейнера
@@ -21,10 +20,10 @@
         /// </summary>
         /// <param name="container">контейнер</param>
         /// <param name="action">метод создания меню</param>
-        public static void AddMenu(this Container container, Action<Ribbon> action)
+        public static void AddMenu(this IContainer container, Action<Ribbon> action)
         {
             var menuCreated = false;
-            container.RegisterInstance<Action<Ribbon>>(ribbon =>
+            container.AddInstance<Action<Ribbon>>(ribbon =>
             {
                 if (!menuCreated)
                 {
@@ -32,7 +31,7 @@
                     menuCreated = true;
                 }
             });
-            container.RegisterDecorator(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
         /// <summary>
@@ -41,12 +40,12 @@
         /// <param name="container">контейнер</param>
         /// <param name="cfg">конфигурация</param>
         /// <param name="assembly">сборка</param>
-        public static void AddMenu(this Container container, IConfiguration cfg = null, Assembly assembly = null)
+        public static void AddMenu(this IContainer container, IConfiguration cfg = null, Assembly assembly = null)
         {
             assembly ??= Assembly.GetCallingAssembly();
 
             var menuCreated = false;
-            container.Register<Action<Ribbon>>(() =>
+            container.AddTransient<Action<Ribbon>>(() =>
             {
                 var menuConfiguration = GetMenuConfiguration(container, cfg);
 
@@ -77,7 +76,7 @@
                     menuCreated = true;
                 };
             });
-            container.RegisterDecorator(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
         private static Type GetType(string commandType, [NotNull] Assembly assembly)
@@ -112,9 +111,9 @@
             }
         }
 
-        private static MenuConfiguration GetMenuConfiguration(Container container, IConfiguration cfg)
+        private static MenuConfiguration GetMenuConfiguration(IContainer container, IConfiguration cfg)
         {
-            cfg ??= container.GetInstance<IConfiguration>();
+            cfg ??= container.GetService<IConfiguration>();
             var menuConfiguration = cfg.GetSection("Menu").Get<MenuConfiguration>();
             return menuConfiguration;
         }

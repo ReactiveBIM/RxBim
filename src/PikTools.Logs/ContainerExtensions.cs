@@ -1,17 +1,12 @@
 ﻿namespace PikTools.Logs
 {
-    using System;
-    using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
     using Enrichers;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyModel;
     using Serilog;
-    using Serilog.Core;
     using Serilog.Events;
-    using Settings;
-    using SimpleInjector;
 
     /// <summary>
     /// Расширения для контейнера
@@ -23,18 +18,16 @@
         /// </summary>
         /// <param name="container">контейнер</param>
         /// <param name="cfg">Конфигурация</param>
-        public static void AddLogs(this Container container, IConfiguration cfg = null)
+        public static void AddLogs(this IContainer container, IConfiguration cfg = null)
         {
             RegisterLogger(container, cfg);
 
-            container.RegisterDecorator(
-                typeof(IMethodCaller<>),
-                typeof(LoggedMethodCaller<>));
+            container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
-        private static void RegisterLogger(Container container, IConfiguration cfg)
+        private static void RegisterLogger(IContainer container, IConfiguration cfg)
         {
-            container.Register(() =>
+            container.AddTransient(() =>
             {
                 if (cfg == null)
                 {
@@ -45,11 +38,11 @@
             });
         }
 
-        private static void TryGetConfigurationFromContainer(Container container, ref IConfiguration cfg)
+        private static void TryGetConfigurationFromContainer(IContainer container, ref IConfiguration cfg)
         {
             try
             {
-                cfg = container.GetInstance<IConfiguration>();
+                cfg = container.GetService<IConfiguration>();
             }
             catch
             {
@@ -57,7 +50,7 @@
             }
         }
 
-        private static ILogger CreateLogger(IConfiguration cfg, Container container)
+        private static ILogger CreateLogger(IConfiguration cfg, IContainer container)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -77,7 +70,7 @@
             return config.CreateLogger();
         }
 
-        private static void AddLogEnrichers(Container container, LoggerConfiguration config)
+        private static void AddLogEnrichers(IContainer container, LoggerConfiguration config)
         {
             config
                 .Enrich.FromLogContext()
@@ -88,11 +81,11 @@
             EnrichWithRevitData(container, config);
         }
 
-        private static void EnrichWithRevitData(Container container, LoggerConfiguration config)
+        private static void EnrichWithRevitData(IContainer container, LoggerConfiguration config)
         {
             try
             {
-                var uiApp = container.GetInstance<UIApplication>();
+                var uiApp = container.GetService<UIApplication>();
                 config.Enrich.With(new RevitEnricher(uiApp));
             }
             catch

@@ -1,6 +1,5 @@
 ﻿namespace PikTools.Shared.Ui.ViewModels
 {
-    using System;
     using System.Windows.Input;
     using GalaSoft.MvvmLight;
 

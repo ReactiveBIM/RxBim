@@ -2,11 +2,10 @@
 {
     using Di;
     using Logs;
-    using SimpleInjector;
 
     public class Config : ICommandConfiguration
     {
-        public void Configure(Container container)
+        public void Configure(IContainer container)
         {
             container.AddLogs();
         }

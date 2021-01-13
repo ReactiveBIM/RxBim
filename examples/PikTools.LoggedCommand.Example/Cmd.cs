@@ -1,9 +1,6 @@
 ﻿namespace PikTools.LoggedCommand.Example
 {
-    using System;
-    using System.Threading.Tasks;
     using Autodesk.Revit.Attributes;
-    using Autodesk.Revit.UI;
     using Command.Api;
     using Shared;
 

@@ -3,7 +3,6 @@ namespace PikTools.Di.Tests
     using System;
     using FluentAssertions;
     using Shared;
-    using SimpleInjector;
     using TestObjects;
     using Xunit;
 
@@ -15,7 +14,7 @@ namespace PikTools.Di.Tests
             var badObject = new BadMethodNameObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(new Container(), "Execute");
+            Action act = () => methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -26,7 +25,7 @@ namespace PikTools.Di.Tests
             var badObject = new BadReturnTypeObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(new Container(), "Execute");
+            Action act = () => methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -38,7 +37,7 @@ namespace PikTools.Di.Tests
 
             var methodCaller = new MethodCaller<int>(testObject);
             int result = 0;
-            Action act = () => result = methodCaller.InvokeCommand(new Container(), "Execute");
+            Action act = () => result = methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

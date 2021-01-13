@@ -49,7 +49,7 @@
 
         private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Container.GetInstance<IMethodCaller<PluginResult>>();
+            var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
             var commandResult = methodCaller.InvokeCommand(di.Container, MethodName);
             return commandResult;
         }
@@ -67,7 +67,7 @@
 
             if (commandResult.ElementIds.Any())
             {
-                var doc = di.Container.GetInstance<Document>();
+                var doc = di.Container.GetService<Document>();
                 foreach (var id in commandResult.ElementIds)
                 {
                     var element = doc.GetElement(new ElementId(id));
