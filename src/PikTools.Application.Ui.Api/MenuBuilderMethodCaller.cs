@@ -4,7 +4,6 @@
     using Autodesk.Revit.UI;
     using Builder;
     using Di;
-    using SimpleInjector;
 
     /// <summary>
     /// Декоратор, строящий ленту плагина
@@ -26,11 +25,11 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeCommand(Container container, string methodName)
+        public override T InvokeCommand(IContainer container, string methodName)
         {
             try
             {
-                var ribbonBuilder = container.GetInstance<Action<Ribbon>>();
+                var ribbonBuilder = container.GetService<Action<Ribbon>>();
                 ribbonBuilder(new Ribbon(_controlledApp));
             }
             catch (Exception e)

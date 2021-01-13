@@ -2,8 +2,8 @@
 {
     using Abstractions;
     using Collectors;
+    using Di;
     using Services;
-    using SimpleInjector;
     using Storages;
 
     /// <summary>
@@ -15,17 +15,16 @@
         /// Добавляет сервисы работы с Revit в контейнер
         /// </summary>
         /// <param name="container">контейнер</param>
-        public static void AddRevitHelpers(this Container container)
+        public static void AddRevitHelpers(this IContainer container)
         {
-            container.Register<IProblemElementsStorage, ProblemElementsStorage>(Lifestyle.Singleton);
-            container.Register<IDocumentsCollector, DocumentsCollector>(Lifestyle.Singleton);
-            container.Register<ISheetsCollector, SheetsCollector>(Lifestyle.Singleton);
-            container.Register<IElementsDisplay, ElementsDisplayService>(Lifestyle.Singleton);
-            container.Register<ISharedParameterService, SharedParameterService>(Lifestyle.Singleton);
-            var collectorRegistration = Lifestyle.Singleton.CreateRegistration<ScopedElementsCollector>(container);
-            container.AddRegistration<IElementsCollector>(collectorRegistration);
-            container.AddRegistration<IScopedElementsCollector>(collectorRegistration);
-            container.RegisterInstance(new RevitTask());
+            container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
+            container.AddSingleton<IDocumentsCollector, DocumentsCollector>();
+            container.AddSingleton<ISheetsCollector, SheetsCollector>();
+            container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
+            container.AddSingleton<ISharedParameterService, SharedParameterService>();
+            container.AddSingleton<IElementsCollector, ScopedElementsCollector>();
+            container.AddSingleton<IScopedElementsCollector, ScopedElementsCollector>();
+            container.AddInstance(new RevitTask());
         }
     }
 }

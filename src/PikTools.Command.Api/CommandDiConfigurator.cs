@@ -26,12 +26,13 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container.RegisterInstance(_commandData);
-            Container.RegisterInstance(_commandData.Application);
-            Container.RegisterInstance(_commandData.Application.Application);
-            Container.Register(() => _commandData.Application.ActiveUIDocument);
-            Container.Register(() => _commandData.Application.ActiveUIDocument?.Document);
-            Container.Register<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
+            Container
+                .AddInstance(_commandData)
+                .AddInstance(_commandData.Application)
+                .AddInstance(_commandData.Application.Application)
+                .AddTransient(() => _commandData.Application.ActiveUIDocument)
+                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document)
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
 }

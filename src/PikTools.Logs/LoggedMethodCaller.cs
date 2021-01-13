@@ -3,7 +3,6 @@
     using System;
     using Di;
     using Serilog;
-    using SimpleInjector;
 
     /// <inheritdoc />
     public class LoggedMethodCaller<T> : MethodCallerDecorator<T>
@@ -22,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeCommand(Container container, string methodName)
+        public override T InvokeCommand(IContainer container, string methodName)
         {
             T result;
             try

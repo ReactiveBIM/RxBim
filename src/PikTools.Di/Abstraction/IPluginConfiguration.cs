@@ -1,7 +1,5 @@
 ﻿namespace PikTools.Di
 {
-    using SimpleInjector;
-
     /// <summary>
     /// Конфигурация плагина
     /// </summary>
@@ -11,6 +9,6 @@
         /// Дополнительные конфигурации контейнера
         /// </summary>
         /// <param name="container">Контейнер</param>
-        void Configure(Container container);
+        void Configure(IContainer container);
     }
 }
