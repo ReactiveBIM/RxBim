@@ -120,7 +120,7 @@
             var views = GetViewSheets(doc);
             if (views.Any())
             {
-                sheets = views.GroupBy(v => v.LookupParameter(groupSheetParam).GetParameterValue().ToString())
+                sheets = views.GroupBy(v => v.GetParameterValue<string>(groupSheetParam) ?? string.Empty)
                             .ToDictionary(g => g.Key, g => g.OrderBy(view => view.SheetNumber, new SemiNumericComparer())
                                 .Select(view => view.Title)
                                 .ToList());
