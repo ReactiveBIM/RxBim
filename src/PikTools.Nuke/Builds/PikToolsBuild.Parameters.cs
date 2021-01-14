@@ -15,7 +15,7 @@ namespace PikTools.Nuke.Builds
         private Regex _releaseBranchRegex;
 
         [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-        public Configuration Configuration => IsLocalBuild ? Configuration.Debug : Configuration.Release;
+        public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
         /// <summary>
         /// путь к сертификату
