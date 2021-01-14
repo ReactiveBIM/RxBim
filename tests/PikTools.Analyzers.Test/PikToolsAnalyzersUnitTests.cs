@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TestHelper;
-using PikTools.Analyzers;
 
 namespace PikTools.Analyzers.Test
 {
@@ -13,14 +12,6 @@ namespace PikTools.Analyzers.Test
     [TestClass]
     public class UnitTest : CodeFixVerifier
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            var test = @"";
-
-            VerifyCSharpDiagnostic(test);
-        }
-
         [TestMethod]
         public void CommandTest()
         {
@@ -47,7 +38,7 @@ namespace PikTools.CommandExample
 
             VerifyCSharpDiagnostic(test, expected);
         }
-        
+
         [TestMethod]
         public void CommandMethodTest()
         {
@@ -77,7 +68,7 @@ namespace PikTools.CommandExample
 
             VerifyCSharpDiagnostic(test, expected);
         }
-        
+
         [TestMethod]
         public void AppTest()
         {
@@ -101,7 +92,7 @@ namespace PikTools.CommandExample
                         new DiagnosticResultLocation("Test0.cs", 7, 18)
                     }
             };
-            
+
             var expected2 = new DiagnosticResult
             {
                 Id = "PikToolsAnalyzersAppShutdown",
@@ -116,7 +107,7 @@ namespace PikTools.CommandExample
 
             VerifyCSharpDiagnostic(test, expected, expected2);
         }
-        
+
         [TestMethod]
         public void AppMethodsTest()
         {
@@ -147,7 +138,7 @@ namespace PikTools.CommandExample
                         new DiagnosticResultLocation("Test0.cs", 9, 21)
                     }
             };
-            
+
             var expected2 = new DiagnosticResult
             {
                 Id = "PikToolsAnalyzersAppMethodReturType",
@@ -163,42 +154,68 @@ namespace PikTools.CommandExample
             VerifyCSharpDiagnostic(test, expected, expected2);
         }
 
-        [Ignore]
         [TestMethod]
-        public void Fix()
+        public void FixAddingCommandMethod()
         {
-            var test = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+            var test = @"namespace PikTools.CommandExample
+            {
+                using Command.Api;
+                using Shared;
 
-    namespace ConsoleApplication1
-    {
-        class typename
-        {   
+        public class Cmd : PikToolsCommand
+        {
         }
-    }";
-            
-            var fixtest = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+}";
 
-    namespace ConsoleApplication1
+            var fixtest = @"namespace PikTools.CommandExample
+{
+    using Command.Api;
+    using Shared;
+
+    public class Cmd : PikToolsCommand
     {
-        class TYPENAME
-        {   
+        public PluginResult ExecuteCommand()
+        {
+            return PluginResult.Succeeded;
         }
-    }";
+    }
+}";
             VerifyCSharpFix(test, fixtest);
         }
 
+        [TestMethod]
+        public void FixCommandMethodReturnType()
+        {
+            var test = @"namespace PikTools.CommandExample
+{
+    using Command.Api;
+    using Shared;
+
+    public class Cmd : PikToolsCommand
+    {
+        public void ExecuteCommand()
+        {
+            return PluginResult.Succeeded;
+        }
+    }
+}";
+
+            var fixtest = @"namespace PikTools.CommandExample
+{
+    using Command.Api;
+    using Shared;
+
+    public class Cmd : PikToolsCommand
+    {
+        public PluginResult ExecuteCommand()
+        {
+            return PluginResult.Succeeded;
+        }
+    }
+}";
+            VerifyCSharpFix(test, fixtest);
+        }
+        
         protected override CodeFixProvider GetCSharpCodeFixProvider()
         {
             return new PikToolsAnalyzersCodeFixProvider();

@@ -2,7 +2,6 @@
 {
     using System;
     using Microsoft.Extensions.Configuration;
-    using SimpleInjector;
 
     /// <summary>
     /// Раcширения контейнера для добавления конфигураций
@@ -15,12 +14,12 @@
         /// <param name="container">контейнер</param>
         /// <param name="action">функция настройки конфигурации</param>
         public static void AddConfiguration(
-            this Container container,
+            this IContainer container,
             Func<ConfigurationBuilder, IConfiguration> action)
         {
             if (action != null)
             {
-                container.RegisterInstance(action);
+                container.AddInstance(action);
             }
         }
     }

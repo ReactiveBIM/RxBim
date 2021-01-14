@@ -1,7 +1,7 @@
 ﻿namespace PikTools.Shared
 {
     using Abstractions;
-    using SimpleInjector;
+    using Di;
 
     /// <summary>
     /// Расширения для контейнера
@@ -12,10 +12,10 @@
         /// Добавляет общие вспомогательные сервисы
         /// </summary>
         /// <param name="container">DI контейнер</param>
-        public static void AddSharedTools(this Container container)
+        public static void AddSharedTools(this IContainer container)
         {
-            container.Register<IUserSettings, UserSettings>(Lifestyle.Singleton);
-            container.Register<IModelFactory>(() => new ModelFactory(container), Lifestyle.Singleton);
+            container.AddSingleton<IUserSettings, UserSettings>();
+            container.AddSingleton<IModelFactory>(() => new ModelFactory(container));
         }
     }
 }

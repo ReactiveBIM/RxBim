@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="BimLab.Nuke" Version="2020.9.1" />
     <PackageReference Include="BimLab.Nuke.Nuget" Version="2020.9.3" />
-    <PackageReference Include="Nuke.Common" Version="0.24.11" />
+    <PackageReference Include="Nuke.Common" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

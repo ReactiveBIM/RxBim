@@ -1,6 +1,5 @@
 ﻿using PikTools.Shared.Ui.Abstractions;
 using PikTools.Shared.Ui.Controls;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -18,7 +17,7 @@ namespace PikTools.WpfStyles.Example
         {
             var config = new DiConfig();
             config.Configure(GetType().Assembly);
-            _notificationService = config.Container.GetInstance<INotificationService>();
+            _notificationService = config.Container.GetService<INotificationService>();
             
             InitializeComponent();
 

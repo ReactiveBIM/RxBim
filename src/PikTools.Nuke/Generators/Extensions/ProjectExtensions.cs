@@ -1,6 +1,5 @@
 ﻿namespace PikTools.Nuke.Generators.Extensions
 {
-    using System;
     using System.Linq;
     using System.Xml.Linq;
     using global::Nuke.Common.ProjectModel;

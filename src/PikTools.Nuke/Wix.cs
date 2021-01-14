@@ -346,10 +346,10 @@
                 var programFilesPath =
                     (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
                 settings = settings
-                    .SetToolPath(programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
+                    .SetProcessToolPath(programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
             }
 
-            Logger.Info($"ToolPath: {settings.ToolPath}");
+            Logger.Info($"ToolPath: {settings.ProcessToolPath}");
 
             SignToolTasks.SignTool(settings);
         }

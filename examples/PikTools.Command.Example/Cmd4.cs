@@ -1,6 +1,5 @@
 ﻿namespace PikTools.CommandExample
 {
-    using System.Threading.Tasks;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Command.Api;

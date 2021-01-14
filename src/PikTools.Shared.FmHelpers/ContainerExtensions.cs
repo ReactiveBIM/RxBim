@@ -3,11 +3,11 @@
     using System;
     using System.IO;
     using Bimlab.Security.Client;
+    using Di;
     using Microsoft.Extensions.Configuration;
     using PikTools.Shared.FmHelpers.Abstractions;
     using PikTools.Shared.FmHelpers.Models;
     using PikTools.Shared.FmHelpers.Services;
-    using SimpleInjector;
 
     /// <summary>
     /// Расширения для контейнера
@@ -19,14 +19,14 @@
         /// </summary>
         /// <param name="container">контейнер</param>
         /// <param name="cfg">Конфигурация</param>
-        public static void AddFmHelpers(this Container container, Func<IConfiguration> cfg = null)
+        public static void AddFmHelpers(this IContainer container, Func<IConfiguration> cfg = null)
         {
-            container.Register(() => cfg == null
+            container.AddSingleton(() => cfg == null
                 ? new FmSettings()
-                : cfg().GetSection("FmSettings").Get<FmSettings>(), Lifestyle.Singleton);
-            container.Register(() =>
+                : cfg().GetSection("FmSettings").Get<FmSettings>());
+            container.AddSingleton(() =>
             {
-                var settings = container.GetInstance<FmSettings>();
+                var settings = container.GetService<FmSettings>();
                 return new TokenManager(new UtilityOptions
                 {
                     ClientSecret = settings.ClientSecret,
@@ -34,11 +34,12 @@
                     AuthorityUri = settings.AuthorityUri,
                     Scope = settings.Scope,
                     UtilityPath = Path.Combine(
-                        Path.GetDirectoryName(typeof(ContainerExtensions).Assembly.Location), "Bimlab.Security.AuthUtility.exe")
+                        Path.GetDirectoryName(typeof(ContainerExtensions).Assembly.Location),
+                        "Bimlab.Security.AuthUtility.exe")
                 });
-            }, Lifestyle.Singleton);
+            });
 
-            container.Register<IFamilyManagerService, FamilyManagerService>(Lifestyle.Singleton);
+            container.AddSingleton<IFamilyManagerService, FamilyManagerService>();
         }
     }
 }

@@ -15,8 +15,8 @@
             testDiConfigurator.Configure(GetType().Assembly);
             Action act = () =>
             {
-                testDiConfigurator.Container.GetInstance<IBaseService>();
-                testDiConfigurator.Container.GetInstance<IPluginService>();
+                testDiConfigurator.Container.GetService<IBaseService>();
+                testDiConfigurator.Container.GetService<IPluginService>();
             };
             act.Should().NotThrow();
         }

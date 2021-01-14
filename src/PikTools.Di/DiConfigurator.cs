@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Reflection;
     using Microsoft.Extensions.Configuration;
-    using SimpleInjector;
 
     /// <summary>
     /// DiWrapper
@@ -14,18 +13,9 @@
         where T : IPluginConfiguration
     {
         /// <summary>
-        /// ctor
-        /// </summary>
-        protected DiConfigurator()
-        {
-            Container = new Container();
-            Container.Options.EnableAutoVerification = false;
-        }
-
-        /// <summary>
         /// DI контейнер
         /// </summary>
-        public Container Container { get; }
+        public IContainer Container { get; private set; }
 
         /// <summary>
         /// Configure
@@ -33,6 +23,7 @@
         /// <param name="assembly">сборка для поиска зависимостей</param>
         public virtual void Configure(Assembly assembly)
         {
+            Container = CreateContainer(assembly);
             ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);
             AddConfigurations(assembly);
@@ -42,6 +33,19 @@
         /// Конфигурирование основных зависимостей Revit
         /// </summary>
         protected abstract void ConfigureBaseDependencies();
+
+        private IContainer CreateContainer(Assembly assembly)
+        {
+            var resolverType = assembly.GetTypes()
+                .SingleOrDefault(x => x.GetInterfaces().Any(i => i.Name == nameof(IContainerResolver)));
+            if (resolverType != null)
+            {
+                var resolver = (IContainerResolver)Activator.CreateInstance(resolverType);
+                return resolver.Resolve();
+            }
+
+            return new DefaultContainer();
+        }
 
         private void ConfigureAdditionalDependencies(Assembly assembly)
         {
@@ -73,17 +77,17 @@
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
         {
-            Container.Register<IConfiguration>(() =>
+            Container.AddSingleton<IConfiguration>(() =>
             {
                 if (Container.GetCurrentRegistrations()
                     .Any(x => x.ServiceType == typeof(Func<ConfigurationBuilder, IConfiguration>)))
                 {
-                    var userConfigurationBuilder = Container.GetInstance<Func<ConfigurationBuilder, IConfiguration>>();
+                    var userConfigurationBuilder = Container.GetService<Func<ConfigurationBuilder, IConfiguration>>();
                     configurationBuilder.AddConfiguration(userConfigurationBuilder(new ConfigurationBuilder()));
                 }
 
                 return configurationBuilder.Build();
-            }, Lifestyle.Singleton);
+            });
         }
     }
 }
