@@ -1,7 +1,5 @@
 ﻿namespace PikTools.Di
 {
-    using SimpleInjector;
-
     /// <summary>
     /// Конфигурация приложения
     /// </summary>

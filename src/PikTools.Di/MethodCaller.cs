@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using SimpleInjector;
 
     /// <summary>
     /// MethodCaller
@@ -30,7 +29,7 @@
         /// </summary>
         /// <param name="container">конетйнер</param>
         /// <param name="methodName">имя метода</param>
-        public T InvokeCommand(Container container, string methodName)
+        public T InvokeCommand(IContainer container, string methodName)
         {
             var methodInfo = FindInvokeMethod(methodName);
 
@@ -50,12 +49,12 @@
             return (T)methodInfo.Invoke(_sourceObject, parameters);
         }
 
-        private List<object> GetMethodParameters(Container container, MethodInfo methodInfo)
+        private List<object> GetMethodParameters(IContainer container, MethodInfo methodInfo)
         {
             var parameters = new List<object>();
             foreach (var parameterInfo in methodInfo.GetParameters())
             {
-                parameters.Add(container.GetInstance(parameterInfo.ParameterType));
+                parameters.Add(container.GetService(parameterInfo.ParameterType));
             }
 
             return parameters;

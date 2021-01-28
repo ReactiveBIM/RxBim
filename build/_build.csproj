@@ -11,9 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BimLab.Nuke" Version="2020.9.1" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2020.9.3" />
-    <PackageReference Include="Nuke.Common" Version="0.24.11" />
+    <PackageReference Include="BimLab.Nuke" Version="2021.1.1-dev001" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.1.1-dev001" />
+    <PackageReference Include="NuGet.CommandLine" Version="5.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿namespace PikTools.Di
 {
     using System;
-    using SimpleInjector;
 
     /// <summary>
     /// MethodCaller
@@ -18,6 +17,6 @@
         /// </summary>
         /// <param name="container">конетйнер</param>
         /// <param name="methodName">имя метода</param>
-        T InvokeCommand(Container container, string methodName);
+        T InvokeCommand(IContainer container, string methodName);
     }
 }

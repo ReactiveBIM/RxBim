@@ -1,12 +1,10 @@
 ﻿namespace PikTools.Di.Tests.TestDependencies
 {
-    using SimpleInjector;
-
     public class TestPluginConfiguration : IApplicationConfiguration
     {
-        public void Configure(Container container)
+        public void Configure(IContainer container)
         {
-            container.Register<IPluginService, PluginService>();
+            container.AddTransient<IPluginService, PluginService>();
         }
     }
 }

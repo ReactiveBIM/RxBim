@@ -2,7 +2,6 @@
 {
     using Di;
     using Shared;
-    using SimpleInjector;
 
     /// <inheritdoc />
     public class AssemblyResolveMethodCaller : MethodCallerDecorator<PluginResult>
@@ -17,7 +16,7 @@
         }
 
         /// <inheritdoc />
-        public override PluginResult InvokeCommand(Container container, string methodName)
+        public override PluginResult InvokeCommand(IContainer container, string methodName)
         {
             var result = Decorated.InvokeCommand(container, methodName);
 

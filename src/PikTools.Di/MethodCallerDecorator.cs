@@ -1,7 +1,6 @@
 ﻿namespace PikTools.Di
 {
     using System;
-    using SimpleInjector;
 
     /// <inheritdoc />
     public abstract class MethodCallerDecorator<T> : IMethodCaller<T>
@@ -24,6 +23,6 @@
         protected IMethodCaller<T> Decorated { get; }
 
         /// <inheritdoc />
-        public abstract T InvokeCommand(Container container, string methodName);
+        public abstract T InvokeCommand(IContainer container, string methodName);
     }
 }

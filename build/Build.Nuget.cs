@@ -2,10 +2,7 @@
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.NuGet;
 
 partial class Build
 {
