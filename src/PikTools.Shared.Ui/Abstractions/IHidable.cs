@@ -18,6 +18,6 @@
         /// <summary>
         /// Показать диалоговое окно
         /// </summary>
-        void ShowDialog();
+        bool? ShowDialog();
     }
 }
