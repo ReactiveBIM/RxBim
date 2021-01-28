@@ -67,11 +67,13 @@
                       VerticalScrollBarVisibility="Auto"
                       CanContentScroll="False"
                       Margin="0,12">
-            <TextBlock Text="{Binding Text}"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Margin="10,10,10,5"/>
+            <TextBox Text="{Binding Text}"
+                     TextAlignment="Center"
+                     TextWrapping="Wrap"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Margin="10,10,10,5"
+                     BorderThickness="0"
+                     IsReadOnly="True"/>
         </ScrollViewer>
 
         <Button Grid.Row="2" 

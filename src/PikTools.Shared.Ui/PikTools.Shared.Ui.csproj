@@ -6,6 +6,7 @@
         <NoWarn>NU1701</NoWarn>
         <UseWPF>true</UseWPF>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+		<LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -69,6 +70,10 @@
       <_Parameter1>https://bimteam.ru/piktools/xaml/controls</_Parameter1>
       <_Parameter2>PikTools.Shared.Ui.Controls</_Parameter2>
     </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
 </Project>

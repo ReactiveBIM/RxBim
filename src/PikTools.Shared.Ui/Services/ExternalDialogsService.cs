@@ -1,9 +1,12 @@
 ﻿namespace PikTools.Shared.Ui.Services
 {
     using System.Diagnostics;
+    using System.Windows.Forms;
     using CSharpFunctionalExtensions;
-    using Microsoft.Win32;
     using PikTools.Shared.Ui.Abstractions;
+    using static System.Environment;
+    using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+    using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
     /// <inheritdoc/>
     public class ExternalDialogsService : IExternalDialogs
@@ -48,6 +51,24 @@
 
             return openFileDialog.ShowDialog() == true
                 ? openFileDialog.FileNames : Result.Failure<string[]>("Файлы не выбраны");
+        }
+
+        /// <inheritdoc/>
+        public Result<string> ShowFolderBrowserDialog(
+            string description,
+            SpecialFolder rootFolder = SpecialFolder.MyComputer,
+            string selectedPath = "")
+        {
+            using var directoryDialog = new FolderBrowserDialog()
+            {
+                Description = description,
+                RootFolder = rootFolder,
+                SelectedPath = selectedPath
+            };
+
+            return directoryDialog.ShowDialog() == DialogResult.OK
+                ? directoryDialog.SelectedPath
+                : Result.Failure<string>("Папка не выбрана");
         }
     }
 }
