@@ -195,14 +195,40 @@
             Options options = null)
         {
             var op = options ?? Options;
-            var geometryElement =
-                element.get_Geometry(op);
+            var geometryObject = element.get_Geometry(op).First();
 
-            var solid = geometryElement
-                .OfType<Solid>()
-                .Single();
+            switch (geometryObject)
+            {
+                case Solid solid:
+                    return solid;
 
-            return solid;
+                case GeometryInstance _:
+                {
+                    var bb = element.get_BoundingBox(null);
+
+                    var pt1 = bb.Min;
+                    var pt2 = new XYZ(bb.Max.X, bb.Min.Y, bb.Min.Z);
+                    var pt3 = new XYZ(bb.Max.X, bb.Max.Y, bb.Min.Z);
+                    var pt4 = new XYZ(bb.Min.X, bb.Max.Y, bb.Min.Z);
+
+                    var l12 = Line.CreateBound(pt1, pt2);
+                    var l23 = Line.CreateBound(pt2, pt3);
+                    var l34 = Line.CreateBound(pt3, pt4);
+                    var l41 = Line.CreateBound(pt4, pt1);
+
+                    var curveLoop = CurveLoop.Create(new List<Curve> { l12, l23, l34, l41 });
+                    var height = bb.Max.Z - bb.Min.Z;
+
+                    return GeometryCreationUtilities
+                        .CreateExtrusionGeometry(
+                            new List<CurveLoop> { curveLoop },
+                            XYZ.BasisZ,
+                            height);
+                }
+
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
