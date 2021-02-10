@@ -27,6 +27,8 @@
     /// </summary>
     public class Wix
     {
+        private const string Release = "Release";
+        private const string Debug = "Debug";
         private const string TempWixFolder = ".wixSharp";
         private const string WixSourceFileName = "wixSharp.7z";
         private const string WixBin = nameof(WixBin);
@@ -73,16 +75,14 @@
                 .SetOutputDirectory(@out)
                 .SetConfiguration(configuration));
 
-            if (configuration == "Release")
-            {
-                SignAssembly(project, (AbsolutePath)@out, cert, password, digestAlgorithm, timestampServerUrl);
-            }
-
             if (Directory.Exists(@out))
             {
                 var options = GetBuildMsiOptions(project, output, configuration);
 
                 var types = GetAssemblyTypes(project, @out, options);
+
+                if (configuration == Release)
+                    SignAssembly(types, (AbsolutePath)@out, cert, password, digestAlgorithm, timestampServerUrl);
 
                 GenerateRevitManifestFile(project.Name, allProject, types, output);
 
@@ -101,7 +101,7 @@
             string configuration,
             string output)
         {
-            if (configuration == "Release")
+            if (configuration == Release)
             {
                 var packageContentsGenerator = new PackageContentsGenerator();
                 packageContentsGenerator.Generate(project, output);
@@ -162,12 +162,12 @@
                 _ => throw new ArgumentException("Configuration not setted!")
             };
 
-            var outputFileName = configuration == "Debug" ? $"PikTools.{project.Name}" : project.Name;
+            var outputFileName = configuration == Debug ? $"PikTools.{project.Name}" : project.Name;
 
             var version = project.GetProperty("Version") ??
                           throw new ArgumentException(
                               $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!");
-            if (configuration == "Debug")
+            if (configuration == Debug)
             {
                 var unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 version += $".{unixTimestamp}";
@@ -314,7 +314,7 @@
         }
 
         private void SignAssembly(
-            global::Nuke.Common.ProjectModel.Project project,
+            IReadOnlyList<AssemblyType> assemblyTypes,
             AbsolutePath outputDirectory,
             AbsolutePath cert,
             string password,
@@ -331,12 +331,15 @@
             timestampServerUrl = timestampServerUrl ??
                                  throw new ArgumentException("Не указан сервер проверки сертификата");
 
-            var fileName = outputDirectory / $"{project.GetProperty("AssemblyName")}.dll";
+            var filesNames = assemblyTypes
+                .Select(t => (outputDirectory / $"{t.AssemblyName}.dll").ToString())
+                .Distinct()
+                .ToArray();
 
             var settings = new SignToolSettings()
                 .SetFileDigestAlgorithm(digestAlgorithm)
                 .SetFile(cert)
-                .SetFiles(fileName)
+                .SetFiles(filesNames)
                 .SetPassword(password)
                 .SetTimestampServerDigestAlgorithm(digestAlgorithm)
                 .SetRfc3161TimestampServerUrl(timestampServerUrl);
