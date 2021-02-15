@@ -15,9 +15,14 @@
         /// <param name="familyName">Название семейства</param>
         /// <param name="symbolName">Название типоразмера</param>
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
+        /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Тип загруженного семейства</returns>
         Result<FamilySymbol> GetTargetFamilySymbol(
-            Document doc, string familyName, string symbolName, bool useTransaction = true);
+            Document doc,
+            string familyName,
+            string symbolName,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null);
 
         /// <summary>
         /// Загрузить семейство из FM в заданный документ
@@ -25,7 +30,12 @@
         /// <param name="doc">Документ Revit</param>
         /// <param name="familyName">Название семейства</param>
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
+        /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Загруженное семейство</returns>
-        Result<Family> GetTargetFamily(Document doc, string familyName, bool useTransaction = true);
+        Result<Family> GetTargetFamily(
+            Document doc,
+            string familyName,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null);
     }
 }

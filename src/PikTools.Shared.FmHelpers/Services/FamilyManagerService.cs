@@ -38,15 +38,25 @@
 
         /// <inheritdoc/>
         public Result<FamilySymbol> GetTargetFamilySymbol(
-            Document doc, string familyName, string symbolName, bool useTransaction = true)
+            Document doc,
+            string familyName,
+            string symbolName,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null)
         {
             return Task.Run(() => GetFamilyFromFamilyManager(doc, familyName)).Result
                 .Map(fileResult =>
                 {
                     FamilySymbol familySymbol = null;
+                    Action action;
+                    if (familyLoadOptions == null)
+                        action = () => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol);
+                    else
+                        action = () => doc.LoadFamilySymbol(familyName, symbolName, familyLoadOptions, out familySymbol);
+
                     TransactionMethod(
                             doc,
-                            () => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol),
+                            action,
                             $"FM - Загрузка семейства {familyName}",
                             useTransaction);
                     return familySymbol;
@@ -54,15 +64,25 @@
         }
 
         /// <inheritdoc/>
-        public Result<Family> GetTargetFamily(Document doc, string familyName, bool useTransaction = true)
+        public Result<Family> GetTargetFamily(
+            Document doc,
+            string familyName,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null)
         {
             return Task.Run(() => GetFamilyFromFamilyManager(doc, familyName)).Result
                 .Map(fileResult =>
                 {
                     Family family = null;
+                    Action action;
+                    if (familyLoadOptions == null)
+                        action = () => doc.LoadFamily(fileResult, out family);
+                    else
+                        action = () => doc.LoadFamily(fileResult, familyLoadOptions, out family);
+
                     TransactionMethod(
                             doc,
-                            () => doc.LoadFamily(fileResult, out family),
+                            action,
                             $"FM - Загрузка семейства {familyName}",
                             useTransaction);
                     return family;
