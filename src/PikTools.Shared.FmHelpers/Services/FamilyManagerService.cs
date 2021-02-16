@@ -92,7 +92,10 @@
         }
 
         /// <inheritdoc />
-        public Result<List<Family>> GetFamiliesByFunctionalType(Document doc, string ftName, bool useTransaction = true,
+        public Result<List<Family>> GetFamiliesByFunctionalType(
+            Document doc, 
+            string ftName, 
+            bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
             return Task.Run(() => GetFamiliesByFt(doc, ftName).Result
@@ -101,11 +104,14 @@
                     var families = new List<Family>();
                     Action action;
                     if (familyLoadOptions == null)
-                        action = () => result.ForEach(r =>
-                        {
-                            doc.LoadFamily(r, out var family);
-                            families.Add(family);
-                        });
+                    {
+                        action = () =>
+                            result.ForEach(r =>
+                            {
+                                doc.LoadFamily(r, out var family);
+                                families.Add(family);
+                            });
+                    }
                     else
                     {
                         action = () => result.ForEach(r =>
