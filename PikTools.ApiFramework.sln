@@ -64,8 +64,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.WpfStyles.Example"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared.RevitExtensions.Test", "tests\PikTools.Shared.RevitExtensions.Test\PikTools.Shared.RevitExtensions.Test.csproj", "{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "src\TestProject\TestProject.csproj", "{14F7EA78-499D-4362-87AE-9709C1342790}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,10 +160,6 @@ Global
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14F7EA78-499D-4362-87AE-9709C1342790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14F7EA78-499D-4362-87AE-9709C1342790}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14F7EA78-499D-4362-87AE-9709C1342790}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14F7EA78-499D-4362-87AE-9709C1342790}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,7 +187,6 @@ Global
 		{D1140508-F2A6-49D0-8E79-E6EE4BB7D874} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 		{8C4F2944-0D49-47E8-B892-FB3E9A76D468} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
-		{14F7EA78-499D-4362-87AE-9709C1342790} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}

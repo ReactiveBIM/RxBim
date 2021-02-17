@@ -44,13 +44,11 @@
         /// </summary>
         /// <param name="doc">Документ Revit</param>
         /// <param name="ftName">Имя функционального типа</param>
-        /// <param name="useTransaction">Использовать транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Список загруженных семейств</returns>
         Result<List<Family>> GetFamiliesByFunctionalType(
             Document doc,
             string ftName,
-            bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null);
     }
 }

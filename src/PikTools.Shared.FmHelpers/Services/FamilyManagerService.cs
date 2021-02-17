@@ -50,11 +50,9 @@
                 .Map(fileResult =>
                 {
                     FamilySymbol familySymbol = null;
-                    Action action;
-                    if (familyLoadOptions == null)
-                        action = () => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol);
-                    else
-                        action = () => doc.LoadFamilySymbol(familyName, symbolName, familyLoadOptions, out familySymbol);
+                    var action = familyLoadOptions == null
+                        ? (Action)(() => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol))
+                        : () => doc.LoadFamilySymbol(familyName, symbolName, familyLoadOptions, out familySymbol);
 
                     TransactionMethod(
                             doc,
@@ -93,24 +91,22 @@
 
         /// <inheritdoc />
         public Result<List<Family>> GetFamiliesByFunctionalType(
-            Document doc, 
-            string ftName, 
-            bool useTransaction = true,
+            Document doc,
+            string ftName,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => GetFamiliesByFt(doc, ftName).Result
+            return Task.Run(() => GetFamiliesByFt(doc, ftName)).Result
                 .Map(result =>
                 {
                     var families = new List<Family>();
                     Action action;
                     if (familyLoadOptions == null)
                     {
-                        action = () =>
-                            result.ForEach(r =>
-                            {
-                                doc.LoadFamily(r, out var family);
-                                families.Add(family);
-                            });
+                        action = () => result.ForEach(r =>
+                        {
+                            doc.LoadFamily(r, out var family);
+                            families.Add(family);
+                        });
                     }
                     else
                     {
@@ -124,10 +120,10 @@
                     TransactionMethod(
                         doc,
                         action,
-                        "Загрузка семейств",
-                        useTransaction);
+                        $"Загрузка семейств функционального типа {ftName}",
+                        true);
                     return families;
-                })).Result;
+                });
         }
 
         private void TransactionMethod(Document doc, Action action, string transTitle, bool useTransaction)
