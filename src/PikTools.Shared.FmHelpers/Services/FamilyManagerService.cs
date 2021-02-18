@@ -46,21 +46,13 @@
             bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => SearchInternal(doc, new FmSearchFilter { Name = familyName, Limit = 1 })).Result
-                .Map(fileResult =>
-                {
-                    FamilySymbol familySymbol = null;
-                    var action = familyLoadOptions == null
-                        ? (Action)(() => doc.LoadFamilySymbol(fileResult[0], symbolName, out familySymbol))
-                        : () => doc.LoadFamilySymbol(familyName, symbolName, familyLoadOptions, out familySymbol);
+            if (string.IsNullOrWhiteSpace(symbolName))
+                return Result.Failure<FamilySymbol>("Имя типоразмера должно быть задано");
 
-                    TransactionMethod(
-                            doc,
-                            action,
-                            $"FM - Загрузка семейства {familyName}",
-                            useTransaction);
-                    return familySymbol;
-                });
+            return GetFamilySymbolsByFilter(doc,
+                    new FmSearchFilter
+                        { Name = familyName, SymbolName = symbolName, Limit = 1 })
+                .Map(x => x.First());
         }
 
         /// <inheritdoc/>
@@ -70,17 +62,24 @@
             bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Search(doc, new FmSearchFilter { Name = familyName, Limit = 1 }, familyLoadOptions)
-                .Map(x => x.FirstOrDefault());
+            if (string.IsNullOrWhiteSpace(familyName))
+                return Result.Failure<Family>("Имя семейства должно быть задано");
+
+            return GetFamiliesByFilter(doc,
+                    new FmSearchFilter { Name = familyName, Limit = 1 },
+                    useTransaction,
+                    familyLoadOptions)
+                .Map(x => x.First());
         }
 
         /// <inheritdoc />
-        public Result<List<Family>> Search(
+        public Result<List<Family>> GetFamiliesByFilter(
             Document doc,
             FmSearchFilter filter,
+            bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => SearchInternal(doc, filter)).Result
+            return Task.Run(() => SearchFamilies(doc, filter)).Result
                 .Map(result =>
                 {
                     var families = new List<Family>();
@@ -105,14 +104,58 @@
                     TransactionMethod(
                         doc,
                         action,
-                        $"Загрузка семейств. Метод: {nameof(Search)}",
-                        true);
+                        $"Загрузка семейств. Метод: {nameof(GetFamiliesByFilter)}",
+                        useTransaction);
                     return families;
                 });
         }
 
-        private async Task<Result<List<string>>> SearchInternal(Document doc, FmSearchFilter searchFilter)
+        /// <inheritdoc />
+        public Result<List<FamilySymbol>> GetFamilySymbolsByFilter(
+            Document doc,
+            FmSearchFilter filter,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null)
         {
+            if (string.IsNullOrWhiteSpace(filter?.SymbolName))
+                return Result.Failure<List<FamilySymbol>>("Имя типоразмера должно быть задано");
+
+            return Task.Run(() => SearchFamilies(doc, filter)).Result
+                .Map(fileResult =>
+                {
+                    Action action;
+                    var result = new List<FamilySymbol>();
+
+                    if (familyLoadOptions == null)
+                    {
+                        action = () => fileResult.ForEach(f =>
+                        {
+                            doc.LoadFamilySymbol(f, filter.SymbolName, out var symbol);
+                            result.Add(symbol);
+                        });
+                    }
+                    else
+                    {
+                        action = () => fileResult.ForEach(f =>
+                        {
+                            doc.LoadFamilySymbol(f, filter.SymbolName, familyLoadOptions, out var symbol);
+                            result.Add(symbol);
+                        });
+                    }
+
+                    TransactionMethod(
+                        doc,
+                        action,
+                        $"FM - Загрузка типоразмера {filter.SymbolName} Метод: {nameof(GetFamilySymbolsByFilter)}",
+                        useTransaction);
+                    return result;
+                });
+        }
+
+        private async Task<Result<List<string>>> SearchFamilies(Document doc, FmSearchFilter searchFilter)
+        {
+            searchFilter ??= new FmSearchFilter();
+
             try
             {
                 var client = await CreateFmClient();

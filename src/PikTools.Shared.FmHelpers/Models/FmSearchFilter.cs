@@ -17,7 +17,7 @@
         /// <summary> Категория </summary>
         public string CategoryName { get; set; }
 
-        /// <summary> Лимит </summary>
+        /// <summary> Лимит записей в результате. 50 по умолчанию </summary>
         public int? Limit { get; set; }
     }
 }

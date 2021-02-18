@@ -20,6 +20,7 @@
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Тип загруженного семейства</returns>
+        [Obsolete]
         Result<FamilySymbol> GetTargetFamilySymbol(
             Document doc,
             string familyName,
@@ -47,11 +48,27 @@
         /// </summary>
         /// <param name="doc">Документ Revit</param>
         /// <param name="filter">Фильтр</param>
+        /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Список загруженных семейств</returns>
-        Result<List<Family>> Search(
+        Result<List<Family>> GetFamiliesByFilter(
             Document doc,
             FmSearchFilter filter,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null);
+
+        /// <summary>
+        /// Загрузить типоразмер семейства из FM в заданный документ
+        /// </summary>
+        /// <param name="doc">Документ Revit</param>
+        /// <param name="filter">Фильтр</param>
+        /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
+        /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
+        /// <returns>Тип загруженного семейства</returns>
+        Result<List<FamilySymbol>> GetFamilySymbolsByFilter(
+            Document doc,
+            FmSearchFilter filter,
+            bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null);
     }
 }
