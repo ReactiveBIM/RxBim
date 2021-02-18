@@ -1,8 +1,10 @@
 ﻿namespace PikTools.Shared.FmHelpers.Abstractions
 {
+    using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
+    using Models;
 
     /// <summary>
     /// Интерфейс для сервиса работы с FM
@@ -33,6 +35,7 @@
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Загруженное семейство</returns>
+        [Obsolete]
         Result<Family> GetTargetFamily(
             Document doc,
             string familyName,
@@ -40,15 +43,15 @@
             IFamilyLoadOptions familyLoadOptions = null);
 
         /// <summary>
-        /// Возвращает семейства по имени ФТ
+        /// Возвращает семейства по фильтру
         /// </summary>
         /// <param name="doc">Документ Revit</param>
-        /// <param name="ftName">Имя функционального типа</param>
+        /// <param name="filter">Фильтр</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Список загруженных семейств</returns>
-        Result<List<Family>> GetFamiliesByFunctionalType(
+        Result<List<Family>> Search(
             Document doc,
-            string ftName,
+            FmSearchFilter filter,
             IFamilyLoadOptions familyLoadOptions = null);
     }
 }

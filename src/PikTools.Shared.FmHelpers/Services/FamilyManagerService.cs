@@ -46,12 +46,12 @@
             bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => GetFamilyFromFamilyManager(doc, familyName)).Result
+            return Task.Run(() => SearchInternal(doc, new FmSearchFilter { Name = familyName, Limit = 1 })).Result
                 .Map(fileResult =>
                 {
                     FamilySymbol familySymbol = null;
                     var action = familyLoadOptions == null
-                        ? (Action)(() => doc.LoadFamilySymbol(fileResult, symbolName, out familySymbol))
+                        ? (Action)(() => doc.LoadFamilySymbol(fileResult[0], symbolName, out familySymbol))
                         : () => doc.LoadFamilySymbol(familyName, symbolName, familyLoadOptions, out familySymbol);
 
                     TransactionMethod(
@@ -70,32 +70,17 @@
             bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => GetFamilyFromFamilyManager(doc, familyName)).Result
-                .Map(fileResult =>
-                {
-                    Family family = null;
-                    Action action;
-                    if (familyLoadOptions == null)
-                        action = () => doc.LoadFamily(fileResult, out family);
-                    else
-                        action = () => doc.LoadFamily(fileResult, familyLoadOptions, out family);
-
-                    TransactionMethod(
-                            doc,
-                            action,
-                            $"FM - Загрузка семейства {familyName}",
-                            useTransaction);
-                    return family;
-                });
+            return Search(doc, new FmSearchFilter { Name = familyName, Limit = 1 }, familyLoadOptions)
+                .Map(x => x.FirstOrDefault());
         }
 
         /// <inheritdoc />
-        public Result<List<Family>> GetFamiliesByFunctionalType(
+        public Result<List<Family>> Search(
             Document doc,
-            string ftName,
+            FmSearchFilter filter,
             IFamilyLoadOptions familyLoadOptions = null)
         {
-            return Task.Run(() => GetFamiliesByFt(doc, ftName)).Result
+            return Task.Run(() => SearchInternal(doc, filter)).Result
                 .Map(result =>
                 {
                     var families = new List<Family>();
@@ -120,10 +105,49 @@
                     TransactionMethod(
                         doc,
                         action,
-                        $"Загрузка семейств функционального типа {ftName}",
+                        $"Загрузка семейств. Метод: {nameof(Search)}",
                         true);
                     return families;
                 });
+        }
+
+        private async Task<Result<List<string>>> SearchInternal(Document doc, FmSearchFilter searchFilter)
+        {
+            try
+            {
+                var client = await CreateFmClient();
+                var filter = new FamilySearchFilter
+                {
+                    AppType = AppType.Revit,
+                    Limit = searchFilter.Limit,
+                    Name = searchFilter.Name,
+                    FunctionalTypeName = searchFilter.FunctionalTypeName,
+                    CategoryName = searchFilter.CategoryName,
+                    FilePath = GetProjectPath(doc)
+                };
+
+                var families = await client.TreeItems.Search(filter);
+                if (families.Count == 0)
+                    return Result.Failure<List<string>>("Семейства не найдены");
+
+                var result = new List<string>();
+
+                foreach (var familyDto in families.Result)
+                {
+                    var family = await WriteToDisk(familyDto, client);
+
+                    if (family.IsFailure)
+                        return Result.Failure<List<string>>(family.Error);
+
+                    result.Add(family.Value);
+                }
+
+                return result;
+            }
+            catch (Exception exception)
+            {
+                return Result.Failure<List<string>>(exception.Message);
+            }
         }
 
         private void TransactionMethod(Document doc, Action action, string transTitle, bool useTransaction)
@@ -149,49 +173,20 @@
             }
         }
 
-        private async Task<Result<string>> GetFamilyFromFamilyManager(Document doc, string name)
-        {
-            try
-            {
-                var client = await CreateFmClient();
-
-                var searchFilter = new FamilySearchFilter
-                {
-                    AppType = AppType.Revit,
-                    Name = name,
-                    FilePath = GetProjectPath(doc)
-                };
-
-                var familySearch = await client.TreeItems.Search(searchFilter);
-                var family = familySearch.Result.FirstOrDefault(f => f.Name.Equals(name));
-                if (family == null)
-                    return Result.Failure<string>($"Семейство {name} не найдено");
-
-                return await GetFamilyVersion(family)
-                    .Bind(v => WriteToDisk(family, v.Id, client));
-            }
-            catch (Exception exception)
-            {
-                return Result.Failure<string>(exception.Message);
-            }
-        }
-
-        private Result<TreeItemFamilyVersionDto> GetFamilyVersion(FamilySearchDto family)
-        {
-            return family.Versions
-                .OrderBy(v => v.VersionNumber)
-                .LastOrDefault(v => v.Status == FamilyVersionStatusEnum.Allowed)
-                   ?? Result.Failure<TreeItemFamilyVersionDto>($"Не найдена разрешенная версия семейства {family.Name}");
-        }
-
         private async Task<Result<string>> WriteToDisk(
             FamilySearchDto family,
-            long familyVersionId,
             FamilyManagerClient client)
         {
+            var versionId = family.Versions
+                .OrderBy(v => v.VersionNumber)
+                .LastOrDefault(v => v.Status == FamilyVersionStatusEnum.Allowed)?.Id;
+
+            if (versionId == null)
+                return Result.Failure<string>($"Семейство {family.Name} не имеет разрешенных версий");
+
             var fileType = family.IsSystem ? FileTypes.Rvt : FileTypes.Rfa;
             var bytes = await client.FamilyVersions.GetFamilyFile(
-                familyVersionId, fileType);
+                versionId.Value, fileType);
 
             var tempPath = Path.Combine(Path.GetTempPath(), "FamilyManager");
             Directory.CreateDirectory(tempPath);
@@ -199,43 +194,6 @@
             tempFile += $".{fileType.ToString().ToLower()}";
             File.WriteAllBytes(tempFile, bytes);
             return tempFile;
-        }
-
-        private async Task<Result<List<string>>> GetFamiliesByFt(Document doc, string ftName)
-        {
-            try
-            {
-                var client = await CreateFmClient();
-                var filter = new FamilySearchFilter
-                {
-                    AppType = AppType.Revit,
-                    FunctionalTypeName = ftName,
-                    FilePath = GetProjectPath(doc)
-                };
-
-                var families = await client.TreeItems.Search(filter);
-                if (families.Count == 0)
-                    return Result.Failure<List<string>>($"Семейства с ФТ {ftName} не найдены");
-
-                var result = new List<string>();
-
-                foreach (var family in families.Result)
-                {
-                    var current = await GetFamilyVersion(family)
-                        .Bind(v => WriteToDisk(family, v.Id, client));
-
-                    if (current.IsFailure)
-                        return Result.Failure<List<string>>(current.Error);
-
-                    result.Add(current.Value);
-                }
-
-                return result;
-            }
-            catch (Exception exception)
-            {
-                return Result.Failure<List<string>>(exception.Message);
-            }
         }
 
         private async Task<FamilyManagerClient> CreateFmClient()
