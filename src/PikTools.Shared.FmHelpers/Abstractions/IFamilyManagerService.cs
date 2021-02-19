@@ -1,7 +1,10 @@
 ﻿namespace PikTools.Shared.FmHelpers.Abstractions
 {
+    using System;
+    using System.Collections.Generic;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
+    using Models;
 
     /// <summary>
     /// Интерфейс для сервиса работы с FM
@@ -17,6 +20,7 @@
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Тип загруженного семейства</returns>
+        [Obsolete]
         Result<FamilySymbol> GetTargetFamilySymbol(
             Document doc,
             string familyName,
@@ -32,9 +36,38 @@
         /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
         /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
         /// <returns>Загруженное семейство</returns>
+        [Obsolete]
         Result<Family> GetTargetFamily(
             Document doc,
             string familyName,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null);
+
+        /// <summary>
+        /// Возвращает семейства по фильтру
+        /// </summary>
+        /// <param name="doc">Документ Revit</param>
+        /// <param name="filter">Фильтр</param>
+        /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
+        /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
+        /// <returns>Список загруженных семейств</returns>
+        Result<List<Family>> GetFamiliesByFilter(
+            Document doc,
+            FmSearchFilter filter,
+            bool useTransaction = true,
+            IFamilyLoadOptions familyLoadOptions = null);
+
+        /// <summary>
+        /// Загрузить типоразмер семейства из FM в заданный документ
+        /// </summary>
+        /// <param name="doc">Документ Revit</param>
+        /// <param name="filter">Фильтр</param>
+        /// <param name="useTransaction">Оборачивать ли в транзакцию</param>
+        /// <param name="familyLoadOptions">Настройки загрузки семейства</param>
+        /// <returns>Тип загруженного семейства</returns>
+        Result<List<FamilySymbol>> GetFamilySymbolsByFilter(
+            Document doc,
+            FmSearchFilter filter,
             bool useTransaction = true,
             IFamilyLoadOptions familyLoadOptions = null);
     }
