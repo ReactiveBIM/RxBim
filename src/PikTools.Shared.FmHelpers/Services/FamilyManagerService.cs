@@ -166,6 +166,7 @@
                     Name = searchFilter.Name,
                     FunctionalTypeName = searchFilter.FunctionalTypeName,
                     CategoryName = searchFilter.CategoryName,
+                    FamilySymbolName = searchFilter.SymbolName,
                     FilePath = GetProjectPath(doc)
                 };
 
