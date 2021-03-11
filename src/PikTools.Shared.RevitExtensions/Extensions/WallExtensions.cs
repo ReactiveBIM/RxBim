@@ -1,5 +1,6 @@
 ﻿namespace PikTools.Shared.RevitExtensions.Extensions
 {
+    using System;
     using System.Linq;
     using Autodesk.Revit.DB;
 
@@ -89,6 +90,23 @@
                 return 0d;
 
             return longs.Length.FtToMm();
+        }
+
+        /// <summary>
+        /// Получение наружного <see cref="Face"/> для стены
+        /// </summary>
+        /// <param name="wall">Стена</param>
+        /// <param name="shellLayerType">Тип получаемого Face</param>
+        public static Face GetSideFaceFromWall(this Wall wall, ShellLayerType shellLayerType)
+        {
+            var sideFaces = shellLayerType switch
+            {
+                ShellLayerType.Exterior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Exterior),
+                ShellLayerType.Interior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Interior),
+                _ => throw new NotImplementedException($"Not implement {shellLayerType}"),
+            };
+
+            return wall.GetGeometryObjectFromReference(sideFaces[0]) as Face;
         }
     }
 }

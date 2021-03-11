@@ -40,42 +40,7 @@
 
             return new XYZ(x, y, elevation);
         }
-
-        /// <summary>
-        /// Создает линию между двумя точками
-        /// </summary>
-        /// <param name="firstPoint">Первая точка</param>
-        /// <param name="secondPoint">Вторая точка</param>
-        /// <returns>Созданная линия между двумя точками</returns>
-        /// <remarks>Если растояние между точками мало, то возвращает null</remarks>
-        public static Line GetLine(this XYZ firstPoint, XYZ secondPoint)
-            => firstPoint.DistanceTo(secondPoint) < 1.MmToFt()
-                    ? null
-                    : Line.CreateBound(firstPoint, secondPoint);
-
-        /// <summary>
-        /// Средняя точка линии
-        /// </summary>
-        /// <param name="line">The line.</param>
-        public static XYZ GetCenterPoint(this Line line)
-            => line.Evaluate(0.5, true);
-
-        /// <summary>
-        /// Проверка что два отрезка параллельны
-        /// </summary>
-        /// <param name="line">Первый отрезок</param>
-        /// <param name="otherLine">Второй отрезок</param>
-        public static bool IsParallelTo(this Line line, Line otherLine)
-            => Math.Abs(Math.Abs(line.Direction.DotProduct(otherLine.Direction)) - 1) < Tolerance;
-
-        /// <summary>
-        /// Проверка, что отрезок параллелен вектору
-        /// </summary>
-        /// <param name="line">Отрезок</param>
-        /// <param name="vector">Вектор</param>
-        public static bool IsParallelTo(this Line line, XYZ vector)
-            => Math.Abs(Math.Abs(line.Direction.DotProduct(vector.Normalize())) - 1) < Tolerance;
-
+        
         /// <summary>
         /// Проверка наличия точки в списке через сверку расстояния
         /// </summary>
@@ -83,33 +48,6 @@
         /// <param name="point">Проверяемая точка</param>
         public static bool HasSimilarPoint(this List<XYZ> points, XYZ point)
             => points.Any(xyz => Math.Abs(xyz.DistanceTo(point)) < Tolerance);
-
-        /// <summary>
-        /// Получение наружного <see cref="Face"/> для стены
-        /// </summary>
-        /// <param name="wall">Стена</param>
-        /// <param name="shellLayerType">Тип получаемого Face</param>
-        public static Face GetSideFaceFromWall(this Wall wall, ShellLayerType shellLayerType)
-        {
-            var sideFaces = shellLayerType switch
-            {
-                ShellLayerType.Exterior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Exterior),
-                ShellLayerType.Interior => HostObjectUtils.GetSideFaces(wall, ShellLayerType.Interior),
-                _ => throw new NotImplementedException($"Not implement {shellLayerType}"),
-            };
-
-            return wall.GetGeometryObjectFromReference(sideFaces[0]) as Face;
-        }
-
-        /// <summary>
-        /// Возвращает отрезок, спроецированный на плоскость
-        /// </summary>
-        /// <param name="plane">Плоскость</param>
-        /// <param name="line">Исходный отрезок</param>
-        public static Line ProjectOnto(this Plane plane, Line line)
-            => Line.CreateBound(
-                    plane.ProjectOnto(line.GetEndPoint(0)),
-                    plane.ProjectOnto(line.GetEndPoint(1)));
 
         /// <summary>
         /// Возвращает 3D точку <see cref="XYZ"/>, спроецированную на плоскость <see cref="Plane"/> 
@@ -130,18 +68,6 @@
 
             return q;
         }
-
-        /// <summary>
-        /// Получить концевые точки линии
-        /// </summary>
-        /// <param name="line">Линия</param>
-        /// <returns>Концевые точки линии</returns>
-        public static XYZ[] GetEndpoints(this Line line)
-            => new XYZ[]
-            {
-                line.GetEndPoint(0),
-                line.GetEndPoint(1)
-            };
 
         /// <summary>
         /// Возвращает расстояние между точками
