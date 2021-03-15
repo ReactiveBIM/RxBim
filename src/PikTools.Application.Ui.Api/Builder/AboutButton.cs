@@ -51,7 +51,7 @@
         /// Добавляет содержимое в окно о программе
         /// </summary>
         /// <param name="content">Содержимое окна о программе</param>
-        public Button SetContent(AboutBoxContent content)
+        public AboutButton SetContent(AboutBoxContent content)
         {
             Content = content;
             return this;
@@ -61,7 +61,7 @@
         /// Добавляет иное отображение окна о программе
         /// </summary>
         /// <param name="viewer">Иной формат окна о программе</param>
-        public Button SetViewer(IAboutBox viewer)
+        public AboutButton SetViewer(IAboutBox viewer)
         {
             Viewer = viewer;
             return this;
