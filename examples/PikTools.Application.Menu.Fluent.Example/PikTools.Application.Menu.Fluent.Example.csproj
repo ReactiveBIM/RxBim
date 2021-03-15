@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\src\PikTools.Application.Ui.Api\PikTools.Application.Ui.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
     <ProjectReference Include="..\PikTools.Application.Example\PikTools.Application.Example.csproj" />
   </ItemGroup>
   <ItemGroup>

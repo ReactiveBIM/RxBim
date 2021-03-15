@@ -5,6 +5,8 @@
     using System.IO;
     using Di;
     using PikTools.Shared;
+    using PikTools.Shared.Abstractions;
+    using PikTools.Shared.Ui;
     using Ui.Api;
 
     /// <inheritdoc />
@@ -13,6 +15,7 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
+            container.AddUi();
             container.AddMenu(ribbon => ribbon
                 .Tab("First")
                     .AboutButton(
@@ -20,6 +23,7 @@
                         "О программе",
                         "О программе",
                         button => button
+                            .SetViewer(container.GetService<IAboutBox>())
                             .SetContent(new AboutBoxContent(
                                 "PIKTools4Revit",
                                 "21.1",

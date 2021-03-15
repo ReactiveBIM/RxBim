@@ -2,6 +2,7 @@
 {
     using Abstractions;
     using Di;
+    using PikTools.Shared.Abstractions;
     using Services;
     using ViewModels;
 
@@ -16,9 +17,10 @@
         /// <param name="container">контейнер</param>
         public static void AddUi(this IContainer container)
         {
-            container.AddSingleton<IUIDispatcher, UIDispatcher>();
-            container.AddSingleton<IExternalDialogs, ExternalDialogsService>();
-            container.AddSingleton<INotificationService, NotificationService>();
+            container.AddSingleton<IUIDispatcher, UIDispatcher>()
+                .AddSingleton<IExternalDialogs, ExternalDialogsService>()
+                .AddSingleton<INotificationService, NotificationService>()
+                .AddSingleton<IAboutBox, AboutDialogService>();
             container.AddInstance<INotificationViewModel>(new NotificationViewModel());
         }
     }

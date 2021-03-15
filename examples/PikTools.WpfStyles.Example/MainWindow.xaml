@@ -27,6 +27,12 @@
                 
                 <btc:EditableTextBlock Text="Изменяемый TextBlock"
                                             MouseLeftButtonDown="EditableTextBlock_MouseLeftButtonDown"/>
+                
+                <TextBlock>
+                    <Hyperlink NavigateUri="https://pikipedia.pik.ru/wiki/PIK_Tools">
+                        Link
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </TabItem>
         
