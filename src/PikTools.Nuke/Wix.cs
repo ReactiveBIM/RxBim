@@ -162,7 +162,10 @@
                 _ => throw new ArgumentException("Configuration not setted!")
             };
 
-            var outputFileName = $"PikTools.{project.Name}";
+            var prefix = "PikTools.";
+            var outputFileName = project.Name.StartsWith(prefix)
+                ? project.Name
+                : $"{prefix}{project.Name}";
 
             var version = project.GetProperty("Version") ??
                           throw new ArgumentException(
