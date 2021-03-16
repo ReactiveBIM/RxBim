@@ -20,10 +20,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{E613D0DE-1441-4995-BF35-1F06C8289C55}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		global.json.default = global.json.default
 		Readme.md = Readme.md
 		stylecop.ruleset = stylecop.ruleset
 		stylecopTests.ruleset = stylecopTests.ruleset
-		global.json.default = global.json.default
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{829C26B5-29F4-497B-B059-1AFA81CD1506}"
@@ -62,7 +62,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.LoggedCommand.Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.WpfStyles.Example", "examples\PikTools.WpfStyles.Example\PikTools.WpfStyles.Example.csproj", "{8C4F2944-0D49-47E8-B892-FB3E9A76D468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared.RevitExtensions.Test", "tests\PikTools.Shared.RevitExtensions.Test\PikTools.Shared.RevitExtensions.Test.csproj", "{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.RevitExtensions.Test", "tests\PikTools.Shared.RevitExtensions.Test\PikTools.Shared.RevitExtensions.Test.csproj", "{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.TableBuilder", "src\PikTools.Shared.TableBuilder\PikTools.Shared.TableBuilder.csproj", "{A7C33EBF-A044-42F8-9407-0C5957110500}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PikTools.Shared.TableBuilder.Tests", "tests\PikTools.Shared.TableBuilder.Tests\PikTools.Shared.TableBuilder.Tests.csproj", "{4A187408-4EA8-4D69-BD50-6F5245D6E545}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,6 +164,14 @@ Global
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C33EBF-A044-42F8-9407-0C5957110500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C33EBF-A044-42F8-9407-0C5957110500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C33EBF-A044-42F8-9407-0C5957110500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C33EBF-A044-42F8-9407-0C5957110500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A187408-4EA8-4D69-BD50-6F5245D6E545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A187408-4EA8-4D69-BD50-6F5245D6E545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A187408-4EA8-4D69-BD50-6F5245D6E545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A187408-4EA8-4D69-BD50-6F5245D6E545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +199,8 @@ Global
 		{D1140508-F2A6-49D0-8E79-E6EE4BB7D874} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 		{8C4F2944-0D49-47E8-B892-FB3E9A76D468} = {901FF571-C10B-4DCF-A3AB-5DBF0EA4D198}
 		{F53A25D5-9A2E-42DE-BB12-198BDDC9F792} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
+		{A7C33EBF-A044-42F8-9407-0C5957110500} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
+		{4A187408-4EA8-4D69-BD50-6F5245D6E545} = {C83365AF-13D9-400D-9CEF-6CD12607BEBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}
