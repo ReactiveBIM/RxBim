@@ -1,0 +1,5 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.2.2.0;component/Themes/Generic.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

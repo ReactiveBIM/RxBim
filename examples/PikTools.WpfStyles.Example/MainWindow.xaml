@@ -12,7 +12,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.2.1.0;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="GeneralResource.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -91,6 +91,37 @@
                     <ListBoxItem Content="Элемент 2"/>
                     <ListBoxItem Content="Элемент 3"/>
                 </ListBox>
+                
+                <TextBlock Text="ItemsControl"
+                           FontWeight="Medium"/>
+                <ItemsControl Name="itemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:TableRowData}">
+                            <DataTemplate.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="GeneralResource.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </DataTemplate.Resources>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Text="{Binding Name}"/>
+                                
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Vertical">
+                                    <TextBlock Text="{Binding Role}"/>
+                                    <TextBlock Text="{Binding Access}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 
                 <TextBlock Text="ListBox с DragAndDrop"
                            FontWeight="Medium"/>
