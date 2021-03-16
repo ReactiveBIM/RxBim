@@ -33,7 +33,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock FontSize="16">
+        <TextBlock FontSize="16"
+                   FontWeight="Medium">
             <Run Text="{Binding Content.Title, Mode=OneWay}"/>
             <Run Text=" "/>
             <Run Text="{Binding Content.ProductVersion, Mode=OneWay}"/>
@@ -43,32 +44,46 @@
                    Text="{Binding Content.Description, Mode=OneWay}"
                    TextWrapping="Wrap"/>
         
-        <TextBlock Grid.Row="2">
+        <TextBlock Grid.Row="2"
+                   FontWeight="Medium">
             <Run Text="v."/>
             <Run Text="{Binding Content.BuildVersion, Mode=OneWay}"/>
         </TextBlock>
         
         <TextBlock Grid.Row="3"
-                   Text="{Binding Content.CompanyName, Mode=OneWay}"/>
+                   Text="{Binding Content.CompanyName, Mode=OneWay}"
+                   FontWeight="Medium"/>
         
         <ItemsControl Grid.Row="4"
                       ItemsSource="{Binding Content.Links, Mode=OneWay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
+                    <DataTemplate.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="../Themes/Generic.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </DataTemplate.Resources>
+                    
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="4*"/>
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock Text="{Binding Key, Mode=OneWay}"
+                                   FontSize="12"
                                    TextWrapping="Wrap"/>
                         
                         <TextBlock Grid.Column="1"
+                                   FontSize="12"
                                    TextWrapping="Wrap">
                             <Hyperlink NavigateUri="{Binding Value, Mode=OneWay}" 
                                        RequestNavigate="Hyperlink_RequestNavigate">
-                                <Binding Path="Value" Mode="OneWay"/>
+                                <Hyperlink.Inlines>
+                                    <Run Text="{Binding Value, Mode=OneWay}"/>
+                                </Hyperlink.Inlines>
                             </Hyperlink>
                         </TextBlock>
                     </Grid>
