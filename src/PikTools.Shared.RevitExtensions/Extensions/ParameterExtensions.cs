@@ -89,6 +89,9 @@
                     break;
 
                 case StorageType.ElementId:
+                    value = param.HasValue ? param.AsElementId() : ElementId.InvalidElementId;
+                    break;
+
                 case StorageType.None:
                     value = param.AsValueString() ?? string.Empty;
                     break;
