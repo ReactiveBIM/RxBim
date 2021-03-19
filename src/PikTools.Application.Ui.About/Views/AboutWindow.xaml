@@ -18,7 +18,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.2.1.0;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="GeneralResource.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -61,7 +61,7 @@
                     <DataTemplate.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="../Themes/Generic.xaml"/>
+                                <ResourceDictionary Source="GeneralResource.xaml"/>
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </DataTemplate.Resources>
