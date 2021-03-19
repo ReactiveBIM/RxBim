@@ -16,9 +16,9 @@
         /// <param name="container">контейнер</param>
         public static void AddUi(this IContainer container)
         {
-            container.AddSingleton<IUIDispatcher, UIDispatcher>();
-            container.AddSingleton<IExternalDialogs, ExternalDialogsService>();
-            container.AddSingleton<INotificationService, NotificationService>();
+            container.AddSingleton<IUIDispatcher, UIDispatcher>()
+                .AddSingleton<IExternalDialogs, ExternalDialogsService>()
+                .AddSingleton<INotificationService, NotificationService>();
             container.AddInstance<INotificationViewModel>(new NotificationViewModel());
         }
     }

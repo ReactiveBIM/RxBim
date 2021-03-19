@@ -2,6 +2,7 @@ namespace PikTools.Application.Ui.Api.Builder
 {
     using System;
     using Autodesk.Revit.UI;
+    using PikTools.Di;
 
     /// <summary>
     /// Панель revit
@@ -14,11 +15,12 @@ namespace PikTools.Application.Ui.Api.Builder
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="ribbon">й</param>
-        /// <param name="tab">ц</param>
-        /// <param name="revitPanel">у</param>
-        public Panel(Ribbon ribbon, Tab tab, RibbonPanel revitPanel)
-            : base(ribbon)
+        /// <param name="ribbon"><see cref="Ribbon"/></param>
+        /// <param name="tab"><see cref="Tab"/></param>
+        /// <param name="revitPanel"><see cref="RibbonPanel"/></param>
+        /// <param name="container"><see cref="IContainer"/></param>
+        public Panel(Ribbon ribbon, Tab tab, RibbonPanel revitPanel, IContainer container)
+            : base(ribbon, container)
         {
             _tab = tab;
             _revitPanel = revitPanel;
