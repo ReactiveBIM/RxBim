@@ -30,7 +30,7 @@
             try
             {
                 var ribbonBuilder = container.GetService<Action<Ribbon>>();
-                ribbonBuilder(new Ribbon(_controlledApp));
+                ribbonBuilder(new Ribbon(_controlledApp, container));
             }
             catch (Exception e)
             {

@@ -36,44 +36,44 @@ namespace PikTools.Application.Ui.Api.Builder
         /// <summary>
         /// Имя кнопки
         /// </summary>
-        protected string Name { get; private set; }
+        protected string Name { get; set; }
 
         /// <summary>
         /// Текст кнопки
         /// </summary>
-        protected string Text { get; private set; }
+        protected string Text { get; set; }
 
         /// <summary>
         /// Всплывающий текст с описанием кнопки
         /// </summary>
-        protected string ToolTip { get; private set; }
+        protected string ToolTip { get; set; }
 
         /// <summary>
         /// Большое изображение
         /// </summary>
-        protected ImageSource LargeImage { get; private set; }
+        protected ImageSource LargeImage { get; set; }
 
         /// <summary>
         /// Малое изображение
         /// </summary>
-        protected ImageSource SmallImage { get; private set; }
+        protected ImageSource SmallImage { get; set; }
 
         /// <summary>
         /// Описание
         /// </summary>
-        protected string Description { get; private set; }
+        protected string Description { get; set; }
 
         /// <summary>
         /// Справка
         /// </summary>
-        protected ContextualHelp ContextualHelp { get; private set; }
+        protected ContextualHelp ContextualHelp { get; set; }
 
         /// <summary>
         /// Добавляет всплывающее описание кнопки
         /// </summary>
         /// <param name="toolTip">Текст всплывающего описания</param>
         /// <param name="addVersion">Флаг добавления версии</param>
-        public Button SetToolTip(string toolTip, bool addVersion = true)
+        public virtual Button SetToolTip(string toolTip, bool addVersion = true)
         {
             ToolTip = toolTip;
             if (_externalCommandType != null
