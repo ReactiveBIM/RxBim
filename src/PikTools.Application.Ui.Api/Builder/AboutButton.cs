@@ -3,6 +3,7 @@
     using System.Windows.Controls;
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
+    using PikTools.Di;
     using PikTools.Shared;
     using PikTools.Shared.Abstractions;
     using TaskDialog = Autodesk.Revit.UI.TaskDialog;
@@ -13,6 +14,7 @@
     public class AboutButton : Button
     {
         private readonly string _id;
+        private readonly IContainer _container;
 
         /// <summary>
         /// ctor
@@ -20,21 +22,18 @@
         /// <param name="name">имя</param>
         /// <param name="text">текст</param>
         /// <param name="id">Идентификатор кнопки</param>
-        public AboutButton(string name, string text, string id)
+        /// <param name="container"><see cref="IContainer"/></param>
+        public AboutButton(string name, string text, string id, IContainer container)
             : base(name, text, null)
         {
             _id = id;
+            _container = container;
         }
 
         /// <summary>
         /// Содержимое окна о программе
         /// </summary>
         protected AboutBoxContent Content { get; set; }
-
-        /// <summary>
-        /// Иной формат окна о программе
-        /// </summary>
-        protected IAboutBox Viewer { get; set; }
 
         /// <summary>
         /// Добавляет всплывающее описание кнопки
@@ -54,16 +53,6 @@
         public AboutButton SetContent(AboutBoxContent content)
         {
             Content = content;
-            return this;
-        }
-
-        /// <summary>
-        /// Добавляет иное отображение окна о программе
-        /// </summary>
-        /// <param name="viewer">Иной формат окна о программе</param>
-        public AboutButton SetViewer(IAboutBox viewer)
-        {
-            Viewer = viewer;
             return this;
         }
 
@@ -107,15 +96,30 @@
             if (e.Item is RibbonButton button
                 && button.Id.Equals(_id))
             {
-                if (Viewer != null)
+                var viewer = TryGetService();
+                if (viewer != null)
                 {
-                    Viewer.ShowAboutBox(Content);
+                    viewer.ShowAboutBox(Content);
                 }
                 else
                 {
                     TaskDialog.Show(Name, Content?.ToString());
                 }
             }
+        }
+
+        private IAboutShowService TryGetService()
+        {
+            try
+            {
+                return _container.GetService<IAboutShowService>();
+            }
+            catch
+            {
+                // ignor
+            }
+
+            return null;
         }
     }
 }

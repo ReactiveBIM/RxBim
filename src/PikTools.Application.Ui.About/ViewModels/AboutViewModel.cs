@@ -1,6 +1,7 @@
-﻿namespace PikTools.Shared.Ui.ViewModels
+﻿namespace PikTools.Application.Ui.About.ViewModels
 {
     using GalaSoft.MvvmLight;
+    using PikTools.Shared;
 
     /// <summary>
     /// Модель представления окна о программе

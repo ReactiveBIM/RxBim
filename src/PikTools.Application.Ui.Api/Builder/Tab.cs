@@ -2,6 +2,7 @@
 {
     using System;
     using Autodesk.Windows;
+    using PikTools.Di;
 
     /// <summary>
     /// Закладка панели
@@ -16,8 +17,9 @@
         /// ctor
         /// </summary>
         /// <param name="ribbon">панель</param>
-        public Tab(Ribbon ribbon)
-            : base(ribbon)
+        /// <param name="container">контейнер</param>
+        public Tab(Ribbon ribbon, IContainer container)
+            : base(ribbon, container)
         {
         }
 
@@ -26,8 +28,9 @@
         /// </summary>
         /// <param name="ribbon">панель</param>
         /// <param name="tabName">имя закладки</param>
-        public Tab(Ribbon ribbon, string tabName)
-            : base(ribbon)
+        /// <param name="container">контейнер</param>
+        public Tab(Ribbon ribbon, string tabName, IContainer container)
+            : base(ribbon, container)
         {
             _tabName = tabName;
         }
@@ -42,21 +45,26 @@
                 ? Ribbon.Application.CreateRibbonPanel(panelTitle)
                 : Ribbon.Application.CreateRibbonPanel(_tabName, panelTitle);
 
-            return new Panel(Ribbon, this, ribbonPanel);
+            return new Panel(Ribbon, this, ribbonPanel, Container);
         }
 
         /// <summary>
         /// Создает кнопку о программе
         /// </summary>
-        /// <param name="panelTitle">имя панели</param>
         /// <param name="name">Название кнопки</param>
-        /// <param name="text">Тест описания</param>
         /// <param name="action">Дополнительны действия для кнопки о программе</param>
+        /// <param name="panelTitle">имя панели</param>
+        /// <param name="text">Тест описания</param>
         public Tab AboutButton(
-            string panelTitle, string name, string text, Action<AboutButton> action)
+            string name, Action<AboutButton> action, string panelTitle = null, string text = null)
         {
             if (_isAddAboutButton)
                 return this;
+
+            if (string.IsNullOrEmpty(panelTitle))
+                panelTitle = name;
+            if (string.IsNullOrEmpty(text))
+                text = name;
 
             _ = string.IsNullOrEmpty(_tabName)
                 ? Ribbon.Application.CreateRibbonPanel(panelTitle)
@@ -71,7 +79,8 @@
                     {
                         if (panel.Source.Title.Equals(panelTitle))
                         {
-                            var button = new AboutButton(name, text, $"PIK_ABOUT_{_tabName?.GetHashCode()}");
+                            var button = new AboutButton(
+                                name, text, $"PIK_ABOUT_{_tabName?.GetHashCode()}", Container);
                             action?.Invoke(button);
 
                             var buttonData = button.BuildButton();

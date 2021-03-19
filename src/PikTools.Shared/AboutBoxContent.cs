@@ -24,7 +24,7 @@
             string description,
             Version buildVersion,
             string companyName,
-            IReadOnlyList<KeyValuePair<string, string>> links)
+            Dictionary<string, string> links)
         {
             Title = title;
             ProductVersion = productVersion;
@@ -62,7 +62,7 @@
         /// <summary>
         /// Список ссылок
         /// </summary>
-        public IReadOnlyList<KeyValuePair<string, string>> Links { get; }
+        public Dictionary<string, string> Links { get; }
 
         /// <inheritdoc/>
         public override string ToString()

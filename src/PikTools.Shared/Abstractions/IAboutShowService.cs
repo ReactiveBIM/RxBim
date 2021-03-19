@@ -3,7 +3,7 @@
     /// <summary>
     /// Отображает окно о программе
     /// </summary>
-    public interface IAboutBox
+    public interface IAboutShowService
     {
         /// <summary>
         /// Показать окно о программе

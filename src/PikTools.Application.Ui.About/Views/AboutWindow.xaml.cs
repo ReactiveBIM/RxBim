@@ -1,9 +1,9 @@
-﻿namespace PikTools.Shared.Ui.Windows
+﻿namespace PikTools.Application.Ui.About.Views
 {
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Navigation;
-    using PikTools.Shared.Ui.ViewModels;
+    using PikTools.Application.Ui.About.ViewModels;
 
     /// <summary>
     /// Interaction logic for AboutWindow.xaml

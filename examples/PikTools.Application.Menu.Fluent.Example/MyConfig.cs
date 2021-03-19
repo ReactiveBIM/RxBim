@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using Di;
+    using PikTools.Application.Ui.About;
     using PikTools.Shared;
-    using PikTools.Shared.Abstractions;
-    using PikTools.Shared.Ui;
     using Ui.Api;
 
     /// <inheritdoc />
@@ -15,26 +14,23 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddUi();
+            container.AddAbout();
             container.AddMenu(ribbon => ribbon
                 .Tab("First")
                     .AboutButton(
                         "О программе",
-                        "О программе",
-                        "О программе",
                         button => button
-                            .SetViewer(container.GetService<IAboutBox>())
                             .SetContent(new AboutBoxContent(
                                 "PIKTools4Revit",
                                 "21.1",
                                 $"ПИК-АР - Модуль продукта PIKTools, автоматизирующий процесс проектирования для архитекторов{Environment.NewLine}Разработано для Autodesk Revit 2019",
                                 GetType().Assembly.GetName().Version,
                                 "ПИК-Digital",
-                                new List<KeyValuePair<string, string>>
+                                new Dictionary<string, string>
                                 {
-                                    new KeyValuePair<string, string>("Скачать актуальные версии плагинов", "https://drive.google.com/drive/folders/1v-KbQEKv7roJctcWSCodsFQy3KwSz_rt"),
-                                    new KeyValuePair<string, string>("Сайт", "https://pikipedia.pik.ru/wiki/PIK_Tools"),
-                                    new KeyValuePair<string, string>("Канал в Telegram", "https://t.me/PIKTools_News")
+                                    { "Скачать актуальные версии плагинов", "https://drive.google.com/drive/folders/1v-KbQEKv7roJctcWSCodsFQy3KwSz_rt" },
+                                    { "Сайт", "https://pikipedia.pik.ru/wiki/PIK_Tools" },
+                                    { "Канал в Telegram", "https://t.me/PIKTools_News" }
                                 }))
                             .SetSmallImage(
                                     new Uri(Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"img\small.png"),

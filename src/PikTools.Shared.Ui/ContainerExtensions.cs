@@ -2,7 +2,6 @@
 {
     using Abstractions;
     using Di;
-    using PikTools.Shared.Abstractions;
     using Services;
     using ViewModels;
 
@@ -19,8 +18,7 @@
         {
             container.AddSingleton<IUIDispatcher, UIDispatcher>()
                 .AddSingleton<IExternalDialogs, ExternalDialogsService>()
-                .AddSingleton<INotificationService, NotificationService>()
-                .AddSingleton<IAboutBox, AboutDialogService>();
+                .AddSingleton<INotificationService, NotificationService>();
             container.AddInstance<INotificationViewModel>(new NotificationViewModel());
         }
     }

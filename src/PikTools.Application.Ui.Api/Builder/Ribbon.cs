@@ -4,6 +4,7 @@
     using System.Linq;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
+    using PikTools.Di;
     using UIFramework;
 
     /// <summary>
@@ -12,14 +13,17 @@
     public class Ribbon
     {
         private readonly RibbonControl _ribbonControl;
+        private readonly IContainer _container;
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="application">UIControlledApplication</param>
-        public Ribbon(UIControlledApplication application)
+        /// <param name="container"><see cref="IContainer"/></param>
+        public Ribbon(UIControlledApplication application, IContainer container)
         {
             Application = application;
+            _container = container;
 
             _ribbonControl = RevitRibbonControl.RibbonControl;
             if (_ribbonControl == null)
@@ -47,14 +51,14 @@
                 Application.CreateRibbonTab(tabTitle);
             }
 
-            return new Tab(this, tabTitle);
+            return new Tab(this, tabTitle, _container);
         }
 
         private bool TryFindTab(string tabTitle, out Tab tab)
         {
             if (_ribbonControl.Tabs.Any(t => t.Title.Equals(tabTitle)))
             {
-                tab = new Tab(this, tabTitle);
+                tab = new Tab(this, tabTitle, _container);
                 return true;
             }
 

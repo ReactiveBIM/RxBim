@@ -1,9 +1,9 @@
-﻿<Window x:Class="PikTools.Shared.Ui.Windows.AboutWindow"
+﻿<Window x:Class="PikTools.Application.Ui.About.Views.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:PikTools.Shared.Ui.ViewModels"
+        xmlns:viewModels="clr-namespace:PikTools.Application.Ui.About.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="500" d:DesignWidth="400"
         d:DataContext="{d:DesignInstance viewModels:AboutViewModel, IsDesignTimeCreatable=False}"
@@ -18,7 +18,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PikTools.Shared.Ui.2.1.0;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

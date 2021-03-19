@@ -1,12 +1,12 @@
-﻿namespace PikTools.Shared.Ui.Services
+﻿namespace PikTools.Application.Ui.About.Services
 {
+    using PikTools.Application.Ui.About.ViewModels;
+    using PikTools.Application.Ui.About.Views;
     using PikTools.Shared;
     using PikTools.Shared.Abstractions;
-    using PikTools.Shared.Ui.ViewModels;
-    using PikTools.Shared.Ui.Windows;
 
     /// <inheritdoc/>
-    public class AboutDialogService : IAboutBox
+    public class AboutDialogService : IAboutShowService
     {
         /// <inheritdoc/>
         public void ShowAboutBox(AboutBoxContent content)
