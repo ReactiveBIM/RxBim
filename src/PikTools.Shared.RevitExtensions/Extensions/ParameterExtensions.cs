@@ -19,6 +19,9 @@
             this Element elem,
             string parameterName)
         {
+            if (!elem.IsValidObject)
+                return null;
+
             var param = elem.LookupParameter(parameterName);
             if (param != null)
                 return param;
@@ -86,6 +89,9 @@
                     break;
 
                 case StorageType.ElementId:
+                    value = param.HasValue ? param.AsElementId() : ElementId.InvalidElementId;
+                    break;
+
                 case StorageType.None:
                     value = param.AsValueString() ?? string.Empty;
                     break;
@@ -138,7 +144,8 @@
             string parameterName,
             object value)
         {
-            if (element == null)
+            if (element == null
+                || !element.IsValidObject)
                 return false;
 
             var parameter = element.LookupParameter(parameterName);
@@ -156,7 +163,8 @@
             this Parameter parameter,
             object value)
         {
-            if (parameter == null)
+            if (parameter == null
+                || parameter.IsReadOnly)
                 return false;
 
             switch (parameter.StorageType)
@@ -191,7 +199,8 @@
         public static void CopyParameterValue(this Parameter fromParameter, Parameter toParameter)
         {
             if (fromParameter == null
-                || toParameter == null)
+                || toParameter == null
+                || toParameter.IsReadOnly)
                 return;
 
             switch (fromParameter.StorageType)

@@ -17,6 +17,7 @@
         private readonly IElementsCollector _elementsCollector;
         private readonly IProblemElementsStorage _problemElementsStorage;
         private readonly IFamilyManagerService _familyManagerService;
+        private readonly ISheetsCollector _sheetsCollector;
         private readonly Document _doc;
         private readonly RevitTask _revitTask;
 
@@ -27,6 +28,7 @@
         /// <param name="elementsCollector">collector</param>
         /// <param name="problemElementsStorage">problems elements</param>
         /// <param name="familyManagerService">Сервис работы с FM</param>
+        /// <param name="sheetsCollector"><see cref="ISheetsCollector"/></param>
         /// <param name="doc">doc</param>
         /// <param name="revitTask">revit task</param>
         public MyService(
@@ -34,6 +36,7 @@
             IElementsCollector elementsCollector,
             IProblemElementsStorage problemElementsStorage,
             IFamilyManagerService familyManagerService,
+            ISheetsCollector sheetsCollector,
             Document doc,
             RevitTask revitTask)
         {
@@ -41,6 +44,7 @@
             _elementsCollector = elementsCollector;
             _problemElementsStorage = problemElementsStorage;
             _familyManagerService = familyManagerService;
+            _sheetsCollector = sheetsCollector;
             _doc = doc;
             _revitTask = revitTask;
         }
@@ -50,6 +54,8 @@
         {
             try
             {
+                var sheets = _sheetsCollector.GetSheets("Орг.КомплектЧертежей");
+
                 await _revitTask.Run((app) =>
                 {
                     var elements = _elementsCollector

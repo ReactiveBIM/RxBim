@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\PikTools.Application.Api\PikTools.Application.Api.csproj" />
+    <ProjectReference Include="..\..\src\PikTools.Application.Ui.About\PikTools.Application.Ui.About.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Application.Ui.Api\PikTools.Application.Ui.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
     <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />

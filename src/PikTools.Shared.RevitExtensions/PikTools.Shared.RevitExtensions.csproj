@@ -26,6 +26,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+    <ProjectReference Include="..\PikTools.Shared.TableBuilder\PikTools.Shared.TableBuilder.csproj" />
   </ItemGroup>
 	
 	<PropertyGroup>
