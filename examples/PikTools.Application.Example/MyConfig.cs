@@ -13,10 +13,10 @@
         {
             container.AddTransient<IService, Service>();
 
-            container.AddConfiguration(builder => builder
+            /*container.AddConfiguration(builder => builder
                 .SetBasePath(Path.GetDirectoryName(GetType().Assembly.Location))
                 .AddJsonFile("application.settings.json")
-                .Build());
+                .Build());*/
 
             container.AddLogs();
         }

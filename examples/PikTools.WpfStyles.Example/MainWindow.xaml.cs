@@ -32,6 +32,7 @@ namespace PikTools.WpfStyles.Example
 
             dragDropLb.ItemsSource = data;
             dg.ItemsSource = data;
+            itemsControl.ItemsSource = data;
         }
 
         private void EditableTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
