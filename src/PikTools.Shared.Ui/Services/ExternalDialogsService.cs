@@ -12,6 +12,12 @@
     public class ExternalDialogsService : IExternalDialogs
     {
         /// <inheritdoc/>
+        public void OpenFile(string filePath)
+        {
+            Process.Start(filePath);
+        }
+
+        /// <inheritdoc/>
         public void OpenFileExplorer(string path)
         {
             Process.Start("explorer.exe", path);
@@ -22,14 +28,16 @@
             string title,
             string filter,
             string initialDirectory = "",
-            string fileName = "")
+            string fileName = "",
+            bool overwritePrompt = true)
         {
             var fileDialog = new SaveFileDialog
                 {
                     Title = title,
                     Filter = filter,
                     InitialDirectory = initialDirectory,
-                    FileName = fileName
+                    FileName = fileName,
+                    OverwritePrompt = overwritePrompt
                 };
 
             return fileDialog.ShowDialog() == true
