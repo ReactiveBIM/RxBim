@@ -15,12 +15,14 @@
         /// <param name="filter">Фильтр по расширениям</param>
         /// <param name="initialDirectory">Открываемая папка по-умолчанию</param>
         /// <param name="fileName">Предлагаемое имя файла</param>
+        /// <param name="overwritePrompt">Выдавать предупреждение о перезаписи файла, если он уже существует</param>
         /// <returns>Путь к выбранному для сохранения файлу</returns>
         Result<string> ShowSaveFileDialog(
             string title,
             string filter,
             string initialDirectory = "",
-            string fileName = "");
+            string fileName = "",
+            bool overwritePrompt = false);
 
         /// <summary>
         /// Показать диалог открытия файлов
@@ -51,5 +53,11 @@
         /// </summary>
         /// <param name="path">Путь к заданной папке</param>
         void OpenFileExplorer(string path);
+
+        /// <summary>
+        /// Открывает файл стандартным приложением
+        /// </summary>
+        /// <param name="filePath">Путь к файлу</param>
+        void OpenFile(string filePath);
     }
 }
