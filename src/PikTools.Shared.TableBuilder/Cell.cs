@@ -28,6 +28,12 @@
             Down
         }
 
+        /// <summary> Вернуться к строке </summary>
+        public Row Row => _row;
+
+        /// <summary> Вернуться к столбцу </summary>
+        public Column Column => _column;
+
         /// <summary> Высота </summary>
         public double Height => _row.Height;
 
