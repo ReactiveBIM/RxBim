@@ -191,7 +191,7 @@
                 UpgradeCode = project.GetProperty("UpgradeCode") ??
                               throw new ArgumentException(
                                   $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
-                ProjectName = project.Name,
+                ProjectName = outputFileName,
                 SourceDir = Path.Combine(output, "bin"),
                 OutFileName = outputFileName,
                 AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
