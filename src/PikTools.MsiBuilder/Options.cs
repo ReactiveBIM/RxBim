@@ -39,6 +39,9 @@
         [Option('v', "version", Required = true, HelpText = "Set version.")]
         public string Version { get; set; }
 
+        [Option('y', "productVersion", Required = false, HelpText = "Set product version.")]
+        public string ProductVersion { get; set; }
+
         [Option('o', "outDir", Required = true, HelpText = "Set output directory.")]
         public string OutDir { get; set; }
 

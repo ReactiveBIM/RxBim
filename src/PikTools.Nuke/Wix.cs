@@ -162,12 +162,16 @@
                 _ => throw new ArgumentException("Configuration not setted!")
             };
 
+            var productVersion = project.GetProperty(nameof(Options.ProductVersion));
+
             var prefix = "PikTools.";
             var outputFileName = project.Name.StartsWith(prefix)
                 ? project.Name
                 : $"{prefix}{project.Name}";
+            if (!string.IsNullOrWhiteSpace(productVersion))
+                outputFileName += $"_{productVersion}";
 
-            var version = project.GetProperty("Version") ??
+            var version = project.GetProperty(nameof(Options.Version)) ??
                           throw new ArgumentException(
                               $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!");
             if (configuration == Debug)
@@ -178,17 +182,18 @@
 
             var options = new Options()
             {
-                Comments = project.GetProperty("Comments"),
-                Description = project.GetProperty("Description"),
+                Comments = project.GetProperty(nameof(Options.Comments)),
+                Description = project.GetProperty(nameof(Options.Description)),
                 Version = version,
+                ProductVersion = productVersion,
                 BundleDir = output,
                 InstallDir = installDir,
                 ManifestDir = output,
                 OutDir = project.Solution.Directory / "out",
-                PackageGuid = project.GetProperty("PackageGuid") ??
+                PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
                               throw new ArgumentException(
                                   $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!"),
-                UpgradeCode = project.GetProperty("UpgradeCode") ??
+                UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
                               throw new ArgumentException(
                                   $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
                 ProjectName = outputFileName,
