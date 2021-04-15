@@ -12,6 +12,9 @@
         [Option('p', "project", Required = true, HelpText = "Set project name.")]
         public string ProjectName { get; set; }
 
+        [Option('j', "productProject", Required = true, HelpText = "Set product project name.")]
+        public string ProductProjectName { get; set; }
+
         [Option('i', "installDir", Required = true, HelpText = "Set install directory.")]
         public string InstallDir { get; set; }
 
