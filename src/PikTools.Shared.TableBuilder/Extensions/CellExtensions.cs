@@ -19,6 +19,6 @@
         /// <param name="cell">ячейка</param>
         /// <param name="count">количество ячеек</param>
         public static Cell MergeLeft(this Cell cell, int count = 1)
-            => cell.Previous(count).MergeNext(count);
+            => cell.Previous(count).MergeNext(count).Previous(count);
     }
 }

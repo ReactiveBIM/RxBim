@@ -12,7 +12,12 @@
         private readonly Column _column;
 
         /// <inheritdoc />
-        public Cell(Table table, Row row, Column column, TextCellData data = null, CellFormatStyle format = null)
+        public Cell(
+            Table table,
+            Row row,
+            Column column,
+            TextCellData data = null,
+            CellFormatStyle format = null)
             : base(table)
         {
             _row = row;
@@ -63,7 +68,7 @@
         /// <param name="data">Значение ячейки</param>
         public Cell SetValue(ICellData data)
         {
-            Data = data;
+            SetToMergedArea(cell => cell.Data = data);
             return this;
         }
 
@@ -83,7 +88,7 @@
         /// <param name="format">Формат</param>
         public Cell SetFormat(CellFormatStyle format)
         {
-            Format = format;
+            SetToMergedArea(cell => cell.Format = format);
             return this;
         }
 
@@ -125,8 +130,7 @@
             if (_row.Number + count > Table.Rows.Count)
                 throw new ArgumentOutOfRangeException("Для объединения недостаточно строк в стобце");
 
-            MergeInternal(count, Rotation.Down, action);
-            return this;
+            return MergeInternal(count, Rotation.Down, action);
         }
 
         /// <summary>
@@ -142,17 +146,17 @@
             if (Number + count > _row.Cells.Count)
                 throw new ArgumentOutOfRangeException("Для объединения недостаточно ячеек в столбце");
 
-            MergeInternal(count, Rotation.Next, action);
-            return this;
+            return MergeInternal(count, Rotation.Next, action);
         }
 
-        private void MergeInternal(int count, Rotation rotation, Action<Cell, Cell> action)
+        private Cell MergeInternal(int count, Rotation rotation, Action<Cell, Cell> action)
         {
             Area ??= new TableMergedArea(_row.Number, Number);
 
+            var next = this;
             for (var i = 1; i <= count; i++)
             {
-                var next = rotation == Rotation.Next ? Next(i) : Down(i);
+                next = rotation == Rotation.Next ? Next(i) : Down(i);
 
                 if (next.Area != null)
                     throw new Exception("Среди объединяемых ячеек не должно быть уже объединенных");
@@ -163,6 +167,24 @@
                 next.Area = rotation == Rotation.Next
                     ? Area.MergeRight()
                     : Area.MergeDown();
+            }
+
+            return next;
+        }
+
+        private void SetToMergedArea(Action<Cell> action)
+        {
+            if (Area != null)
+            {
+                for (var i = Area.LeftColumn; i <= Area.RightColumn; i++)
+                {
+                    for (var j = Area.TopRow; j <= Area.BottomRow; j++)
+                        action?.Invoke(Table[j, i]);
+                }
+            }
+            else
+            {
+                action?.Invoke(this);
             }
         }
     }
