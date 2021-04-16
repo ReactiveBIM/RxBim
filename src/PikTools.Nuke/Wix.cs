@@ -167,7 +167,7 @@
                 && configuration.Equals(Release))
             {
                 throw new ArgumentException(
-                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with valid guid value!");
+                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
             }
 
             var prefix = "PikTools.";
@@ -179,7 +179,7 @@
 
             var version = project.GetProperty(nameof(Options.Version)) ??
                           throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid guid value!");
+                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
             if (configuration == Debug)
             {
                 var unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
