@@ -12,6 +12,9 @@
         [Option('p', "project", Required = true, HelpText = "Set project name.")]
         public string ProjectName { get; set; }
 
+        [Option('j', "productProject", Required = true, HelpText = "Set product project name.")]
+        public string ProductProjectName { get; set; }
+
         [Option('i', "installDir", Required = true, HelpText = "Set install directory.")]
         public string InstallDir { get; set; }
 
@@ -38,6 +41,9 @@
 
         [Option('v', "version", Required = true, HelpText = "Set version.")]
         public string Version { get; set; }
+
+        [Option('y', "productVersion", Required = false, HelpText = "Set product version.")]
+        public string ProductVersion { get; set; }
 
         [Option('o', "outDir", Required = true, HelpText = "Set output directory.")]
         public string OutDir { get; set; }

@@ -23,7 +23,7 @@
         public int TopRow { get; set; }
 
         /// <summary>
-        /// Координата верхней строки
+        /// Координата нижней строки
         /// </summary>
         public int BottomRow { get; set; }
 
