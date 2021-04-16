@@ -14,12 +14,13 @@
         public Project CreateProject(Options options)
         {
             var projectName = options.ProjectName;
+            var productProjectName = options.ProductProjectName;
             var installDir = options.InstallDir;
 
             var sourceDir = options.SourceDir;
 
             var project = new ManagedProject(
-                projectName,
+                productProjectName,
                 new Dir(installDir,
                     FillEntities(null, new[] { options.BundleDir }, false)
                         .Concat(new[]

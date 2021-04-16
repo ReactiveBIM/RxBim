@@ -4,6 +4,7 @@
     using System.Linq;
     using FluentAssertions;
     using PikTools.Shared.TableBuilder;
+    using PikTools.Shared.TableBuilder.Extensions;
     using Xunit;
     using Color = System.Drawing.Color;
 
@@ -189,7 +190,7 @@
                 .AddColumn(x => x.FromList(data, 0, 0, p => p.Prop1, p => p.Prop2))
                 .AddColumn(x => x.FromList(data, 2, 0, p => p.Prop1, p => p.Prop2))
                 .AddColumn(x => x.FromList(data, 4, 0, p => p.Prop1, p => p.Prop2))[1, 3]
-                .MergeNext(1, (x, y) => { }).And[1, 3].MergeDown(1, (x, y) => { })
+                .MergeNext(1, action: (x, y) => { }).And[1, 3].MergeDown(1, action: (x, y) => { })
                 .And.Build();
 
             table[1, 3].Merged.Should().BeTrue();
@@ -202,6 +203,70 @@
             mergedArea.BottomRow.Should().Be(2);
             mergedArea.LeftColumn.Should().Be(3);
             mergedArea.RightColumn.Should().Be(4);
+        }
+
+        /// <summary> Тест задает данные объединенной ячейке и они прописываются всем ячейкам в объединении </summary>
+        [Fact]
+        public void SetDataToMeregedCell()
+        {
+            var colCount = 4;
+            var rowCount = 4;
+            var cellValue = new TextCellData("test");
+
+            var table = new Table()
+                .AddColumn(count: colCount).AddRow(count: rowCount)
+                .Rows.First().Cells.First()
+                .MergeNext(colCount - 1).MergeDown(rowCount - 1)
+                .SetValue(cellValue)
+                .And.Build();
+
+            for (var i = 0; i < colCount; i++)
+            {
+                for (var j = 0; j < rowCount; j++)
+                    table[j, i].Data.Should().Be(cellValue);
+            }
+        }
+
+        /// <summary> Тест задает формат объединенной ячейке и они прописываются всем ячейкам в объединении </summary>
+        [Fact]
+        public void SetFormatToMeregedCell()
+        {
+            var colCount = 4;
+            var rowCount = 4;
+            var format = new CellFormatStyle(bold: true);
+
+            var table = new Table()
+                .AddColumn(count: colCount).AddRow(count: rowCount)
+                .Rows.First().Cells.First()
+                .MergeNext(colCount - 1).MergeDown(rowCount - 1)
+                .SetFormat(format)
+                .And.Build();
+
+            for (var i = 0; i < colCount; i++)
+            {
+                for (var j = 0; j < rowCount; j++)
+                    table[j, i].Format.Should().Be(format);
+            }
+        }
+
+        /// <summary> Тест при объединении ячеек выдается последняя ячейка в объединении </summary>
+        [Fact]
+        public void MergeCellReturnLastCell()
+        {
+            var colCount = 4;
+            var rowCount = 4;
+
+            var table = new Table()
+                .AddColumn(count: colCount).AddRow(count: rowCount);
+
+            var nextMergedCell = table.Rows.First().Cells[0].MergeNext();
+            nextMergedCell.Number.Should().Be(1);
+
+            var downMergedCell = table.Columns.Last().Cells[0].MergeDown();
+            downMergedCell.Row.Number.Should().Be(table.Rows[1].Number);
+
+            var leftMergedCell = table.Rows.Last().Cells[1].MergeLeft();
+            leftMergedCell.Number.Should().Be(0);
         }
 
         private List<Example> GetTestData(int count) =>
