@@ -157,12 +157,18 @@
         {
             var installDir = configuration switch
             {
-                "Debug" => "%AppDataFolder%/Autodesk/Revit/Addins/2019",
-                "Release" => $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle",
+                Debug => "%AppDataFolder%/Autodesk/Revit/Addins/2019",
+                Release => $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle",
                 _ => throw new ArgumentException("Configuration not setted!")
             };
 
             var productVersion = project.GetProperty(nameof(Options.ProductVersion));
+            if (string.IsNullOrWhiteSpace(productVersion)
+                && configuration.Equals(Release))
+            {
+                throw new ArgumentException(
+                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with valid guid value!");
+            }
 
             var prefix = "PikTools.";
             var outputFileName = project.Name.StartsWith(prefix)
@@ -173,7 +179,7 @@
 
             var version = project.GetProperty(nameof(Options.Version)) ??
                           throw new ArgumentException(
-                              $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!");
+                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid guid value!");
             if (configuration == Debug)
             {
                 var unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -192,10 +198,10 @@
                 OutDir = project.Solution.Directory / "out",
                 PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
                               throw new ArgumentException(
-                                  $"Project {project.Name} should contain 'PackageGuid' property with valid guid value!"),
+                                  $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!"),
                 UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
                               throw new ArgumentException(
-                                  $"Project {project.Name} should contain 'UpgradeCode' property with valid guid value!"),
+                                  $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!"),
                 ProjectName = project.Name,
                 ProductProjectName = outputFileName,
                 SourceDir = Path.Combine(output, "bin"),

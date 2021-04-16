@@ -23,7 +23,7 @@
         private Document CurrentDocument => _uiApplication.ActiveUIDocument.Document;
 
         /// <inheritdoc/>
-        public Result MakeTransaction(Action action, string transactionName)
+        public Result RunInTransaction(Action action, string transactionName)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
@@ -46,7 +46,7 @@
         }
 
         /// <inheritdoc/>
-        public Result MakeTransactionGroup(Action action, string transactionGroupName)
+        public Result RunInTransactionGroup(Action action, string transactionGroupName)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
