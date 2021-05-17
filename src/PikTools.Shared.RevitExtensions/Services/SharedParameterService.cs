@@ -137,7 +137,7 @@
 
             if (string.IsNullOrEmpty(sharedParameterFilename)
                 || !File.Exists(sharedParameterFilename))
-                Result.Failure("Не найден файл общих параметров");
+                return Result.Failure<DefinitionFile>("Не найден файл общих параметров");
 
             return doc.Application.OpenSharedParameterFile();
         }
