@@ -41,11 +41,10 @@ partial class Build
             foreach (var project in sourceProjects)
             {
                 DotNetTasks.DotNetPack(settings => settings
-                    .SetConfiguration(Configuration)
-                    .SetNoBuild(true)
-                    .SetNoRestore(true)
                     .SetProject(project)
-                    .SetOutputDirectory(path));
+                    .SetOutputDirectory(path)
+                    .SetConfiguration(Configuration)
+                    .EnableNoBuild());
             }
         });
 
