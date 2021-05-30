@@ -67,7 +67,7 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == PikToolsApplication &&
+            if (namedTypeSymbol.BaseType?.Name == PikToolsApplication &&
                 namedTypeSymbol.MemberNames.All(x => x != Start))
             {
                 var diagnostic =
@@ -85,7 +85,7 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == PikToolsApplication &&
+            if (namedTypeSymbol.BaseType?.Name == PikToolsApplication &&
                 namedTypeSymbol.MemberNames.All(x => x != Shutdown))
             {
                 var diagnostic =
