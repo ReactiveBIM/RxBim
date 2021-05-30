@@ -66,7 +66,7 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
+            if (namedTypeSymbol.BaseType?.Name == Constants.PikToolsApplication &&
                 namedTypeSymbol.MemberNames.All(x => x != Constants.Start))
             {
                 var diagnostic =
@@ -84,7 +84,7 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
+            if (namedTypeSymbol.BaseType?.Name == Constants.PikToolsApplication &&
                 namedTypeSymbol.MemberNames.All(x => x != Constants.Shutdown))
             {
                 var diagnostic =

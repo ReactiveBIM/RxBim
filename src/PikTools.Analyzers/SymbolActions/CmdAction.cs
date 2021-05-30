@@ -42,7 +42,7 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == "PikToolsCommand" &&
+            if (namedTypeSymbol.BaseType?.Name == "PikToolsCommand" &&
                 namedTypeSymbol.MemberNames.All(x => x != "ExecuteCommand"))
             {
                 var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
