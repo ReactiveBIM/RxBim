@@ -146,6 +146,12 @@ namespace PikTools.Di
             return this;
         }
 
+        public IContainer AddInstance(Type type, object instance)
+        {
+            _container.RegisterInstance(type, instance);
+            return this;
+        }
+
         public IContainer Decorate(Type service, Type decorator)
         {
             _container.RegisterDecorator(service, decorator);
