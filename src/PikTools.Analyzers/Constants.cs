@@ -34,5 +34,15 @@
         /// PikToolsApplication
         /// </summary>
         internal const string PikToolsApplication = nameof(PikToolsApplication);
+
+        /// <summary>
+        /// PikToolsCommand
+        /// </summary>
+        internal const string PikToolsCommand = nameof(PikToolsCommand);
+
+        /// <summary>
+        /// ExecuteCommand
+        /// </summary>
+        internal const string ExecuteCommand = nameof(ExecuteCommand);
     }
 }

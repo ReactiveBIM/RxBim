@@ -23,6 +23,12 @@
         <ProjectReference Include="..\PikTools.Shared\PikTools.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Include="..\PikTools.Application.Api\PluginResultExtensions.cs">
+        <Link>PluginResultExtensions.cs</Link>
+      </Compile>
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>

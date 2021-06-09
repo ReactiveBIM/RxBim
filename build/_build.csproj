@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace></RootNamespace>
     <IsPackable>False</IsPackable>
@@ -43,6 +43,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\src\PikTools.Nuke.AutoCAD\PikTools.Nuke.AutoCAD.csproj" />
+    <ProjectReference Include="..\src\PikTools.Nuke.Revit\PikTools.Nuke.Revit.csproj" />
     <ProjectReference Include="..\src\PikTools.Nuke\PikTools.Nuke.csproj" />
   </ItemGroup>
 

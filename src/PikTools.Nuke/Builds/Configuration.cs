@@ -2,15 +2,18 @@
 using System.ComponentModel;
 using Nuke.Common.Tooling;
 
-/// <inheritdoc />
-[TypeConverter(typeof(TypeConverter<Configuration>))]
-public class Configuration : Enumeration
+namespace PikTools.Nuke.Builds
 {
-    public static Configuration Debug = new Configuration { Value = nameof(Debug) };
-    public static Configuration Release = new Configuration { Value = nameof(Release) };
-
-    public static implicit operator string(Configuration configuration)
+    /// <inheritdoc />
+    [TypeConverter(typeof(TypeConverter<Configuration>))]
+    public class Configuration : Enumeration
     {
-        return configuration.Value;
+        public static Configuration Debug = new Configuration { Value = nameof(Debug) };
+        public static Configuration Release = new Configuration { Value = nameof(Release) };
+
+        public static implicit operator string(Configuration configuration)
+        {
+            return configuration.Value;
+        }
     }
 }

@@ -13,7 +13,7 @@
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\src\PikTools.Command.Api\PikTools.Command.Api.csproj" />
-      <ProjectReference Include="..\..\src\PikTools.Logs\PikTools.Logs.csproj" />
+      <ProjectReference Include="..\..\src\PikTools.Logs.Revit\PikTools.Logs.Revit.csproj" />      
     </ItemGroup>
     <ItemGroup>
       <None Update="appsettings.PikTools.LoggedCommand.Example.json">

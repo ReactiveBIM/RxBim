@@ -3,9 +3,10 @@
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
+    using static Constants;
 
     /// <summary>
-    /// Инспекция проверяющая наличие метода ExecuteCommand
+    /// Инспекция проверяющая наличие метода <see cref="ExecuteCommand"/>
     /// </summary>
     public class CmdAction
     {
@@ -14,13 +15,13 @@
         /// </summary>
         public const string DiagnosticId = Constants.DiagnosticId + "Command";
 
-        private static readonly LocalizableString Title = "Command type contains \"ExecuteCommand\" method.";
+        private static readonly LocalizableString Title = $"Command type contains \"{ExecuteCommand}\" method.";
 
         private static readonly LocalizableString MessageFormat =
-            "Command type '{0}' not contains \"ExecuteCommand\" method";
+            $"Command type '{{0}}' not contains \"{ExecuteCommand}\" method";
 
         private static readonly LocalizableString
-            Description = "Command type should contain \"ExecuteCommand\" method.";
+            Description = $"Command type should contain \"{ExecuteCommand}\" method.";
 
         /// <summary>
         /// Правило
@@ -29,7 +30,7 @@
             DiagnosticId,
             Title,
             MessageFormat,
-            Constants.Category,
+            Category,
             DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             description: Description);
@@ -42,8 +43,8 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == "PikToolsCommand" &&
-                namedTypeSymbol.MemberNames.All(x => x != "ExecuteCommand"))
+            if (namedTypeSymbol.BaseType.Name == PikToolsCommand &&
+                namedTypeSymbol.MemberNames.All(x => x != ExecuteCommand))
             {
                 var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
 

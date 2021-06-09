@@ -16,8 +16,6 @@
     [Regeneration(RegenerationOption.Manual)]
     public abstract class PikToolsCommand : IExternalCommand, IExternalCommandAvailability
     {
-        private const string MethodName = "ExecuteCommand";
-
         /// <inheritdoc />
         public Result Execute(
             ExternalCommandData commandData,
@@ -50,7 +48,7 @@
         private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
             var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeCommand(di.Container, MethodName);
+            var commandResult = methodCaller.InvokeCommand(di.Container, Constants.ExecuteMethodName);
             return commandResult;
         }
 
