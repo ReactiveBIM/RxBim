@@ -1,7 +1,7 @@
 ﻿namespace PikTools.LoggedCommand.Example
 {
     using Di;
-    using Logs;
+    using Logs.Revit;
 
     public class Config : ICommandConfiguration
     {

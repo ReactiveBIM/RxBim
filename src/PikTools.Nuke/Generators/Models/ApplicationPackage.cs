@@ -1,6 +1,8 @@
 ﻿namespace PikTools.Nuke.Generators.Models
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Linq;
 
     /// <summary>
     /// ApplicationPackage
@@ -23,7 +25,7 @@
         public string Description { get; set; }
 
         /// <summary>
-        /// Версия прилодения
+        /// Версия приложения
         /// </summary>
         public string AppVersion { get; set; }
 
@@ -51,5 +53,23 @@
         /// Компоненты
         /// </summary>
         public List<Components> Components { get; set; }
+
+        /// <summary>
+        /// Маппит <see cref="ApplicationPackage"/>  в <see cref="XElement"/>
+        /// </summary>
+        public XElement ToXElement()
+        {
+            return new XElement(
+                nameof(ApplicationPackage),
+                new XAttribute(nameof(Description), Description),
+                new XAttribute(nameof(SchemaVersion), SchemaVersion),
+                new XAttribute(nameof(Name), Name),
+                new XAttribute(nameof(AppVersion), AppVersion),
+                new XAttribute(nameof(FriendlyVersion), FriendlyVersion),
+                new XAttribute(nameof(ProductType), ProductType),
+                new XAttribute(nameof(ProductCode), $"{{{ProductCode}}}"),
+                new XAttribute(nameof(UpgradeCode), $"{{{UpgradeCode}}}"),
+                Components.Select(x => x.ToXElement()));
+        }
     }
 }

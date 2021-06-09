@@ -1,6 +1,6 @@
 ﻿namespace PikTools.Logs
 {
-    using Autodesk.Revit.UI;
+    using System;
     using Di;
     using Enrichers;
     using Microsoft.Extensions.Configuration;
@@ -18,24 +18,32 @@
         /// </summary>
         /// <param name="container">контейнер</param>
         /// <param name="cfg">Конфигурация</param>
-        public static void AddLogs(this IContainer container, IConfiguration cfg = null)
+        /// <param name="addEnricher">Добавление источника дополнительных данных логов</param>
+        public static void AddLogs(
+            this IContainer container,
+            IConfiguration cfg = null,
+            Action<IContainer, LoggerConfiguration> addEnricher = null)
         {
-            RegisterLogger(container, cfg);
+            RegisterLogger(container, cfg, addEnricher);
 
             container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
-        private static void RegisterLogger(IContainer container, IConfiguration cfg)
+        private static void RegisterLogger(
+            IContainer container,
+            IConfiguration cfg,
+            Action<IContainer, LoggerConfiguration> addEnricher)
         {
-            container.AddTransient(() =>
-            {
-                if (cfg == null)
+            container.AddTransient(
+                () =>
                 {
-                    TryGetConfigurationFromContainer(container, ref cfg);
-                }
+                    if (cfg == null)
+                    {
+                        TryGetConfigurationFromContainer(container, ref cfg);
+                    }
 
-                return CreateLogger(cfg, container);
-            });
+                    return CreateLogger(cfg, container, addEnricher);
+                });
         }
 
         private static void TryGetConfigurationFromContainer(IContainer container, ref IConfiguration cfg)
@@ -50,7 +58,10 @@
             }
         }
 
-        private static ILogger CreateLogger(IConfiguration cfg, IContainer container)
+        private static ILogger CreateLogger(
+            IConfiguration cfg,
+            IContainer container,
+            Action<IContainer, LoggerConfiguration> addEnricher)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -65,12 +76,15 @@
                     .WriteTo.File("log.txt", LogEventLevel.Information, fileSizeLimitBytes: 1024 * 10);
             }
 
-            AddLogEnrichers(container, config);
+            AddLogEnrichers(container, config, addEnricher);
 
             return config.CreateLogger();
         }
 
-        private static void AddLogEnrichers(IContainer container, LoggerConfiguration config)
+        private static void AddLogEnrichers(
+            IContainer container,
+            LoggerConfiguration config,
+            Action<IContainer, LoggerConfiguration> addEnricher)
         {
             config
                 .Enrich.FromLogContext()
@@ -78,20 +92,8 @@
                 .Enrich.WithEnvironmentUserName()
                 .Enrich.With<ExceptionEnricher>()
                 .Enrich.With<OsEnricher>();
-            EnrichWithRevitData(container, config);
-        }
 
-        private static void EnrichWithRevitData(IContainer container, LoggerConfiguration config)
-        {
-            try
-            {
-                var uiApp = container.GetService<UIApplication>();
-                config.Enrich.With(new RevitEnricher(uiApp));
-            }
-            catch
-            {
-                // ignore
-            }
+            addEnricher?.Invoke(container, config);
         }
     }
 }

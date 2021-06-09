@@ -1,0 +1,19 @@
+﻿namespace $NAMESPACE$
+{
+    using Autodesk.AutoCAD.Runtime;
+
+    /// <summary>
+    /// Generated Command
+    /// </summary>
+    public class $CLASS$$GENERATED$ : $CLASS$
+    {
+        /// <summary>
+        /// Autocad command execute
+        /// </summary>
+        [CommandMethod("$CLASS$", $FLAGS$)]
+        public void $CLASS$Execute()
+        {
+            Execute();
+        }
+    }
+}

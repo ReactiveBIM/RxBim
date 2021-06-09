@@ -1,4 +1,4 @@
-﻿#pragma warning disable SA1600, CS1591
+﻿#pragma warning disable SA1600, CS1591, SA1619
 namespace PikTools.Nuke.Builds
 {
     using System.Linq;
@@ -7,9 +7,12 @@ namespace PikTools.Nuke.Builds
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Utilities;
 
-    public abstract partial class PikToolsBuild
+    /// <summary>
+    /// Расширение Build-скрипта для сборки MSI. Параметры.
+    /// </summary>
+    public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
-        private readonly Wix _wix;
+        private readonly TWix _wix;
         private string _project;
         private string _config;
         private Regex _releaseBranchRegex;
@@ -78,9 +81,6 @@ namespace PikTools.Nuke.Builds
             }
             set => _project = value;
         }
-
-        [Parameter]
-        public string RevitVersion { get; set; } = "2019";
 
         /// <summary>
         /// Solution

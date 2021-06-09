@@ -3,36 +3,37 @@
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
+    using static Constants;
 
     /// <summary>
-    /// Инспекция проверяющая наличие методов Start и Shutdown приложения.
+    /// Инспекция проверяющая наличие методов приложения <see cref="Start"/> и <see cref="Shutdown"/>
     /// </summary>
     public class AppAction
     {
         /// <summary>
         /// id
         /// </summary>
-        public const string StartDiagnosticId = Constants.DiagnosticId + "AppStart";
+        public const string StartDiagnosticId = DiagnosticId + "AppStart";
 
         /// <summary>
         /// id
         /// </summary>
-        public const string ShutdownDiagnosticId = Constants.DiagnosticId + "AppShutdown";
+        public const string ShutdownDiagnosticId = DiagnosticId + "AppShutdown";
 
-        private static readonly LocalizableString StartMethodTitle = "App type contains \"Start\" method.";
+        private static readonly LocalizableString StartMethodTitle = $"App type contains \"{Start}\" method.";
 
         private static readonly LocalizableString StartMethodMessageFormat =
-            "App type '{0}' not contains \"Start\" method";
+            $"App type '{{0}}' not contains \"{Start}\" method";
 
-        private static readonly LocalizableString StartMethodDescription = "App type should contain \"Start\" method.";
+        private static readonly LocalizableString StartMethodDescription = $"App type should contain \"{Start}\" method.";
 
-        private static readonly LocalizableString ShutdownMethodTitle = "App type contains \"Shutdown\" method.";
+        private static readonly LocalizableString ShutdownMethodTitle = $"App type contains \"{Shutdown}\" method.";
 
         private static readonly LocalizableString ShutdownMethodMessageFormat =
-            "App type '{0}' not contains \"Shutdown\" method";
+            $"App type '{{0}}' not contains \"{Shutdown}\" method";
 
         private static readonly LocalizableString ShutdownMethodDescription =
-            "App type should contain \"Shutdown\" method.";
+            $"App type should contain \"{Shutdown}\" method.";
 
         /// <summary>
         /// Правило Start
@@ -41,7 +42,7 @@
             StartDiagnosticId,
             StartMethodTitle,
             StartMethodMessageFormat,
-            Constants.Category,
+            Category,
             DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             description: StartMethodDescription);
@@ -53,7 +54,7 @@
             ShutdownDiagnosticId,
             ShutdownMethodTitle,
             ShutdownMethodMessageFormat,
-            Constants.Category,
+            Category,
             DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             description: ShutdownMethodDescription);
@@ -66,8 +67,8 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
-                namedTypeSymbol.MemberNames.All(x => x != Constants.Start))
+            if (namedTypeSymbol.BaseType.Name == PikToolsApplication &&
+                namedTypeSymbol.MemberNames.All(x => x != Start))
             {
                 var diagnostic =
                     Diagnostic.Create(AppStartMethodRule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
@@ -84,8 +85,8 @@
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.BaseType.Name == Constants.PikToolsApplication &&
-                namedTypeSymbol.MemberNames.All(x => x != Constants.Shutdown))
+            if (namedTypeSymbol.BaseType.Name == PikToolsApplication &&
+                namedTypeSymbol.MemberNames.All(x => x != Shutdown))
             {
                 var diagnostic =
                     Diagnostic.Create(AppShutdownMethodRule,

@@ -8,7 +8,7 @@
       <PackageReference Include="CommandLineParser" Version="2.8.0" />
       <PackageReference Include="Microsoft.PowerShell.5.ReferenceAssemblies" Version="1.1.0" />
       <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-      <PackageReference Include="WixSharp.bin" Version="1.14.8" />
+      <PackageReference Include="WixSharp.bin" Version="1.17.0" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -24,5 +24,4 @@
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
         <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
-
 </Project>
