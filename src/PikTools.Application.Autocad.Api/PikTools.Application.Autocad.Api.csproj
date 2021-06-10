@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>8</LangVersion>
+        <PlatformTarget>x64</PlatformTarget>
+        <NoWarn>NU1701</NoWarn>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>$(SolutionDir)\stylecop.ruleset</CodeAnalysisRuleSet>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+      <ProjectReference Include="..\PikTools.Shared\PikTools.Shared.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Company>pik-group.com</Company>
+        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
+        <Authors>BimLab BimTeam</Authors>
+        <Product>BimLab.PikTools</Product>
+        <Copyright>Copyright ©2021 PIK Group</Copyright>
+        <Description>PikTools Application api Library for AutoCAD</Description>
+        <PackageTags>BIM BimLab</PackageTags>
+        <PackageId>BimLab.PikTools.Application.Autocad.Api</PackageId>
+        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
+        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
+    </PropertyGroup>
+
+</Project>

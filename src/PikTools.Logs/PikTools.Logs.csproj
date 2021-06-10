@@ -37,7 +37,7 @@
         <Authors>BimLab BimTeam</Authors>
         <Product>BimLab.PikTools</Product>
         <Copyright>Copyright ©2020 PIK Group</Copyright>
-        <Description>PikTools logs Library</Description>
+        <Description>PikTools logs base Library</Description>
         <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Logs</PackageId>
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>

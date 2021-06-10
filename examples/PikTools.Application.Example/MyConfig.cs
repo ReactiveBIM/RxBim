@@ -2,7 +2,7 @@
 {
     using System.IO;
     using Di;
-    using Logs;
+    using Logs.Revit;
     using Microsoft.Extensions.Configuration;
 
     /// <inheritdoc />

@@ -50,6 +50,8 @@ namespace PikTools.Di
 
         IContainer AddInstance<TService>(TService service)
             where TService : class;
+        
+        IContainer AddInstance(Type type, object instance);
 
         IContainer Decorate(Type service, Type decorator);
 

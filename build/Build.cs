@@ -10,15 +10,18 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using PikTools.Nuke.Builds;
+using PikTools.Nuke.Revit;
 using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-partial class Build : PikToolsBuild
+partial class Build : RevitPikToolsBuild
 {
-    public static int Main() => Execute<Build>(x => x.CopyOutput);
+    // public static int Main() => Execute<Build>(x => x.CopyOutput);
+
+    public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
 
     PackageInfoProvider _packageInfoProvider;
 
@@ -28,8 +31,6 @@ partial class Build : PikToolsBuild
         _packageInfoProvider = new PackageInfoProvider(() => Solution);
     }
 
-    
-
     const string MsiBuilderProjectName = "PikTools.MsiBuilder.Bin";
     const string MsiBuilderEnv = "PIKTOOLS_MSIBUILDER_BIN";
 
@@ -37,7 +38,7 @@ partial class Build : PikToolsBuild
         Solution.AllProjects.FirstOrDefault(x => x.Name == MsiBuilderProjectName);
 
     string MsiBuilderArtifactPath => Solution.Directory / "out" /
-                                             $"{MsiBuilderProject.Name}_{MsiBuilderProject.GetProperty("Version")}.zip";
+                                     $"{MsiBuilderProject.Name}_{MsiBuilderProject.GetProperty("Version")}.zip";
 
     Target PublishMsiBuildTool => _ => _
         .Executes(() =>
@@ -76,6 +77,6 @@ partial class Build : PikToolsBuild
                 installDir / $"{MsiBuilderProjectName}.exe",
                 EnvironmentVariableTarget.Machine);
 
-            Logger.Info($"PikTools.MsiBuilder.Bin installed successfully!");
+            Logger.Info("PikTools.MsiBuilder.Bin installed successfully!");
         });
 }

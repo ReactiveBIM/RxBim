@@ -4,7 +4,7 @@
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// Раcширения контейнера для добавления конфигураций
+    /// Расширения контейнера для добавления конфигураций
     /// </summary>
     public static class ContainerExtensions
     {

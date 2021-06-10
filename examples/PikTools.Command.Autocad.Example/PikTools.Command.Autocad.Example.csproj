@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>8</LangVersion>
+        <PlatformTarget>x64</PlatformTarget>
+        <NoWarn>NU1701</NoWarn>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <UseWpf>true</UseWpf>
+        <IsPackable>False</IsPackable>
+        <PackageVersion>1.0.0</PackageVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>$(SolutionDir)\stylecop.ruleset</CodeAnalysisRuleSet>        
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>        
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\PikTools.Command.Autocad.Api\PikTools.Command.Autocad.Api.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Di\PikTools.Di.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Logs.Autocad\PikTools.Logs.Autocad.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Shared.Ui\PikTools.Shared.Ui.csproj" />
+        <ProjectReference Include="..\..\src\PikTools.Command.Autocad.Generators\PikTools.Command.Autocad.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="appsettings.PikTools.Command.Autocad.Example.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    <PropertyGroup>
+        <PackageGuid>b1390114-2d4b-4eba-89c6-49165a83c0ea</PackageGuid>
+        <UpgradeCode>368d8d8c-ca53-4801-bf1b-f871d58a11ca</UpgradeCode>
+    </PropertyGroup>
+</Project>
