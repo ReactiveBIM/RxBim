@@ -1,10 +1,8 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Extensions
 {
-    using System;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
     using JetBrains.Annotations;
-    using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <summary>
     /// Расширения для идентификаторов объектов
@@ -59,22 +57,15 @@
         {
             if (id.Is<T>())
             {
-                try
-                {
 #pragma warning disable 618
-                    return id.Open(
-                        forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
-                        openErased,
-                        forceOpenOnLockedLayer) as T;
+                return (T)id.Open(
+                    forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                    openErased,
+                    forceOpenOnLockedLayer);
 #pragma warning restore 618
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
             }
 
-            return null;
+            throw new Exception(ErrorStatus.InvalidInput, $"Объект не является типом {typeof(T)}");
         }
     }
 }
