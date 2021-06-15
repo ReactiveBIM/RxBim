@@ -41,13 +41,14 @@
         }
 
         /// <summary>
-        /// Открывает без транзакции объект заданного типа и возвращает его
+        /// Возвращает объект, открытый без использования транзакции и приведённый к заданному типу
         /// </summary>
-        /// <typeparam name="T">Тип объекта</typeparam>
         /// <param name="id">Идентификатор объекта</param>
         /// <param name="forWrite">Открыть для записи</param>
         /// <param name="openErased">Открыть, даже если объект удалён</param>
         /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
+        /// <typeparam name="T">Тип объекта</typeparam>
+        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
         public static T OpenAs<T>(
             this ObjectId id,
             bool forWrite = false,
@@ -65,7 +66,35 @@
 #pragma warning restore 618
             }
 
-            throw new Exception(ErrorStatus.InvalidInput, $"Объект не является типом {typeof(T)}");
+            throw new Exception(ErrorStatus.WrongObjectType, $"Объект не является типом {typeof(T)}");
+        }
+
+        /// <summary>
+        /// Возвращает объект, открытый с использованием транзакции и приведённый к заданному типу.
+        /// Для работы метода необходимо, чтобы была запущена транзакция!
+        /// </summary>
+        /// <param name="id">Идентификатор объекта</param>
+        /// <param name="forWrite">Открыть для записи</param>
+        /// <param name="openErased">Открыть, даже если объект удалён</param>
+        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
+        /// <typeparam name="T">Тип объекта</typeparam>
+        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
+        public static T GetObjectAs<T>(
+            this ObjectId id,
+            bool forWrite = false,
+            bool openErased = false,
+            bool forceOpenOnLockedLayer = true)
+            where T : DBObject
+        {
+            if (id.Is<T>())
+            {
+                return (T)id.GetObject(
+                    forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                    openErased,
+                    forceOpenOnLockedLayer);
+            }
+
+            throw new Exception(ErrorStatus.WrongObjectType, $"Объект не является типом {typeof(T)}");
         }
     }
 }

@@ -44,6 +44,16 @@
         }
 
         /// <summary>
+        /// Возвращает точку посередине между точкой и другой точкой
+        /// </summary>
+        /// <param name="point">Точка</param>
+        /// <param name="otherPoint">Другая точка</param>
+        public static Point3d GetMiddlePoint(this Point3d point, Point3d otherPoint)
+        {
+            return point + point.GetVectorTo(otherPoint).DivideBy(2);
+        }
+
+        /// <summary>
         /// Возвращает точку, полученную трансформацией исходной точки из пользовательской системы координат в мировую
         /// </summary>
         /// <param name="pt">Исходная точка</param>

@@ -22,6 +22,11 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="PresentationFramework" />
+      <Reference Include="WindowsBase" />
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>

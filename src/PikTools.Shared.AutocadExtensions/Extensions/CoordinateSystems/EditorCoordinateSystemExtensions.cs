@@ -22,7 +22,11 @@
         /// <returns>The corresponding 3d point.</returns>
         /// <exception cref="Autodesk.AutoCAD.Runtime.Exception">
         /// eInvalidInput is thrown if CoordSystem.PSDCS is used with other than CoordSystem.DCS.</exception>
-        public static Point3d TransformPoint(this Editor ed, Point3d pt, CoordinateSystemType from, CoordinateSystemType to)
+        public static Point3d TransformPoint(
+            this Editor ed,
+            Point3d pt,
+            CoordinateSystemType from,
+            CoordinateSystemType to)
         {
 #pragma warning disable SA1129
             var mat = new Matrix3d();
@@ -41,9 +45,8 @@
                             break;
 
                         case CoordinateSystemType.PSDCS:
-                            throw new AcRx.Exception(
-                                AcRx.ErrorStatus.InvalidInput,
-                                "To be used only with DCS");
+                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
+
                         default:
                             mat = Matrix3d.Identity;
                             break;
@@ -63,9 +66,8 @@
                             break;
 
                         case CoordinateSystemType.PSDCS:
-                            throw new AcRx.Exception(
-                                AcRx.ErrorStatus.InvalidInput,
-                                "To be used only with DCS");
+                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
+
                         default:
                             mat = Matrix3d.Identity;
                             break;
@@ -99,13 +101,9 @@
                     switch (to)
                     {
                         case CoordinateSystemType.WCS:
-                            throw new AcRx.Exception(
-                                AcRx.ErrorStatus.InvalidInput,
-                                "To be used only with DCS");
+                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
                         case CoordinateSystemType.UCS:
-                            throw new AcRx.Exception(
-                                AcRx.ErrorStatus.InvalidInput,
-                                "To be used only with DCS");
+                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
                         case CoordinateSystemType.DCS:
                             mat = ed.GetTransformMatrixFromPSDCSToDCS();
                             break;

@@ -28,5 +28,15 @@
         {
             return new Point3d(point.X, point.Y, 0d);
         }
+
+        /// <summary>
+        /// Возвращает точку посередине между точкой и другой точкой
+        /// </summary>
+        /// <param name="point">Точка</param>
+        /// <param name="otherPoint">Другая точка</param>
+        public static Point2d GetMiddlePoint(this Point2d point, Point2d otherPoint)
+        {
+            return point + point.GetVectorTo(otherPoint).DivideBy(2);
+        }
     }
 }
