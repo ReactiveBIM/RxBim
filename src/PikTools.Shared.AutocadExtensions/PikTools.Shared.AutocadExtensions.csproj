@@ -34,9 +34,9 @@
         <Authors>BimLab BimTeam</Authors>
         <Product>BimLab.PikTools</Product>
         <Copyright>Copyright ©2021 PIK Group</Copyright>
-        <Description>PikTools Library for AutoCAD extensions</Description>
+        <Description>PikTools AutoCAD Extensions Library</Description>
         <PackageTags>BIM BimLab</PackageTags>
-        <PackageId>PikTools.Shared.AutocadExtensions</PackageId>
+        <PackageId>BimLab.PikTools.Shared.AutocadExtensions</PackageId>
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
         <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
