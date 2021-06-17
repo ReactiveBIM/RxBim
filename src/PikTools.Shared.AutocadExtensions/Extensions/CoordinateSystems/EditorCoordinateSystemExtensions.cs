@@ -3,13 +3,11 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Geometry;
-    using JetBrains.Annotations;
     using AcRx = Autodesk.AutoCAD.Runtime;
 
     /// <summary>
     /// Расширения для редактора для работы с системами координат
     /// </summary>
-    [PublicAPI]
     public static class EditorCoordinateSystemExtensions
     {
         /// <summary>

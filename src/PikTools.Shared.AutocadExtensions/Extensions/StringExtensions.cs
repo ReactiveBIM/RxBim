@@ -1,12 +1,11 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Extensions
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using JetBrains.Annotations;
+    
 
     /// <summary>
     /// Расширения для строк
     /// </summary>
-    [PublicAPI]
     public static class StringExtensions
     {
         /// <summary>

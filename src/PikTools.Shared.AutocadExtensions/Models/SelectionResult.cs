@@ -1,12 +1,10 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Models
 {
     using Autodesk.AutoCAD.DatabaseServices;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Результат выбора
     /// </summary>
-    [PublicAPI]
     public class SelectionResult
     {
         /// <summary>

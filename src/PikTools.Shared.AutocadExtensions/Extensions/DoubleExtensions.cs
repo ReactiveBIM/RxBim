@@ -1,12 +1,10 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Extensions
 {
     using System;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для вещественных чисел
     /// </summary>
-    [PublicAPI]
     public static class DoubleExtensions
     {
         private const double Epsilon = 1e-6;

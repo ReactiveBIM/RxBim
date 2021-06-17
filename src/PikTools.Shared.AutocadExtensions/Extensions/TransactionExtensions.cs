@@ -2,12 +2,10 @@
 {
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для транзакций
     /// </summary>
-    [PublicAPI]
     public static class TransactionExtensions
     {
         /// <summary>

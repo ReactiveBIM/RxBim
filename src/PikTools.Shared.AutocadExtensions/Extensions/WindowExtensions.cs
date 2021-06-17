@@ -2,14 +2,12 @@
 {
     using System;
     using System.Windows;
-    using JetBrains.Annotations;
     using AcApp = Autodesk.AutoCAD.ApplicationServices.Application;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
     /// Расширения для окон WPF
     /// </summary>
-    [PublicAPI]
     public static class WindowExtensions
     {
         /// <summary>

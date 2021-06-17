@@ -1,12 +1,10 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Extensions
 {
     using Autodesk.AutoCAD.Geometry;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для 2D точек
     /// </summary>
-    [PublicAPI]
     public static class Point2dExtensions
     {
         /// <summary>

@@ -3,13 +3,11 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Geometry;
     using CoordinateSystems;
-    using JetBrains.Annotations;
     using AcRx = Autodesk.AutoCAD.Runtime;
 
     /// <summary>
     /// Расширения для 3D точек
     /// </summary>
-    [PublicAPI]
     public static class Point3dExtensions
     {
         /// <summary>

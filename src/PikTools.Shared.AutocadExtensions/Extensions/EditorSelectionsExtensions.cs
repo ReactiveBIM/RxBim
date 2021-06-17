@@ -6,14 +6,12 @@
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
     using Helpers;
-    using JetBrains.Annotations;
     using Models;
     using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <summary>
     /// Расширения редактора для выбора объектов
     /// </summary>
-    [PublicAPI]
     public static class EditorSelectionsExtensions
     {
         private static readonly Func<ObjectId, bool> DefaultCheckFunc = x => true;

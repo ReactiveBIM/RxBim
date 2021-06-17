@@ -2,12 +2,10 @@
 {
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для видовых экранов для работы с системами координат
     /// </summary>
-    [PublicAPI]
     public static class ViewportCoordinateSystemExtensions
     {
          /// <summary>
