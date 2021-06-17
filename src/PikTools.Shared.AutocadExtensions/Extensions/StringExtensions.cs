@@ -1,7 +1,6 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Extensions
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    
 
     /// <summary>
     /// Расширения для строк
