@@ -222,13 +222,10 @@
             SharedParameterCreateData createData)
         {
             var document = _uiApplication.ActiveUIDocument.Document;
-
             var createService = document.Application.Create;
-
             var map = document.ParameterBindings;
 
             var binding = (ElementBinding)map.get_Item(definition);
-
             var set = binding?.Categories ?? new CategorySet();
 
             var categories = createData
@@ -237,7 +234,7 @@
                 .ToArray();
 
             if (categories.All(c => set.Contains(c)))
-                return Result.Failure($"В проекте не найдены категории для обновляемого параметра \"{definition.Name}\"");
+                return Result.Success();
 
             foreach (var category in categories.Where(c => !set.Contains(c)))
                 set.Insert(category);
