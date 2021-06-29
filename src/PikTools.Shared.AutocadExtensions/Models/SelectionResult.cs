@@ -1,11 +1,12 @@
 ﻿namespace PikTools.Shared.AutocadExtensions.Models
 {
+    using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
     /// Результат выбора
     /// </summary>
-    public class SelectionResult
+    public class SelectionResult : ISelectionResult
     {
         /// <summary>
         /// Пустой результат
