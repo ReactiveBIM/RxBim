@@ -83,5 +83,14 @@
         /// </summary>
         /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
         DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource);
+
+        /// <summary>
+        /// Проверяет существование параметра в документе
+        /// </summary>
+        /// <param name="definition">Данные об общем параметре</param>
+        /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
+        /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
+        /// False - параметр ищется только по имени</param>
+        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch);
     }
 }
