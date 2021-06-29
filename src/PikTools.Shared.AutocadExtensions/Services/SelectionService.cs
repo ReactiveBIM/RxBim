@@ -25,13 +25,13 @@
         {
             _editor = editor;
             Options = new PromptSelectionOptions();
-            Options.KeywordInput += (sender, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
+            SetupOptions();
         }
 
         /// <summary>
         /// Опции для выбора
         /// </summary>
-        public PromptSelectionOptions Options { get; }
+        public PromptSelectionOptions Options { get; private set; }
 
         /// <summary>
         /// Функция проверки объекта по идентификатору. Если возвращает истину - объект может быть выбран.
@@ -77,6 +77,30 @@
             }
 
             return SelectionResult.Empty;
+        }
+
+        /// <summary>
+        /// Задать настройки
+        /// </summary>
+        /// <param name="options">Настройки</param>
+        public void SetOptions(PromptSelectionOptions options)
+        {
+            Options = options;
+            SetupOptions();
+        }
+
+        /// <summary>
+        /// Сброс настроек на настройки по умолчанию
+        /// </summary>
+        public void ResetOptions()
+        {
+            Options = new PromptSelectionOptions();
+            SetupOptions();
+        }
+
+        private void SetupOptions()
+        {
+            Options.KeywordInput += (sender, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
         }
     }
 }
