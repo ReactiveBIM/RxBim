@@ -17,6 +17,15 @@
     public static class GenerateExtensions
     {
         /// <summary>
+        /// Извлекает имя команды
+        /// </summary>
+        /// <param name="nodes">Токены описания атрибута</param>
+        public static string ReadCommandName(this IEnumerable<SyntaxToken> nodes)
+        {
+            return nodes?.FirstOrDefault(x => x.Kind() == SyntaxKind.StringLiteralToken).ValueText ?? Empty;
+        }
+
+        /// <summary>
         /// Извлекает командные флаги в строитель строки
         /// </summary>
         /// <param name="nodes">Токены описания атрибута</param>

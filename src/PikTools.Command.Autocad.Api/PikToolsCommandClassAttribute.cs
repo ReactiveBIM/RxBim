@@ -11,19 +11,27 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PikToolsCommandClassAttribute"/> class.
         /// </summary>
-        public PikToolsCommandClassAttribute()
+        /// <param name="flags">Флаги команды</param>
+        public PikToolsCommandClassAttribute(CommandFlags flags)
+            : this(string.Empty, flags)
         {
-            Flags = CommandFlags.Modal;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PikToolsCommandClassAttribute"/> class.
         /// </summary>
+        /// <param name="commandName">Имя команды</param>
         /// <param name="flags">Флаги команды</param>
-        public PikToolsCommandClassAttribute(CommandFlags flags)
+        public PikToolsCommandClassAttribute(string commandName, CommandFlags flags = CommandFlags.Modal)
         {
+            CommandName = commandName;
             Flags = flags;
         }
+
+        /// <summary>
+        /// Имя команды. Если не задано - используется название класса.
+        /// </summary>
+        public string CommandName { get; }
 
         /// <summary>
         /// Флаги команды
