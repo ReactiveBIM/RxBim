@@ -2,18 +2,16 @@
 {
     using Api;
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using Autodesk.AutoCAD.Runtime;
     using Shared;
     using Views;
 
     /// <summary>
-    /// Команда для примера использования диалоговых окон и командных флагов
+    /// Команда для примера использования диалоговых окон
     /// </summary>
-    [PikToolsCommandClass(CommandFlags.Modal | CommandFlags.NoPaperSpace | CommandFlags.NoBlockEditor)]
-    public class Cmd2DialogsAndFlags : PikToolsCommand
+    public class Cmd2Dialogs : PikToolsCommand
     {
         /// <summary>
-        /// Команда 1
+        /// Команда 2
         /// </summary>
         /// <param name="mainWindow">main window</param>
         public PluginResult ExecuteCommand(MainWindow mainWindow)
