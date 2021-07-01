@@ -45,15 +45,16 @@
         private void AddCommands(INamedTypeSymbol attributeSymbol)
         {
             var commands = GetCommands(attributeSymbol);
-            foreach (var (ns, command, flags) in commands)
+            foreach (var (ns, command, commandName, flags) in commands)
             {
-                AddCommand(ns, command, flags);
+                AddCommand(ns, command, commandName, flags);
             }
         }
 
         private void AddCommand(
             string space,
-            string command,
+            string commandClass,
+            string commandName,
             string flags)
         {
             if (IsNullOrWhiteSpace(space))
@@ -61,9 +62,14 @@
                 throw new ArgumentNullException(nameof(space));
             }
 
-            if (IsNullOrWhiteSpace(command))
+            if (IsNullOrWhiteSpace(commandClass))
             {
-                throw new ArgumentNullException(nameof(command));
+                throw new ArgumentNullException(nameof(commandClass));
+            }
+
+            if (IsNullOrWhiteSpace(commandName))
+            {
+                commandName = commandClass;
             }
 
             if (IsNullOrWhiteSpace(flags))
@@ -75,38 +81,43 @@
 
             classSource = classSource
                 .Replace(Variables.Namespace, space)
-                .Replace(Variables.Class, command)
+                .Replace(Variables.Class, commandClass)
                 .Replace(Variables.Flags, flags)
-                .Replace(Variables.Generated, Generated);
+                .Replace(Variables.Generated, Generated)
+                .Replace(Variables.CommandName, commandName);
 
-            _context.AddSource($"{command}{Generated}", classSource);
+            _context.AddSource($"{commandClass}{Generated}", classSource);
         }
 
-        private List<(string Namespace, string Command, string CommandFlags)> GetCommands(
+        private List<(string Namespace, string Command, string commandName, string CommandFlags)> GetCommands(
             INamedTypeSymbol attributeSymbol)
         {
             return _context.Compilation.SyntaxTrees.SelectMany(tree => tree.GetRoot().DescendantNodes())
                 .OfType<ClassDeclarationSyntax>()
                 .Where(
                     declarationSyntax => declarationSyntax.BaseList != null && declarationSyntax.BaseList.Types.Any(
-                        baseTypeSyntax => baseTypeSyntax.Type is IdentifierNameSyntax identifier &&
-                                          identifier.Identifier.Text == BaseCommandClassName))
+                        baseTypeSyntax =>
+                            baseTypeSyntax.Type is IdentifierNameSyntax { Identifier: { Text: BaseCommandClassName } }))
                 .Select(
-                    s => (((NamespaceDeclarationSyntax)s.Parent)?.Name.ToString(), s.Identifier.Text,
-                        GetFlags(s, attributeSymbol)))
+                    s =>
+                    {
+                        var tokens = GetAttributeTokens(s, attributeSymbol);
+                        return (((NamespaceDeclarationSyntax)s.Parent)?.Name.ToString(), s.Identifier.Text,
+                            tokens.ReadCommandName(), tokens.ReadCommandFlags());
+                    })
                 .ToList();
         }
 
-        private string GetFlags(ClassDeclarationSyntax declaredClass, INamedTypeSymbol attributeSymbol)
+        private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol attributeSymbol)
         {
             if (attributeSymbol == null)
             {
-                return Empty;
+                return new List<SyntaxToken>();
             }
 
             var semanticModel = _context.Compilation.GetSemanticModel(declaredClass.SyntaxTree);
 
-            var nodes = declaredClass
+            return declaredClass
                 .DescendantNodes()
                 .OfType<AttributeSyntax>()
                 .FirstOrDefault(
@@ -118,8 +129,6 @@
                                 semanticModel.GetTypeInfo(dt.Parent).Type?.Name == attributeSymbol.Name))
                 ?.DescendantTokens()
                 .ToList();
-
-            return nodes.ReadCommandFlags();
         }
     }
 }

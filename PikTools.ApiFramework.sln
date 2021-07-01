@@ -92,6 +92,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Nuke.AutoCAD", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Nuke.Revit", "src\PikTools.Nuke.Revit\PikTools.Nuke.Revit.csproj", "{FEA477D8-2A18-45BC-AFEC-A520090F95D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikTools.Shared.AutocadExtensions", "src\PikTools.Shared.AutocadExtensions\PikTools.Shared.AutocadExtensions.csproj", "{4014DE9C-FAC8-481A-BF01-E63A8726AE7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +238,10 @@ Global
 		{FEA477D8-2A18-45BC-AFEC-A520090F95D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEA477D8-2A18-45BC-AFEC-A520090F95D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA477D8-2A18-45BC-AFEC-A520090F95D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4014DE9C-FAC8-481A-BF01-E63A8726AE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4014DE9C-FAC8-481A-BF01-E63A8726AE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4014DE9C-FAC8-481A-BF01-E63A8726AE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4014DE9C-FAC8-481A-BF01-E63A8726AE7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -277,6 +283,7 @@ Global
 		{0180E62A-08F0-480E-A7F3-5DBE1B411BDA} = {4A100D34-41F3-4A79-B4EC-EEDEA49A4A07}
 		{FEA477D8-2A18-45BC-AFEC-A520090F95D3} = {829C26B5-29F4-497B-B059-1AFA81CD1506}
 		{4779E949-B057-4ADE-93FB-4B4D9E8C6CEF} = {1FCE6630-5C08-4C9E-B4E0-EE2312651634}
+		{4014DE9C-FAC8-481A-BF01-E63A8726AE7B} = {1FCE6630-5C08-4C9E-B4E0-EE2312651634}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95AB9B67-A948-42E0-892E-86225E095882}

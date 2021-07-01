@@ -24,5 +24,10 @@
         /// Добавка в название для сгенерированного
         /// </summary>
         public const string Generated = "$GENERATED$";
+
+        /// <summary>
+        /// Имя команды
+        /// </summary>
+        public const string CommandName = "$COMMAND$";
     }
 }

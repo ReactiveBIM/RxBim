@@ -10,7 +10,7 @@
         /// <summary>
         /// Autocad command execute
         /// </summary>
-        [CommandMethod("$CLASS$", $FLAGS$)]
+        [CommandMethod("$COMMAND$", $FLAGS$)]
         public void $CLASS$Execute()
         {
             Execute();
