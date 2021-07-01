@@ -3,9 +3,7 @@
     using Abstractions;
     using Autodesk.AutoCAD.EditorInput;
 
-    /// <summary>
-    /// Сервис для работы с командной строкой
-    /// </summary>
+    /// <inheritdoc />
     public class CommandLineService : ICommandLineService
     {
         private readonly Editor _editor;
@@ -19,10 +17,7 @@
             _editor = editor;
         }
 
-        /// <summary>
-        /// Выводит текстовое сообщение с новой строки
-        /// </summary>
-        /// <param name="message">Сообщение</param>
+        /// <inheritdoc />
         public void WriteAsNewLine(string message)
         {
             _editor.WriteMessage($"\n{message}");

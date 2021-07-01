@@ -26,6 +26,10 @@
       <Reference Include="WindowsBase" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
