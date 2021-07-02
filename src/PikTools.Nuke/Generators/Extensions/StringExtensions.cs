@@ -1,8 +1,6 @@
 ﻿namespace PikTools.Nuke.Generators.Extensions
 {
     using System;
-    using Application.Api;
-    using Command.Api;
     using Models;
 
     /// <summary>
@@ -18,8 +16,8 @@
         {
             return type switch
             {
-                nameof(PikToolsCommand) => PluginType.Command,
-                nameof(PikToolsApplication) => PluginType.Application,
+                Constants.PikToolsCommand => PluginType.Command,
+                Constants.PikToolsApplication => PluginType.Application,
                 _ => throw new NotSupportedException()
             };
         }

@@ -5,8 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Net;
-    using Application.Api;
-    using Command.Api;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -208,7 +206,7 @@
                 OutFileName = outputFileName,
                 AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
                 ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    ?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
             };
             return options;
         }
@@ -234,7 +232,7 @@
         {
             var file = Path.Combine(@out, $"{project.Name}.dll");
 
-            var types = GetAssemblyTypes(file, new[] { nameof(PikToolsCommand), nameof(PikToolsApplication) });
+            var types = GetAssemblyTypes(file, new[] { Constants.PikToolsCommand, Constants.PikToolsApplication });
 
             var additionalFiles = new List<string>();
             if (options.AddAllAppToManifest)
@@ -256,7 +254,7 @@
             }
 
             foreach (var f in additionalFiles)
-                types.AddRange(GetAssemblyTypes(f, new[] { nameof(PikToolsApplication) }));
+                types.AddRange(GetAssemblyTypes(f, new[] { Constants.PikToolsApplication }));
 
             return types;
         }

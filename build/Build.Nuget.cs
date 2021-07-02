@@ -49,7 +49,7 @@ partial class Build
         .DependsOn(Pack)
         .Executes(() =>
         {
-            PackageExtensions.CheckUncommittedChanges(Solution);
+            ////PackageExtensions.CheckUncommittedChanges(Solution);
         });
 
     Target Push => _ => _
@@ -58,7 +58,7 @@ partial class Build
         .DependsOn(CheckUncommitted)
         .Executes(() =>
         {
-            var ppp = _packageInfoProvider.GetSelectedProjects(Project);
+            var ppp = _packageInfoProvider.Projects; ////GetSelectedProjects(Project);
             /*_packageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));*/
         });

@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
-    using Application.Api;
-    using Command.Api;
     using Extensions;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -106,8 +104,8 @@
         {
             var assemblyScanner = new AssemblyScanner();
             var assemblyTypes = assemblyScanner.Scan(binPath)
-                .Where(x => x.BaseTypeName == nameof(PikToolsCommand) ||
-                            x.BaseTypeName == nameof(PikToolsApplication))
+                .Where(x => x.BaseTypeName == Constants.PikToolsCommand ||
+                            x.BaseTypeName == Constants.PikToolsApplication)
                 .ToList();
             return assemblyTypes;
         }

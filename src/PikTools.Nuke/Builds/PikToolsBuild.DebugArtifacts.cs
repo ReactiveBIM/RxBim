@@ -2,11 +2,8 @@
 namespace PikTools.Nuke.Builds
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Application.Api;
-    using Command.Api;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -42,8 +39,8 @@ namespace PikTools.Nuke.Builds
                     new AddInGenerator().GenerateAddInFile(Project,
                         new AssemblyScanner()
                             .Scan(dllPath)
-                            .Where(x => x.BaseTypeName == nameof(PikToolsCommand) ||
-                                        x.BaseTypeName == nameof(PikToolsApplication))
+                            .Where(x => x.BaseTypeName == Constants.PikToolsCommand ||
+                                        x.BaseTypeName == Constants.PikToolsApplication)
                             .Select(x => new ProjectWithAssemblyType(project, x))
                             .ToArray(),
                         GetRevitAddinsPath());

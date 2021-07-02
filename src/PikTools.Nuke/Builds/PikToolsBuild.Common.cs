@@ -4,7 +4,6 @@ namespace PikTools.Nuke.Builds
     using System.Linq;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Utilities.Collections;
     using static global::Nuke.Common.IO.PathConstruction;
@@ -22,22 +21,20 @@ namespace PikTools.Nuke.Builds
 
         public Target Restore => _ => _
             .Description("Восстанавливает пакеты")
-            .Requires(() => Project)
             .DependsOn(Clean)
             .Executes(() =>
             {
                 DotNetTasks.DotNetRestore(s => s
-                    .SetProjectFile(GetProjectPath(Project)));
+                    .SetProjectFile(Solution.Path));
             });
 
         public Target Compile => _ => _
             .Description("Собирает проект")
-            .Requires(() => Project)
             .DependsOn(Restore)
             .Executes(() =>
             {
                 DotNetTasks.DotNetBuild(settings => settings
-                    .SetProjectFile(GetProjectPath(Project))
+                    .SetProjectFile(Solution.Path)
                     .SetConfiguration(Configuration));
             });
 

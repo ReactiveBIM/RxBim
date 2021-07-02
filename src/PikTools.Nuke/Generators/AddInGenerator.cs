@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Application.Api;
-    using Command.Api;
     using Extensions;
     using global::Nuke.Common.ProjectModel;
     using Models;
@@ -15,8 +13,8 @@
     /// </summary>
     public class AddInGenerator
     {
-        private const string CommandTypeName = nameof(PikToolsCommand);
-        private const string ApplicationTypeName = nameof(PikToolsApplication);
+        private const string CommandTypeName = Constants.PikToolsCommand;
+        private const string ApplicationTypeName = Constants.PikToolsApplication;
 
         /// <summary>
         /// Генерирует addin файл
@@ -29,8 +27,8 @@
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
-            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == nameof(PikToolsCommand)
-                                                               || x.AssemblyType.BaseTypeName == nameof(PikToolsApplication))
+            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == Constants.PikToolsCommand
+                                                               || x.AssemblyType.BaseTypeName == Constants.PikToolsApplication)
                 .ToList();
 
             if (!addInTypesPerProjects.Any())
