@@ -39,16 +39,13 @@ partial class Build
         .Executes(() =>
         {
             var path = Solution.Directory / "out";
-            var sourceProjects = Solution.AllProjects.Where(x => x.Path.ToString().Contains("\\src\\"));
-            foreach (var project in sourceProjects)
-            {
-                DotNetTasks.DotNetPack(settings => settings
-                    .SetConfiguration(Configuration)
-                    .SetNoBuild(true)
-                    .SetNoRestore(true)
-                    .SetProject(project)
-                    .SetOutputDirectory(path));
-            }
+
+            DotNetTasks.DotNetPack(settings => settings
+                .SetConfiguration(Configuration)
+                .EnableNoBuild()
+                .EnableNoRestore()
+                .SetProject(GetProjectPath(Project))
+                .SetOutputDirectory(path));
         });
 
     Target CheckUncommitted => _ => _
@@ -77,4 +74,10 @@ partial class Build
     Target Publish => _ => _
         .Description("Публикует Nuget-пакеты")
         .DependsOn(Tag);
+    
+    private AbsolutePath GetProjectPath(string name)
+    {
+        return Solution.AllProjects.FirstOrDefault(x => x.Name == name)?.Path ?? Solution.Path;
+    }
+    
 }
