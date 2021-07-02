@@ -16,6 +16,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
         <PackageReference Include="SimpleInjector" Version="4.10.2" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>

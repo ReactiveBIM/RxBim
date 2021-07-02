@@ -31,9 +31,6 @@
       <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Generators\Models\ComponentEntry.cs" />
-    </ItemGroup>
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
