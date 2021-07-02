@@ -58,8 +58,9 @@ partial class Build
         .DependsOn(CheckUncommitted)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Project)
-                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
+            var ppp = _packageInfoProvider.GetSelectedProjects(Project);
+            /*_packageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));*/
         });
 
     Target Tag => _ => _
@@ -67,8 +68,8 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Project)
-                .ForEach(x => PackageExtensions.TagPackage(Solution, x));
+            /*_packageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackageExtensions.TagPackage(Solution, x));*/
         });
 
     Target Publish => _ => _
