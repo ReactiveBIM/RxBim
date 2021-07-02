@@ -47,24 +47,27 @@ partial class Build
 
     Target CheckUncommitted => _ => _
         .DependsOn(Pack)
-        .Executes(() => PackageExtensions.CheckUncommittedChanges(Solution));
+        .Executes(() =>
+        {
+            PackageExtensions.CheckUncommittedChanges(Solution);
+        });
 
     Target Push => _ => _
         .Unlisted()
-        .Requires(() => ProjectForPublish)
+        .Requires(() => Project)
         .DependsOn(CheckUncommitted)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            _packageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
     Target Tag => _ => _
-        .Requires(() => ProjectForPublish)
+        .Requires(() => Project)
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            _packageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 
