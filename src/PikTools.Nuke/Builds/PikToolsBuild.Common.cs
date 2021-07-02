@@ -25,22 +25,20 @@ namespace PikTools.Nuke.Builds
 
         public Target Restore => _ => _
             .Description("Восстанавливает пакеты")
-            .Requires(() => Project)
             .DependsOn(Clean)
             .Executes(() =>
             {
                 DotNetRestore(s => s
-                    .SetProjectFile(GetProjectPath(Project)));
+                    .SetProjectFile(Solution.Path));
             });
 
         public Target Compile => _ => _
-            .Description("Build project")
-            .Requires(() => Project)
+            .Description("Собирает проект")
             .DependsOn(Restore)
             .Executes(() =>
             {
                 DotNetBuild(settings => settings
-                    .SetProjectFile(GetProjectPath(Project))
+                    .SetProjectFile(Solution.Path)
                     .SetConfiguration(Configuration));
             });
 

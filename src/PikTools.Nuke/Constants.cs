@@ -1,29 +1,19 @@
 ﻿namespace PikTools.Nuke
 {
     /// <summary>
-    /// Константы
+    /// Internal constants.
     /// </summary>
-    public static class Constants
+    internal static class Constants
     {
-        /// <summary>
-        /// PikToolsApplication
-        /// </summary>
-        public const string PikToolsApplication = nameof(PikToolsApplication);
-
         /// <summary>
         /// PikToolsCommand
         /// </summary>
-        public const string PikToolsCommand = nameof(PikToolsCommand);
+        public const string PikToolsCommand = "PikToolsCommand";
 
         /// <summary>
-        /// Название конфигурации Release
+        /// PikToolsApplication
         /// </summary>
-        public const string Release = "Release";
-
-        /// <summary>
-        /// Название конфигурации Debug
-        /// </summary>
-        public const string Debug = "Debug";
+        public const string PikToolsApplication = "PikToolsApplication";
 
         /// <summary>
         /// Префикс
