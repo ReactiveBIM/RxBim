@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="BimLab.Nuke" Version="2021.1.1-dev001" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.1.1-dev001" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.7.1" />
     <PackageReference Include="NuGet.CommandLine" Version="5.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
