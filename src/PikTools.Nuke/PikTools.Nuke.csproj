@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>8</LangVersion>
-        <NoWarn>NU1702</NoWarn>
+        <NoWarn>NU1702;SA1200</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 
@@ -13,8 +13,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nuke.Common" Version="5.0.2" />
+        <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.2.1-dev001" />
+        <PackageReference Include="Nuke.Common" Version="5.1.2" />
         <PackageReference Include="SharpCompress" Version="0.26.0" />
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,9 +25,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />
+      <Compile Include="..\PikTools.MsiBuilder\Options.cs">
+        <Link>Options.cs</Link>
+      </Compile>
     </ItemGroup>
 
+<!--    <ItemGroup>-->
+<!--      <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />-->
+<!--    </ItemGroup>-->
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>

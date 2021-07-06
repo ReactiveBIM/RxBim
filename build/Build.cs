@@ -22,6 +22,7 @@ partial class Build : RevitPikToolsBuild
     public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
 
     readonly PackageInfoProvider PackageInfoProvider;
+    string _project;
 
     public Build()
     {
@@ -31,6 +32,13 @@ partial class Build : RevitPikToolsBuild
 
     const string MsiBuilderProjectName = "PikTools.MsiBuilder.Bin";
     const string MsiBuilderEnv = "PIKTOOLS_MSIBUILDER_BIN";
+
+    [Parameter("Select project")]
+    override public string Project
+    {
+        get => _project ??= _packageInfoProvider.GetSelectedMenuOption();
+        set => _project = value;
+    }
 
     Project MsiBuilderProject =>
         Solution.AllProjects.FirstOrDefault(x => x.Name == MsiBuilderProjectName);

@@ -5,6 +5,7 @@ namespace PikTools.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Bimlab.Nuke.Nuget;
     using Extensions;
     using Generators;
     using global::Nuke.Common;
@@ -45,7 +46,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsi => _ => _
             .Description("Build MSI from selected project")
             .Requires(() => Project)
-            .Requires(() => Config)
+            .Requires(() => Configuration)
             .DependsOn(InstallWixTools)
             .DependsOn(SignAssemblies)
             .DependsOn(GenerateAdditionalFiles)
@@ -53,8 +54,7 @@ namespace PikTools.Nuke.Builds
             .Executes(() =>
             {
                 CreateOutDirectory();
-
-                BuildInstaller(ProjectForMsiBuild, Config);
+                BuildInstaller(ProjectForMsiBuild, Configuration);
             });
 
         public Target CompileToTemp => _ => _
@@ -75,7 +75,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForTesting => _ => _
             .Requires(() => Project)
             .DependsOn(CheckStageVersion)
-            .Executes(() => { Config = Debug; })
+            .Executes(() => { Configuration = Configuration.Debug; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForProduction => _ => _
             .Requires(() => Project)
             .DependsOn(CheckProductionVersion)
-            .Executes(() => { Config = Release; })
+            .Executes(() => { Configuration = Configuration.Release; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -113,8 +113,8 @@ namespace PikTools.Nuke.Builds
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
-            .Requires(() => Config)
-            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Config));
+            .Requires(() => Configuration)
+            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Configuration));
 
         /// <summary>
         /// Install WixSharp

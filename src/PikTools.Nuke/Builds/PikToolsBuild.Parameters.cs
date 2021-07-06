@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1600, CS1591, SA1619
-namespace PikTools.Nuke.Builds
+﻿namespace PikTools.Nuke.Builds
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace PikTools.Nuke.Builds
     {
         private readonly TWix _wix;
         private string _project;
-        private string _config;
         private Regex _releaseBranchRegex;
         private string _outputTmpDir;
         private string _outputTmpDirBin;
@@ -60,22 +58,22 @@ namespace PikTools.Nuke.Builds
         [Parameter("Timestamp server URL")]
         public string ServerUrl { get; set; }
 
-        /// <summary>
-        /// Selected configuration
-        /// </summary>
-        [Parameter("Select configuration")]
-        public string Config
-        {
-            get => _config ??=
-                ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-            set => _config = value;
-        }
+        // /// <summary>
+        // /// Конфигурация
+        // /// </summary>
+        // [Parameter("Select configuration")]
+        // public string Config
+        // {
+        //     get => _config ??=
+        //         ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
+        //     set => _config = value;
+        // }
 
         /// <summary>
         /// Selected project
         /// </summary>
         [Parameter("Select project")]
-        public string Project
+        public virtual string Project
         {
             get
             {

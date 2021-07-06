@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.NuGet;
 
 partial class Build
 {
@@ -36,20 +39,37 @@ partial class Build
 
     Target Pack => _ => _
         .DependsOn(Compile)
+        .Requires(() => Project)
         .Executes(() =>
         {
-            var path = Solution.Directory / "out";
-
-            DotNetTasks.DotNetPack(settings => settings
-                .SetConfiguration(Configuration)
-                .EnableNoBuild()
-                .EnableNoRestore()
-                .SetProject(GetProjectPath(Project))
-                .SetOutputDirectory(path));
+            _packageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
+    
+    /// <summary>
+    /// Makes a package
+    /// </summary>
+    /// <param name="solution">Solution</param>
+    /// <param name="project">Project</param>
+    /// <param name="outDir">Output directory</param>
+    /// <param name="configuration">Build configuration</param>
+    static void PackInternal(
+        Solution solution,
+        ProjectInfo project,
+        AbsolutePath outDir,
+        string configuration)
+    {
+        var path = solution.GetProject(project.ProjectName).Path;
+        DotNetTasks.DotNetPack(s => s
+            .SetProject(path)
+            .SetOutputDirectory(outDir)
+            .SetConfiguration(configuration)
+            .EnableNoBuild())
+            .EnableNoRestore();
+    }
 
     Target CheckUncommitted => _ => _
-        .DependsOn(Pack)
+        .After(Pack)
         .Executes(() =>
         {
             PackageExtensions.CheckUncommittedChanges(Solution);
@@ -58,12 +78,11 @@ partial class Build
     Target Push => _ => _
         .Unlisted()
         .Requires(() => Project)
-        .DependsOn(CheckUncommitted)
+        .DependsOn(Pack/*, CheckUncommitted*/)
         .Executes(() =>
         {
-            var ppp = PackageInfoProvider.Projects; ////GetSelectedProjects(Project);
-            /*_packageInfoProvider.GetSelectedProjects(Project)
-                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));*/
+            PackageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
     Target Tag => _ => _
@@ -71,13 +90,24 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            /*_packageInfoProvider.GetSelectedProjects(Project)
-                .ForEach(x => PackageExtensions.TagPackage(Solution, x));*/
+            PackageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 
     Target Publish => _ => _
         .Description("Публикует Nuget-пакеты")
         .DependsOn(Tag);
+    
+    Target List => _ => _
+        .Executes(() =>
+        {
+            var projects = _packageInfoProvider.Projects;
+            Console.WriteLine("\nPackage list:");
+            foreach (var projectInfo in projects)
+            {
+                Console.WriteLine(projectInfo.MenuItem);
+            }
+        });
     
     private AbsolutePath GetProjectPath(string name)
     {
