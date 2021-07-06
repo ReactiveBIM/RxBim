@@ -61,8 +61,6 @@
             string digestAlgorithm = null,
             string timestampServerUrl = null)
         {
-            CheckNetFramework();
-
             SetupWixTools();
 
             var output = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
@@ -103,16 +101,6 @@
             {
                 var packageContentsGenerator = new PackageContentsGenerator();
                 packageContentsGenerator.Generate(project, output);
-            }
-        }
-
-        private void CheckNetFramework()
-        {
-            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5");
-            if (key == null)
-            {
-                throw new ApplicationException(
-                    ".NET Framework v3.5 not find on system!");
             }
         }
 

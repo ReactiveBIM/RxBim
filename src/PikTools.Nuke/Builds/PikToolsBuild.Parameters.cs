@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1600, CS1591
-namespace PikTools.Nuke.Builds
+﻿namespace PikTools.Nuke.Builds
 {
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -11,9 +10,11 @@ namespace PikTools.Nuke.Builds
     {
         private readonly Wix _wix;
         private string _project;
-        private string _config;
         private Regex _releaseBranchRegex;
 
+        /// <summary>
+        /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)
+        /// </summary>
         [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
         public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
@@ -41,22 +42,22 @@ namespace PikTools.Nuke.Builds
         [Parameter("Сервер проверки сертификата")]
         public string ServerUrl { get; set; }
 
-        /// <summary>
-        /// Конфигурация
-        /// </summary>
-        [Parameter("Select configuration")]
-        public string Config
-        {
-            get => _config ??=
-                ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-            set => _config = value;
-        }
+        // /// <summary>
+        // /// Конфигурация
+        // /// </summary>
+        // [Parameter("Select configuration")]
+        // public string Config
+        // {
+        //     get => _config ??=
+        //         ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
+        //     set => _config = value;
+        // }
 
         /// <summary>
         /// Project
         /// </summary>
         [Parameter("Select project")]
-        public string Project
+        public virtual string Project
         {
             get
             {
@@ -79,6 +80,9 @@ namespace PikTools.Nuke.Builds
             set => _project = value;
         }
 
+        /// <summary>
+        /// Revit Version
+        /// </summary>
         [Parameter]
         public string RevitVersion { get; set; } = "2019";
 

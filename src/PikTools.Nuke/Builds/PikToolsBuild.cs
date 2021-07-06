@@ -4,6 +4,7 @@ namespace PikTools.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Bimlab.Nuke.Nuget;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -30,14 +31,14 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsi => _ => _
             .Description("Собирает MSi пакет из указанного проекта")
             .Requires(() => Project)
-            .Requires(() => Config)
+            .Requires(() => Configuration)
             .Executes(() =>
             {
                 CreateOutDirectory();
 
                 _wix.BuildMsi(ProjectForMsiBuild,
                     Solution.AllProjects,
-                    Config,
+                    Configuration,
                     (AbsolutePath)Cert,
                     Password,
                     Algorithm,
@@ -50,7 +51,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForTesting => _ => _
             .Requires(() => Project)
             .DependsOn(CheckStageVersion)
-            .Executes(() => { Config = "Debug"; })
+            .Executes(() => { Configuration = Configuration.Debug; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForProduction => _ => _
             .Requires(() => Project)
             .DependsOn(CheckProductionVersion)
-            .Executes(() => { Config = "Release"; })
+            .Executes(() => { Configuration = Configuration.Release; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -88,8 +89,8 @@ namespace PikTools.Nuke.Builds
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
-            .Requires(() => Config)
-            .Executes(() => new ProjectPropertiesGenerator().GenerateProperties(ProjectForMsiBuild, Config));
+            .Requires(() => Configuration)
+            .Executes(() => new ProjectPropertiesGenerator().GenerateProperties(ProjectForMsiBuild, Configuration));
 
         private void CreateOutDirectory()
         {

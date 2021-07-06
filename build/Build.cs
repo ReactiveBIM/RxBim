@@ -18,9 +18,10 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 partial class Build : PikToolsBuild
 {
-    public static int Main() => Execute<Build>(x => x.CopyOutput);
-
     PackageInfoProvider _packageInfoProvider;
+    string _project;
+
+    public static int Main() => Execute<Build>(x => x.CopyOutput);
 
     public Build()
     {
@@ -28,16 +29,21 @@ partial class Build : PikToolsBuild
         _packageInfoProvider = new PackageInfoProvider(() => Solution);
     }
 
-    
-
     const string MsiBuilderProjectName = "PikTools.MsiBuilder.Bin";
     const string MsiBuilderEnv = "PIKTOOLS_MSIBUILDER_BIN";
+
+    [Parameter("Select project")]
+    override public string Project
+    {
+        get => _project ??= _packageInfoProvider.GetSelectedMenuOption();
+        set => _project = value;
+    }
 
     Project MsiBuilderProject =>
         Solution.AllProjects.FirstOrDefault(x => x.Name == MsiBuilderProjectName);
 
     string MsiBuilderArtifactPath => Solution.Directory / "out" /
-                                             $"{MsiBuilderProject.Name}_{MsiBuilderProject.GetProperty("Version")}.zip";
+                                     $"{MsiBuilderProject.Name}_{MsiBuilderProject.GetProperty("Version")}.zip";
 
     Target PublishMsiBuildTool => _ => _
         .Executes(() =>

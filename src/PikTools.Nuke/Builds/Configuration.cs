@@ -1,16 +1,26 @@
 ﻿#pragma warning disable
-using System.ComponentModel;
-using Nuke.Common.Tooling;
-
-/// <inheritdoc />
-[TypeConverter(typeof(TypeConverter<Configuration>))]
-public class Configuration : Enumeration
+namespace PikTools.Nuke.Builds
 {
-    public static Configuration Debug = new Configuration { Value = nameof(Debug) };
-    public static Configuration Release = new Configuration { Value = nameof(Release) };
+    using System.ComponentModel;
+    using global::Nuke.Common.Tooling;
 
-    public static implicit operator string(Configuration configuration)
+    /// <inheritdoc />
+    [TypeConverter(typeof(TypeConverter<Configuration>))]
+    public sealed class Configuration : Enumeration
     {
-        return configuration.Value;
+        /// <summary>
+        /// Debug
+        /// </summary>
+        public static Configuration Debug = new Configuration { Value = nameof(Debug) };
+
+        /// <summary>
+        /// Release
+        /// </summary>
+        public static Configuration Release = new Configuration { Value = nameof(Release) };
+
+        public static implicit operator string(Configuration configuration)
+        {
+            return configuration.Value;
+        }
     }
 }
