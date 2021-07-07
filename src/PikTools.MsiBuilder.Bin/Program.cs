@@ -1,4 +1,5 @@
-﻿namespace PikTools.MsiBuilder.Bin
+﻿#pragma warning disable CS1591, SA1600
+namespace PikTools.MsiBuilder.Bin
 {
     using System;
     using CommandLine;

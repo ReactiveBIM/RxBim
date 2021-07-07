@@ -16,9 +16,6 @@
     /// </summary>
     public class AddInGenerator
     {
-        private const string CommandTypeName = Constants.PikToolsCommand;
-        private const string ApplicationTypeName = Constants.PikToolsApplication;
-
         /// <summary>
         /// Генерирует addin файл
         /// </summary>
@@ -30,8 +27,8 @@
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
-            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == Constants.PikToolsCommand
-                                                               || x.AssemblyType.BaseTypeName == Constants.PikToolsApplication)
+            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == PikToolsCommand
+                                                               || x.AssemblyType.BaseTypeName == PikToolsApplication)
                 .ToList();
 
             if (!addInTypesPerProjects.Any())

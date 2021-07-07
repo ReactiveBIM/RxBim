@@ -5,7 +5,6 @@ namespace PikTools.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Bimlab.Nuke.Nuget;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -91,7 +90,7 @@ namespace PikTools.Nuke.Builds
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    BuildInstaller(project, "Debug");
+                    BuildInstaller(project, Configuration.Debug);
                 }
             });
 
@@ -101,7 +100,7 @@ namespace PikTools.Nuke.Builds
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)
-            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Config));
+            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Configuration));
 
         private void CreateOutDirectory()
         {

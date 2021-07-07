@@ -6,9 +6,9 @@ namespace PikTools.Nuke.Builds
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Utilities;
 
-    /// <summary>
+    /// <content>
     /// Расширение Build-скрипта для сборки MSI. Параметры.
-    /// </summary>
+    /// </content>
     public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
         private readonly TWix _wix;
@@ -44,17 +44,6 @@ namespace PikTools.Nuke.Builds
         /// </summary>
         [Parameter("Сервер проверки сертификата")]
         public string ServerUrl { get; set; }
-
-        // /// <summary>
-        // /// Конфигурация
-        // /// </summary>
-        // [Parameter("Select configuration")]
-        // public string Config
-        // {
-        //     get => _config ??=
-        //         ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-        //     set => _config = value;
-        // }
 
         /// <summary>
         /// Project

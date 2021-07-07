@@ -6,20 +6,7 @@
         <NoWarn>NU1701</NoWarn>
         <UseWPF>true</UseWPF>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-		<LangVersion>latest</LangVersion>
     </PropertyGroup>
-
-    <PropertyGroup>
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />

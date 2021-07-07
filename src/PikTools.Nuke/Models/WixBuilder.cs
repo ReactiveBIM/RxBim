@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
+    using Builds;
     using Extensions;
     using Generators;
     using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
+    using Octokit;
     using static Constants;
     using static Helpers.WixHelper;
 
@@ -29,8 +31,8 @@
         /// <param name="digestAlgorithm">Алгоритм сертификата</param>
         /// <param name="timestampServerUrl">Сервер url</param>
         public void BuildMsi(
-            Project project,
-            IEnumerable<Project> allProject,
+            global::Nuke.Common.ProjectModel.Project project,
+            IEnumerable<global::Nuke.Common.ProjectModel.Project> allProject,
             string configuration,
             string outputDir,
             string outputBinDir,
@@ -49,7 +51,7 @@
 
                 var types = project.GetAssemblyTypes(outputBinDir, options);
 
-                if (configuration == Release)
+                if (configuration == Configuration.Release)
                 {
                     types.SignAssemblies(
                         (AbsolutePath)outputBinDir,
@@ -78,7 +80,7 @@
         /// <param name="outputDirectory">Путь к папке, куда нужно поместить сгенерированные файлы</param>
         protected virtual void GenerateAdditionalFiles(
             string rootProjectName,
-            IEnumerable<Project> allProject,
+            IEnumerable<global::Nuke.Common.ProjectModel.Project> allProject,
             IEnumerable<AssemblyType> addInTypes,
             string outputDirectory)
         {
@@ -94,7 +96,7 @@
         /// Возвращает путь к папке установки для конфигурации Debug
         /// </summary>
         /// <param name="project">Проект</param>
-        protected virtual string GetDebugInstallDir(Project project)
+        protected virtual string GetDebugInstallDir(global::Nuke.Common.ProjectModel.Project project)
         {
             return GetReleaseInstallDir(project);
         }
@@ -103,25 +105,25 @@
         /// Возвращает путь к папке установки для конфигурации Release
         /// </summary>
         /// <param name="project">Проект</param>
-        private string GetReleaseInstallDir(Project project)
+        private string GetReleaseInstallDir(global::Nuke.Common.ProjectModel.Project project)
         {
             return $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle";
         }
 
         private string GetInstallDir(
-            Project project,
+            global::Nuke.Common.ProjectModel.Project project,
             string configuration)
         {
             return configuration switch
             {
-                Debug => GetDebugInstallDir(project),
-                Release => GetReleaseInstallDir(project),
+                "Debug" => GetDebugInstallDir(project),
+                "Release" => GetReleaseInstallDir(project),
                 _ => throw new ArgumentException("Configuration not set!")
             };
         }
 
         private void GeneratePackageContentsFile(
-            Project project,
+            global::Nuke.Common.ProjectModel.Project project,
             string configuration,
             string output)
         {

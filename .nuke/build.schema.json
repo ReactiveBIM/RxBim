@@ -6,6 +6,14 @@
     "build": {
       "type": "object",
       "properties": {
+        "Algorithm": {
+          "type": "string",
+          "description": "Алгоритм сертификата"
+        },
+        "Cert": {
+          "type": "string",
+          "description": "Путь до сертификата"
+        },
         "Configuration": {
           "type": "string",
           "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
@@ -43,6 +51,18 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
+        "NugetSource": {
+          "type": "string",
+          "description": "NuGet source URL"
+        },
+        "NugetSymbolSource": {
+          "type": "string",
+          "description": "NuGet symbol source URL"
+        },
+        "Password": {
+          "type": "string",
+          "description": "Пароль от сертификата"
+        },
         "Plan": {
           "type": "boolean",
           "description": "Shows the execution plan (HTML)"
@@ -54,9 +74,24 @@
             "type": "string"
           }
         },
+        "Project": {
+          "type": "string",
+          "description": "Select project"
+        },
+        "ProjectForPublish": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "RevitVersion": {
+          "type": "string"
+        },
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
+        },
+        "ServerUrl": {
+          "type": "string",
+          "description": "Сервер проверки сертификата"
         },
         "Skip": {
           "type": "array",
@@ -64,10 +99,30 @@
           "items": {
             "type": "string",
             "enum": [
+              "BuildFromTag",
+              "BuildMsi",
+              "BuildMsiForProduction",
+              "BuildMsiForTesting",
+              "CheckCurrentBranch",
+              "CheckProductionVersion",
+              "CheckStageVersion",
+              "CheckUncommitted",
               "Clean",
+              "CleanOutput",
               "Compile",
-              "CopyDebug",
-              "Restore"
+              "CopyDebugAddin",
+              "CopyOutput",
+              "GenerateProjectProps",
+              "InstallMsiBuildTool",
+              "List",
+              "Pack",
+              "Publish",
+              "PublishMsiBuildTool",
+              "Push",
+              "Restore",
+              "Tag",
+              "TagProject",
+              "Test"
             ]
           }
         },
@@ -81,10 +136,30 @@
           "items": {
             "type": "string",
             "enum": [
+              "BuildFromTag",
+              "BuildMsi",
+              "BuildMsiForProduction",
+              "BuildMsiForTesting",
+              "CheckCurrentBranch",
+              "CheckProductionVersion",
+              "CheckStageVersion",
+              "CheckUncommitted",
               "Clean",
+              "CleanOutput",
               "Compile",
-              "CopyDebug",
-              "Restore"
+              "CopyDebugAddin",
+              "CopyOutput",
+              "GenerateProjectProps",
+              "InstallMsiBuildTool",
+              "List",
+              "Pack",
+              "Publish",
+              "PublishMsiBuildTool",
+              "Push",
+              "Restore",
+              "Tag",
+              "TagProject",
+              "Test"
             ]
           }
         },

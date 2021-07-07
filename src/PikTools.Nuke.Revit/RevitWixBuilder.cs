@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Builds;
     using Generators;
     using global::Nuke.Common.ProjectModel;
     using Models;
-    using static Constants;
 
     /// <inheritdoc />
     public class RevitWixBuilder : WixBuilder<RevitPackageContentsGenerator>
@@ -13,7 +13,7 @@
         /// <inheritdoc />
         protected override bool NeedGeneratePackageContents(string configuration)
         {
-            return configuration == Release;
+            return configuration == Configuration.Release;
         }
 
         /// <inheritdoc />
