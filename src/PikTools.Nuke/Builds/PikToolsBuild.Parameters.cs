@@ -10,9 +10,9 @@
     using global::Nuke.Common.Utilities;
     using Models;
 
-    /// <summary>
+    /// <content>
     /// Расширение Build-скрипта для сборки MSI. Параметры.
-    /// </summary>
+    /// </content>
     public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
         private readonly TWix _wix;
@@ -57,17 +57,6 @@
         /// </summary>
         [Parameter("Timestamp server URL")]
         public string ServerUrl { get; set; }
-
-        // /// <summary>
-        // /// Конфигурация
-        // /// </summary>
-        // [Parameter("Select configuration")]
-        // public string Config
-        // {
-        //     get => _config ??=
-        //         ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-        //     set => _config = value;
-        // }
 
         /// <summary>
         /// Selected project

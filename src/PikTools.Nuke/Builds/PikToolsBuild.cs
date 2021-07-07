@@ -5,7 +5,6 @@ namespace PikTools.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Bimlab.Nuke.Nuget;
     using Extensions;
     using Generators;
     using global::Nuke.Common;
@@ -18,7 +17,6 @@ namespace PikTools.Nuke.Builds
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static global::Nuke.Common.IO.FileSystemTasks;
     using static Helpers.WixHelper;
-    using static Constants;
 
     /// <summary>
     /// Расширение Build-скрипта для сборки MSI
@@ -104,7 +102,7 @@ namespace PikTools.Nuke.Builds
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    BuildInstaller(project, Debug);
+                    BuildInstaller(project, Configuration.Debug);
                 }
             });
 
@@ -124,15 +122,15 @@ namespace PikTools.Nuke.Builds
 
         public virtual Target SignAssemblies => _ => _
             .Requires(() => Project)
-            .Requires(() => Config)
+            .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                if (Config != Release)
+                if (Configuration != Configuration.Release)
                     return;
                 
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
+                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -145,12 +143,12 @@ namespace PikTools.Nuke.Builds
 
         public Target GenerateAdditionalFiles => _ => _
             .Requires(() => Project)
-            .Requires(() => Config)
+            .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
+                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
 
                 _wix.GenerateAdditionalFiles
                     (ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
@@ -158,11 +156,11 @@ namespace PikTools.Nuke.Builds
 
         public Target GeneratePackageContentsFile => _ => _
             .Requires(() => Project)
-            .Requires(() => Config)
+            .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Config, OutputTmpDir);
+                _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Configuration, OutputTmpDir);
             });
 
         private void CreateOutDirectory()

@@ -7,7 +7,6 @@
     using Generators;
     using global::Nuke.Common.ProjectModel;
     using MsiBuilder;
-    using static Constants;
     using static Helpers.WixHelper;
 
     /// <summary>
@@ -16,7 +15,6 @@
     public class WixBuilder<T>
         where T : PackageContentsGenerator, new()
     {
-        private string _installDir;
         private Options _options;
 
         /// <summary>
@@ -39,23 +37,6 @@
             var toolPath = GetMsiBuilderToolPath();
 
             project.BuildMsiWithTool(toolPath, options);
-        }
-
-        /// <summary>
-        /// Get installation directory
-        /// </summary>
-        /// <param name="project">Selected Project</param>
-        /// <param name="configuration">Selected configuration</param>
-        public string GetInstallDir(
-            Project project,
-            string configuration)
-        {
-            return _installDir ??= configuration switch
-            {
-                Debug => GetDebugInstallDir(project),
-                Release => GetReleaseInstallDir(project),
-                _ => throw new ArgumentException("Configuration not set!")
-            };
         }
 
         /// <summary>
@@ -120,6 +101,23 @@
         protected virtual string GetDebugInstallDir(Project project)
         {
             return GetReleaseInstallDir(project);
+        }
+
+        /// <summary>
+        /// Get installation directory
+        /// </summary>
+        /// <param name="project">Selected Project</param>
+        /// <param name="configuration">Selected configuration</param>
+        private string GetInstallDir(
+            Project project,
+            string configuration)
+        {
+            return configuration switch
+            {
+                "Debug" => GetDebugInstallDir(project),
+                "Release" => GetReleaseInstallDir(project),
+                _ => throw new ArgumentException("Configuration not set!")
+            };
         }
 
         /// <summary>

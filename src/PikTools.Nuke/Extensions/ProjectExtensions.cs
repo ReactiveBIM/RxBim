@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
+    using Builds;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
@@ -38,7 +39,7 @@
         {
             var productVersion = project.GetProperty(nameof(Options.ProductVersion));
             if (string.IsNullOrWhiteSpace(productVersion)
-                && configuration.Equals(Release))
+                && configuration.Equals(Configuration.Release))
             {
                 throw new ArgumentException(
                     $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
@@ -55,7 +56,7 @@
                           throw new ArgumentException(
                               $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
 
-            if (configuration == Debug)
+            if (configuration == Configuration.Debug)
             {
                 var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 version += $".{unixTimestamp}";

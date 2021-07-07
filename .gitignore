@@ -272,3 +272,4 @@ projectfiles.tar
 
 global.json
 .nuke/temp
+.nuke/temp

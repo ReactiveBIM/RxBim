@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1600, CS1591
-namespace PikTools.Nuke.Revit
+﻿namespace PikTools.Nuke.Revit
 {
     using System;
     using System.IO;
@@ -14,13 +13,20 @@ namespace PikTools.Nuke.Revit
     using static global::Nuke.Common.IO.FileSystemTasks;
     using static Helpers.AssemblyScanner;
 
+    /// <inheritdoc />
     [PublicAPI]
     public abstract class RevitPikToolsBuild
         : PikToolsBuild<RevitWixBuilder, RevitPackageContentsGenerator, RevitProjectPropertiesGenerator>
     {
+        /// <summary>
+        /// Revit Version
+        /// </summary>
         [Parameter]
         public string RevitVersion { get; set; } = "2019";
 
+        /// <summary>
+        /// Копирует Addin файл в папку Revit
+        /// </summary>
         public Target CopyDebugAddin => _ => _
             .Description("Копирует Addin файл в папку Revit")
             .Requires(() => Project)
@@ -60,6 +66,9 @@ namespace PikTools.Nuke.Revit
                 }
             });
 
+        /// <summary>
+        /// Очищает выходную папку
+        /// </summary>
         public Target CleanOutput => _ => _
             .Description("Очищает выходную папку")
             .Requires(() => Project)
@@ -75,6 +84,9 @@ namespace PikTools.Nuke.Revit
                 }
             });
 
+        /// <summary>
+        /// Копирует файл в выходную папку
+        /// </summary>
         public Target CopyOutput => _ => _
             .Description("Копирует файл в выходную папку")
             .Requires(() => Project)

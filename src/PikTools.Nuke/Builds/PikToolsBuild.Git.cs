@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1619
-namespace PikTools.Nuke.Builds
+﻿namespace PikTools.Nuke.Builds
 {
     using System;
     using System.IO;
@@ -9,9 +8,9 @@ namespace PikTools.Nuke.Builds
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tools.Git;
 
-    /// <summary>
+    /// <content>
     /// Расширение Build-скрипта для сборки MSI. Targets для работы с GIT.
-    /// </summary>
+    /// </content>
     public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>

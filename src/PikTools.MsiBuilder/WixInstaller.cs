@@ -1,4 +1,5 @@
-﻿namespace PikTools.MsiBuilder
+﻿#pragma warning disable CS1591, SA1600
+namespace PikTools.MsiBuilder
 {
     using System;
     using System.Collections.Generic;
@@ -26,9 +27,7 @@
                         .Concat(new[]
                         {
                             new Dir(projectName, FillEntities(null, new[] { sourceDir }).ToArray())
-                        }).ToArray()
-                )
-            )
+                        }).ToArray()))
             {
                 Description = options.Description,
                 Package =
