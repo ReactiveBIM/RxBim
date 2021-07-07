@@ -5,8 +5,8 @@
     using System.IO;
     using Extensions;
     using Generators;
-    using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using MsiBuilder;
     using static Constants;
     using static Helpers.WixHelper;
 
@@ -16,103 +16,42 @@
     public class WixBuilder<T>
         where T : PackageContentsGenerator, new()
     {
+        private string _installDir;
+        private Options _options;
+        private List<AssemblyType> _types;
+
         /// <summary>
-        /// Упаковывает проект
+        /// Build MSI
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="allProject">Все проекты</param>
-        /// <param name="configuration">Конфигурация</param>
-        /// <param name="outputDir">Путь к папке со всеми файлами, которые нужно упаковать в установщик</param>
-        /// <param name="outputBinDir">Путь к папке, содержащей сборки, которые войдут в пакет установки</param>
-        /// <param name="cert">Путь к сертификату</param>
-        /// <param name="password">Пароль к сертификату</param>
-        /// <param name="digestAlgorithm">Алгоритм сертификата</param>
-        /// <param name="timestampServerUrl">Сервер url</param>
+        /// <param name="project">Selected project</param>
+        /// <param name="configuration">Selected configuration</param>
+        /// <param name="outputDir">Output directory</param>
+        /// <param name="outputBinDir">Output assemblies directory</param>
         public void BuildMsi(
             Project project,
-            IEnumerable<Project> allProject,
             string configuration,
             string outputDir,
-            string outputBinDir,
-            AbsolutePath cert = null,
-            string password = null,
-            string digestAlgorithm = null,
-            string timestampServerUrl = null)
+            string outputBinDir)
         {
-            SetupWixTools();
+            if (!Directory.Exists(outputBinDir))
+                return;
 
-            if (Directory.Exists(outputBinDir))
-            {
-                var installDir = GetInstallDir(project, configuration);
+            var options = GetBuildMsiOptions(project, outputDir, configuration);
+            var toolPath = GetMsiBuilderToolPath();
 
-                var options = project.GetBuildMsiOptions(installDir, outputDir, configuration);
-
-                var types = project.GetAssemblyTypes(outputBinDir, options);
-
-                if (configuration == Release)
-                {
-                    types.SignAssemblies(
-                        (AbsolutePath)outputBinDir,
-                        cert,
-                        password,
-                        digestAlgorithm,
-                        timestampServerUrl);
-                }
-
-                GenerateAdditionalFiles(project.Name, allProject, types, outputDir);
-
-                GeneratePackageContentsFile(project, configuration, outputDir);
-
-                var toolPath = GetMsiBuilderToolPath();
-
-                project.BuildMsiWithTool(toolPath, options);
-            }
+            project.BuildMsiWithTool(toolPath, options);
         }
 
         /// <summary>
-        /// Генерация дополнительных файлов
+        /// Get installation directory
         /// </summary>
-        /// <param name="rootProjectName">Название основного проекта</param>
-        /// <param name="allProject">Проекты</param>
-        /// <param name="addInTypes">Типы для инструментов</param>
-        /// <param name="outputDirectory">Путь к папке, куда нужно поместить сгенерированные файлы</param>
-        protected virtual void GenerateAdditionalFiles(
-            string rootProjectName,
-            IEnumerable<Project> allProject,
-            IEnumerable<AssemblyType> addInTypes,
-            string outputDirectory)
-        {
-        }
-
-        /// <summary>
-        /// Возвращает true, если надо генерировать PackageContents
-        /// </summary>
-        /// <param name="configuration">Текущая конфигурация</param>
-        protected virtual bool NeedGeneratePackageContents(string configuration) => true;
-
-        /// <summary>
-        /// Возвращает путь к папке установки для конфигурации Debug
-        /// </summary>
-        /// <param name="project">Проект</param>
-        protected virtual string GetDebugInstallDir(Project project)
-        {
-            return GetReleaseInstallDir(project);
-        }
-
-        /// <summary>
-        /// Возвращает путь к папке установки для конфигурации Release
-        /// </summary>
-        /// <param name="project">Проект</param>
-        private string GetReleaseInstallDir(Project project)
-        {
-            return $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle";
-        }
-
-        private string GetInstallDir(
+        /// <param name="project">Selected Project</param>
+        /// <param name="configuration">Selected configuration</param>
+        public string GetInstallDir(
             Project project,
             string configuration)
         {
-            return configuration switch
+            return _installDir ??= configuration switch
             {
                 Debug => GetDebugInstallDir(project),
                 Release => GetReleaseInstallDir(project),
@@ -120,16 +59,94 @@
             };
         }
 
-        private void GeneratePackageContentsFile(
+        /// <summary>
+        /// Get build MSI options
+        /// </summary>
+        /// <param name="project">Selected Project</param>
+        /// <param name="outputDir">Output directory</param>
+        /// <param name="configuration">Selected configuration</param>
+        public Options GetBuildMsiOptions(
+            Project project,
+            string outputDir,
+            string configuration)
+        {
+            var installDir = GetInstallDir(project, configuration);
+            return _options ??= project.GetBuildMsiOptions(
+                installDir, outputDir, configuration);
+        }
+
+        /// <summary>
+        /// Get assembly types
+        /// </summary>
+        /// <param name="project">Selected Project</param>
+        /// <param name="outputBinDir">Output assembly directory</param>
+        /// <param name="outputDir">Output directory</param>
+        /// <param name="configuration">Selected configuration</param>
+        public List<AssemblyType> GetAssemblyTypes(
+            Project project,
+            string outputBinDir,
+            string outputDir,
+            string configuration)
+        {
+            var options = GetBuildMsiOptions(project, outputDir, configuration);
+            return _types ??= project.GetAssemblyTypes(outputBinDir, options);
+        }
+
+        /// <summary>
+        /// Generate additional files
+        /// </summary>
+        /// <param name="rootProjectName">Root project name</param>
+        /// <param name="allProject">All projects</param>
+        /// <param name="addInTypes">Assembly types</param>
+        /// <param name="outputDir">Output directory</param>
+        public virtual void GenerateAdditionalFiles(
+            string rootProjectName,
+            IEnumerable<Project> allProject,
+            IEnumerable<AssemblyType> addInTypes,
+            string outputDir)
+        {
+        }
+
+        /// <summary>
+        /// Generate package contents file
+        /// </summary>
+        /// <param name="project">Selected project</param>
+        /// <param name="configuration">Selected configuration</param>
+        /// <param name="outputDir">Output directory</param>
+        public void GeneratePackageContentsFile(
             Project project,
             string configuration,
-            string output)
+            string outputDir)
         {
-            if (NeedGeneratePackageContents(configuration))
-            {
-                var packageContentsGenerator = new T();
-                packageContentsGenerator.Generate(project, output);
-            }
+            if (!NeedGeneratePackageContents(configuration))
+                return;
+
+            var packageContentsGenerator = new T();
+            packageContentsGenerator.Generate(project, outputDir);
+        }
+
+        /// <summary>
+        /// Return True, if need generate PackageContents
+        /// </summary>
+        /// <param name="configuration">Selected configuration</param>
+        protected virtual bool NeedGeneratePackageContents(string configuration) => true;
+
+        /// <summary>
+        /// Get Debug configuration install directory
+        /// </summary>
+        /// <param name="project">Selected project</param>
+        protected virtual string GetDebugInstallDir(Project project)
+        {
+            return GetReleaseInstallDir(project);
+        }
+
+        /// <summary>
+        /// Get Release configuration install directory
+        /// </summary>
+        /// <param name="project">Selected project</param>
+        private string GetReleaseInstallDir(Project project)
+        {
+            return $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle";
         }
     }
 }

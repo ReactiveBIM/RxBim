@@ -1,10 +1,10 @@
 ﻿#pragma warning disable
 namespace PikTools.Nuke.Builds
 {
-    using System;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Extensions;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -15,6 +15,8 @@ namespace PikTools.Nuke.Builds
     using Models;
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static global::Nuke.Common.IO.FileSystemTasks;
+    using static Helpers.WixHelper;
+    using static Constants;
 
     /// <summary>
     /// Расширение Build-скрипта для сборки MSI
@@ -40,19 +42,32 @@ namespace PikTools.Nuke.Builds
         /// BuildMsi
         /// </summary>
         public Target BuildMsi => _ => _
-            .Description("Собирает MSi пакет из указанного проекта")
+            .Description("Build MSI from selected project")
             .Requires(() => Project)
             .Requires(() => Config)
+            .DependsOn(InstallWixTools)
+            .DependsOn(SignAssemblies)
+            .DependsOn(GenerateAdditionalFiles)
+            .DependsOn(GeneratePackageContentsFile)
             .Executes(() =>
             {
                 CreateOutDirectory();
 
-                BuildInstaller(ProjectForMsiBuild,
-                    Config,
-                    (AbsolutePath)Cert,
-                    Password,
-                    Algorithm,
-                    ServerUrl);
+                BuildInstaller(ProjectForMsiBuild, Config);
+            });
+
+        /// <summary>
+        /// Build selected project
+        /// </summary>
+        public Target BuildProject => _ => _
+            .Requires(() => Project)
+            .Requires(() => Config)
+            .Executes(() =>
+            {
+                DotNetBuild(settings => settings
+                    .SetProjectFile(ProjectForMsiBuild.Path)
+                    .SetOutputDirectory(OutputTmpDirBin)
+                    .SetConfiguration(Config));
             });
 
         /// <summary>
@@ -61,7 +76,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForTesting => _ => _
             .Requires(() => Project)
             .DependsOn(CheckStageVersion)
-            .Executes(() => { Config = "Debug"; })
+            .Executes(() => { Config = Debug; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -70,7 +85,7 @@ namespace PikTools.Nuke.Builds
         public Target BuildMsiForProduction => _ => _
             .Requires(() => Project)
             .DependsOn(CheckProductionVersion)
-            .Executes(() => { Config = "Release"; })
+            .Executes(() => { Config = Release; })
             .Triggers(BuildMsi);
 
         /// <summary>
@@ -90,7 +105,7 @@ namespace PikTools.Nuke.Builds
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    BuildInstaller(project, "Debug");
+                    BuildInstaller(project, Debug);
                 }
             });
 
@@ -101,6 +116,55 @@ namespace PikTools.Nuke.Builds
             .Requires(() => Project)
             .Requires(() => Config)
             .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Config));
+
+        /// <summary>
+        /// Install WixSharp
+        /// </summary>
+        public Target InstallWixTools => _ => _
+            .Executes(SetupWixTools);
+
+        public virtual Target SignAssemblies => _ => _
+            .Requires(() => Project)
+            .Requires(() => Config)
+            .DependsOn(BuildProject)
+            .Executes(() =>
+            {
+                if (Config != Release)
+                    return;
+                
+                var types = _wix.GetAssemblyTypes(
+                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
+
+                types.SignAssemblies(
+                    (AbsolutePath)OutputTmpDirBin,
+                    (AbsolutePath)Cert,
+                    PrivateKey,
+                    Csp, 
+                    Algorithm,
+                    ServerUrl);
+            });
+
+        public Target GenerateAdditionalFiles => _ => _
+            .Requires(() => Project)
+            .Requires(() => Config)
+            .DependsOn(BuildProject)
+            .Executes(() =>
+            {
+                var types = _wix.GetAssemblyTypes(
+                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
+
+                _wix.GenerateAdditionalFiles
+                    (ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
+            });
+
+        public Target GeneratePackageContentsFile => _ => _
+            .Requires(() => Project)
+            .Requires(() => Config)
+            .DependsOn(BuildProject)
+            .Executes(() =>
+            {
+                _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Config, OutputTmpDir);
+            });
 
         private void CreateOutDirectory()
         {
@@ -113,42 +177,14 @@ namespace PikTools.Nuke.Builds
 
         private void BuildInstaller(
             Project project,
-            string configuration,
-            AbsolutePath cert = null,
-            string password = null,
-            string digestAlgorithm = null,
-            string timestampServerUrl = null)
+            string configuration)
         {
-            GetOutputTmpDirectories(out var outputTmpDir, out var outputTmpDirBin);
-            BuildProject(project, configuration, outputTmpDirBin);
             _wix.BuildMsi(
                 project,
-                Solution.AllProjects,
                 configuration,
-                outputTmpDir,
-                outputTmpDirBin,
-                cert,
-                password,
-                digestAlgorithm,
-                timestampServerUrl);
-            DeleteDirectory(outputTmpDir);
-        }
-
-        private void GetOutputTmpDirectories(out string outputTmpDir, out string outputTmpDirBin)
-        {
-            outputTmpDir = Path.Combine(Path.GetTempPath(), $"piktools_build_{Guid.NewGuid().ToString()}");
-            outputTmpDirBin = Path.Combine(outputTmpDir, "bin");
-        }
-
-        private void BuildProject(
-            Project project,
-            string configuration,
-            string outputTmpDirBin)
-        {
-            DotNetBuild(settings => settings
-                .SetProjectFile(project.Path)
-                .SetOutputDirectory(outputTmpDirBin)
-                .SetConfiguration(configuration));
+                OutputTmpDir,
+                OutputTmpDirBin);
+            DeleteDirectory(OutputTmpDir);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿#pragma warning disable SA1600, CS1591, SA1619
 namespace PikTools.Nuke.Builds
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using global::Nuke.Common;
@@ -16,36 +18,47 @@ namespace PikTools.Nuke.Builds
         private string _project;
         private string _config;
         private Regex _releaseBranchRegex;
+        private string _outputTmpDir;
+        private string _outputTmpDirBin;
 
+        /// <summary>
+        /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)
+        /// </summary>
         [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
         public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
         /// <summary>
-        /// путь к сертификату
+        /// Certificate path
         /// </summary>
-        [Parameter("Путь до сертификата")]
+        [Parameter("Certificate path")]
         public string Cert { get; set; }
 
         /// <summary>
-        /// Пароль от сертификату
+        /// Private key container
         /// </summary>
-        [Parameter("Пароль от сертификата")]
-        public string Password { get; set; }
+        [Parameter("Private key container")]
+        public string PrivateKey { get; set; }
 
         /// <summary>
-        /// Алгоритм сертификата
+        /// CSP containing for Private key
         /// </summary>
-        [Parameter("Алгоритм сертификата")]
+        [Parameter("CSP containing for Private key")]
+        public string Csp { get; set; }
+
+        /// <summary>
+        /// Digest algorithm
+        /// </summary>
+        [Parameter("Digest algorithm")]
         public string Algorithm { get; set; }
 
         /// <summary>
-        /// сервер url
+        /// Timestamp server URL
         /// </summary>
-        [Parameter("Сервер проверки сертификата")]
+        [Parameter("Timestamp server URL")]
         public string ServerUrl { get; set; }
 
         /// <summary>
-        /// Конфигурация
+        /// Selected configuration
         /// </summary>
         [Parameter("Select configuration")]
         public string Config
@@ -56,7 +69,7 @@ namespace PikTools.Nuke.Builds
         }
 
         /// <summary>
-        /// Project
+        /// Selected project
         /// </summary>
         [Parameter("Select project")]
         public string Project
@@ -89,5 +102,9 @@ namespace PikTools.Nuke.Builds
         public Solution Solution { get; set; }
 
         private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
+
+        private string OutputTmpDir => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"piktools_build_{Guid.NewGuid()}");
+
+        private string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
     }
 }

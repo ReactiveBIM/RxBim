@@ -17,31 +17,35 @@
     public static class AssemblyTypeExtensions
     {
         /// <summary>
-        /// Подписывает сборки
+        /// Sign assemblies
         /// </summary>
-        /// <param name="assemblyTypes">Типы сборок</param>
-        /// <param name="outputDirectory">Папка, где расположены сборки</param>
-        /// <param name="cert">Путь к сертификату</param>
-        /// <param name="password">Пароль</param>
-        /// <param name="digestAlgorithm">Алгоритм</param>
-        /// <param name="timestampServerUrl">Сервер url</param>
+        /// <param name="assemblyTypes">Assemly types</param>
+        /// <param name="outputDirectory">Output directory</param>
+        /// <param name="cert">Certificate path</param>
+        /// <param name="keyContainer">Private key</param>
+        /// <param name="csp">CSP containing</param>
+        /// <param name="digestAlgorithm">Digest algorithm</param>
+        /// <param name="timestampServerUrl">Timestamp server URL</param>
         public static void SignAssemblies(
             this IEnumerable<AssemblyType> assemblyTypes,
             AbsolutePath outputDirectory,
             AbsolutePath cert,
-            string password,
+            string keyContainer,
+            string csp,
             string digestAlgorithm,
             string timestampServerUrl)
         {
             cert = cert ??
-                   throw new ArgumentException("Не указал сертификат");
+                   throw new ArgumentException("Didn't set certificate");
 
-            password = password ??
-                       throw new ArgumentException("Не указан пароль сертификата");
+            keyContainer = keyContainer ??
+                       throw new ArgumentException("Didn't set private key container");
+            csp = csp ??
+                    throw new ArgumentException("Didn't set CSP containing");
             digestAlgorithm = digestAlgorithm ??
-                              throw new ArgumentException("Не указан алгоритм сертификата");
+                              throw new ArgumentException("Didn't set digest algorithm");
             timestampServerUrl = timestampServerUrl ??
-                                 throw new ArgumentException("Не указан сервер проверки сертификата");
+                                 throw new ArgumentException("Didn't set timestamp server URL");
 
             var filesNames = assemblyTypes
                 .Select(t => (outputDirectory / $"{t.AssemblyName}.dll").ToString())
@@ -49,10 +53,10 @@
                 .ToArray();
 
             var settings = new SignToolSettings()
-                .SetFileDigestAlgorithm(digestAlgorithm)
+                .SetCsp(csp)
+                .SetKeyContainer(keyContainer)
                 .SetFile(cert)
                 .SetFiles(filesNames)
-                .SetPassword(password)
                 .SetTimestampServerDigestAlgorithm(digestAlgorithm)
                 .SetRfc3161TimestampServerUrl(timestampServerUrl);
 

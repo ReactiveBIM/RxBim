@@ -30,7 +30,7 @@ partial class Build
     [Parameter("Project name")]
     public string ProjectForPublish
     {
-        get => _projectForPublish ??= _packageInfoProvider.GetSelectedMenuOption();
+        get => _projectForPublish ??= PackageInfoProvider.GetSelectedMenuOption();
         set => _projectForPublish = value;
     }
 
@@ -61,7 +61,7 @@ partial class Build
         .DependsOn(CheckUncommitted)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            PackageInfoProvider.GetSelectedProjects(ProjectForPublish)
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
@@ -70,7 +70,7 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            PackageInfoProvider.GetSelectedProjects(ProjectForPublish)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 
