@@ -10,18 +10,22 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using PikTools.Nuke.Builds;
+using PikTools.Nuke.Revit;
 using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-partial class Build : PikToolsBuild
+partial class Build : RevitPikToolsBuild
 {
+    // public static int Main() => Execute<Build>(x => x.CopyOutput);
+
+    public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
+
     PackageInfoProvider _packageInfoProvider;
     string _project;
 
-    public static int Main() => Execute<Build>(x => x.CopyOutput);
 
     public Build()
     {
@@ -82,6 +86,6 @@ partial class Build : PikToolsBuild
                 installDir / $"{MsiBuilderProjectName}.exe",
                 EnvironmentVariableTarget.Machine);
 
-            Logger.Info($"PikTools.MsiBuilder.Bin installed successfully!");
+            Logger.Info("PikTools.MsiBuilder.Bin installed successfully!");
         });
 }

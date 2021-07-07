@@ -17,14 +17,13 @@
     public class SharedParameterService : ISharedParameterService
     {
         private readonly UIApplication _uiApplication;
+        private readonly ITransactionService _transactions;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedParameterService"/> class.
-        /// </summary>
-        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
-        public SharedParameterService(UIApplication uiApplication)
+        /// <inheritdoc />
+        public SharedParameterService(UIApplication uiApplication, ITransactionService transactions)
         {
             _uiApplication = uiApplication;
+            _transactions = transactions;
         }
 
         /// <inheritdoc />
@@ -34,34 +33,27 @@
             bool fullMatch,
             bool useTransaction = false)
         {
+            if (sharedParameterInfo == null)
+                return Result.Failure("Данные об общем параметре не заданы");
             if (sharedParameterInfo.Definition == null)
-                return Result.Failure($"Не задано описание общего параметра \"{sharedParameterInfo.Definition.ParameterName}\"");
+                return Result.Failure("Не заданы данные для определения общего параметра");
             if (sharedParameterInfo.CreateData == null)
-                return Result.Failure($"Не заданы данные для создания общего параметра \"{sharedParameterInfo.Definition.ParameterName}\"");
+                return Result.Failure($"Не заданы данные для создания общего параметра '{sharedParameterInfo.Definition.ParameterName}'");
             if (ParameterExistsInDocument(sharedParameterInfo.Definition, fullMatch))
-                return Result.Failure($"Параметр \"{sharedParameterInfo.Definition.ParameterName}\" уже добавлен в модель");
-            if (sharedParameterInfo.CreateData.CategoriesForBind == null
-                || !sharedParameterInfo.CreateData.CategoriesForBind.Any())
-                return Result.Failure($"Не указаны категории для привязки параметра \"{sharedParameterInfo.Definition.ParameterName}\"");
+                return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' уже добавлен в модель");
+            if (sharedParameterInfo.CreateData.CategoriesForBind?.Any() != true)
+                return Result.Failure($"Не указаны категории для привязки параметра '{sharedParameterInfo.Definition.ParameterName}'");
 
             var doc = _uiApplication.ActiveUIDocument.Document;
 
-            Result result;
             if (useTransaction)
             {
-                using var tr = new Transaction(doc, "Добавление параметров");
-                tr.Start();
-                result = AddSharedParameter(
-                    doc, definitionFile, sharedParameterInfo, fullMatch);
-                tr.Commit();
-            }
-            else
-            {
-                result = AddSharedParameter(
-                    doc, definitionFile, sharedParameterInfo, fullMatch);
+                return _transactions.RunInTransaction(
+                    () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
+                    "Добавление параметров");
             }
 
-            return result;
+            return AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch);
         }
 
         /// <inheritdoc />
@@ -70,7 +62,7 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch)
         {
-            bool existsInDocument = ParameterExistsInDocument(
+            var existsInDocument = ParameterExistsInDocument(
                 sharedParameterInfo.Definition,
                 fullMatch);
 
@@ -83,25 +75,23 @@
                         df),
                     DefinitionFile = df
                 })
-                .Where(a => a.ExternalDefinition != null)
-                .ToArray();
+                .Where(x => x.ExternalDefinition != null)
+                .ToList();
 
             if (!externalDefinitionInFile.Any())
-                return Result.Failure($"Параметр \"{sharedParameterInfo.Definition.ParameterName}\" не найден ни в одном из ФОП");
+                return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден ни в одном из ФОП");
 
-            if (externalDefinitionInFile.Length > 1 && !fullMatch)
-            {
-                return Result.Failure(
-                    "Параметр с одинаковым именем " +
-                    $"\"{sharedParameterInfo.Definition.ParameterName}\" " +
-                    "обнаружен в нескольких ФОП!");
-            }
+            if (externalDefinitionInFile.Count > 1 && !fullMatch)
+                return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' обнаружен в нескольких ФОП");
 
             if (existsInDocument)
             {
                 return UpdateParameterBindings(
-                    externalDefinitionInFile[0].ExternalDefinition,
-                    sharedParameterInfo.CreateData);
+                        externalDefinitionInFile[0].ExternalDefinition,
+                        sharedParameterInfo.CreateData)
+                    .TapIf(
+                        sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
+                        () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName));
             }
 
             return AddSharedParameter(
@@ -109,6 +99,79 @@
                 sharedParameterInfo,
                 fullMatch,
                 false);
+        }
+
+        /// <inheritdoc />
+        public Result<DefinitionFile> GetDefinitionFile(Document document = null)
+        {
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
+            var sharedParameterFilename = doc.Application.SharedParametersFilename;
+
+            if (string.IsNullOrWhiteSpace(sharedParameterFilename))
+                return Result.Failure<DefinitionFile>("Файл общих параметров не задан");
+
+            return File.Exists(sharedParameterFilename)
+                ? doc.Application.OpenSharedParameterFile()
+                : Result.Failure<DefinitionFile>($"Не найден файл общих параметров '{sharedParameterFilename}'");
+        }
+
+        /// <inheritdoc/>
+        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource)
+        {
+            var document = _uiApplication.ActiveUIDocument.Document;
+            var oldDefinitionFilePath = string.Empty;
+
+            bool initialized;
+            try
+            {
+                oldDefinitionFilePath = document.Application.SharedParametersFilename;
+                initialized = true;
+            }
+            catch
+            {
+                initialized = false;
+            }
+
+            var definitionFiles = new List<DefinitionFile>();
+
+            foreach (var filePath in fileSource.FilePaths)
+            {
+                try
+                {
+                    document.Application.SharedParametersFilename = new FileInfo(filePath).FullName;
+                    definitionFiles.Add(document.Application.OpenSharedParameterFile());
+                }
+                catch
+                {
+                    // ignore
+                }
+            }
+
+            if (initialized)
+                document.Application.SharedParametersFilename = oldDefinitionFilePath;
+
+            return definitionFiles.ToArray();
+        }
+
+        /// <inheritdoc/>
+        public bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch)
+        {
+            var doc = _uiApplication.ActiveUIDocument.Document;
+            foreach (var sharedParameterElement in new FilteredElementCollector(doc)
+                .OfClass(typeof(SharedParameterElement))
+                .Cast<SharedParameterElement>())
+            {
+                if (!fullMatch && string.Equals(
+                    sharedParameterElement.Name,
+                    definition.ParameterName,
+                    StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+
+                if (fullMatch && IsFullMatch(definition, sharedParameterElement))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -125,64 +188,8 @@
             }
             catch (Exception exception)
             {
-                return Result.Failure(exception.ToString());
+                return Result.Failure("Ошибка проверки параметра ФОП. " + exception.Message);
             }
-        }
-
-        /// <inheritdoc />
-        public Result<DefinitionFile> GetDefinitionFile(Document document = null)
-        {
-            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
-            var sharedParameterFilename = doc.Application.SharedParametersFilename;
-
-            if (string.IsNullOrEmpty(sharedParameterFilename)
-                || !File.Exists(sharedParameterFilename))
-                return Result.Failure<DefinitionFile>("Не найден файл общих параметров");
-
-            return doc.Application.OpenSharedParameterFile();
-        }
-
-        /// <inheritdoc/>
-        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource)
-        {
-            var document = _uiApplication.ActiveUIDocument.Document;
-
-            var oldDefinitionFilePath = string.Empty;
-
-            bool wasInitiallySet;
-            try
-            {
-                oldDefinitionFilePath = document.Application.SharedParametersFilename;
-
-                wasInitiallySet = true;
-            }
-            catch
-            {
-                wasInitiallySet = false;
-            }
-
-            var definitionFiles = new List<DefinitionFile>();
-
-            foreach (var filePath in fileSource.FilePaths)
-            {
-                try
-                {
-                    var fileInfo = new FileInfo(filePath);
-
-                    document.Application.SharedParametersFilename = fileInfo.FullName;
-                    definitionFiles.Add(
-                        document.Application.OpenSharedParameterFile());
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
-
-            if (wasInitiallySet)
-                document.Application.SharedParametersFilename = oldDefinitionFilePath;
-
-            return definitionFiles.ToArray();
         }
 
         private Result AddSharedParameter(
@@ -195,91 +202,53 @@
                 GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(document, c)));
 
             var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
-
             if (externalDefinition == null)
-                return Result.Failure($"Параметр \"{sharedParameterInfo.Definition.ParameterName}\" не найден в файле общих параметров \"{definitionFile.Filename}\"");
+                return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден в ФОП '{definitionFile.Filename}'");
 
-            Binding binding;
-            if (sharedParameterInfo.CreateData.IsCreateForInstance)
-                binding = document.Application.Create.NewInstanceBinding(categorySet);
-            else
-                binding = document.Application.Create.NewTypeBinding(categorySet);
+            var binding = sharedParameterInfo.CreateData.IsCreateForInstance
+                ? (Binding)document.Application.Create.NewInstanceBinding(categorySet)
+                : document.Application.Create.NewTypeBinding(categorySet);
 
-            var map = document.ParameterBindings;
+            var result = Result.SuccessIf(
+                    document.ParameterBindings.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup),
+                    $"Не удалось добавить параметр '{sharedParameterInfo.Definition.ParameterName}'")
+                .TapIf(
+                    sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
+                    () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName));
 
-            var inserted = map.Insert(externalDefinition, binding, sharedParameterInfo.CreateData.ParameterGroup);
-
-            if (sharedParameterInfo.CreateData.AllowVaryBetweenGroups)
-                SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName);
-
-            return inserted
-                ? Result.Success()
-                : Result.Failure($"Не удалось добавить параметр \"{sharedParameterInfo.Definition.ParameterName}\"");
+            return result;
         }
 
         private Result UpdateParameterBindings(
-            ExternalDefinition definition,
+            Definition definition,
             SharedParameterCreateData createData)
         {
             var document = _uiApplication.ActiveUIDocument.Document;
+            var creationService = document.Application.Create;
+            var parameterBindings = document.ParameterBindings;
 
-            var createService = document.Application.Create;
+            var binding = (ElementBinding)parameterBindings.get_Item(definition);
+            var existCategories = binding?.Categories ?? new CategorySet();
 
-            var map = document.ParameterBindings;
-
-            var binding = (ElementBinding)map.get_Item(definition);
-
-            var set = binding?.Categories ?? new CategorySet();
-
-            var categories = createData
-                .CategoriesForBind
+            var newCategories = createData.CategoriesForBind
                 .Select(bic => Category.GetCategory(document, bic))
-                .ToArray();
+                .ToList();
 
-            if (categories.All(c => set.Contains(c)))
-                return Result.Failure($"В проекте не найдены категории для обновляемого параметра \"{definition.Name}\"");
+            if (newCategories.All(existCategories.Contains))
+                return Result.Success();
 
-            foreach (var category in categories.Where(c => !set.Contains(c)))
-                set.Insert(category);
+            foreach (var category in newCategories.Where(c => !existCategories.Contains(c)))
+                existCategories.Insert(category);
 
-            ElementBinding updatedBinding;
+            var newBinding = binding is InstanceBinding || createData.IsCreateForInstance
+                ? (ElementBinding)creationService.NewInstanceBinding(existCategories)
+                : creationService.NewTypeBinding(existCategories);
 
-            var isInstance = createData.IsCreateForInstance;
-
-            if (binding is InstanceBinding || isInstance)
-                updatedBinding = createService.NewInstanceBinding(set);
-            else
-                updatedBinding = createService.NewTypeBinding(set);
-
-            map.Remove(definition);
+            parameterBindings.Remove(definition);
 
             return Result.SuccessIf(
-                map.Insert(definition, updatedBinding, createData.ParameterGroup),
-                $"Не удалось обновить параметр \"{definition.Name}\"");
-        }
-
-        /// <summary>
-        /// Проверка существования параметра указанного имени в документе
-        /// </summary>
-        /// <param name="sharedParameterDefinition">Данные об общем параметре</param>
-        /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
-        /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
-        /// False - параметр ищется только по имени</param>
-        private bool ParameterExistsInDocument(SharedParameterDefinition sharedParameterDefinition, bool fullMatch)
-        {
-            var doc = _uiApplication.ActiveUIDocument.Document;
-            foreach (var sharedParameterElement in new FilteredElementCollector(doc)
-                .OfClass(typeof(SharedParameterElement))
-                .Cast<SharedParameterElement>())
-            {
-                if (!fullMatch && sharedParameterElement.Name == sharedParameterDefinition.ParameterName)
-                    return true;
-
-                if (fullMatch && IsFullMatch(sharedParameterDefinition, sharedParameterElement))
-                    return true;
-            }
-
-            return false;
+                parameterBindings.Insert(definition, newBinding, createData.ParameterGroup),
+                $"Не удалось обновить параметр '{definition.Name}'");
         }
 
         /// <summary>
@@ -291,8 +260,7 @@
             var categorySet = new CategorySet();
             foreach (var category in categories)
             {
-                if (category != null
-                    && category.AllowsBoundParameters)
+                if (category is { AllowsBoundParameters: true })
                     categorySet.Insert(category);
             }
 
@@ -318,8 +286,7 @@
                     if (!(def is ExternalDefinition externalDefinition))
                         continue;
 
-                    if (!fullMatch
-                        && sharedParameterInfo.Definition.ParameterName == externalDefinition.Name)
+                    if (!fullMatch && sharedParameterInfo.Definition.ParameterName == externalDefinition.Name)
                         return externalDefinition;
 
                     if (fullMatch)
@@ -352,22 +319,21 @@
                 if (parameterName != definition.Name)
                     continue;
 
-                if (definition is InternalDefinition internalDef)
+                if (!(definition is InternalDefinition internalDef))
+                    continue;
+
+                try
                 {
-                    try
-                    {
-                        internalDef.SetAllowVaryBetweenGroups(doc, true);
-                    }
-                    catch
-                    {
-                        // ignore
-                    }
+                    internalDef.SetAllowVaryBetweenGroups(doc, true);
+                }
+                catch
+                {
+                    // ignore
                 }
             }
         }
 
-        private bool IsFullMatch(
-            SharedParameterDefinition sharedParameterDefinition, ExternalDefinition externalDefinition)
+        private bool IsFullMatch(SharedParameterDefinition sharedParameterDefinition, ExternalDefinition externalDefinition)
         {
             if (sharedParameterDefinition.ParameterName != externalDefinition.Name)
                 return false;

@@ -22,7 +22,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
         <PackageReference Include="Serilog.Sinks.Http" Version="6.0.0" />
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>
 
@@ -37,7 +36,7 @@
         <Authors>BimLab BimTeam</Authors>
         <Product>BimLab.PikTools</Product>
         <Copyright>Copyright ©2020 PIK Group</Copyright>
-        <Description>PikTools logs Library</Description>
+        <Description>PikTools logs base Library</Description>
         <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Logs</PackageId>
         <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>

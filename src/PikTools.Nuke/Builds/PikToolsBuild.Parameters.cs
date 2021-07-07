@@ -1,4 +1,4 @@
-﻿namespace PikTools.Nuke.Builds
+namespace PikTools.Nuke.Builds
 {
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -6,9 +6,12 @@
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Utilities;
 
-    public abstract partial class PikToolsBuild
+    /// <summary>
+    /// Расширение Build-скрипта для сборки MSI. Параметры.
+    /// </summary>
+    public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
-        private readonly Wix _wix;
+        private readonly TWix _wix;
         private string _project;
         private Regex _releaseBranchRegex;
 
@@ -79,12 +82,6 @@
             }
             set => _project = value;
         }
-
-        /// <summary>
-        /// Revit Version
-        /// </summary>
-        [Parameter]
-        public string RevitVersion { get; set; } = "2019";
 
         /// <summary>
         /// Solution

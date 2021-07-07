@@ -21,7 +21,9 @@ partial class Build
     [Parameter("NuGet symbol source URL")]
     public readonly string NugetSymbolSource = "https://nuget.smbsrc.net/";
 
-    // Nuget
+    /// <summary>
+    /// Nuget api key
+    /// </summary>
     const string NugetApiKey = "oy2iwdrmpblvtmbp5twam4vhwa3sfqaezclap3dk2fuwc4";
 
     AbsolutePath OutputDirectory => RootDirectory / "out";
