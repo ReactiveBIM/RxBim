@@ -17,16 +17,8 @@
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-        <Company>pik-group.com</Company>
-        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
-        <Authors>BimLab BimTeam</Authors>
-        <Product>BimLab.PikTools</Product>
-        <Copyright>Copyright ©2021 PIK Group</Copyright>
         <Description>PikTools logs Library for Revit</Description>
-        <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Logs.Revit</PackageId>
-        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
-        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
 
 </Project>
