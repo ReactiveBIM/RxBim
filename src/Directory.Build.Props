@@ -13,4 +13,17 @@
         </PackageReference>
     </ItemGroup>
 
+    <PropertyGroup>
+        <Company>pik-group.com</Company>
+        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
+        <Authors>BimLab BimTeam</Authors>
+        <Product>BimLab.PikTools</Product>
+        <Copyright>Copyright ©2021 PIK Group</Copyright>
+        <PackageTags>BIM BimLab Plugin Framework</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
+        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+    </PropertyGroup>
+
 </Project>
