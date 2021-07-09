@@ -2,12 +2,14 @@
 namespace PikTools.Nuke.Builds
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using global::Nuke.Common;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Utilities;
+    using Models;
 
     /// <summary>
     /// Расширение Build-скрипта для сборки MSI. Параметры.
@@ -20,6 +22,7 @@ namespace PikTools.Nuke.Builds
         private Regex _releaseBranchRegex;
         private string _outputTmpDir;
         private string _outputTmpDirBin;
+        private List<AssemblyType> _types;
 
         /// <summary>
         /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)

@@ -1,6 +1,7 @@
 ﻿#pragma warning disable
 namespace PikTools.Nuke.Builds
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -56,19 +57,11 @@ namespace PikTools.Nuke.Builds
                 BuildInstaller(ProjectForMsiBuild, Config);
             });
 
-        /// <summary>
-        /// Build selected project
-        /// </summary>
-        public Target BuildProject => _ => _
+        public Target CompileToTemp => _ => _
+            .Description("Build project to temp output")
             .Requires(() => Project)
-            .Requires(() => Config)
-            .Executes(() =>
-            {
-                DotNetBuild(settings => settings
-                    .SetProjectFile(ProjectForMsiBuild.Path)
-                    .SetOutputDirectory(OutputTmpDirBin)
-                    .SetConfiguration(Config));
-            });
+            .DependsOn(Restore)
+            .Executes(() => Build(true));
 
         /// <summary>
         /// Собирает msi для тестирования
@@ -126,13 +119,13 @@ namespace PikTools.Nuke.Builds
         public virtual Target SignAssemblies => _ => _
             .Requires(() => Project)
             .Requires(() => Config)
-            .DependsOn(BuildProject)
+            .DependsOn(CompileToTemp)
             .Executes(() =>
             {
                 if (Config != Release)
                     return;
                 
-                var types = _wix.GetAssemblyTypes(
+                var types = GetAssemblyTypes(
                     ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
 
                 types.SignAssemblies(
@@ -147,10 +140,10 @@ namespace PikTools.Nuke.Builds
         public Target GenerateAdditionalFiles => _ => _
             .Requires(() => Project)
             .Requires(() => Config)
-            .DependsOn(BuildProject)
+            .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = _wix.GetAssemblyTypes(
+                var types = GetAssemblyTypes(
                     ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Config);
 
                 _wix.GenerateAdditionalFiles
@@ -160,7 +153,7 @@ namespace PikTools.Nuke.Builds
         public Target GeneratePackageContentsFile => _ => _
             .Requires(() => Project)
             .Requires(() => Config)
-            .DependsOn(BuildProject)
+            .DependsOn(CompileToTemp)
             .Executes(() =>
             {
                 _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Config, OutputTmpDir);
@@ -185,6 +178,23 @@ namespace PikTools.Nuke.Builds
                 OutputTmpDir,
                 OutputTmpDirBin);
             DeleteDirectory(OutputTmpDir);
+        }
+
+        /// <summary>
+        /// Get assembly types
+        /// </summary>
+        /// <param name="project">Selected Project</param>
+        /// <param name="outputBinDir">Output assembly directory</param>
+        /// <param name="outputDir">Output directory</param>
+        /// <param name="configuration">Selected configuration</param>
+        private List<AssemblyType> GetAssemblyTypes(
+            Project project,
+            string outputBinDir,
+            string outputDir,
+            string configuration)
+        {
+            var options = _wix.GetBuildMsiOptions(project, outputDir, configuration);
+            return _types ??= project.GetAssemblyTypes(outputBinDir, options);
         }
     }
 }

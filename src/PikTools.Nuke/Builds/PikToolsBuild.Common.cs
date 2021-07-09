@@ -1,6 +1,7 @@
 ﻿#pragma warning disable SA1600, CS1591, SA1619
 namespace PikTools.Nuke.Builds
 {
+    using System.IO;
     using System.Linq;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
@@ -33,15 +34,10 @@ namespace PikTools.Nuke.Builds
             });
 
         public Target Compile => _ => _
-            .Description("Собирает проект")
+            .Description("Build project")
             .Requires(() => Project)
             .DependsOn(Restore)
-            .Executes(() =>
-            {
-                DotNetTasks.DotNetBuild(settings => settings
-                    .SetProjectFile(GetProjectPath(Project))
-                    .SetConfiguration(Configuration));
-            });
+            .Executes(() => Build());
 
         public Target Test => _ => _
             .Description("Запускает тесты")
@@ -51,6 +47,19 @@ namespace PikTools.Nuke.Builds
                 DotNetTasks.DotNetTest(settings => settings
                     .SetProjectFile(GetProjectPath(Project)));
             });
+
+        private void Build(bool buildToTmpDir = false)
+        {
+            DotNetTasks.DotNetBuild(settings =>
+            {
+                settings = settings
+                    .SetProjectFile(GetProjectPath(Project))
+                    .SetConfiguration(Configuration);
+                return buildToTmpDir
+                    ? settings.SetOutputDirectory(OutputTmpDirBin)
+                    : settings;
+            });
+        }
 
         private AbsolutePath GetProjectPath(string name)
         {

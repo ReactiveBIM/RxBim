@@ -18,7 +18,6 @@
     {
         private string _installDir;
         private Options _options;
-        private List<AssemblyType> _types;
 
         /// <summary>
         /// Build MSI
@@ -73,23 +72,6 @@
             var installDir = GetInstallDir(project, configuration);
             return _options ??= project.GetBuildMsiOptions(
                 installDir, outputDir, configuration);
-        }
-
-        /// <summary>
-        /// Get assembly types
-        /// </summary>
-        /// <param name="project">Selected Project</param>
-        /// <param name="outputBinDir">Output assembly directory</param>
-        /// <param name="outputDir">Output directory</param>
-        /// <param name="configuration">Selected configuration</param>
-        public List<AssemblyType> GetAssemblyTypes(
-            Project project,
-            string outputBinDir,
-            string outputDir,
-            string configuration)
-        {
-            var options = GetBuildMsiOptions(project, outputDir, configuration);
-            return _types ??= project.GetAssemblyTypes(outputBinDir, options);
         }
 
         /// <summary>
