@@ -1,13 +1,13 @@
 ﻿#pragma warning disable SA1600, CS1591, SA1619
 namespace PikTools.Nuke.Builds
 {
-    using System.IO;
     using System.Linq;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Utilities.Collections;
     using static global::Nuke.Common.IO.PathConstruction;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <summary>
     /// Расширение Build-скрипта для сборки MSI. Targets общего назначения.
@@ -29,7 +29,7 @@ namespace PikTools.Nuke.Builds
             .DependsOn(Clean)
             .Executes(() =>
             {
-                DotNetTasks.DotNetRestore(s => s
+                DotNetRestore(s => s
                     .SetProjectFile(GetProjectPath(Project)));
             });
 
@@ -37,29 +37,21 @@ namespace PikTools.Nuke.Builds
             .Description("Build project")
             .Requires(() => Project)
             .DependsOn(Restore)
-            .Executes(() => Build());
+            .Executes(() =>
+            {
+                DotNetBuild(settings => settings
+                    .SetProjectFile(GetProjectPath(Project))
+                    .SetConfiguration(Configuration));
+            });
 
         public Target Test => _ => _
             .Description("Запускает тесты")
             .Requires(() => Project)
             .Executes(() =>
             {
-                DotNetTasks.DotNetTest(settings => settings
+                DotNetTest(settings => settings
                     .SetProjectFile(GetProjectPath(Project)));
             });
-
-        private void Build(bool buildToTmpDir = false)
-        {
-            DotNetTasks.DotNetBuild(settings =>
-            {
-                settings = settings
-                    .SetProjectFile(GetProjectPath(Project))
-                    .SetConfiguration(Configuration);
-                return buildToTmpDir
-                    ? settings.SetOutputDirectory(OutputTmpDirBin)
-                    : settings;
-            });
-        }
 
         private AbsolutePath GetProjectPath(string name)
         {

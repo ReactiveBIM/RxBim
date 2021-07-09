@@ -61,7 +61,13 @@ namespace PikTools.Nuke.Builds
             .Description("Build project to temp output")
             .Requires(() => Project)
             .DependsOn(Restore)
-            .Executes(() => Build(true));
+            .Executes(() =>
+            {
+                DotNetBuild(settings => settings
+                    .SetProjectFile(GetProjectPath(Project))
+                    .SetOutputDirectory(OutputTmpDirBin)
+                    .SetConfiguration(Configuration));
+            });
 
         /// <summary>
         /// Собирает msi для тестирования
