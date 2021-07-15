@@ -8,11 +8,11 @@
       "properties": {
         "Algorithm": {
           "type": "string",
-          "description": "Алгоритм сертификата"
+          "description": "Digest algorithm"
         },
         "Cert": {
           "type": "string",
-          "description": "Путь до сертификата"
+          "description": "Certificate path"
         },
         "Configuration": {
           "type": "string",
@@ -25,6 +25,10 @@
         "Continue": {
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
+        },
+        "Csp": {
+          "type": "string",
+          "description": "CSP containing for Private key"
         },
         "Help": {
           "type": "boolean",
@@ -41,10 +45,13 @@
             "GitHubActions",
             "GitLab",
             "Jenkins",
+            "Rider",
             "SpaceAutomation",
             "TeamCity",
             "Terminal",
-            "TravisCI"
+            "TravisCI",
+            "VisualStudio",
+            "VSCode"
           ]
         },
         "NoLogo": {
@@ -59,13 +66,17 @@
           "type": "string",
           "description": "NuGet symbol source URL"
         },
-        "Password": {
+        "Partition": {
           "type": "string",
-          "description": "Пароль от сертификата"
+          "description": "Partition to use on CI"
         },
         "Plan": {
           "type": "boolean",
           "description": "Shows the execution plan (HTML)"
+        },
+        "PrivateKey": {
+          "type": "string",
+          "description": "Private key container"
         },
         "Profile": {
           "type": "array",
@@ -91,7 +102,7 @@
         },
         "ServerUrl": {
           "type": "string",
-          "description": "Сервер проверки сертификата"
+          "description": "Timestamp server URL"
         },
         "Skip": {
           "type": "array",
@@ -110,16 +121,21 @@
               "Clean",
               "CleanOutput",
               "Compile",
+              "CompileToTemp",
               "CopyDebugAddin",
               "CopyOutput",
+              "GenerateAdditionalFiles",
+              "GeneratePackageContentsFile",
               "GenerateProjectProps",
               "InstallMsiBuildTool",
+              "InstallWixTools",
               "List",
               "Pack",
               "Publish",
               "PublishMsiBuildTool",
               "Push",
               "Restore",
+              "SignAssemblies",
               "Tag",
               "TagProject",
               "Test"
@@ -147,16 +163,21 @@
               "Clean",
               "CleanOutput",
               "Compile",
+              "CompileToTemp",
               "CopyDebugAddin",
               "CopyOutput",
+              "GenerateAdditionalFiles",
+              "GeneratePackageContentsFile",
               "GenerateProjectProps",
               "InstallMsiBuildTool",
+              "InstallWixTools",
               "List",
               "Pack",
               "Publish",
               "PublishMsiBuildTool",
               "Push",
               "Restore",
+              "SignAssemblies",
               "Tag",
               "TagProject",
               "Test"

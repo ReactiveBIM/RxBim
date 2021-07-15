@@ -20,9 +20,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build : RevitPikToolsBuild
 {
     public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
-
+    
     readonly PackageInfoProvider PackageInfoProvider;
-    string _project;
+    private string _project;
 
     public Build()
     {
@@ -36,7 +36,7 @@ partial class Build : RevitPikToolsBuild
     [Parameter("Select project")]
     override public string Project
     {
-        get => _project ??= _packageInfoProvider.GetSelectedMenuOption();
+        get => _project ??= PackageInfoProvider.GetSelectedMenuOption();
         set => _project = value;
     }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// Internal constants.
     /// </summary>
-    internal static class Constants
+    public static class Constants
     {
         /// <summary>
         /// PikToolsCommand
