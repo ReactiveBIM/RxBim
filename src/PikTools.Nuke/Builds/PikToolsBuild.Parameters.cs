@@ -1,4 +1,4 @@
-﻿namespace PikTools.Nuke.Builds
+namespace PikTools.Nuke.Builds
 {
     using System;
     using System.Collections.Generic;

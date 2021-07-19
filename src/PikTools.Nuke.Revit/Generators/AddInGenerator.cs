@@ -27,8 +27,8 @@
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
-            var pluginTypes = addInTypesPerProjects
-                .Where(x => x.AssemblyType.IsPluginType())
+            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == PikToolsCommand
+                                                               || x.AssemblyType.BaseTypeName == PikToolsApplication)
                 .ToList();
 
             if (!addInTypesPerProjects.Any())
