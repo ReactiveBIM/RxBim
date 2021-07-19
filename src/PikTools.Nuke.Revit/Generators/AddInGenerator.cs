@@ -27,8 +27,8 @@
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
-            var pluginTypes = addInTypesPerProjects.Where(x => x.AssemblyType.BaseTypeName == PikToolsCommand
-                                                               || x.AssemblyType.BaseTypeName == PikToolsApplication)
+            var pluginTypes = addInTypesPerProjects
+                .Where(x => x.AssemblyType.IsPluginType())
                 .ToList();
 
             if (!addInTypesPerProjects.Any())
@@ -53,13 +53,12 @@
 
                 var guid = GetAddInGuid(project, assemblyType);
 
-                addIns.Add(
-                    new AddIn(
-                        project.Name,
-                        $"{rootProjectName}/{project.Name}.dll",
-                        guid.ToString(),
-                        assemblyType.FullName,
-                        assemblyType.BaseTypeName.ToPluginType()));
+                addIns.Add(new AddIn(
+                    project.Name,
+                    $"{rootProjectName}/{project.Name}.dll",
+                    guid.ToString(),
+                    assemblyType.FullName,
+                    assemblyType.BaseTypeName.ToPluginType()));
             }
 
             var revitAddIns = new RevitAddIns

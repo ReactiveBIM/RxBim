@@ -19,11 +19,7 @@
         <Link>Options.cs</Link>
       </Compile>
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Generators\Models\ComponentEntry.cs" />
-    </ItemGroup>
-
+    
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>PikTools nuke plugin for building MSI</Description>

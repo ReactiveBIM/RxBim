@@ -19,29 +19,18 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 partial class Build : RevitPikToolsBuild
 {
-    // public static int Main() => Execute<Build>(x => x.CopyOutput);
-
     public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
-
-    PackageInfoProvider _packageInfoProvider;
-    string _project;
-
+    
+    readonly PackageInfoProvider PackageInfoProvider;
 
     public Build()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        _packageInfoProvider = new PackageInfoProvider(() => Solution);
+        PackageInfoProvider = new PackageInfoProvider(() => Solution);
     }
 
     const string MsiBuilderProjectName = "PikTools.MsiBuilder.Bin";
     const string MsiBuilderEnv = "PIKTOOLS_MSIBUILDER_BIN";
-
-    [Parameter("Select project")]
-    override public string Project
-    {
-        get => _project ??= _packageInfoProvider.GetSelectedMenuOption();
-        set => _project = value;
-    }
 
     Project MsiBuilderProject =>
         Solution.AllProjects.FirstOrDefault(x => x.Name == MsiBuilderProjectName);

@@ -6,6 +6,7 @@
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Utilities.Collections;
     using static global::Nuke.Common.IO.PathConstruction;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <content>
     /// Расширение Build-скрипта для сборки MSI. Targets общего назначения.
@@ -32,7 +33,7 @@
             .DependsOn(Clean)
             .Executes(() =>
             {
-                DotNetTasks.DotNetRestore(s => s
+                DotNetRestore(s => s
                     .SetProjectFile(Solution.Path));
             });
 
@@ -44,7 +45,7 @@
             .DependsOn(Restore)
             .Executes(() =>
             {
-                DotNetTasks.DotNetBuild(settings => settings
+                DotNetBuild(settings => settings
                     .SetProjectFile(Solution.Path)
                     .SetConfiguration(Configuration));
             });
@@ -57,7 +58,7 @@
             .Requires(() => Project)
             .Executes(() =>
             {
-                DotNetTasks.DotNetTest(settings => settings
+                DotNetTest(settings => settings
                     .SetProjectFile(GetProjectPath(Project)));
             });
 

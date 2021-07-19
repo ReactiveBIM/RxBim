@@ -5,7 +5,6 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.NuGet;
 
 partial class Build
 {
@@ -33,7 +32,7 @@ partial class Build
     [Parameter("Project name")]
     public string ProjectForPublish
     {
-        get => _projectForPublish ??= _packageInfoProvider.GetSelectedMenuOption();
+        get => _projectForPublish ??= PackageInfoProvider.GetSelectedMenuOption();
         set => _projectForPublish = value;
     }
 
@@ -42,7 +41,7 @@ partial class Build
         .Requires(() => Project)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Project)
+            PackageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
     
@@ -59,12 +58,17 @@ partial class Build
         AbsolutePath outDir,
         string configuration)
     {
-        var path = solution.GetProject(project.ProjectName).Path;
-        DotNetTasks.DotNetPack(s => s
-            .SetProject(path)
-            .SetOutputDirectory(outDir)
-            .SetConfiguration(configuration)
-            .EnableNoBuild());
+        var path = solution.GetProject(project.ProjectName)?.Path;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            DotNetTasks.DotNetPack(s => s
+                .SetProject(path)
+                .SetOutputDirectory(outDir)
+                .SetConfiguration(configuration)
+                .EnableNoBuild()
+                .EnableNoRestore());
+        }
     }
 
     Target CheckUncommitted => _ => _
@@ -80,7 +84,7 @@ partial class Build
         .DependsOn(Pack/*, CheckUncommitted*/)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Project)
+            PackageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
@@ -89,7 +93,7 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Project)
+            PackageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 
@@ -100,7 +104,7 @@ partial class Build
     Target List => _ => _
         .Executes(() =>
         {
-            var projects = _packageInfoProvider.Projects;
+            var projects = PackageInfoProvider.Projects;
             Console.WriteLine("\nPackage list:");
             foreach (var projectInfo in projects)
             {
@@ -112,4 +116,5 @@ partial class Build
     {
         return Solution.AllProjects.FirstOrDefault(x => x.Name == name)?.Path ?? Solution.Path;
     }
+    
 }

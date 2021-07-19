@@ -72,6 +72,7 @@
         /// <inheritdoc />
         public void SetMessageAndKeywords(string message, Dictionary<string, string>? keywordGlobalAndLocalNames = null)
         {
+            _options.Keywords.Clear();
             _options.MessageForAdding = message;
 
             if (keywordGlobalAndLocalNames != null && keywordGlobalAndLocalNames.Count > 0)

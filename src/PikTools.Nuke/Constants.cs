@@ -1,7 +1,7 @@
 ﻿namespace PikTools.Nuke
 {
     /// <summary>
-    /// Константы
+    /// Internal constants.
     /// </summary>
     public static class Constants
     {
