@@ -19,11 +19,7 @@
         <Link>Options.cs</Link>
       </Compile>
     </ItemGroup>
-
-<!--    <ItemGroup>-->
-<!--      <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />-->
-<!--    </ItemGroup>-->
-
+    
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>PikTools nuke plugin for building MSI</Description>
