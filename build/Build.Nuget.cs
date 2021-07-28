@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 
 partial class Build
@@ -36,45 +38,83 @@ partial class Build
 
     Target Pack => _ => _
         .DependsOn(Compile)
+        .Requires(() => Project)
         .Executes(() =>
         {
-            var path = Solution.Directory / "out";
-            var sourceProjects = Solution.AllProjects.Where(x => x.Path.ToString().Contains("\\src\\"));
-            foreach (var project in sourceProjects)
-            {
-                DotNetTasks.DotNetPack(settings => settings
-                    .SetConfiguration(Configuration)
-                    .SetNoBuild(true)
-                    .SetNoRestore(true)
-                    .SetProject(project)
-                    .SetOutputDirectory(path));
-            }
+            PackageInfoProvider.GetSelectedProjects(Project)
+                .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
+    
+    /// <summary>
+    /// Makes a package
+    /// </summary>
+    /// <param name="solution">Solution</param>
+    /// <param name="project">Project</param>
+    /// <param name="outDir">Output directory</param>
+    /// <param name="configuration">Build configuration</param>
+    static void PackInternal(
+        Solution solution,
+        ProjectInfo project,
+        AbsolutePath outDir,
+        string configuration)
+    {
+        var path = solution.GetProject(project.ProjectName)?.Path;
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            DotNetTasks.DotNetPack(s => s
+                .SetProject(path)
+                .SetOutputDirectory(outDir)
+                .SetConfiguration(configuration)
+                .EnableNoBuild()
+                .EnableNoRestore());
+        }
+    }
 
     Target CheckUncommitted => _ => _
-        .DependsOn(Pack)
-        .Executes(() => PackageExtensions.CheckUncommittedChanges(Solution));
+        .After(Pack)
+        .Executes(() =>
+        {
+            PackageExtensions.CheckUncommittedChanges(Solution);
+        });
 
     Target Push => _ => _
         .Unlisted()
-        .Requires(() => ProjectForPublish)
-        .DependsOn(CheckUncommitted)
+        .Requires(() => Project)
+        .DependsOn(Pack/*, CheckUncommitted*/)
         .Executes(() =>
         {
-            PackageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            PackageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
     Target Tag => _ => _
-        .Requires(() => ProjectForPublish)
+        .Requires(() => Project)
         .DependsOn(Push)
         .Executes(() =>
         {
-            PackageInfoProvider.GetSelectedProjects(ProjectForPublish)
+            PackageInfoProvider.GetSelectedProjects(Project)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 
     Target Publish => _ => _
         .Description("Публикует Nuget-пакеты")
         .DependsOn(Tag);
+    
+    Target List => _ => _
+        .Executes(() =>
+        {
+            var projects = PackageInfoProvider.Projects;
+            Console.WriteLine("\nPackage list:");
+            foreach (var projectInfo in projects)
+            {
+                Console.WriteLine(projectInfo.MenuItem);
+            }
+        });
+    
+    private AbsolutePath GetProjectPath(string name)
+    {
+        return Solution.AllProjects.FirstOrDefault(x => x.Name == name)?.Path ?? Solution.Path;
+    }
+    
 }

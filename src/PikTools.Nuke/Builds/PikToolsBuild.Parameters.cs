@@ -1,4 +1,3 @@
-﻿#pragma warning disable SA1600, CS1591, SA1619
 namespace PikTools.Nuke.Builds
 {
     using System;
@@ -11,14 +10,13 @@ namespace PikTools.Nuke.Builds
     using global::Nuke.Common.Utilities;
     using Models;
 
-    /// <summary>
+    /// <content>
     /// Расширение Build-скрипта для сборки MSI. Параметры.
-    /// </summary>
+    /// </content>
     public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
         private readonly TWix _wix;
         private string _project;
-        private string _config;
         private Regex _releaseBranchRegex;
         private string _outputTmpDir;
         private string _outputTmpDirBin;
@@ -61,21 +59,10 @@ namespace PikTools.Nuke.Builds
         public string ServerUrl { get; set; }
 
         /// <summary>
-        /// Selected configuration
-        /// </summary>
-        [Parameter("Select configuration")]
-        public string Config
-        {
-            get => _config ??=
-                ConsoleUtility.PromptForChoice("Select config:", ("Debug", "Debug"), ("Release", "Release"));
-            set => _config = value;
-        }
-
-        /// <summary>
         /// Selected project
         /// </summary>
         [Parameter("Select project")]
-        public string Project
+        public virtual string Project
         {
             get
             {

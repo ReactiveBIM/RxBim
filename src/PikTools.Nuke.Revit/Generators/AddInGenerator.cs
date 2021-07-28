@@ -53,13 +53,12 @@
 
                 var guid = GetAddInGuid(project, assemblyType);
 
-                addIns.Add(
-                    new AddIn(
-                        project.Name,
-                        $"{rootProjectName}/{project.Name}.dll",
-                        guid.ToString(),
-                        assemblyType.FullName,
-                        assemblyType.BaseTypeName.ToPluginType()));
+                addIns.Add(new AddIn(
+                    project.Name,
+                    $"{rootProjectName}/{project.Name}.dll",
+                    guid.ToString(),
+                    assemblyType.FullName,
+                    assemblyType.BaseTypeName.ToPluginType()));
             }
 
             var revitAddIns = new RevitAddIns

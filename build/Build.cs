@@ -20,7 +20,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build : RevitPikToolsBuild
 {
     public static int Main() => Execute<Build>(x => x.GenerateProjectProps);
-
+    
     readonly PackageInfoProvider PackageInfoProvider;
 
     public Build()

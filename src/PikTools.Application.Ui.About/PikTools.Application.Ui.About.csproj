@@ -6,20 +6,7 @@
         <NoWarn>NU1701</NoWarn>
         <UseWPF>true</UseWPF>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-		<LangVersion>latest</LangVersion>
     </PropertyGroup>
-
-    <PropertyGroup>
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PikTools.Di\PikTools.Di.csproj" />
@@ -29,17 +16,8 @@
 
   <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-        <Company>pik-group.com</Company>
-        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
-        <Authors>BimLab BimTeam</Authors>
-        <Product>BimLab.PikTools</Product>
-        <Copyright>Copyright ©2020 PIK Group</Copyright>
         <Description>PikTools UI about box Library</Description>
-        <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Application.Ui.About</PackageId>
-        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
-        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
-        <PackageTags>BIM BimLab</PackageTags>
     </PropertyGroup>
 
 </Project>

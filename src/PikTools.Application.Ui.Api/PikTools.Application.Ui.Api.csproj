@@ -2,22 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <LangVersion>8</LangVersion>
         <PlatformTarget>x64</PlatformTarget>
         <NoWarn>NU1701</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" ExcludeAssets="runtime" />
         <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
         <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,16 +26,8 @@
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-        <Company>pik-group.com</Company>
-        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
-        <Authors>BimLab BimTeam</Authors>
-        <Product>BimLab.PikTools</Product>
-        <Copyright>Copyright ©2020 PIK Group</Copyright>
         <Description>PikTools Application UI api Library</Description>
-        <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Application.UI.Api</PackageId>
-        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
-        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
 
 </Project>

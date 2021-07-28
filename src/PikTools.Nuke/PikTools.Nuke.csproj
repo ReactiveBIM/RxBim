@@ -2,51 +2,28 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <LangVersion>8</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1702</NoWarn>
+        <NoWarn>NU1702;SA1200</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.8.0" />
-        <PackageReference Include="Microsoft.Win32.Registry" Version="4.3.0" />
-        <PackageReference Include="Nuke.Common" Version="5.0.2" />
-        <PackageReference Include="Octokit" Version="0.48.0" />
+        <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.2.1-dev001" />
+        <PackageReference Include="Nuke.Common" Version="5.1.2" />
         <PackageReference Include="SharpCompress" Version="0.26.0" />
-        <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-        <PackageReference Include="System.Reflection.MetadataLoadContext" Version="4.7.2" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PikTools.MsiBuilder\PikTools.MsiBuilder.csproj" />
+      <Compile Include="..\PikTools.MsiBuilder\Options.cs">
+        <Link>Options.cs</Link>
+      </Compile>
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Generators\Models\ComponentEntry.cs" />
-    </ItemGroup>
-
+    
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-        <Company>pik-group.com</Company>
-        <PackageIconUrl>https://favicon.pik.ru/favicon.ico</PackageIconUrl>
-        <Authors>BimLab BimTeam</Authors>
-        <Product>BimLab.PikTools</Product>
-        <Copyright>Copyright ©2020 PIK Group</Copyright>
         <Description>PikTools nuke plugin for building MSI</Description>
-        <PackageTags>BIM BimLab</PackageTags>
         <PackageId>BimLab.PikTools.Nuke</PackageId>
-        <PackageProjectUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework</PackageProjectUrl>
-        <RepositoryUrl>https://gitlab.com/pik_tools/shared/piktools.apiframework.git</RepositoryUrl>
     </PropertyGroup>
 
 </Project>

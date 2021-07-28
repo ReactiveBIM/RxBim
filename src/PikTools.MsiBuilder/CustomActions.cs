@@ -1,11 +1,12 @@
-﻿namespace PikTools.MsiBuilder
+﻿#pragma warning disable CS1591, SA1600
+namespace PikTools.MsiBuilder
 {
-    using Microsoft.Deployment.WindowsInstaller;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Management.Automation;
+    using Microsoft.Deployment.WindowsInstaller;
     using WixSharp;
 
     public class CustomActions
@@ -13,7 +14,7 @@
         [CustomAction]
         public static ActionResult InstallFonts(Session session)
         {
-            var script =    
+            var script =
                 "$FONTS = 0x14"
                 + Environment.NewLine
                 + "$objShell = New-Object -ComObject Shell.Application"
@@ -27,22 +28,16 @@
                         return false;
 
                     script +=
-                            Environment.NewLine
-                            + $"$objFolder.CopyHere(\"{fontPath}\")";
+                        Environment.NewLine
+                        + $"$objFolder.CopyHere(\"{fontPath}\")";
                     return true;
                 }).ToArray().Any())
             {
-                var _powershell = PowerShell.Create().AddScript(script);
-                _powershell.Invoke<User>();
+                var powershell = PowerShell.Create().AddScript(script);
+                powershell.Invoke<User>();
             }
 
             return ActionResult.Success;
-        }
-
-        private static IEnumerable<string> FillFonts(string path)
-        {
-            foreach (var file in Directory.EnumerateFiles(path, "*.ttf", SearchOption.AllDirectories))
-                yield return file;
         }
 
         public static bool IsFontInstalled(string fontPath)
@@ -54,7 +49,13 @@
                 return false;
 
             using (var testFont = new System.Drawing.Font(fontName, 8))
-                return 0 == string.Compare(fontName, testFont.Name, StringComparison.InvariantCultureIgnoreCase);
+                return string.Compare(fontName, testFont.Name, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
+        private static IEnumerable<string> FillFonts(string path)
+        {
+            foreach (var file in Directory.EnumerateFiles(path, "*.ttf", SearchOption.AllDirectories))
+                yield return file;
         }
     }
 }

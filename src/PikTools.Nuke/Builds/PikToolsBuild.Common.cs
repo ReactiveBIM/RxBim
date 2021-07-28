@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1600, CS1591, SA1619
-namespace PikTools.Nuke.Builds
+﻿namespace PikTools.Nuke.Builds
 {
     using System.Linq;
     using global::Nuke.Common;
@@ -9,13 +8,16 @@ namespace PikTools.Nuke.Builds
     using static global::Nuke.Common.IO.PathConstruction;
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
-    /// <summary>
+    /// <content>
     /// Расширение Build-скрипта для сборки MSI. Targets общего назначения.
-    /// </summary>
+    /// </content>
     public abstract partial class PikToolsBuild<TWix, TPackGen, TPropGen>
     {
+        /// <summary>
+        /// Очишает bin/, obj/ в решении.
+        /// </summary>
         public Target Clean => _ => _
-            .Description("Очищает решение")
+            .Description("Очишает bin/, obj/")
             .Executes(() =>
             {
                 GlobDirectories(Solution.Directory, "**/bin", "**/obj")
@@ -23,27 +25,34 @@ namespace PikTools.Nuke.Builds
                     .ForEach(FileSystemTasks.DeleteDirectory);
             });
 
+        /// <summary>
+        /// Восстанавливает пакеты.
+        /// </summary>
         public Target Restore => _ => _
             .Description("Восстанавливает пакеты")
-            .Requires(() => Project)
             .DependsOn(Clean)
             .Executes(() =>
             {
                 DotNetRestore(s => s
-                    .SetProjectFile(GetProjectPath(Project)));
+                    .SetProjectFile(Solution.Path));
             });
 
+        /// <summary>
+        /// Собирает проект
+        /// </summary>
         public Target Compile => _ => _
-            .Description("Build project")
-            .Requires(() => Project)
+            .Description("Собирает решение")
             .DependsOn(Restore)
             .Executes(() =>
             {
                 DotNetBuild(settings => settings
-                    .SetProjectFile(GetProjectPath(Project))
+                    .SetProjectFile(Solution.Path)
                     .SetConfiguration(Configuration));
             });
 
+        /// <summary>
+        /// Запускает тесты
+        /// </summary>
         public Target Test => _ => _
             .Description("Запускает тесты")
             .Requires(() => Project)
