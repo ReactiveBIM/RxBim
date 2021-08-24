@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\RxBim.Command.Autocad.Generators\RxBim.Command.Autocad.Generators.csproj" />
         <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
