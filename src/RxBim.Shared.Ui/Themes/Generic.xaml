@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Assets/Colors.xaml"/>
+        <ResourceDictionary Source="../Assets/Converters.xaml"/>
+        <ResourceDictionary Source="../Assets/Icons.xaml"/>
+        
+        <ResourceDictionary Source="../Styles/BusyIndicator.xaml"/>
+        <ResourceDictionary Source="../Styles/Button.xaml"/>
+        <ResourceDictionary Source="../Styles/CheckBox.xaml"/>
+        <ResourceDictionary Source="../Styles/ComboBox.xaml"/>
+        <ResourceDictionary Source="../Styles/DataGrid.xaml"/>
+        <ResourceDictionary Source="../Styles/Expander.xaml"/>
+        <ResourceDictionary Source="../Styles/GroupBox.xaml"/>
+        <ResourceDictionary Source="../Styles/ListBox.xaml"/>
+        <ResourceDictionary Source="../Styles/ProgressBar.xaml"/>
+        <ResourceDictionary Source="../Styles/RadioButton.xaml"/>
+        <ResourceDictionary Source="../Styles/ScrollBar.xaml"/>
+        <ResourceDictionary Source="../Styles/SearchBox.xaml"/>
+        <ResourceDictionary Source="../Styles/TabControl.xaml"/>
+        <ResourceDictionary Source="../Styles/TextBlock.xaml"/>
+        <ResourceDictionary Source="../Styles/TextBox.xaml"/>
+        <ResourceDictionary Source="../Styles/ToolTip.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

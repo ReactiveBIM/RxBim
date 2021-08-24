@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>rxbim.msi.builder</ToolCommandName>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+        <NoWarn>NU1702</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RxBim.MsiBuilder.Bin\RxBim.MsiBuilder.Bin.csproj" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="0.1.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(GlobalToolVersion)</Version>
+        <Description>RxBim msi build tool</Description>
+        <PackageId>RxBim.MsiBuilder.GlobalTool</PackageId>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>        
+        <PlatformTarget>x64</PlatformTarget>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
+        <PackageReference Include="Civil3D2019.Base" Version="1.0.0" ExcludeAssets="build; runtime" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+         <Description>RxBim Civil 3D Extensions Library</Description>
+        <PackageId>RxBim.Shared.CivilExtensions</PackageId>
+    </PropertyGroup>
+
+</Project>

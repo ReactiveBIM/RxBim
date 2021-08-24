@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <NoWarn>NU1702;SA1200</NoWarn>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.2.1-dev001" />
+        <PackageReference Include="Nuke.Common" Version="5.1.2" />
+        <PackageReference Include="SharpCompress" Version="0.26.0" />
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\RxBim.MsiBuilder\Options.cs">
+        <Link>Options.cs</Link>
+      </Compile>
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+         <Description>RxBim nuke plugin for building MSI</Description>
+        <PackageId>RxBim.Nuke</PackageId>
+    </PropertyGroup>
+
+</Project>

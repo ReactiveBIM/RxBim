@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="RxBim.Shared.Ui.Controls.EditableTextBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:RxBim.Shared.Ui.Controls"
+             x:Name="MainControl">
+    <UserControl.Resources>
+        <DataTemplate x:Key="EditModeTemplate">
+            <TextBox Text="{Binding ElementName=MainControl, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+                     TextAlignment="Center"
+                     KeyDown="TextBox_KeyDown" 
+                     Loaded="TextBox_Loaded" 
+                     LostFocus="TextBox_LostFocus"
+                     BorderThickness="0"
+                     HorizontalAlignment="Stretch"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="DisplayModeTemplate">
+            <DataTemplate.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles/TextBlock.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>    
+            </DataTemplate.Resources>
+                
+            <TextBlock Text="{Binding ElementName=MainControl, Path=FormattedText}" 
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Stretch"/>
+        </DataTemplate>
+        
+        <Style TargetType="{x:Type controls:EditableTextBlock}">
+            <Style.Triggers>
+                <Trigger Property="IsInEditMode" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource EditModeTemplate}" />
+                </Trigger>
+                    
+                <Trigger Property="IsInEditMode" Value="False">
+                    <Setter Property="ContentTemplate" Value="{StaticResource DisplayModeTemplate}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+</UserControl>
