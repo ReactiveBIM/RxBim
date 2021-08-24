@@ -1,4 +1,7 @@
 # RxBim packages
+
+![CI](https://github.com/ReactiveBIM/RxBim/actions/workflows/CI.yml/badge.svg)
+
 | Package name | version |
 | ------------ | ------- |
 | *RxBim.Analyzers* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Analyzers?style=flat) |
