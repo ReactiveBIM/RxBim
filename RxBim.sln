@@ -84,6 +84,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{EA24ECE8-41E0-4A12-8DEF-0C073A3AA0DB}"
 ProjectSection(SolutionItems) = preProject
 	src\Directory.Build.Props = src\Directory.Build.Props
+	Readme.md = Readme.md
+	.gitignore = .gitignore
+	LICENSE = LICENSE
+	stylecop.ruleset = stylecop.ruleset
+	stylecopTests.ruleset = stylecopTests.ruleset
 EndProjectSection
 EndProject
 Global
