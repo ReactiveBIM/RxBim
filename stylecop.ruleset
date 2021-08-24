@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="PIK" Description="PIK" ToolsVersion="15.0">
+<RuleSet Name="ReactiveBIM" Description="ReactiveBIM" ToolsVersion="15.0">
     <Rules AnalyzerId="AsyncUsageAnalyzers" RuleNamespace="AsyncUsageAnalyzers">
         <Rule Id="UseConfigureAwait" Action="None"/>
     </Rules>
