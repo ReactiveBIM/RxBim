@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D348F299-FAC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Analyzers", "src\RxBim.Analyzers\RxBim.Analyzers.csproj", "{13D76A89-7175-4E01-838D-97D9D5387662}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Api", "src\RxBim.Application.Api\RxBim.Application.Api.csproj", "{C7357F16-42EE-4B8E-A76F-5F5CE7FA9481}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Revit", "src\RxBim.Application.Revit\RxBim.Application.Revit.csproj", "{C7357F16-42EE-4B8E-A76F-5F5CE7FA9481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Autocad.Api", "src\RxBim.Application.Autocad.Api\RxBim.Application.Autocad.Api.csproj", "{AD01DB63-ECAE-4F96-AAD6-C230823A1409}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Autocad", "src\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj", "{AD01DB63-ECAE-4F96-AAD6-C230823A1409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ui.Api", "src\RxBim.Application.Ui.Api\RxBim.Application.Ui.Api.csproj", "{457753F9-5A66-47A7-9C4F-62E72E546097}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ribbon", "src\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj", "{457753F9-5A66-47A7-9C4F-62E72E546097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ui.Autocad.Api", "src\RxBim.Application.Ui.Autocad.Api\RxBim.Application.Ui.Autocad.Api.csproj", "{5E22E6FC-E9A7-4D17-9EFA-BFFC805B909E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ribbon.Autocad", "src\RxBim.Application.Ribbon.Autocad\RxBim.Application.Ribbon.Autocad.csproj", "{5E22E6FC-E9A7-4D17-9EFA-BFFC805B909E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ui.Revit.Api", "src\RxBim.Application.Ui.Revit.Api\RxBim.Application.Ui.Revit.Api.csproj", "{362785AB-EBE3-4216-BA10-6CFD3F924269}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Ribbon.Revit", "src\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj", "{362785AB-EBE3-4216-BA10-6CFD3F924269}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Api", "src\RxBim.Command.Api\RxBim.Command.Api.csproj", "{39AEFA69-1E1B-4CE4-946E-19CC3512D95E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Revit", "src\RxBim.Command.Revit\RxBim.Command.Revit.csproj", "{39AEFA69-1E1B-4CE4-946E-19CC3512D95E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Autocad.Api", "src\RxBim.Command.Autocad.Api\RxBim.Command.Autocad.Api.csproj", "{8DE860F0-FB77-4CD2-AD2A-D8D62A30495B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Autocad", "src\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj", "{8DE860F0-FB77-4CD2-AD2A-D8D62A30495B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Autocad.Generators", "src\RxBim.Command.Autocad.Generators\RxBim.Command.Autocad.Generators.csproj", "{6CC4DE33-DDD0-4A0F-BDD9-235880406F35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Generators.Autocad", "src\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj", "{6CC4DE33-DDD0-4A0F-BDD9-235880406F35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di", "src\RxBim.Di\RxBim.Di.csproj", "{9CB6AB65-4F66-4DAD-B864-866BACFF3E85}"
 EndProject
@@ -193,13 +193,13 @@ Global
 		{362785AB-EBE3-4216-BA10-6CFD3F924269} = {BEC5BFF8-D120-4952-A66A-B0F7A2818551}
 		{C02C8AC7-09BE-4406-B488-9C56F7042F9E} = {BEC5BFF8-D120-4952-A66A-B0F7A2818551}
 		{13D76A89-7175-4E01-838D-97D9D5387662} = {744AAF07-68DD-46BC-9442-4DA7416D4B0E}
-		{C7357F16-42EE-4B8E-A76F-5F5CE7FA9481} = {58E90E9F-4463-42AC-915F-950E95F23C86}
 		{457753F9-5A66-47A7-9C4F-62E72E546097} = {58E90E9F-4463-42AC-915F-950E95F23C86}
-		{39AEFA69-1E1B-4CE4-946E-19CC3512D95E} = {58E90E9F-4463-42AC-915F-950E95F23C86}
 		{9CB6AB65-4F66-4DAD-B864-866BACFF3E85} = {58E90E9F-4463-42AC-915F-950E95F23C86}
 		{5B23CF2B-C184-4803-8163-6349B95D6B8D} = {58E90E9F-4463-42AC-915F-950E95F23C86}
 		{57CC1000-67BD-4E6F-996D-C12FBCE656F8} = {58E90E9F-4463-42AC-915F-950E95F23C86}
 		{6CC4DE33-DDD0-4A0F-BDD9-235880406F35} = {744AAF07-68DD-46BC-9442-4DA7416D4B0E}
 		{509E9C17-5218-4EE8-AA86-582735F1A40E} = {29A114EF-59F6-490A-A10F-B1A2C0B8F756}
+		{C7357F16-42EE-4B8E-A76F-5F5CE7FA9481} = {BEC5BFF8-D120-4952-A66A-B0F7A2818551}
+		{39AEFA69-1E1B-4CE4-946E-19CC3512D95E} = {BEC5BFF8-D120-4952-A66A-B0F7A2818551}
 	EndGlobalSection
 EndGlobal
