@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-namespace RxBim.Di
+﻿namespace RxBim.Di
 {
     using System;
     using System.Collections.Generic;

@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-namespace RxBim.Nuke.Builds
+﻿namespace RxBim.Nuke.Builds
 {
     using System.Collections.Generic;
     using System.IO;

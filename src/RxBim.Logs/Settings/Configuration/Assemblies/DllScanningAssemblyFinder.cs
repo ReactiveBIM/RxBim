@@ -1,6 +1,4 @@
-﻿#pragma warning disable
-
-namespace RxBim.Logs.Settings.Configuration.Assemblies
+﻿namespace RxBim.Logs.Settings.Configuration.Assemblies
 {
     using System;
     using System.Collections.Generic;
