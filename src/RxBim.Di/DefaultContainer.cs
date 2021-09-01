@@ -1,33 +1,41 @@
-﻿#pragma warning disable
-namespace RxBim.Di
+﻿namespace RxBim.Di
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using SimpleInjector;
 
+    /// <summary>
+    /// The default implementation of <see cref="IContainer"/>
+    /// </summary>
     public class DefaultContainer : IContainer
     {
         private readonly Container _container;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public DefaultContainer()
         {
             _container = new Container();
             _container.Options.EnableAutoVerification = false;
         }
 
-        public IContainer AddTransient(Type service, Type implementation)
+        /// <inheritdoc />
+        public IContainer AddTransient(Type serviceType, Type implementationType)
         {
-            _container.Register(service, implementation);
+            _container.Register(serviceType, implementationType);
             return this;
         }
 
-        public IContainer AddTransient(Type service)
+        /// <inheritdoc />
+        public IContainer AddTransient(Type serviceType)
         {
-            _container.Register(service);
+            _container.Register(serviceType);
             return this;
         }
 
+        /// <inheritdoc />
         public IContainer AddTransient<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
@@ -36,6 +44,7 @@ namespace RxBim.Di
             return this;
         }
 
+        /// <inheritdoc />
         public IContainer AddTransient<TService>()
             where TService : class
         {
@@ -43,32 +52,29 @@ namespace RxBim.Di
             return this;
         }
 
-        public IContainer AddTransient<TService>(TService service)
+        /// <inheritdoc />
+        public IContainer AddTransient<TService>(Func<TService> implementationFactory)
             where TService : class
         {
-            _container.Register(() => service);
+            _container.Register(implementationFactory);
             return this;
         }
 
-        public IContainer AddTransient<TService>(Func<TService> factory)
-            where TService : class
+        /// <inheritdoc />
+        public IContainer AddScoped(Type serviceType, Type implementationType)
         {
-            _container.Register(factory);
+            _container.Register(serviceType, implementationType, Lifestyle.Scoped);
             return this;
         }
 
-        public IContainer AddScoped(Type service, Type implementation)
+        /// <inheritdoc />
+        public IContainer AddScoped(Type serviceType)
         {
-            _container.Register(service, implementation, Lifestyle.Scoped);
+            _container.Register(serviceType, serviceType, Lifestyle.Scoped);
             return this;
         }
 
-        public IContainer AddScoped(Type service)
-        {
-            _container.Register(service, service, Lifestyle.Scoped);
-            return this;
-        }
-
+        /// <inheritdoc />
         public IContainer AddScoped<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
@@ -77,6 +83,7 @@ namespace RxBim.Di
             return this;
         }
 
+        /// <inheritdoc />
         public IContainer AddScoped<TService>()
             where TService : class
         {
@@ -84,32 +91,29 @@ namespace RxBim.Di
             return this;
         }
 
-        public IContainer AddScoped<TService>(TService service)
+        /// <inheritdoc />
+        public IContainer AddScoped<TService>(Func<TService> implementationFactory)
             where TService : class
         {
-            _container.Register(() => service, Lifestyle.Scoped);
+            _container.Register(implementationFactory, Lifestyle.Scoped);
             return this;
         }
 
-        public IContainer AddScoped<TService>(Func<TService> factory)
-            where TService : class
+        /// <inheritdoc />
+        public IContainer AddSingleton(Type serviceType, Type implementationType)
         {
-            _container.Register(factory, Lifestyle.Scoped);
+            _container.Register(serviceType, implementationType, Lifestyle.Singleton);
             return this;
         }
 
-        public IContainer AddSingleton(Type service, Type implementation)
+        /// <inheritdoc />
+        public IContainer AddSingleton(Type serviceType)
         {
-            _container.Register(service, implementation, Lifestyle.Singleton);
+            _container.Register(serviceType, serviceType, Lifestyle.Singleton);
             return this;
         }
 
-        public IContainer AddSingleton(Type service)
-        {
-            _container.Register(service, service, Lifestyle.Singleton);
-            return this;
-        }
-
+        /// <inheritdoc />
         public IContainer AddSingleton<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
@@ -118,6 +122,7 @@ namespace RxBim.Di
             return this;
         }
 
+        /// <inheritdoc />
         public IContainer AddSingleton<TService>()
             where TService : class
         {
@@ -125,40 +130,46 @@ namespace RxBim.Di
             return this;
         }
 
-        public IContainer AddSingleton<TService>(TService service)
+        /// <inheritdoc />
+        public IContainer AddSingleton<TService>(TService implementationInstance)
             where TService : class
         {
-            _container.Register(() => service, Lifestyle.Singleton);
+            _container.Register(() => implementationInstance, Lifestyle.Singleton);
             return this;
         }
 
-        public IContainer AddSingleton<TService>(Func<TService> factory)
+        /// <inheritdoc />
+        public IContainer AddSingleton<TService>(Func<TService> implementationFactory)
             where TService : class
         {
-            _container.Register(factory, Lifestyle.Singleton);
+            _container.Register(implementationFactory, Lifestyle.Singleton);
             return this;
         }
 
-        public IContainer AddInstance<TService>(TService service)
+        /// <inheritdoc />
+        public IContainer AddInstance<TService>(TService implementationInstance)
             where TService : class
         {
-            _container.RegisterInstance(service);
+            _container.RegisterInstance(implementationInstance);
             return this;
         }
 
-        public IContainer AddInstance(Type type, object instance)
+        /// <inheritdoc />
+        public IContainer AddInstance(Type serviceType, object implementationInstance)
         {
-            _container.RegisterInstance(type, instance);
+            _container.RegisterInstance(serviceType, implementationInstance);
             return this;
         }
 
-        public IContainer Decorate(Type service, Type decorator)
+        /// <inheritdoc />
+        public IContainer Decorate(Type serviceType, Type decoratorType)
         {
-            _container.RegisterDecorator(service, decorator);
+            _container.RegisterDecorator(serviceType, decoratorType);
             return this;
         }
 
-        public IContainer Decorate<TService, TDecorator>(TService service, TDecorator decorator)
+        /// <inheritdoc />
+        public IContainer Decorate<TService, TDecorator>()
             where TService : class
             where TDecorator : class, TService
         {
@@ -166,16 +177,19 @@ namespace RxBim.Di
             return this;
         }
 
+        /// <inheritdoc />
         public IEnumerable<Registration> GetCurrentRegistrations()
         {
             return _container.GetCurrentRegistrations().Select(x => new Registration(x.ServiceType));
         }
 
-        public object GetService(Type type)
+        /// <inheritdoc />
+        public object GetService(Type serviceType)
         {
-            return _container.GetInstance(type);
+            return _container.GetInstance(serviceType);
         }
 
+        /// <inheritdoc />
         public T GetService<T>()
             where T : class
         {

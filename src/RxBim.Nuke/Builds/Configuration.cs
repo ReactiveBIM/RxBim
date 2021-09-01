@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-namespace RxBim.Nuke.Builds
+﻿namespace RxBim.Nuke.Builds
 {
     using System.ComponentModel;
     using global::Nuke.Common.Tooling;

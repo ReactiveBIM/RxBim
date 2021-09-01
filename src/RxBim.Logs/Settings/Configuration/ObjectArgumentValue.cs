@@ -1,5 +1,3 @@
-#pragma warning disable
-
 namespace RxBim.Logs.Settings.Configuration
 {
     using System;
