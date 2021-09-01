@@ -1,3 +1,4 @@
+#pragma warning disable SA1600
 namespace RxBim.Logs.Settings.Configuration
 {
     using System;
@@ -8,10 +9,10 @@ namespace RxBim.Logs.Settings.Configuration
     using Serilog;
     using Serilog.Configuration;
 
-    class ObjectArgumentValue : IConfigurationArgumentValue
+    internal class ObjectArgumentValue : IConfigurationArgumentValue
     {
-        readonly IConfigurationSection _section;
-        readonly IReadOnlyCollection<Assembly> _configurationAssemblies;
+        private readonly IConfigurationSection _section;
+        private readonly IReadOnlyCollection<Assembly> _configurationAssemblies;
 
         public ObjectArgumentValue(IConfigurationSection section, IReadOnlyCollection<Assembly> configurationAssemblies)
         {
@@ -24,7 +25,8 @@ namespace RxBim.Logs.Settings.Configuration
         public object ConvertTo(Type toType, ResolutionContext resolutionContext)
         {
             // return the entire section for internal processing
-            if (toType == typeof(IConfigurationSection)) return _section;
+            if (toType == typeof(IConfigurationSection)) 
+                return _section;
 
             // process a nested configuration to populate an Action<> logger/sink config parameter?
             var typeInfo = toType.GetTypeInfo();
@@ -93,7 +95,7 @@ namespace RxBim.Logs.Settings.Configuration
             }
         }
 
-        static bool IsContainer(Type type, out Type elementType)
+        private static bool IsContainer(Type type, out Type elementType)
         {
             elementType = null;
             foreach (var iface in type.GetInterfaces())

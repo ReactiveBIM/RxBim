@@ -49,9 +49,14 @@ namespace RxBim.Logs
             string sectionName,
             DependencyContext dependencyContext = null)
         {
-            if (settingConfiguration == null) throw new ArgumentNullException(nameof(settingConfiguration));
-            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-            if (sectionName == null) throw new ArgumentNullException(nameof(sectionName));
+            if (settingConfiguration == null)
+                throw new ArgumentNullException(nameof(settingConfiguration));
+
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (sectionName == null)
+                throw new ArgumentNullException(nameof(sectionName));
 
             var assemblyFinder = dependencyContext == null
                 ? AssemblyFinder.Auto()
@@ -95,8 +100,11 @@ namespace RxBim.Logs
             IConfigurationSection configSection,
             DependencyContext dependencyContext = null)
         {
-            if (settingConfiguration == null) throw new ArgumentNullException(nameof(settingConfiguration));
-            if (configSection == null) throw new ArgumentNullException(nameof(configSection));
+            if (settingConfiguration == null)
+                throw new ArgumentNullException(nameof(settingConfiguration));
+
+            if (configSection == null)
+                throw new ArgumentNullException(nameof(configSection));
 
             var assemblyFinder = dependencyContext == null
                 ? AssemblyFinder.Auto()
@@ -125,9 +133,14 @@ namespace RxBim.Logs
             string sectionName,
             ConfigurationAssemblySource configurationAssemblySource)
         {
-            if (settingConfiguration == null) throw new ArgumentNullException(nameof(settingConfiguration));
-            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-            if (sectionName == null) throw new ArgumentNullException(nameof(sectionName));
+            if (settingConfiguration == null)
+                throw new ArgumentNullException(nameof(settingConfiguration));
+
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (sectionName == null)
+                throw new ArgumentNullException(nameof(sectionName));
 
             var assemblyFinder = AssemblyFinder.ForSource(configurationAssemblySource);
 
@@ -163,8 +176,11 @@ namespace RxBim.Logs
             IConfigurationSection configSection,
             ConfigurationAssemblySource configurationAssemblySource)
         {
-            if (settingConfiguration == null) throw new ArgumentNullException(nameof(settingConfiguration));
-            if (configSection == null) throw new ArgumentNullException(nameof(configSection));
+            if (settingConfiguration == null)
+                throw new ArgumentNullException(nameof(settingConfiguration));
+
+            if (configSection == null)
+                throw new ArgumentNullException(nameof(configSection));
 
             var assemblyFinder = AssemblyFinder.ForSource(configurationAssemblySource);
 

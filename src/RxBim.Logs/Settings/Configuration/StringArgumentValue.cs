@@ -1,4 +1,5 @@
-﻿namespace RxBim.Logs.Settings.Configuration
+﻿#pragma warning disable SA1600
+namespace RxBim.Logs.Settings.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -7,23 +8,23 @@
     using System.Text.RegularExpressions;
     using Serilog.Core;
 
-    class StringArgumentValue : IConfigurationArgumentValue
+    internal class StringArgumentValue : IConfigurationArgumentValue
     {
-        readonly string _providedValue;
+        private static readonly Regex StaticMemberAccessorRegex = new Regex("^(?<shortTypeName>[^:]+)::(?<memberName>[A-Za-z][A-Za-z0-9]*)(?<typeNameExtraQualifiers>[^:]*)$");
 
-        static readonly Regex StaticMemberAccessorRegex = new Regex("^(?<shortTypeName>[^:]+)::(?<memberName>[A-Za-z][A-Za-z0-9]*)(?<typeNameExtraQualifiers>[^:]*)$");
+        private static readonly Dictionary<Type, Func<string, object>> ExtendedTypeConversions = new Dictionary<Type, Func<string, object>>
+        {
+            { typeof(Uri), s => new Uri(s) },
+            { typeof(TimeSpan), s => TimeSpan.Parse(s) },
+            { typeof(Type), s => Type.GetType(s, throwOnError: true) },
+        };
+
+        private readonly string _providedValue;
 
         public StringArgumentValue(string providedValue)
         {
             _providedValue = providedValue ?? throw new ArgumentNullException(nameof(providedValue));
         }
-
-        static readonly Dictionary<Type, Func<string, object>> ExtendedTypeConversions = new Dictionary<Type, Func<string, object>>
-            {
-                { typeof(Uri), s => new Uri(s) },
-                { typeof(TimeSpan), s => TimeSpan.Parse(s) },
-                { typeof(Type), s => Type.GetType(s, throwOnError:true) },
-            };
 
         public object ConvertTo(Type toType, ResolutionContext resolutionContext)
         {
@@ -58,11 +59,12 @@
 
             if ((toTypeInfo.IsInterface || toTypeInfo.IsAbstract) && !string.IsNullOrWhiteSpace(argumentValue))
             {
-                //check if value looks like a static property or field directive
+                // check if value looks like a static property or field directive
                 // like "Namespace.TypeName::StaticProperty, AssemblyName"
                 if (TryParseStaticMemberAccessor(argumentValue, out var accessorTypeName, out var memberName))
                 {
                     var accessorType = Type.GetType(accessorTypeName, throwOnError: true);
+                    
                     // is there a public static property with that name ?
                     var publicStaticPropertyInfo = accessorType.GetTypeInfo().DeclaredProperties
                         .Where(x => x.Name == memberName)
@@ -135,6 +137,7 @@
                 memberName = null;
                 return false;
             }
+
             if (StaticMemberAccessorRegex.IsMatch(input))
             {
                 var match = StaticMemberAccessorRegex.Match(input);

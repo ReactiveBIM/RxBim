@@ -1,4 +1,5 @@
-﻿namespace RxBim.Logs.Settings.Configuration.Assemblies
+﻿#pragma warning disable SA1600
+namespace RxBim.Logs.Settings.Configuration.Assemblies
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +7,7 @@
     using System.Linq;
     using System.Reflection;
 
-    sealed class DllScanningAssemblyFinder : AssemblyFinder
+    internal sealed class DllScanningAssemblyFinder : AssemblyFinder
     {
         public override IReadOnlyList<AssemblyName> FindAssembliesContainingName(string nameToFind)
         {

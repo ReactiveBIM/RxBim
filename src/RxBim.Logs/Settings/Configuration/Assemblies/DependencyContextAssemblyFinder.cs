@@ -1,4 +1,5 @@
-﻿namespace RxBim.Logs.Settings.Configuration.Assemblies
+﻿#pragma warning disable SA1600
+namespace RxBim.Logs.Settings.Configuration.Assemblies
 {
     using System;
     using System.Collections.Generic;
@@ -6,9 +7,9 @@
     using System.Reflection;
     using Microsoft.Extensions.DependencyModel;
 
-    sealed class DependencyContextAssemblyFinder : AssemblyFinder
+    internal sealed class DependencyContextAssemblyFinder : AssemblyFinder
     {
-        readonly DependencyContext _dependencyContext;
+        private readonly DependencyContext _dependencyContext;
 
         public DependencyContextAssemblyFinder(DependencyContext dependencyContext)
         {

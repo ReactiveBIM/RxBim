@@ -1,4 +1,5 @@
-﻿namespace RxBim.Logs.Settings.Configuration
+﻿#pragma warning disable SA1600
+namespace RxBim.Logs.Settings.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -8,15 +9,30 @@
     /// <summary>
     /// Keeps track of available elements that are useful when resolving values in the settings system.
     /// </summary>
-    sealed class ResolutionContext
+    internal sealed class ResolutionContext
     {
-        readonly IDictionary<string, LoggingLevelSwitch> _declaredLevelSwitches;
-        readonly IConfiguration _appConfiguration;
+        private readonly IDictionary<string, LoggingLevelSwitch> _declaredLevelSwitches;
+        private readonly IConfiguration _appConfiguration;
 
         public ResolutionContext(IConfiguration appConfiguration = null)
         {
             _declaredLevelSwitches = new Dictionary<string, LoggingLevelSwitch>();
             _appConfiguration = appConfiguration;
+        }
+
+        public bool HasAppConfiguration => _appConfiguration != null;
+
+        public IConfiguration AppConfiguration
+        {
+            get
+            {
+                if (!HasAppConfiguration)
+                {
+                    throw new InvalidOperationException("AppConfiguration is not available");
+                }
+
+                return _appConfiguration;
+            }
         }
 
         /// <summary>
@@ -35,25 +51,14 @@
             throw new InvalidOperationException($"No LoggingLevelSwitch has been declared with name \"{switchName}\". You might be missing a section \"LevelSwitches\":{{\"{switchName}\":\"InitialLevel\"}}");
         }
 
-        public bool HasAppConfiguration => _appConfiguration != null;
-
-        public IConfiguration AppConfiguration
-        {
-            get
-            {
-                if (!HasAppConfiguration)
-                {
-                    throw new InvalidOperationException("AppConfiguration is not available");
-                }
-
-                return _appConfiguration;
-            }
-        }
-
         public void AddLevelSwitch(string levelSwitchName, LoggingLevelSwitch levelSwitch)
         {
-            if (levelSwitchName == null) throw new ArgumentNullException(nameof(levelSwitchName));
-            if (levelSwitch == null) throw new ArgumentNullException(nameof(levelSwitch));
+            if (levelSwitchName == null)
+                throw new ArgumentNullException(nameof(levelSwitchName));
+
+            if (levelSwitch == null)
+                throw new ArgumentNullException(nameof(levelSwitch));
+
             _declaredLevelSwitches[levelSwitchName] = levelSwitch;
         }
     }

@@ -1,4 +1,5 @@
-﻿namespace RxBim.Logs.Settings.Configuration
+﻿#pragma warning disable SA1600
+namespace RxBim.Logs.Settings.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -17,19 +18,20 @@
     /// This static class contains internal methods that can be used instead.
     ///
     /// </summary>
-    static class SurrogateConfigurationMethods
+    internal static class SurrogateConfigurationMethods
     {
-        static readonly Dictionary<Type, MethodInfo[]> SurrogateMethodCandidates = typeof(SurrogateConfigurationMethods)
+        private static readonly Dictionary<Type, MethodInfo[]> SurrogateMethodCandidates = typeof(SurrogateConfigurationMethods)
             .GetTypeInfo().DeclaredMethods
             .GroupBy(m => m.GetParameters().First().ParameterType)
             .ToDictionary(g => g.Key, g => g.ToArray());
 
-
+#pragma warning disable SA1202
         internal static readonly MethodInfo[] WriteTo = SurrogateMethodCandidates[typeof(LoggerSinkConfiguration)];
         internal static readonly MethodInfo[] AuditTo = SurrogateMethodCandidates[typeof(LoggerAuditSinkConfiguration)];
         internal static readonly MethodInfo[] Enrich = SurrogateMethodCandidates[typeof(LoggerEnrichmentConfiguration)];
         internal static readonly MethodInfo[] Destructure = SurrogateMethodCandidates[typeof(LoggerDestructuringConfiguration)];
         internal static readonly MethodInfo[] Filter = SurrogateMethodCandidates[typeof(LoggerFilterConfiguration)];
+#pragma warning restore SA1202
 
         /*
         Pass-through calls to various Serilog config methods which are
@@ -44,14 +46,14 @@
 
         // .WriteTo...
         // ========
-        static LoggerConfiguration Sink(
+        private static LoggerConfiguration Sink(
             LoggerSinkConfiguration loggerSinkConfiguration,
             ILogEventSink sink,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null)
             => loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
 
-        static LoggerConfiguration Logger(
+        private static LoggerConfiguration Logger(
             LoggerSinkConfiguration loggerSinkConfiguration,
             Action<LoggerConfiguration> configureLogger,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
@@ -60,14 +62,14 @@
 
         // .AuditTo...
         // ========
-        static LoggerConfiguration Sink(
+        private static LoggerConfiguration Sink(
             LoggerAuditSinkConfiguration auditSinkConfiguration,
             ILogEventSink sink,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null)
             => auditSinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
 
-        static LoggerConfiguration Logger(
+        private static LoggerConfiguration Logger(
             LoggerAuditSinkConfiguration auditSinkConfiguration,
             Action<LoggerConfiguration> configureLogger,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
@@ -78,37 +80,37 @@
         // =======
         // TODO: add overload for array argument (ILogEventEnricher[])
         // expose `With(params ILogEventFilter[] filters)` as if it was `With(ILogEventFilter filter)`
-        static LoggerConfiguration With(LoggerFilterConfiguration loggerFilterConfiguration, ILogEventFilter filter)
+        private static LoggerConfiguration With(LoggerFilterConfiguration loggerFilterConfiguration, ILogEventFilter filter)
             => loggerFilterConfiguration.With(filter);
 
         // .Destructure...
         // ============
         // TODO: add overload for array argument (IDestructuringPolicy[])
         // expose `With(params IDestructuringPolicy[] destructuringPolicies)` as if it was `With(IDestructuringPolicy policy)`
-        static LoggerConfiguration With(LoggerDestructuringConfiguration loggerDestructuringConfiguration, IDestructuringPolicy policy)
+        private static LoggerConfiguration With(LoggerDestructuringConfiguration loggerDestructuringConfiguration, IDestructuringPolicy policy)
             => loggerDestructuringConfiguration.With(policy);
 
-        static LoggerConfiguration ToMaximumDepth(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumDestructuringDepth)
+        private static LoggerConfiguration ToMaximumDepth(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumDestructuringDepth)
             => loggerDestructuringConfiguration.ToMaximumDepth(maximumDestructuringDepth);
 
-        static LoggerConfiguration ToMaximumStringLength(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumStringLength)
+        private static LoggerConfiguration ToMaximumStringLength(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumStringLength)
             => loggerDestructuringConfiguration.ToMaximumStringLength(maximumStringLength);
 
-        static LoggerConfiguration ToMaximumCollectionCount(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumCollectionCount)
+        private static LoggerConfiguration ToMaximumCollectionCount(LoggerDestructuringConfiguration loggerDestructuringConfiguration, int maximumCollectionCount)
             => loggerDestructuringConfiguration.ToMaximumCollectionCount(maximumCollectionCount);
 
-        static LoggerConfiguration AsScalar(LoggerDestructuringConfiguration loggerDestructuringConfiguration, Type scalarType)
+        private static LoggerConfiguration AsScalar(LoggerDestructuringConfiguration loggerDestructuringConfiguration, Type scalarType)
             => loggerDestructuringConfiguration.AsScalar(scalarType);
 
         // .Enrich...
         // =======
         // expose `With(params ILogEventEnricher[] enrichers)` as if it was `With(ILogEventEnricher enricher)`
-        static LoggerConfiguration With(
+        private static LoggerConfiguration With(
             LoggerEnrichmentConfiguration loggerEnrichmentConfiguration,
             ILogEventEnricher enricher)
             => loggerEnrichmentConfiguration.With(enricher);
 
-        static LoggerConfiguration AtLevel(
+        private static LoggerConfiguration AtLevel(
             LoggerEnrichmentConfiguration loggerEnrichmentConfiguration,
             Action<LoggerEnrichmentConfiguration> configureEnricher,
             LogEventLevel enrichFromLevel = LevelAlias.Minimum,
@@ -116,7 +118,7 @@
             => levelSwitch != null ? loggerEnrichmentConfiguration.AtLevel(levelSwitch, configureEnricher)
                                    : loggerEnrichmentConfiguration.AtLevel(enrichFromLevel, configureEnricher);
 
-        static LoggerConfiguration FromLogContext(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration)
+        private static LoggerConfiguration FromLogContext(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration)
             => loggerEnrichmentConfiguration.FromLogContext();
 
         // ReSharper restore UnusedMember.Local
