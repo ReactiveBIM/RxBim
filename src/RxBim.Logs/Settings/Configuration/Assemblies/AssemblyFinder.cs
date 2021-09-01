@@ -16,6 +16,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
             {
                 return new DependencyContextAssemblyFinder(DependencyContext.Default);
             }
+
             return new DllScanningAssemblyFinder();
         }
 

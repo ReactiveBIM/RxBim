@@ -149,6 +149,7 @@ namespace RxBim.Logs.Settings.Configuration
                 accessorTypeName = shortAccessorTypeName.Trim() + extraQualifiers.TrimEnd();
                 return true;
             }
+
             accessorTypeName = null;
             memberName = null;
             return false;

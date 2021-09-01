@@ -13,12 +13,12 @@
     using global::Nuke.Common.Tools.Git;
     using JetBrains.Annotations;
     using Models;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static global::Nuke.Common.IO.FileSystemTasks;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static Helpers.WixHelper;
 
     /// <summary>
-    /// Расширение Build-скрипта для сборки MSI
+    /// Contains tools for MSI packages creating.
     /// </summary>
     /// <typeparam name="TWix">Тип WIX-сборщика</typeparam>
     /// <typeparam name="TPackGen">Тип генератора файла PackageContents</typeparam>
@@ -38,7 +38,7 @@
         }
 
         /// <summary>
-        /// BuildMsi
+        /// Builds an MSI package.
         /// </summary>
         public Target BuildMsi => _ => _
             .Description("Build MSI from selected project")
@@ -54,6 +54,9 @@
                 BuildInstaller(ProjectForMsiBuild, Configuration);
             });
 
+        /// <summary>
+        /// Compiles the project defined in <see cref="Project"/> to temporary path.
+        /// </summary>
         public Target CompileToTemp => _ => _
             .Description("Build project to temp output")
             .Requires(() => Project)
@@ -114,11 +117,14 @@
             .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Configuration));
 
         /// <summary>
-        /// Install WixSharp
+        /// Installs WixSharp.
         /// </summary>
         public Target InstallWixTools => _ => _
             .Executes(SetupWixTools);
 
+        /// <summary>
+        /// Signs assemblies af a given project.
+        /// </summary>
         public virtual Target SignAssemblies => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)
@@ -140,6 +146,9 @@
                     ServerUrl);
             });
 
+        /// <summary>
+        /// Generates additional files.
+        /// </summary>
         public Target GenerateAdditionalFiles => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)
@@ -149,10 +158,13 @@
                 var types = GetAssemblyTypes(
                     ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
 
-                _wix.GenerateAdditionalFiles
-                    (ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
+                _wix.GenerateAdditionalFiles(
+                    ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
             });
 
+        /// <summary>
+        /// Generates a package contents file.
+        /// </summary>
         public Target GeneratePackageContentsFile => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)

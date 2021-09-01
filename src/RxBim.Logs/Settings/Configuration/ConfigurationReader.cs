@@ -185,8 +185,9 @@ namespace RxBim.Logs.Settings.Configuration
             {
                 var name = s.GetSection("Name");
                 if (name.Value == null)
-                    throw new InvalidOperationException(
-                        $"The configuration value in {name.Path} has no 'Name' element.");
+                {
+                    throw new InvalidOperationException($"The configuration value in {name.Path} has no 'Name' element.");
+                }
 
                 return name.Value;
             }
@@ -205,8 +206,10 @@ namespace RxBim.Logs.Settings.Configuration
                 foreach (var simpleName in usingSection.GetChildren().Select(c => c.Value))
                 {
                     if (string.IsNullOrWhiteSpace(simpleName))
+                    {
                         throw new InvalidOperationException(
                             "A zero-length or whitespace assembly name was supplied to a Serilog.Using configuration statement.");
+                    }
 
                     var assembly = Assembly.Load(new AssemblyName(simpleName));
                     if (!assemblies.ContainsKey(assembly.FullName))
