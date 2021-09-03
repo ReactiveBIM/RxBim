@@ -6,13 +6,9 @@
     "build": {
       "type": "object",
       "properties": {
-        "Algorithm": {
-          "type": "string",
-          "description": "Digest algorithm"
-        },
-        "Cert": {
-          "type": "string",
-          "description": "Certificate path"
+        "AllProjects": {
+          "type": "boolean",
+          "description": "Select all projects"
         },
         "Configuration": {
           "type": "string",
@@ -25,10 +21,6 @@
         "Continue": {
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
-        },
-        "Csp": {
-          "type": "string",
-          "description": "CSP containing for Private key"
         },
         "Help": {
           "type": "boolean",
@@ -58,6 +50,10 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
+        "NugetApiKey": {
+          "type": "string",
+          "description": "NuGet API key"
+        },
         "NugetSource": {
           "type": "string",
           "description": "NuGet source URL"
@@ -74,10 +70,6 @@
           "type": "boolean",
           "description": "Shows the execution plan (HTML)"
         },
-        "PrivateKey": {
-          "type": "string",
-          "description": "Private key container"
-        },
         "Profile": {
           "type": "array",
           "description": "Defines the profiles to load",
@@ -85,24 +77,16 @@
             "type": "string"
           }
         },
-        "Project": {
-          "type": "string",
-          "description": "Select project"
-        },
-        "ProjectForPublish": {
-          "type": "string",
-          "description": "Project name"
-        },
-        "RevitVersion": {
-          "type": "string"
+        "Projects": {
+          "type": "array",
+          "description": "Project name list",
+          "items": {
+            "type": "string"
+          }
         },
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
-        },
-        "ServerUrl": {
-          "type": "string",
-          "description": "Timestamp server URL"
         },
         "Skip": {
           "type": "array",
@@ -110,32 +94,15 @@
           "items": {
             "type": "string",
             "enum": [
-              "BuildFromTag",
-              "BuildMsi",
-              "BuildMsiForProduction",
-              "BuildMsiForTesting",
-              "CheckCurrentBranch",
-              "CheckProductionVersion",
-              "CheckStageVersion",
               "CheckUncommitted",
               "Clean",
-              "CleanOutput",
               "Compile",
-              "CompileToTemp",
-              "CopyDebugAddin",
-              "CopyOutput",
-              "GenerateAdditionalFiles",
-              "GeneratePackageContentsFile",
-              "GenerateProjectProps",
-              "InstallWixTools",
+              "List",
               "Pack",
               "Publish",
               "Push",
               "Restore",
-              "SetProjects",
-              "SignAssemblies",
               "Tag",
-              "TagProject",
               "Test"
             ]
           }
@@ -150,32 +117,15 @@
           "items": {
             "type": "string",
             "enum": [
-              "BuildFromTag",
-              "BuildMsi",
-              "BuildMsiForProduction",
-              "BuildMsiForTesting",
-              "CheckCurrentBranch",
-              "CheckProductionVersion",
-              "CheckStageVersion",
               "CheckUncommitted",
               "Clean",
-              "CleanOutput",
               "Compile",
-              "CompileToTemp",
-              "CopyDebugAddin",
-              "CopyOutput",
-              "GenerateAdditionalFiles",
-              "GeneratePackageContentsFile",
-              "GenerateProjectProps",
-              "InstallWixTools",
+              "List",
               "Pack",
               "Publish",
               "Push",
               "Restore",
-              "SetProjects",
-              "SignAssemblies",
               "Tag",
-              "TagProject",
               "Test"
             ]
           }

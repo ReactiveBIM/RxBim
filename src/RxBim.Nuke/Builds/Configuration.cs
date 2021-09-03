@@ -1,4 +1,5 @@
-﻿namespace RxBim.Nuke.Builds
+﻿#pragma warning disable SA1401
+namespace RxBim.Nuke.Builds
 {
     using System.ComponentModel;
     using global::Nuke.Common.Tooling;
@@ -12,12 +13,12 @@
         /// <summary>
         /// Debug.
         /// </summary>
-        public static Configuration Debug { get; } = new () { Value = nameof(Debug) };
+        public static Configuration Debug = new () { Value = nameof(Debug) };
 
         /// <summary>
         /// Release.
         /// </summary>
-        public static Configuration Release { get; } = new () { Value = nameof(Release) };
+        public static Configuration Release = new () { Value = nameof(Release) };
 
         /// <summary>
         /// Casts an instance of type <see cref="Configuration"/> to <see cref="string"/>.
