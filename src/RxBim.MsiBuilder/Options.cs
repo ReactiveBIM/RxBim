@@ -58,6 +58,9 @@ namespace RxBim.MsiBuilder
         [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
         public IEnumerable<string> ProjectsAddingToManifest { get; set; }
 
+        [Option('x', "msiFilePrefix", Required = false, HelpText = "Set msi file prefix.")]
+        public string MsiFilePrefix { get; set; }
+
         public override string ToString()
         {
             return string.Join(" ",

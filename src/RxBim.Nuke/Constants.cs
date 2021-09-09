@@ -14,10 +14,5 @@
         /// RxBimApplication
         /// </summary>
         public const string RxBimApplication = "RxBimApplication";
-
-        /// <summary>
-        /// Префикс
-        /// </summary>
-        public const string MsiFilePrefix = "RxBim.";
     }
 }
