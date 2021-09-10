@@ -1,10 +1,9 @@
-﻿#pragma warning disable
-
+﻿#pragma warning disable SA1600
 namespace RxBim.Logs.Settings.Configuration
 {
     using System;
 
-    interface IConfigurationArgumentValue
+    internal interface IConfigurationArgumentValue
     {
         object ConvertTo(Type toType, ResolutionContext resolutionContext);
     }

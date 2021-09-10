@@ -1,69 +1,79 @@
-﻿#pragma warning disable
-namespace RxBim.Di
+﻿namespace RxBim.Di
 {
     using System;
     using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// DI container
+    /// DI container abstraction.
     /// </summary>
+    [PublicAPI]
     public interface IContainer
     {
-        IContainer AddTransient(Type service, Type implementation);
-        IContainer AddTransient(Type service);
+        /// <summary>
+        /// Adds a service of the type specified in <paramref name="serviceType"/>
+        /// and the lifetime specified in <paramref name="lifetime"/> with an
+        /// implementation of the type specified in <paramref name="implementationType"/> to this
+        /// DI container.
+        /// </summary>
+        /// <param name="serviceType">The type of the service to register.</param>
+        /// <param name="implementationType">The implementation type of the service.</param>
+        /// <param name="lifetime">The service lifetime.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        IContainer Add(Type serviceType, Type implementationType, Lifetime lifetime);
 
-        IContainer AddTransient<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService;
+        /// <summary>
+        /// Adds a service of the type specified in <paramref name="serviceType"/>
+        /// and the lifetime specified in <paramref name="lifetime"/> using the
+        /// factory specified in <paramref name="implementationFactory"/> to this
+        /// DI container.
+        /// </summary>
+        /// <param name="serviceType">The type of the service to register.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        /// <param name="lifetime">The service lifetime.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        IContainer Add(Type serviceType, Func<object> implementationFactory, Lifetime lifetime);
 
-        IContainer AddTransient<TService>()
-            where TService : class;
+        /// <summary>
+        /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with an
+        /// instance specified in <paramref name="implementationInstance"/> to this
+        /// DI container.
+        /// </summary>
+        /// <param name="serviceType">The type of the service to register.</param>
+        /// <param name="implementationInstance">The instance of the service.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        IContainer AddSingleton(Type serviceType, object implementationInstance);
 
-        IContainer AddTransient<TService>(Func<TService> factory)
-            where TService : class;
+        /// <summary>
+        /// Adds a single instance that will be returned when an instance of type
+        /// <paramref name="serviceType" /> is requested. This <paramref name="implementationInstance" />
+        /// must be thread-safe when working in a multi-threaded environment.
+        /// <b>NOTE:</b> Do note that instances supplied by this method <b>NEVER</b> get disposed by the
+        /// container, since the instance is assumed to outlive this container instance.
+        /// </summary>
+        /// <param name="serviceType">The type of the service to register and the implementation to use.</param>
+        /// <param name="implementationInstance">The instance of the service.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        IContainer AddInstance(Type serviceType, object implementationInstance);
 
-        IContainer AddScoped(Type service, Type implementation);
-        IContainer AddScoped(Type service);
+        /// <summary>
+        /// Adds a transient decorator of type <paramref name="decoratorType" /> for the service
+        /// of the type specified in <paramref name="serviceType"/>.
+        /// </summary>
+        /// <param name="serviceType">The type of the service to decorate.</param>
+        /// <param name="decoratorType">The type of the decorator.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        IContainer Decorate(Type serviceType, Type decoratorType);
 
-        IContainer AddScoped<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService;
-
-        IContainer AddScoped<TService>()
-            where TService : class;
-
-        IContainer AddScoped<TService>(Func<TService> factory)
-            where TService : class;
-
-        IContainer AddSingleton(Type service, Type implementation);
-        IContainer AddSingleton(Type service);
-
-        IContainer AddSingleton<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService;
-
-        IContainer AddSingleton<TService>()
-            where TService : class;
-
-        IContainer AddSingleton<TService>(Func<TService> factory)
-            where TService : class;
-
-        IContainer AddInstance<TService>(TService service)
-            where TService : class;
-        
-        IContainer AddInstance(Type type, object instance);
-
-        IContainer Decorate(Type service, Type decorator);
-
-        IContainer Decorate<TService, TDecorator>(TService service, TDecorator decorator)
-            where TService : class
-            where TDecorator : class, TService;
-
+        /// <summary>
+        /// Returns all type registrations.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Registration> GetCurrentRegistrations();
 
-        object GetService(Type type);
-
-        T GetService<T>()
-            where T : class;
+        /// <summary>Gets an instance of the given <paramref name="serviceType" />.</summary>
+        /// <param name="serviceType">Type of object requested.</param>
+        /// <returns>The requested service instance.</returns>
+        object GetService(Type serviceType);
     }
 }

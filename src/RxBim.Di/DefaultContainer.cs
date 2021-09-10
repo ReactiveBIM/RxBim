@@ -1,185 +1,79 @@
-﻿#pragma warning disable
-namespace RxBim.Di
+﻿namespace RxBim.Di
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using SimpleInjector;
 
-    public class DefaultContainer : IContainer
+    /// <summary>
+    /// The default implementation of <see cref="IContainer"/>.
+    /// </summary>
+    public sealed class DefaultContainer : IContainer
     {
         private readonly Container _container;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public DefaultContainer()
         {
             _container = new Container();
             _container.Options.EnableAutoVerification = false;
         }
 
-        public IContainer AddTransient(Type service, Type implementation)
+        /// <inheritdoc />
+        public IContainer Add(Type serviceType, Type implementationType, Lifetime lifetime)
         {
-            _container.Register(service, implementation);
+            _container.Register(serviceType, implementationType, GetLifestyle(lifetime));
             return this;
         }
 
-        public IContainer AddTransient(Type service)
+        /// <inheritdoc />
+        public IContainer Add(Type serviceType, Func<object> implementationFactory, Lifetime lifetime)
         {
-            _container.Register(service);
+            _container.Register(serviceType, implementationFactory, GetLifestyle(lifetime));
             return this;
         }
 
-        public IContainer AddTransient<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService
+        /// <inheritdoc />
+        public IContainer AddSingleton(Type serviceType,  object implementationInstance)
         {
-            _container.Register<TService, TImplementation>();
+            _container.Register(serviceType, () => implementationInstance, Lifestyle.Singleton);
             return this;
         }
 
-        public IContainer AddTransient<TService>()
-            where TService : class
+        /// <inheritdoc />
+        public IContainer AddInstance(Type serviceType, object implementationInstance)
         {
-            _container.Register<TService>();
+            _container.RegisterInstance(serviceType, implementationInstance);
             return this;
         }
 
-        public IContainer AddTransient<TService>(TService service)
-            where TService : class
+        /// <inheritdoc />
+        public IContainer Decorate(Type serviceType, Type decoratorType)
         {
-            _container.Register(() => service);
+            _container.RegisterDecorator(serviceType, decoratorType);
             return this;
         }
 
-        public IContainer AddTransient<TService>(Func<TService> factory)
-            where TService : class
-        {
-            _container.Register(factory);
-            return this;
-        }
-
-        public IContainer AddScoped(Type service, Type implementation)
-        {
-            _container.Register(service, implementation, Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddScoped(Type service)
-        {
-            _container.Register(service, service, Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddScoped<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService
-        {
-            _container.Register<TService, TImplementation>(Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddScoped<TService>()
-            where TService : class
-        {
-            _container.Register<TService>(Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddScoped<TService>(TService service)
-            where TService : class
-        {
-            _container.Register(() => service, Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddScoped<TService>(Func<TService> factory)
-            where TService : class
-        {
-            _container.Register(factory, Lifestyle.Scoped);
-            return this;
-        }
-
-        public IContainer AddSingleton(Type service, Type implementation)
-        {
-            _container.Register(service, implementation, Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddSingleton(Type service)
-        {
-            _container.Register(service, service, Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddSingleton<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService
-        {
-            _container.Register<TService, TImplementation>(Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddSingleton<TService>()
-            where TService : class
-        {
-            _container.Register<TService>(Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddSingleton<TService>(TService service)
-            where TService : class
-        {
-            _container.Register(() => service, Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddSingleton<TService>(Func<TService> factory)
-            where TService : class
-        {
-            _container.Register(factory, Lifestyle.Singleton);
-            return this;
-        }
-
-        public IContainer AddInstance<TService>(TService service)
-            where TService : class
-        {
-            _container.RegisterInstance(service);
-            return this;
-        }
-
-        public IContainer AddInstance(Type type, object instance)
-        {
-            _container.RegisterInstance(type, instance);
-            return this;
-        }
-
-        public IContainer Decorate(Type service, Type decorator)
-        {
-            _container.RegisterDecorator(service, decorator);
-            return this;
-        }
-
-        public IContainer Decorate<TService, TDecorator>(TService service, TDecorator decorator)
-            where TService : class
-            where TDecorator : class, TService
-        {
-            _container.RegisterDecorator<TService, TDecorator>();
-            return this;
-        }
-
+        /// <inheritdoc />
         public IEnumerable<Registration> GetCurrentRegistrations()
         {
             return _container.GetCurrentRegistrations().Select(x => new Registration(x.ServiceType));
         }
 
-        public object GetService(Type type)
+        /// <inheritdoc />
+        public object GetService(Type serviceType)
         {
-            return _container.GetInstance(type);
+            return _container.GetInstance(serviceType);
         }
 
-        public T GetService<T>()
-            where T : class
+        private Lifestyle GetLifestyle(Lifetime lifetime) => lifetime switch
         {
-            return _container.GetInstance<T>();
-        }
+            Lifetime.Transient => Lifestyle.Transient,
+            Lifetime.Scoped => Lifestyle.Scoped,
+            Lifetime.Singleton => Lifestyle.Singleton,
+            _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
+        };
     }
 }

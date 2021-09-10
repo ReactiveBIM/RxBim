@@ -45,9 +45,8 @@
                     $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
             }
 
-            var outputFileName = project.Name.StartsWith(MsiFilePrefix)
-                ? project.Name
-                : $"{MsiFilePrefix}{project.Name}";
+            var msiFilePrefix = project.GetProperty(nameof(Options.MsiFilePrefix));
+            var outputFileName = $"{msiFilePrefix}{project.Name}";
 
             if (!string.IsNullOrWhiteSpace(productVersion))
                 outputFileName += $"_{productVersion}";

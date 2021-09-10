@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+﻿#pragma warning disable SA1600
 namespace RxBim.Logs.Settings.Configuration.Assemblies
 {
     using System;
@@ -6,15 +6,8 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
     using System.Reflection;
     using Microsoft.Extensions.DependencyModel;
 
-    abstract class AssemblyFinder
+    internal abstract class AssemblyFinder
     {
-        public abstract IReadOnlyList<AssemblyName> FindAssembliesContainingName(string nameToFind);
-
-        protected static bool IsCaseInsensitiveMatch(string text, string textToFind)
-        {
-            return text != null && text.ToLowerInvariant().Contains(textToFind.ToLowerInvariant());
-        }
-
         public static AssemblyFinder Auto()
         {
             // Need to check `Assembly.GetEntryAssembly()` first because 
@@ -23,6 +16,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
             {
                 return new DependencyContextAssemblyFinder(DependencyContext.Default);
             }
+
             return new DllScanningAssemblyFinder();
         }
 
@@ -39,6 +33,13 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
         public static AssemblyFinder ForDependencyContext(DependencyContext dependencyContext)
         {
             return new DependencyContextAssemblyFinder(dependencyContext);
+        }
+
+        public abstract IReadOnlyList<AssemblyName> FindAssembliesContainingName(string nameToFind);
+
+        protected static bool IsCaseInsensitiveMatch(string text, string textToFind)
+        {
+            return text != null && text.ToLowerInvariant().Contains(textToFind.ToLowerInvariant());
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-
+﻿#pragma warning disable SA1600
 namespace RxBim.Logs.Settings.Configuration.Assemblies
 {
     using System;
@@ -8,7 +7,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
     using System.Linq;
     using System.Reflection;
 
-    sealed class DllScanningAssemblyFinder : AssemblyFinder
+    internal sealed class DllScanningAssemblyFinder : AssemblyFinder
     {
         public override IReadOnlyList<AssemblyName> FindAssembliesContainingName(string nameToFind)
         {
