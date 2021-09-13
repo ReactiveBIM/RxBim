@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using SimpleInjector;
+    using SimpleInjector.Lifestyles;
 
     /// <summary>
     /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
@@ -19,6 +20,7 @@
         {
             _container = new Container();
             _container.Options.EnableAutoVerification = false;
+            _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
         }
 
         /// <inheritdoc />
@@ -151,6 +153,13 @@
         public object GetService(Type serviceType)
         {
             return _container.GetInstance(serviceType);
+        }
+
+        /// <inheritdoc />
+        public IContainerScope CreateScope()
+        {
+            var scope = AsyncScopedLifestyle.BeginScope(_container);
+            return new SimpleInjectorScope(scope, this);
         }
 
         /// <inheritdoc />

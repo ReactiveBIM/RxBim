@@ -10,7 +10,7 @@
     /// </summary>
     public class ServiceProviderContainer : IContainer
     {
-        private readonly Lazy<ServiceProvider> _serviceProvider;
+        private readonly Lazy<IServiceProvider> _serviceProvider;
         private readonly IServiceCollection _serviceCollection;
 
         /// <summary>
@@ -19,7 +19,19 @@
         public ServiceProviderContainer()
         {
             _serviceCollection = new ServiceCollection();
-            _serviceProvider = new Lazy<ServiceProvider>(() => ServiceCollection.BuildServiceProvider(false));
+            _serviceProvider = new Lazy<IServiceProvider>(() => ServiceCollection.BuildServiceProvider(false));
+        }
+
+        /// <summary>
+        /// Internal ctor.
+        /// </summary>
+        /// <param name="serviceProvider">The scoped service provider.</param>
+        private ServiceProviderContainer(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = new Lazy<IServiceProvider>(() => serviceProvider);
+
+            // lazy value initializing
+            _ = _serviceProvider.Value;
         }
 
         private IServiceCollection ServiceCollection
@@ -33,7 +45,7 @@
             }
         }
 
-        private ServiceProvider ServiceProvider => _serviceProvider.Value;
+        private IServiceProvider ServiceProvider => _serviceProvider.Value;
 
         /// <inheritdoc />
         public IContainer Add(Type serviceType, Type implementationType, Lifetime lifetime)
@@ -80,10 +92,18 @@
         public object GetService(Type serviceType) => ServiceProvider.GetService(serviceType);
 
         /// <inheritdoc />
+        public IContainerScope CreateScope()
+        {
+            var scope = ServiceProvider.CreateScope();
+            var container = new ServiceProviderContainer(scope.ServiceProvider);
+            return new ServiceProviderScope(scope, container);
+        }
+
+        /// <inheritdoc />
         public void Dispose()
         {
-            if (_serviceProvider.IsValueCreated)
-                ServiceProvider.Dispose();
+            if (_serviceProvider.IsValueCreated && ServiceProvider is IDisposable disposable)
+                disposable.Dispose();
         }
 
         private static IServiceCollection Add(
