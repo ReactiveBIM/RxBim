@@ -8,7 +8,7 @@
     /// DI container abstraction.
     /// </summary>
     [PublicAPI]
-    public interface IContainer
+    public interface IContainer : IDisposable
     {
         /// <summary>
         /// Adds a service of the type specified in <paramref name="serviceType"/>

@@ -3,7 +3,6 @@ namespace RxBim.Di.Tests
     using System;
     using System.Collections.Generic;
     using FluentAssertions;
-    using ServiceProvider;
     using Shared;
     using TestObjects;
     using Xunit;
