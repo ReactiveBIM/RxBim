@@ -1,43 +1,54 @@
 namespace RxBim.Di.Tests
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
+    using ServiceProvider;
     using Shared;
     using TestObjects;
     using Xunit;
 
     public class MethodCallerTests
     {
-        [Fact]
-        public void CallerShouldThrowExceptionOnBadMethodName()
+        public static IEnumerable<object[]> GetContainers()
+        {
+            yield return new object[] { new SimpleInjectorContainer() };
+            yield return new object[] { new ServiceProviderContainer() };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetContainers))]
+        public void CallerShouldThrowExceptionOnBadMethodName(IContainer container)
         {
             var badObject = new BadMethodNameObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
+            Action act = () => methodCaller.InvokeCommand(container, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
 
-        [Fact]
-        public void CallerShouldThrowExceptionOnBadReturnType()
+        [Theory]
+        [MemberData(nameof(GetContainers))]
+        public void CallerShouldThrowExceptionOnBadReturnType(IContainer container)
         {
             var badObject = new BadReturnTypeObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
+            Action act = () => methodCaller.InvokeCommand(container, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
 
-        [Fact]
-        public void CallerShouldReturnCorrectData()
+        [Theory]
+        [MemberData(nameof(GetContainers))]
+        public void CallerShouldReturnCorrectData(IContainer container)
         {
             var testObject = new TestObject();
 
             var methodCaller = new MethodCaller<int>(testObject);
             int result = 0;
-            Action act = () => result = methodCaller.InvokeCommand(new DefaultContainer(), "Execute");
+            Action act = () => result = methodCaller.InvokeCommand(container, "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

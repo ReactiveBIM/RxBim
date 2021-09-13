@@ -9,8 +9,9 @@
     /// <summary>
     /// DiWrapper
     /// </summary>
-    public abstract class DiConfigurator<T> : IDiConfigurator<T>
-        where T : IPluginConfiguration
+    public abstract class DiConfigurator<TConfiguration, TContainerImpl> : IDiConfigurator<TConfiguration>
+        where TConfiguration : IPluginConfiguration
+        where TContainerImpl : IContainer, new()
     {
         /// <summary>
         /// DI контейнер
@@ -44,13 +45,13 @@
                 return resolver.Resolve();
             }
 
-            return new DefaultContainer();
+            return new TContainerImpl();
         }
 
         private void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
-                .Where(x => x.GetInterface(typeof(T).Name) != null)
+                .Where(x => x.GetInterface(typeof(TConfiguration).Name) != null)
                 .Select(Activator.CreateInstance)
                 .Cast<IPluginConfiguration>();
 

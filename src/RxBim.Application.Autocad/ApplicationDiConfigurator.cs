@@ -8,7 +8,7 @@
     /// <summary>
     /// Конфигуратор зависимостей приложения
     /// </summary>
-    public class ApplicationDiConfigurator : DiConfigurator<IApplicationConfiguration>
+    public class ApplicationDiConfigurator : DiConfigurator<IApplicationConfiguration, SimpleInjectorContainer>
     {
         private readonly object _applicationObject;
 

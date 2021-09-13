@@ -1,0 +1,16 @@
+﻿<Project>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <NoWarn>NU1701</NoWarn>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+    </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Description>RxBim DI SimpleInjector implementation</Description>
+        <PackageId>RxBim.Di.SimpleInjector</PackageId>
+    </PropertyGroup>
+
+</Project>
