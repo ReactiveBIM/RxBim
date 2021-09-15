@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>False</IsPackable>
-    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,8 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\RxBim.Analyzers\RxBim.Analyzers.csproj" />
-  <!--    <ProjectReference Include="..\..\src\RxBim.Command.Api\RxBim.Command.Api.csproj" />-->
-  <!--    <ProjectReference Include="..\..\src\RxBim.Shared\RxBim.Shared.csproj" />-->
   </ItemGroup>
 
 </Project>

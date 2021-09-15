@@ -4,6 +4,7 @@ using System.Text;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.CI.SpaceAutomation;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
@@ -24,6 +25,12 @@ using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     OnPushBranches = new[] { MasterBranch },
     InvokedTargets = new[] { nameof(Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
+[SpaceAutomation(
+    name: "CI",
+    image: "mcr.microsoft.com/dotnet/sdk:3.1",
+    OnPushBranchIncludes = new[] { DevelopBranch },
+    OnPush = true,
+    InvokedTargets = new[] { nameof(Test) })]
 partial class Build : NukeBuild
 {
     public Build()

@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Shared", "src\RxBim.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1165F0D0-B8DD-4713-B62E-B0592F249C45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Analyzers.Test", "tests\RxBim.Analyzers.Test\RxBim.Analyzers.Test.csproj", "{F879BBCB-A71C-4D76-8E62-1BC809826F91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Analyzers.Tests", "tests\RxBim.Analyzers.Tests\RxBim.Analyzers.Tests.csproj", "{F879BBCB-A71C-4D76-8E62-1BC809826F91}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.Tests", "tests\RxBim.Di.Tests\RxBim.Di.Tests.csproj", "{C370ABAA-23EA-403E-96DD-B3610A8A91D7}"
 EndProject
