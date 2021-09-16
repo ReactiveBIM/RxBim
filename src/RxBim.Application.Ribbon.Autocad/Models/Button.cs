@@ -9,18 +9,11 @@
     using GalaSoft.MvvmLight.Command;
 
     /// <summary>
-    /// Кнопка
+    /// AutoCAD ribbon button definition
     /// </summary>
     public class Button : ButtonBase
     {
-        /// <summary>
-        /// Команда
-        /// </summary>
         private readonly string _command;
-
-        /// <summary>
-        /// Ссылка на справку
-        /// </summary>
         private string _helpUrl;
 
         /// <inheritdoc />
@@ -32,12 +25,12 @@
         }
 
         /// <summary>
-        /// Отображать текст
+        /// Show button text
         /// </summary>
         public bool ShowText { get; set; }
 
         /// <summary>
-        /// Возвращает RibbonButton
+        /// Creates and returns <see cref="RibbonButton"/> for this button definition
         /// </summary>
         public virtual RibbonButton GetRibbonButton()
         {
@@ -51,9 +44,9 @@
         }
 
         /// <summary>
-        /// Задаёт базовые свойства кнопке
+        /// Sets basic properties for <see cref="RibbonButton"/> from this button definition
         /// </summary>
-        /// <param name="button">Кнопка</param>
+        /// <param name="button"><see cref="RibbonButton"/></param>
         protected void SetBaseProperties(RibbonButton button)
         {
             if (Name != null)
@@ -81,7 +74,7 @@
         }
 
         /// <summary>
-        /// Создаёт подсказку
+        /// Creates and returns a tooltip
         /// </summary>
         private RibbonToolTip GetToolTip()
         {
@@ -90,7 +83,7 @@
                 tip.Content = ToolTip;
             tip.IsHelpEnabled = true;
             if (_helpUrl != null)
-                tip.HelpSource = new Uri(_helpUrl, UriKind.Absolute);
+                tip.HelpTopic = _helpUrl;
             return tip;
         }
 
@@ -121,7 +114,7 @@
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    throw new InvalidOperationException("Не удалось извлечь имя команды!", e);
+                    throw new InvalidOperationException("Failed to retrieve command name!", e);
                 }
             }
 
