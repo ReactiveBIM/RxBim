@@ -3,7 +3,6 @@
     using System;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
-    using Ribbon.Abstractions;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
@@ -12,7 +11,7 @@
     public class RibbonEventService : IRibbonEvents, IDisposable
     {
         /// <inheritdoc />
-        public event EventHandler NeedRebuild;
+        public event EventHandler? NeedRebuild;
 
         /// <inheritdoc />
         public void Run()

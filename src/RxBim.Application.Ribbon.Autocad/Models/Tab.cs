@@ -25,9 +25,11 @@
         public Tab(Ribbon ribbon, string tabName, IContainer container)
             : base(ribbon, container)
         {
-            _tab = Ribbon.AcadRibbonControl.Tabs.FirstOrDefault(t => t.Title == tabName);
-            if (_tab is null)
-                throw new InvalidOperationException($"Не найдена вкладка {tabName}");
+            var ribbonControl = Ribbon.AcadRibbonControl;
+            if (ribbonControl is null)
+                throw new InvalidOperationException("Ribbon control is null!");
+            var tab = ribbonControl.Tabs.FirstOrDefault(t => t.Title == tabName);
+            _tab = tab ?? throw new InvalidOperationException($"'{tabName}' tab not found!");
         }
 
         /// <inheritdoc />
@@ -53,15 +55,13 @@
         }
 
         /// <inheritdoc />
-        public ITab AboutButton(string name, Action<IAboutButton> action, string panelName = null, string text = null)
+        public ITab AboutButton(string name, Action<IAboutButton> action, string? panelName = null, string? text = null)
         {
             if (_isAddAboutButton)
                 return this;
 
-            if (string.IsNullOrEmpty(panelName))
-                panelName = name;
-            if (string.IsNullOrEmpty(text))
-                text = name;
+            panelName ??= name;
+            text ??= name;
 
             var panel = Panel(panelName);
 

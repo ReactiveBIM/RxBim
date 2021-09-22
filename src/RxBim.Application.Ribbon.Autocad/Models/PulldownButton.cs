@@ -27,7 +27,7 @@
         }
 
         /// <inheritdoc />
-        public IPulldownButton Button(string name, string text, Type externalCommandType, Action<IButton> action)
+        public IPulldownButton Button(string name, string text, Type externalCommandType, Action<IButton>? action)
         {
             var button = new Button(name, text, externalCommandType);
             action?.Invoke(button);

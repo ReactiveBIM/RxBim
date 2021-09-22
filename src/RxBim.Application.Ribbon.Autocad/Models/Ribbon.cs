@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Models
 {
-    using System;
     using System.Globalization;
     using System.Linq;
     using Application.Ribbon.Abstractions;
@@ -19,19 +18,20 @@
         : base(container)
         {
             AcadRibbonControl = ComponentManager.Ribbon;
-            if (AcadRibbonControl == null)
-                throw new NotSupportedException("Could not initialize Autocad ribbon control");
         }
 
         /// <summary>
         /// Лента AutoCAD
         /// </summary>
-        public RibbonControl AcadRibbonControl { get; }
+        public RibbonControl? AcadRibbonControl { get; }
+
+        /// <inheritdoc />
+        public override bool IsValid => AcadRibbonControl != null;
 
         /// <inheritdoc />
         protected override bool TabIsExists(string tabTitle)
         {
-            return AcadRibbonControl.Tabs.Any(t => t.Title.Equals(tabTitle));
+            return AcadRibbonControl?.Tabs.Any(t => t.Title.Equals(tabTitle)) ?? false;
         }
 
         /// <inheritdoc />
@@ -43,7 +43,7 @@
                 Name = tabTitle,
                 Id = $"TAB_{tabTitle.GetHashCode().ToString(CultureInfo.InvariantCulture)}"
             };
-            AcadRibbonControl.Tabs.Add(tab);
+            AcadRibbonControl?.Tabs.Add(tab);
         }
 
         /// <inheritdoc />

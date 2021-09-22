@@ -19,7 +19,7 @@
         private static bool _dropNextHelpCall;
 
         // If not null, this is the HelpTopic of the currently open tooltip. If null, no tooltip is displaying.
-        private static string _helpTopic;
+        private static string? _helpTopic;
 
         /// <summary>
         /// Сообщения
