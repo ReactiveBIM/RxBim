@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.DotNet;
 using RxBim.Nuke.Builds;
 
 partial class Build
@@ -39,7 +37,7 @@ partial class Build
     }
 
     [Parameter("Select all projects")]
-    public bool AllProjects { get; set; } = false;
+    public bool AllProjects { get; set; } = !IsLocalBuild;
 
     /// <summary>
     /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)
