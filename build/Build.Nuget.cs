@@ -7,15 +7,6 @@ using Nuke.Common.Tools.DotNet;
 
 partial class Build
 {
-    /*string _projectForPublish;
-
-    [Parameter("Project name")]
-    public string ProjectForPublish
-    {
-        get => _projectForPublish;// ??= PackageInfoProvider.GetSelectedMenuOption();
-        set => _projectForPublish = value;
-    }*/
-    
     Target List => _ => _
         .Executes(() =>
         {
