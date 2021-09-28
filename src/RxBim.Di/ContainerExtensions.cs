@@ -207,7 +207,7 @@
             this IContainer container,
             Type serviceType)
         {
-            container.AddSingleton(serviceType, serviceType);
+            container.Add(serviceType, serviceType, Lifetime.Singleton);
             return container;
         }
 
@@ -225,7 +225,7 @@
             where TService : class
             where TImplementation : class, TService
         {
-            container.AddSingleton(typeof(TService), typeof(TImplementation));
+            container.Add(typeof(TService), typeof(TImplementation), Lifetime.Singleton);
             return container;
         }
 
@@ -240,7 +240,7 @@
             this IContainer container)
             where TService : class
         {
-            container.AddSingleton(typeof(TService), typeof(TService));
+            container.Add(typeof(TService), typeof(TService), Lifetime.Singleton);
             return container;
         }
 
