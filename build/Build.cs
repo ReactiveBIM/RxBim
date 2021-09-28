@@ -8,8 +8,8 @@ using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
-using static global::Nuke.Common.IO.PathConstruction;
-using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -17,7 +17,7 @@ using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
     OnPullRequestBranches = new[] { DevelopBranch },
-    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+    InvokedTargets = new[] { nameof(Test), nameof(Compile) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
@@ -34,11 +34,7 @@ partial class Build : NukeBuild
 
     public static int Main() => Execute<Build>(x => x.List);
 
-    /// <summary>
-    /// Очишает bin/, obj/ в решении.
-    /// </summary>
-    public Target Clean => _ => _
-        .Description("Очишает bin/, obj/")
+    Target Clean => _ => _
         .Executes(() =>
         {
             GlobDirectories(Solution.Directory, "**/bin", "**/obj")
@@ -46,11 +42,7 @@ partial class Build : NukeBuild
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
 
-    /// <summary>
-    /// Восстанавливает пакеты.
-    /// </summary>
-    public Target Restore => _ => _
-        .Description("Восстанавливает пакеты")
+    Target Restore => _ => _
         .DependsOn(Clean)
         .Executes(() =>
         {
@@ -58,11 +50,7 @@ partial class Build : NukeBuild
                 .SetProjectFile(Solution.Path));
         });
 
-    /// <summary>
-    /// Собирает проект
-    /// </summary>
-    public Target Compile => _ => _
-        .Description("Собирает решение")
+    Target Compile => _ => _
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -71,11 +59,7 @@ partial class Build : NukeBuild
                 .SetConfiguration(Configuration));
         });
 
-    /// <summary>
-    /// Запускает тесты
-    /// </summary>
     public Target Test => _ => _
-        .Description("Запускает тесты")
         .Executes(() =>
         {
             DotNetTest(settings => settings

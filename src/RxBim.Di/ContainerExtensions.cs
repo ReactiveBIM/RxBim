@@ -225,7 +225,7 @@
             where TService : class
             where TImplementation : class, TService
         {
-            container.AddScoped(typeof(TService), typeof(TImplementation));
+            container.AddSingleton(typeof(TService), typeof(TImplementation));
             return container;
         }
 
@@ -240,7 +240,7 @@
             this IContainer container)
             where TService : class
         {
-            container.AddScoped(typeof(TService), typeof(TService));
+            container.AddSingleton(typeof(TService), typeof(TService));
             return container;
         }
 
