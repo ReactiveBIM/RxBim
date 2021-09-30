@@ -50,26 +50,6 @@
             Environment.SetEnvironmentVariable("WIXSHARP_WIXDIR", wixBin);
         }
 
-        /// <summary>
-        /// Возвращает путь к инструменту установки
-        /// </summary>
-        public static string GetMsiBuilderToolPath()
-        {
-            var toolPath = Environment.GetEnvironmentVariable("RXBIM_MSIBUILDER_BIN");
-
-            if (toolPath == null)
-            {
-                 throw new ArgumentException($"Environment has no 'RXBIM_MSIBUILDER_BIN' variable!");
-            }
-
-            if (!FileExists((AbsolutePath)toolPath))
-            {
-                throw new ArgumentException($"RxBim.MsiBuilder tool not found in {toolPath}!");
-            }
-
-            return toolPath;
-        }
-
         private static string GetLatestReleaseUrl()
         {
             var gitHubClient = new GitHubClient(new ProductHeaderValue("RxBim"));
