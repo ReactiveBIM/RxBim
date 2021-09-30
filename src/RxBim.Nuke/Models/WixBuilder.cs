@@ -34,7 +34,7 @@
                 return;
 
             var options = GetBuildMsiOptions(project, outputDir, configuration);
-            var toolPath = GetMsiBuilderToolPath();
+            const string toolPath = "rxbim.msi.builder";
 
             project.BuildMsiWithTool(toolPath, options);
         }
