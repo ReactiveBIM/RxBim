@@ -60,10 +60,14 @@
             if (_isAddAboutButton)
                 return this;
 
-            panelName ??= name;
-            text ??= name;
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be empty.", nameof(name));
+            if (string.IsNullOrWhiteSpace(panelName))
+                panelName = name;
+            if (string.IsNullOrWhiteSpace(text))
+                text = name;
 
-            var panel = Panel(panelName);
+            var panel = Panel(panelName!);
 
             panel.AddAboutButton(name, text, _tab.Name, panelName, Container, action);
 
