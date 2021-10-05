@@ -16,7 +16,7 @@
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
         private static bool _dropNextHelpCall;
-        private static string _helpTopic;
+        private static string? _helpTopic;
 
         /// <summary>
         /// Messages

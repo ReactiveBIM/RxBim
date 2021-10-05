@@ -18,6 +18,9 @@
         }
 
         /// <inheritdoc />
+        public abstract bool IsValid { get; }
+
+        /// <inheritdoc />
         public ITab Tab(string tabTitle = null)
         {
             if (!string.IsNullOrEmpty(tabTitle))

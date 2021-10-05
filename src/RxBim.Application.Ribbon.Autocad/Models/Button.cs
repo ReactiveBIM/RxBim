@@ -13,11 +13,11 @@
     /// </summary>
     public class Button : ButtonBase
     {
-        private readonly string _command;
-        private string _helpUrl;
+        private readonly string? _command;
+        private string? _helpUrl;
 
         /// <inheritdoc />
-        public Button(string name, string text, Type externalCommandType = null)
+        public Button(string name, string text, Type? externalCommandType = null)
             : base(name, text, externalCommandType)
         {
             if (externalCommandType != null)

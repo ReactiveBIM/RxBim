@@ -37,6 +37,9 @@
         public UIControlledApplication Application { get; }
 
         /// <inheritdoc />
+        public override bool IsValid => _ribbonControl != null;
+
+        /// <inheritdoc />
         protected override bool TabIsExists(string tabTitle)
         {
             return _ribbonControl.Tabs.Any(t => t.Title.Equals(tabTitle));

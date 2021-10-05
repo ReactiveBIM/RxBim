@@ -1,14 +1,19 @@
 namespace RxBim.Application.Ribbon.Abstractions
 {
     /// <summary>
-    /// Лента
+    /// Ribbon
     /// </summary>
     public interface IRibbon
     {
         /// <summary>
-        /// Создает или возвращает существующую вкладку />
+        /// Ribbon is valid
         /// </summary>
-        /// <param name="tabTitle">Заголовок вкладки</param>
+        bool IsValid { get; }
+
+        /// <summary>
+        /// Creates or returns exists tab
+        /// </summary>
+        /// <param name="tabTitle">Tab title</param>
         ITab Tab(string tabTitle = null);
     }
 }
