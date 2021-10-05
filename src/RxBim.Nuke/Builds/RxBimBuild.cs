@@ -72,20 +72,20 @@
         /// <summary>
         /// Собирает msi для тестирования
         /// </summary>
-        public Target BuildMsiForTesting => _ => _
+        public Target SetupBuildForTesting => _ => _
             .Requires(() => Project)
             .DependsOn(CheckStageVersion)
             .Executes(() => { Configuration = Configuration.Debug; })
-            .Triggers(BuildMsi);
+            .Triggers(BuildMsi, SignAssemblies);
 
         /// <summary>
         /// Собирает msi для тестирования
         /// </summary>
-        public Target BuildMsiForProduction => _ => _
+        public Target SetupBuildForProduction => _ => _
             .Requires(() => Project)
             .DependsOn(CheckProductionVersion)
             .Executes(() => { Configuration = Configuration.Release; })
-            .Triggers(BuildMsi);
+            .Triggers(BuildMsi, SignAssemblies);
 
         /// <summary>
         /// Собирает проект из тэга Testing{ProjectName}
