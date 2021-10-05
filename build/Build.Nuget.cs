@@ -88,5 +88,5 @@ partial class Build
 
     Target Publish => _ => _
         .Description("Publish nuget packages")
-        .DependsOn(Tag, PushGit);
+        .DependsOn(Tag);
 }
