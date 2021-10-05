@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TestHelper;
 
-namespace RxBim.Analyzers.Test
+namespace RxBim.Analyzers.Tests
 {
     using RxBim.Analyzers;
 

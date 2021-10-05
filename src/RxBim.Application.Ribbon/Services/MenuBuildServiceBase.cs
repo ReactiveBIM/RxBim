@@ -36,7 +36,11 @@
         /// </summary>
         protected void BuildMenuInternal()
         {
-            _action(_ribbonFactory.Create(_container));
+            var ribbon = _ribbonFactory.Create(_container);
+            if (ribbon.IsValid)
+            {
+                _action(ribbon);
+            }
         }
     }
 }

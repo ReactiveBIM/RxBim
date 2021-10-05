@@ -4,6 +4,8 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.Git;
+using Nuke.Common.Tools.GitHub;
 
 partial class Build
 {
@@ -76,8 +78,15 @@ partial class Build
             _packageInfoProvider.GetSelectedProjects(Projects)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
+    
+    Target PushGit => _ => _
+        .After(Tag)
+        .Executes(() =>
+        {
+            GitTasks.Git("push --tags");
+        });
 
     Target Publish => _ => _
         .Description("Publish nuget packages")
-        .DependsOn(Tag);
+        .DependsOn(Tag, PushGit);
 }
