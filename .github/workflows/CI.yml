@@ -37,8 +37,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd Test Pack'
-        run: ./build.cmd Test Pack
+      - name: Run './build.cmd Test Compile'
+        run: ./build.cmd Test Compile
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PROJECTS: ${{ secrets.ALL_PROJECTS }}
