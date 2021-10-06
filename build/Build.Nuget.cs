@@ -9,15 +9,6 @@ using Nuke.Common.Tools.GitHub;
 
 partial class Build
 {
-    /*string _projectForPublish;
-
-    [Parameter("Project name")]
-    public string ProjectForPublish
-    {
-        get => _projectForPublish;// ??= PackageInfoProvider.GetSelectedMenuOption();
-        set => _projectForPublish = value;
-    }*/
-    
     Target List => _ => _
         .Executes(() =>
         {
@@ -97,5 +88,5 @@ partial class Build
 
     Target Publish => _ => _
         .Description("Publish nuget packages")
-        .DependsOn(Tag, PushGit);
+        .DependsOn(Tag);
 }
