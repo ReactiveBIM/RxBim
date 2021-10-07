@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <RootNamespace>RxBim.Di</RootNamespace>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />

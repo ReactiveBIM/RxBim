@@ -7,7 +7,7 @@
     /// <summary>
     /// Конфигуратор зависимостей команды
     /// </summary>
-    internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration, SimpleInjectorContainer>
+    internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
         private readonly object _commandObject;
 

@@ -3,7 +3,7 @@
     using Shared;
     using TestDependencies;
 
-    public class TestDiConfigurator : DiConfigurator<IPluginConfiguration, SimpleInjectorContainer>
+    public class TestDiConfigurator : DiConfigurator<IPluginConfiguration>
     {
         protected override void ConfigureBaseDependencies()
         {
