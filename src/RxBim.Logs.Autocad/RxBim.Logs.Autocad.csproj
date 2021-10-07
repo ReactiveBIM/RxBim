@@ -10,7 +10,6 @@
     <ItemGroup>
       <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Serilog" Version="2.9.0" />
     </ItemGroup>
 
     <ItemGroup>
