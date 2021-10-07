@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+        <ProjectReference Include="..\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
