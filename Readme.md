@@ -8,6 +8,8 @@
 | *RxBim.Command.Generators.Autocad* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Command.Generators.Autocad?style=flat) |
 | *RxBim.Application.Ribbon* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Application.Ribbon?style=flat) |
 | *RxBim.Di* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Di?style=flat) |
+| *RxBim.Di.ServiceProvider | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Di.ServiceProvider?style=flat) |
+| *RxBim.Di.SimpleInjector* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Di.SimpleInjector?style=flat) |
 | *RxBim.Logs* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Logs?style=flat) |
 | *RxBim.Shared* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Shared?style=flat) |
 | *RxBim.Application.Autocad* | ![Nuget](https://img.shields.io/nuget/vpre/RxBim.Application.Autocad?style=flat) |
