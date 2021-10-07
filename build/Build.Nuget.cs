@@ -79,13 +79,6 @@ partial class Build
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
     
-    Target PushGit => _ => _
-        .After(Tag)
-        .Executes(() =>
-        {
-            GitTasks.Git("push --tags");
-        });
-
     Target Publish => _ => _
         .Description("Publish nuget packages")
         .DependsOn(Tag);

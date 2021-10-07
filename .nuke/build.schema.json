@@ -101,7 +101,6 @@
               "Pack",
               "Publish",
               "Push",
-              "PushGit",
               "Restore",
               "Tag",
               "Test"
@@ -125,7 +124,6 @@
               "Pack",
               "Publish",
               "Push",
-              "PushGit",
               "Restore",
               "Tag",
               "Test"
