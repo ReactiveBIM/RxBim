@@ -9,12 +9,12 @@
     using global::Nuke.Common.Tools.Git;
 
     /// <content>
-    /// Расширение Build-скрипта для сборки MSI. Targets для работы с GIT.
+    /// GIT build targets
     /// </content>
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Проверяет текущую ветку
+        /// Check release branch version name
         /// </summary>
         public Target CheckCurrentBranch => _ => _
             .Executes(() =>
@@ -28,7 +28,7 @@
             });
 
         /// <summary>
-        /// Проверяет текущую версию проекта и версию релиза
+        /// Check project version and release branch version name
         /// </summary>
         public Target CheckStageVersion => _ => _
             .DependsOn(CheckCurrentBranch)
@@ -44,7 +44,7 @@
             });
 
         /// <summary>
-        /// Проверяет версию на продакшене
+        /// Check master branch version name
         /// </summary>
         public Target CheckProductionVersion => _ => _
             .Executes(() =>
@@ -97,7 +97,7 @@
             });
 
         /// <summary>
-        /// Ставит тэг проекта который необходимо собрать для тестирования
+        /// Tag project for testing
         /// </summary>
         public Target TagProject => _ => _
             .Requires(() => Project)

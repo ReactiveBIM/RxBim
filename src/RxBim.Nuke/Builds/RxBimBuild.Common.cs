@@ -9,15 +9,15 @@
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <content>
-    /// Расширение Build-скрипта для сборки MSI. Targets общего назначения.
+    /// Common build targets
     /// </content>
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Очишает bin/, obj/ в решении.
+        /// Clean bin/, obj/ in solution
         /// </summary>
         public Target Clean => _ => _
-            .Description("Очишает bin/, obj/")
+            .Description("Clean bin/, obj/")
             .Executes(() =>
             {
                 GlobDirectories(Solution.Directory, "**/bin", "**/obj")
@@ -26,10 +26,10 @@
             });
 
         /// <summary>
-        /// Восстанавливает пакеты.
+        /// Restore packages
         /// </summary>
         public Target Restore => _ => _
-            .Description("Восстанавливает пакеты")
+            .Description("Restore packages")
             .DependsOn(Clean)
             .Executes(() =>
             {
@@ -38,10 +38,10 @@
             });
 
         /// <summary>
-        /// Собирает проект
+        /// Compile solution
         /// </summary>
         public Target Compile => _ => _
-            .Description("Собирает решение")
+            .Description("Compile solution")
             .DependsOn(Restore)
             .Executes(() =>
             {
@@ -51,10 +51,10 @@
             });
 
         /// <summary>
-        /// Запускает тесты
+        /// Run tests
         /// </summary>
         public Target Test => _ => _
-            .Description("Запускает тесты")
+            .Description("Run tests")
             .Requires(() => Project)
             .Executes(() =>
             {
