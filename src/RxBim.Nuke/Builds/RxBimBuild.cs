@@ -20,9 +20,9 @@
     /// <summary>
     /// Contains tools for MSI packages creating.
     /// </summary>
-    /// <typeparam name="TWix">Тип WIX-сборщика</typeparam>
-    /// <typeparam name="TPackGen">Тип генератора файла PackageContents</typeparam>
-    /// <typeparam name="TPropGen">Тип генератора свойств проекта</typeparam>
+    /// <typeparam name="TWix">WIX-builder</typeparam>
+    /// <typeparam name="TPackGen">PackageContents file generator</typeparam>
+    /// <typeparam name="TPropGen">Project properties generator</typeparam>
     [PublicAPI]
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeBuild
         where TWix : WixBuilder<TPackGen>, new()
@@ -41,7 +41,7 @@
         /// Builds an MSI package.
         /// </summary>
         public Target BuildMsi => _ => _
-            .Description("Build MSI from selected project")
+            .Description("Build MSI from selected project (if Release - sign assemblies)")
             .Requires(() => Project)
             .Requires(() => Configuration)
             .DependsOn(InstallWixTools)
@@ -70,25 +70,7 @@
             });
 
         /// <summary>
-        /// Собирает msi для тестирования
-        /// </summary>
-        public Target SetupBuildForTesting => _ => _
-            .Requires(() => Project)
-            .DependsOn(CheckStageVersion)
-            .Executes(() => { Configuration = Configuration.Debug; })
-            .Triggers(BuildMsi, SignAssemblies);
-
-        /// <summary>
-        /// Собирает msi для тестирования
-        /// </summary>
-        public Target SetupBuildForProduction => _ => _
-            .Requires(() => Project)
-            .DependsOn(CheckProductionVersion)
-            .Executes(() => { Configuration = Configuration.Release; })
-            .Triggers(BuildMsi, SignAssemblies);
-
-        /// <summary>
-        /// Собирает проект из тэга Testing{ProjectName}
+        /// Build MSI from tag Testing{ProjectName}
         /// </summary>
         public Target BuildFromTag => _ => _
             .Executes(() =>
@@ -109,7 +91,7 @@
             });
 
         /// <summary>
-        /// Генерирует необходимые свойства в проекте
+        /// Generate project properties (PackageGuid, UpgradeCode and other)
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
@@ -133,7 +115,7 @@
             {
                 if (Configuration != Configuration.Release)
                     return;
-                
+
                 var types = GetAssemblyTypes(
                     ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
 

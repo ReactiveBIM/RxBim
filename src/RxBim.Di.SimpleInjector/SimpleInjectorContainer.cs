@@ -4,21 +4,23 @@
     using System.Collections.Generic;
     using System.Linq;
     using SimpleInjector;
+    using SimpleInjector.Lifestyles;
 
     /// <summary>
-    /// The default implementation of <see cref="IContainer"/>.
+    /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
     /// </summary>
-    public sealed class DefaultContainer : IContainer
+    public class SimpleInjectorContainer : IContainer
     {
         private readonly Container _container;
 
         /// <summary>
         /// ctor
         /// </summary>
-        public DefaultContainer()
+        public SimpleInjectorContainer()
         {
             _container = new Container();
             _container.Options.EnableAutoVerification = false;
+            _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
         }
 
         /// <inheritdoc />
@@ -66,6 +68,19 @@
         public object GetService(Type serviceType)
         {
             return _container.GetInstance(serviceType);
+        }
+
+        /// <inheritdoc />
+        public IContainerScope CreateScope()
+        {
+            var scope = AsyncScopedLifestyle.BeginScope(_container);
+            return new SimpleInjectorScope(scope, this);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _container.Dispose();
         }
 
         private Lifestyle GetLifestyle(Lifetime lifetime) => lifetime switch

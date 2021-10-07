@@ -8,7 +8,7 @@
     /// DI container abstraction.
     /// </summary>
     [PublicAPI]
-    public interface IContainer
+    public interface IContainer : IDisposable
     {
         /// <summary>
         /// Adds a service of the type specified in <paramref name="serviceType"/>
@@ -75,5 +75,11 @@
         /// <param name="serviceType">Type of object requested.</param>
         /// <returns>The requested service instance.</returns>
         object GetService(Type serviceType);
+
+        /// <summary>
+        /// Creates a DI container scope.
+        /// </summary>
+        /// <returns>The container scope instance.</returns>
+        IContainerScope CreateScope();
     }
 }
