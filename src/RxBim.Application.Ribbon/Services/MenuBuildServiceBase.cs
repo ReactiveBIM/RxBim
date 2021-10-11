@@ -10,12 +10,13 @@
         private readonly IRibbonFactory _ribbonFactory;
         private readonly Action<IRibbon> _action;
         private IContainer _container;
+        private IRibbon _ribbon;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuBuildServiceBase"/> class.
         /// </summary>
-        /// <param name="ribbonFactory">Фабрика ленты</param>
-        /// <param name="action">Действие по построению ленты</param>
+        /// <param name="ribbonFactory">Ribbon Factory</param>
+        /// <param name="action">Action to build a ribbon</param>
         protected MenuBuildServiceBase(
             IRibbonFactory ribbonFactory,
             Action<IRibbon> action)
@@ -32,15 +33,11 @@
         }
 
         /// <summary>
-        /// Внутренний метод построения меню
+        /// Internal menu building method
         /// </summary>
         protected void BuildMenuInternal()
         {
-            var ribbon = _ribbonFactory.Create(_container);
-            if (ribbon.IsValid)
-            {
-                _action(ribbon);
-            }
+            _ribbon ??= _ribbonFactory.Create(_container, _action);
         }
     }
 }

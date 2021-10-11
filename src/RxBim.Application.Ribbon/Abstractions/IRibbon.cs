@@ -8,7 +8,7 @@ namespace RxBim.Application.Ribbon.Abstractions
         /// <summary>
         /// Ribbon is valid
         /// </summary>
-        bool IsValid { get; }
+        bool RibbonIsOn { get; }
 
         /// <summary>
         /// Creates or returns exists tab

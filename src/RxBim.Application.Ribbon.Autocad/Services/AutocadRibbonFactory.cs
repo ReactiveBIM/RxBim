@@ -3,12 +3,13 @@
     using Di;
     using Models;
     using Ribbon.Abstractions;
+    using Ribbon.Services;
 
     /// <inheritdoc />
-    public class AutocadRibbonFactory : IRibbonFactory
+    public class AutocadRibbonFactory : RibbonFactoryBase
     {
         /// <inheritdoc />
-        public IRibbon Create(IContainer container)
+        protected override IRibbon Create(IContainer container)
         {
             return new Ribbon(container);
         }

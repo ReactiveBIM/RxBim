@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
 {
+    using System.Linq;
+    using Autodesk.Windows;
     using Models;
     using Ribbon.Abstractions;
 
@@ -20,6 +22,15 @@
             }
 
             return panel;
+        }
+
+        /// <summary>
+        /// Returns <see cref="RibbonPanel"/> for <see cref="IPanel"/>
+        /// </summary>
+        /// <param name="panel"><see cref="IPanel"/> object</param>
+        public static RibbonPanel GetRibbonPanel(this IPanel panel)
+        {
+            return panel.Tab.GetRibbonTab().Panels.Single(p => p.Id == panel.Id);
         }
     }
 }

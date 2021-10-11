@@ -6,7 +6,7 @@
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
-    /// События ленты
+    /// Ribbon events service
     /// </summary>
     public class RibbonEventService : IRibbonEvents, IDisposable
     {
@@ -36,7 +36,7 @@
 
         private void ApplicationOnIdle(object sender, EventArgs e)
         {
-            NeedRebuild?.Invoke(this, new EventArgs());
+            NeedRebuild?.Invoke(this, EventArgs.Empty);
             Application.Idle -= ApplicationOnIdle;
         }
     }

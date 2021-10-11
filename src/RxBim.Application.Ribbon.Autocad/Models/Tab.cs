@@ -6,36 +6,36 @@
     using Application.Ribbon.Models;
     using Autodesk.Windows;
     using Di;
+    using Extensions;
 
     /// <summary>
-    /// Вкладка
+    /// Represents the entity of a ribbon tab
     /// </summary>
     public class Tab : RibbonBuilderBase<Ribbon>, ITab
     {
-        private readonly RibbonTab _tab;
-
         private bool _isAddAboutButton;
 
         /// <summary>
-        /// Конструирует вкладку
+        /// Initializes a new instance of the <see cref="Tab"/> class.
         /// </summary>
-        /// <param name="ribbon">Лента</param>
-        /// <param name="tabName">Название вкладки</param>
-        /// <param name="container">Контейнер</param>
-        public Tab(Ribbon ribbon, string tabName, IContainer container)
-            : base(ribbon, container)
+        /// <param name="ribbon">The entity of a ribbon</param>
+        /// <param name="tabName">The name of this ribbon tab</param>
+        /// <param name="tabId">The identifier of this ribbon tab</param>
+        /// <param name="container">DI container</param>
+        public Tab(Ribbon ribbon, string tabName, string tabId, IContainer container)
+            : base(ribbon, tabId, container)
         {
-            var ribbonControl = Ribbon.AcadRibbonControl;
-            if (ribbonControl is null)
-                throw new InvalidOperationException("Ribbon control is null!");
-            var tab = ribbonControl.Tabs.FirstOrDefault(t => t.Title == tabName);
-            _tab = tab ?? throw new InvalidOperationException($"'{tabName}' tab not found!");
+            Title = tabName;
         }
+
+        /// <inheritdoc />
+        public string Title { get; }
 
         /// <inheritdoc />
         public IPanel Panel(string panelTitle)
         {
-            var panel = _tab.Panels.FirstOrDefault(x => x.Source.Title.Equals(panelTitle, StringComparison.Ordinal));
+            var tab = this.GetRibbonTab();
+            var panel = tab.Panels.FirstOrDefault(x => x.Source.Title.Equals(panelTitle, StringComparison.Ordinal));
 
             if (panel is null)
             {
@@ -44,11 +44,11 @@
                     Source = new RibbonPanelSource
                     {
                         Title = panelTitle,
-                        Id = $"PANEL_{_tab.Id}_{panelTitle.GetHashCode()}"
+                        Id = $"PANEL_{tab.Id}_{panelTitle.GetHashCode()}"
                     }
                 };
 
-                _tab.Panels.Add(panel);
+                tab.Panels.Add(panel);
             }
 
             return new Panel(Ribbon, panel, Container);
@@ -69,7 +69,7 @@
 
             var panel = Panel(panelName!);
 
-            panel.AddAboutButton(name, text, _tab.Name, panelName, Container, action);
+            panel.AddAboutButton(name, text, Name, panelName, Container, action);
 
             _isAddAboutButton = true;
             return this;

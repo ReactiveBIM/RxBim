@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Models
 {
-    using System.Globalization;
+    using System;
     using System.Linq;
     using Application.Ribbon.Abstractions;
     using Application.Ribbon.Models;
@@ -13,43 +13,41 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Ribbon"/> class.
         /// </summary>
-        /// <param name="container">Контейнер</param>
+        /// <param name="container">DI container</param>
         public Ribbon(IContainer container)
-        : base(container)
+            : base(container)
         {
-            AcadRibbonControl = ComponentManager.Ribbon;
-        }
-
-        /// <summary>
-        /// Лента AutoCAD
-        /// </summary>
-        public RibbonControl? AcadRibbonControl { get; }
-
-        /// <inheritdoc />
-        public override bool IsValid => AcadRibbonControl != null;
-
-        /// <inheritdoc />
-        protected override bool TabIsExists(string tabTitle)
-        {
-            return AcadRibbonControl?.Tabs.Any(t => t.Title.Equals(tabTitle)) ?? false;
         }
 
         /// <inheritdoc />
-        protected override void CreateTabAndAddToRibbon(string tabTitle)
+        public override bool RibbonIsOn => ComponentManager.Ribbon != null;
+
+        /// <inheritdoc />
+        protected override bool TabIsExists(string tabTitle, out string tabId)
         {
+            var ribbonTab = ComponentManager.Ribbon?.Tabs.FirstOrDefault(t => t.Title.Equals(tabTitle));
+            tabId = ribbonTab?.Id ?? string.Empty;
+            return ribbonTab != null;
+        }
+
+        /// <inheritdoc />
+        protected override string CreateTabAndAddToRibbon(string tabTitle)
+        {
+            var newId = $"TAB_{Guid.NewGuid()}";
             var tab = new RibbonTab
             {
                 Title = tabTitle,
                 Name = tabTitle,
-                Id = $"TAB_{tabTitle.GetHashCode().ToString(CultureInfo.InvariantCulture)}"
+                Id = newId
             };
-            AcadRibbonControl?.Tabs.Add(tab);
+            ComponentManager.Ribbon?.Tabs.Add(tab);
+            return newId;
         }
 
         /// <inheritdoc />
-        protected override ITab GetTab(string title, IContainer container)
+        protected override ITab CreateTab(string title, string id)
         {
-            return new Tab(this, title, container);
+            return new Tab(this, title, id, Container);
         }
     }
 }

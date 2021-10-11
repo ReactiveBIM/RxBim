@@ -17,10 +17,16 @@ namespace RxBim.Application.Ribbon.Models
         /// </summary>
         /// <param name="ribbon">Лента</param>
         /// <param name="container"><see cref="IContainer"/></param>
-        protected PanelBase(TRibbon ribbon, IContainer container)
-            : base(ribbon, container)
+        /// <param name="id">The identifier of a panel</param>
+        /// <param name="tab"><see cref="Tab"/></param>
+        protected PanelBase(TRibbon ribbon, IContainer container, string id, ITab tab)
+            : base(ribbon, id, container)
         {
+            Tab = tab;
         }
+
+        /// <inheritdoc />
+        public ITab Tab { get; }
 
         /// <summary>
         /// Create new Stacked items at the panel

@@ -5,8 +5,13 @@
     /// <summary>
     /// Вкладка
     /// </summary>
-    public interface ITab : IRibbonBuilder
+    public interface ITab : IRibbonBuilder, IRibbonElement
     {
+        /// <summary>
+        /// Tab title
+        /// </summary>
+        string Title { get; }
+        
         /// <summary>
         /// Создает панель на закладке
         /// </summary>

@@ -13,15 +13,10 @@
     /// </summary>
     public class Panel : PanelBase<Ribbon, StackedItem, Button>
     {
-        private readonly RibbonPanel _ribbonPanel;
-        private RibbonRowPanel? _currentPanelRow;
-
         /// <inheritdoc />
-        public Panel(Ribbon ribbon, RibbonPanel acadPanel, IContainer container)
-            : base(ribbon, container)
+        public Panel(Ribbon ribbon, IContainer container, string id, ITab tab)
+            : base(ribbon, container, id, tab)
         {
-            _ribbonPanel = acadPanel;
-
             _currentPanelRow = acadPanel.Source.Items.FirstOrDefault(x => x is RibbonRowPanel) as RibbonRowPanel;
 
             if (_currentPanelRow is null)

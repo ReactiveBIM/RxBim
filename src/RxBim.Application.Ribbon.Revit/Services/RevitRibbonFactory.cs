@@ -4,9 +4,10 @@
     using Autodesk.Revit.UI;
     using Di;
     using Models;
+    using Ribbon.Services;
 
     /// <inheritdoc />
-    public class RevitRibbonFactory : IRibbonFactory
+    public class RevitRibbonFactory : RibbonFactoryBase
     {
         private readonly UIControlledApplication _controlledApp;
 
@@ -20,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        public IRibbon Create(IContainer container)
+        protected override IRibbon Create(IContainer container)
         {
             return new Ribbon(_controlledApp, container);
         }

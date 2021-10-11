@@ -6,15 +6,17 @@
     /// <summary>
     /// Строитель ленты
     /// </summary>
-    public abstract class RibbonBuilderBase<T> : IRibbonBuilder
+    public abstract class RibbonBuilderBase<T> : RibbonElement, IRibbonBuilder
         where T : IRibbon
     {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="ribbon">панель</param>
+        /// <param name="id">Ribbon element identifier</param>
         /// <param name="container">контейнер зависимостей</param>
-        protected RibbonBuilderBase(T ribbon, IContainer container)
+        protected RibbonBuilderBase(T ribbon, string id, IContainer container)
+        : base(id)
         {
             Ribbon = ribbon;
             Container = container;

@@ -6,8 +6,13 @@
     /// <summary>
     /// Панель
     /// </summary>
-    public interface IPanel : IRibbonBuilder
+    public interface IPanel : IRibbonBuilder, IRibbonElement
     {
+        /// <summary>
+        /// The tab on which the panel is located
+        /// </summary>
+        ITab Tab { get; }
+
         /// <summary>
         /// Create new Stacked items at the panel
         /// </summary>

@@ -5,7 +5,6 @@
     using Abstractions;
     using Application.Ribbon.Models;
     using Autodesk.Revit.UI;
-    using Autodesk.Windows;
     using Di;
     using UIFramework;
 
@@ -14,8 +13,6 @@
     /// </summary>
     public class Ribbon : RibbonBase
     {
-        private readonly RibbonControl _ribbonControl;
-
         /// <summary>
         /// ctor
         /// </summary>
@@ -26,8 +23,7 @@
         {
             Application = application;
 
-            _ribbonControl = RevitRibbonControl.RibbonControl;
-            if (_ribbonControl == null)
+            if (RevitRibbonControl.RibbonControl != null)
                 throw new NotSupportedException("Could not initialize Revit ribbon control");
         }
 
@@ -37,24 +33,27 @@
         public UIControlledApplication Application { get; }
 
         /// <inheritdoc />
-        public override bool IsValid => _ribbonControl != null;
+        public override bool RibbonIsOn => RevitRibbonControl.RibbonControl != null;
 
         /// <inheritdoc />
-        protected override bool TabIsExists(string tabTitle)
+        protected override bool TabIsExists(string tabTitle, out string tabId)
         {
-            return _ribbonControl.Tabs.Any(t => t.Title.Equals(tabTitle));
+            var ribbonTab = RevitRibbonControl.RibbonControl.Tabs.FirstOrDefault(t => t.Title.Equals(tabTitle));
+            tabId = ribbonTab?.Id;
+            return ribbonTab != null;
         }
 
         /// <inheritdoc />
-        protected override void CreateTabAndAddToRibbon(string tabTitle)
+        protected override string CreateTabAndAddToRibbon(string tabTitle)
         {
             Application.CreateRibbonTab(tabTitle);
+            return RevitRibbonControl.RibbonControl.Tabs.Single(t => t.Title == tabTitle).Id;
         }
 
         /// <inheritdoc />
-        protected override ITab GetTab(string title, IContainer container)
+        protected override ITab CreateTab(string title, string id)
         {
-            return new Tab(this, title, container);
+            return new Tab(this, title, id, Container);
         }
     }
 }
