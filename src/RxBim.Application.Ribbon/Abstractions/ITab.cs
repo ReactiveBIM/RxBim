@@ -3,28 +3,23 @@
     using System;
 
     /// <summary>
-    /// Вкладка
+    /// Ribbon tab
     /// </summary>
-    public interface ITab : IRibbonBuilder, IRibbonElement
+    public interface ITab : IRibbonBuilder
     {
         /// <summary>
-        /// Tab title
+        /// Creates a panel on this tab and returns it
         /// </summary>
-        string Title { get; }
-        
-        /// <summary>
-        /// Создает панель на закладке
-        /// </summary>
-        /// <param name="panelTitle">имя панели</param>
+        /// <param name="panelTitle">Panel name</param>
         IPanel Panel(string panelTitle);
 
         /// <summary>
-        /// Создает кнопку о программе
+        /// Creates "About" button
         /// </summary>
-        /// <param name="name">Название кнопки</param>
-        /// <param name="action">Дополнительны действия для кнопки о программе</param>
-        /// <param name="panelName">имя панели</param>
-        /// <param name="text">Тест описания</param>
+        /// <param name="name">Button name</param>
+        /// <param name="action">"About" button additional actions</param>
+        /// <param name="panelName">Panel name</param>
+        /// <param name="text">Button label text</param>
         ITab AboutButton(
             string name,
             Action<IAboutButton> action,

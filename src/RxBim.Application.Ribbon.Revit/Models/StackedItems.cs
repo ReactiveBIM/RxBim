@@ -6,12 +6,12 @@ namespace RxBim.Application.Ribbon.Revit.Models
     /// <summary>
     /// StackedItem
     /// </summary>
-    public class StackedItem : StackedItemBase<Button>
+    public class StackedItems : StackedItemsBase<Button>
     {
         /// <inheritdoc />
-        protected override Button GetButton(string name, string text, Type externalCommandType)
+        protected override Button CreateButton(string name, string text, Type commandType)
         {
-            return new Button(name, text, externalCommandType);
+            return new Button(name, text, commandType);
         }
     }
 }

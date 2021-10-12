@@ -17,11 +17,11 @@
         private string? _helpUrl;
 
         /// <inheritdoc />
-        public Button(string name, string text, Type? externalCommandType = null)
-            : base(name, text, externalCommandType)
+        public Button(string name, string text, Type? commandType = null)
+            : base(name, text, commandType)
         {
-            if (externalCommandType != null)
-                _command = GetCommandName(externalCommandType);
+            if (commandType != null)
+                _command = GetCommandName(commandType);
         }
 
         /// <summary>

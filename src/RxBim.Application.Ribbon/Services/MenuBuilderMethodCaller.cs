@@ -5,15 +5,15 @@
     using Di;
 
     /// <summary>
-    /// Декоратор, строящий ленту плагина
+    /// Decorator creating the plugin ribbon
     /// </summary>
-    /// <typeparam name="T">тип возвращаемого значения</typeparam>
+    /// <typeparam name="T">Return type</typeparam>
     public class MenuBuilderMethodCaller<T> : MethodCallerDecorator<T>
     {
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="MenuBuilderMethodCaller{T}"/> class.
         /// </summary>
-        /// <param name="decorated">Декорируемый объект</param>
+        /// <param name="decorated">Decorated object</param>
         public MenuBuilderMethodCaller(IMethodCaller<T> decorated)
             : base(decorated)
         {
@@ -29,7 +29,7 @@
             }
             catch (Exception e)
             {
-                throw new MethodCallerException("Не удалось построить ленту", e);
+                throw new MethodCallerException("Failed to build ribbon", e);
             }
 
             return Decorated.InvokeCommand(container, methodName);

@@ -3,17 +3,17 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Конфигурация панели
+    /// Ribbon panel configuration
     /// </summary>
     public class PanelConfiguration
     {
         /// <summary>
-        /// Имя панели
+        /// Panel name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Кнопки
+        /// Buttons on the panel
         /// </summary>
         public List<ButtonConfiguration> Buttons { get; set; }
     }

@@ -3,14 +3,14 @@ namespace RxBim.Application.Ribbon.Abstractions
     using Shared;
 
     /// <summary>
-    /// Кнопка "О программе"
+    /// Button for displaying the About window
     /// </summary>
     public interface IAboutButton : IButton
     {
         /// <summary>
-        /// Добавляет содержимое в окно о программе
+        /// Sets content for the About window
         /// </summary>
-        /// <param name="content">Содержимое окна о программе</param>
+        /// <param name="content">About window content</param>
         IAboutButton SetContent(AboutBoxContent content);
     }
 }

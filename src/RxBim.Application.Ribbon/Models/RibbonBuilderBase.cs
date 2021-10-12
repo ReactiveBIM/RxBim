@@ -4,36 +4,34 @@
     using Di;
 
     /// <summary>
-    /// Строитель ленты
+    /// Ribbon builder
     /// </summary>
-    public abstract class RibbonBuilderBase<T> : RibbonElement, IRibbonBuilder
+    public abstract class RibbonBuilderBase<T> : IRibbonBuilder
         where T : IRibbon
     {
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="RibbonBuilderBase{T}"/> class.
         /// </summary>
-        /// <param name="ribbon">панель</param>
-        /// <param name="id">Ribbon element identifier</param>
-        /// <param name="container">контейнер зависимостей</param>
-        protected RibbonBuilderBase(T ribbon, string id, IContainer container)
-        : base(id)
+        /// <param name="ribbon">Parent ribbon object</param>
+        /// <param name="container">DI container</param>
+        protected RibbonBuilderBase(T ribbon, IContainer container)
         {
             Ribbon = ribbon;
             Container = container;
         }
 
         /// <summary>
-        /// Панель
+        /// Parent ribbon
         /// </summary>
         protected T Ribbon { get; }
 
         /// <summary>
-        /// Контейнер зависимостей
+        /// DI-container
         /// </summary>
         protected IContainer Container { get; }
 
         /// <summary>
-        /// Возвращает панель
+        /// Returns parent ribbon
         /// </summary>
         public IRibbon And()
         {

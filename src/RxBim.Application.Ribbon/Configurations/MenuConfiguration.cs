@@ -3,12 +3,12 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Конфигурация меню плагина
+    /// Plugin ribbon menu configuration
     /// </summary>
     public class MenuConfiguration
     {
         /// <summary>
-        /// Вкладки
+        /// Ribbon tabs
         /// </summary>
         public List<TabConfiguration> Tabs { get; set; }
     }

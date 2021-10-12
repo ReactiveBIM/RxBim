@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public override bool RibbonIsOn => ComponentManager.Ribbon != null;
+        public override bool IsEnabled => ComponentManager.Ribbon != null;
 
         /// <inheritdoc />
         protected override bool TabIsExists(string tabTitle, out string tabId)

@@ -6,9 +6,9 @@ namespace RxBim.Application.Ribbon.Abstractions
     public interface IRibbon
     {
         /// <summary>
-        /// Ribbon is valid
+        /// Ribbon control is enabled
         /// </summary>
-        bool RibbonIsOn { get; }
+        bool IsEnabled { get; }
 
         /// <summary>
         /// Creates or returns exists tab

@@ -10,18 +10,18 @@
     using Shared.Abstractions;
 
     /// <summary>
-    /// Кнопка о программе
+    /// Base implementation for <see cref="IAboutButton"/>
     /// </summary>
     public abstract class AboutButtonBase : ButtonBase, IAboutButton
     {
         private readonly IContainer _container;
 
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="AboutButtonBase"/> class.
         /// </summary>
-        /// <param name="name">имя</param>
-        /// <param name="text">текст</param>
-        /// <param name="container"><see cref="IContainer"/></param>
+        /// <param name="name">Button name</param>
+        /// <param name="text">Button label text</param>
+        /// <param name="container">DI container</param>
         protected AboutButtonBase(string name, string text, IContainer container)
             : base(name, text, null)
         {
@@ -29,25 +29,18 @@
         }
 
         /// <summary>
-        /// Содержимое окна о программе
+        /// About window content
         /// </summary>
         protected AboutBoxContent Content { get; set; }
 
-        /// <summary>
-        /// Добавляет всплывающее описание кнопки
-        /// </summary>
-        /// <param name="toolTip">Текст всплывающего описания</param>
-        /// <param name="addVersion">Флаг добавления версии</param>
-        public override IButton SetToolTip(string toolTip, bool addVersion = true)
+        /// <inheritdoc />
+        public override IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoPrefix = "")
         {
             ToolTip = toolTip;
             return this;
         }
 
-        /// <summary>
-        /// Добавляет содержимое в окно о программе
-        /// </summary>
-        /// <param name="content">Содержимое окна о программе</param>
+        /// <inheritdoc />
         public IAboutButton SetContent(AboutBoxContent content)
         {
             Content = content;
@@ -55,7 +48,7 @@
         }
 
         /// <summary>
-        /// Создаёт и возвращает RibbonButton
+        /// Creates and returns RibbonButton
         /// </summary>
         public RibbonButton BuildButton()
         {
@@ -81,7 +74,6 @@
                 ResizeStyle = RibbonItemResizeStyles.HideText,
                 IsCheckable = true,
                 Orientation = Orientation.Vertical,
-                KeyTip = "TBC",
                 CommandHandler = new RelayCommand(RibbonClick, true)
             };
 
@@ -89,13 +81,14 @@
         }
 
         /// <summary>
-        /// Отображает информацию в стандартном окне вывода CAD-приложения
+        /// Displays information in the standard message box of the CAD application
         /// </summary>
         protected abstract void ShowContentInStandardMessageBox();
 
         /// <inheritdoc />
         protected override void SetHelpUrlInternal(string url)
         {
+            // no help url
         }
 
         private void RibbonClick()

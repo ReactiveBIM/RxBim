@@ -12,16 +12,19 @@
     using Services;
 
     /// <summary>
-    /// Расширения контейнера
+    /// DI Container Extensions for Ribbon Menu
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds a plugin ribbon menu from an action
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="action">метод создания меню</param>
-        /// <param name="createOnlyOnce">Создавать только единожды</param>
+        /// <param name="container">DI container</param>
+        /// <param name="action">Action to create a menu</param>
+        /// <param name="createOnlyOnce">
+        /// If true, the menu for the plugin on the ribbon is
+        /// created only once when the plugin is loaded
+        /// </param>
         public static void AddMenu<TFactory, TBuildService>(
             this IContainer container,
             Action<IRibbon> action,
@@ -31,13 +34,13 @@
         {
             container.AddRibbonBuildTypes<TFactory, TBuildService>();
 
-            var menuCreated = false;
+            var menuWasCreated = false;
             container.AddInstance<Action<IRibbon>>(ribbon =>
             {
-                if (!menuCreated || !createOnlyOnce)
+                if (!menuWasCreated || !createOnlyOnce)
                 {
                     action(ribbon);
-                    menuCreated = true;
+                    menuWasCreated = true;
                 }
             });
 
@@ -45,30 +48,33 @@
         }
 
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds a plugin ribbon menu from config
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="assembly">сборка</param>
-        /// <param name="cfg">конфигурация</param>
-        /// <param name="createOnlyOnce">Создавать только единожды</param>
+        /// <param name="container">DI container</param>
+        /// <param name="assembly">Plugin main assembly</param>
+        /// <param name="config">Plugin config</param>
+        /// <param name="createOnlyOnce">
+        /// If true, the menu for the plugin on the ribbon is
+        /// created only once when the plugin is loaded
+        /// </param>
         public static void AddMenu<TFactory, TBuildService>(
             this IContainer container,
             Assembly assembly,
-            IConfiguration cfg,
+            IConfiguration config,
             bool createOnlyOnce)
             where TFactory : class, IRibbonFactory
             where TBuildService : class, IMenuBuildService
         {
             container.AddRibbonBuildTypes<TFactory, TBuildService>();
 
-            var menuCreated = false;
+            var menuWasCreated = false;
             container.AddTransient<Action<IRibbon>>(() =>
             {
-                var menuConfiguration = GetMenuConfiguration(container, cfg);
+                var menuConfiguration = GetMenuConfiguration(container, config);
 
                 return ribbon =>
                 {
-                    if (menuCreated && createOnlyOnce)
+                    if (menuWasCreated && createOnlyOnce)
                         return;
 
                     menuConfiguration.Tabs
@@ -78,19 +84,19 @@
                             t.Panels.ForEach(p =>
                             {
                                 var panel = tab.Panel(p.Name);
-                                //// todo доделать обработку других типов кнопок
+                                //// TODO: add other types of button processing
                                 p.Buttons.ForEach(b =>
                                 {
                                     var commandType = GetType(b.CommandType, assembly);
                                     panel.Button(b.Name,
-                                        b.Title,
+                                        b.Text,
                                         commandType,
                                         button => SetupButton(assembly, button, b));
                                 });
                             });
                         });
 
-                    menuCreated = true;
+                    menuWasCreated = true;
                 };
             });
 
@@ -118,8 +124,7 @@
 
             return strings.Length switch
             {
-                1 => assembly.GetType(commandType),
-                2 => Assembly
+                1 => assembly.GetType(commandType), 2 => Assembly
                     .LoadFrom(Path.Combine(GetAssemblyDirectory(assembly), strings[1] + ".dll"))
                     .GetType(strings[0]),
                 _ => throw new ArgumentException()
@@ -128,7 +133,7 @@
 
         private static void SetupButton(Assembly assembly, IButton button, ButtonConfiguration b)
         {
-            button.SetLongDescription(b.Description);
+            button.SetDescription(b.Description);
             button.SetToolTip(b.ToolTip);
 
             if (TryGetImagePath(assembly, b.LargeImage, out var largeImagePath))

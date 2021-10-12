@@ -1,42 +1,42 @@
 ﻿namespace RxBim.Application.Ribbon.Configurations
 {
     /// <summary>
-    /// Конфигурация кнопки
+    /// Configuration for a button
     /// </summary>
     public class ButtonConfiguration
     {
         /// <summary>
-        /// Имя
+        /// Button name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Заголовок
+        /// Button label text
         /// </summary>
-        public string Title { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
-        /// Тип команды
+        /// The name of the button command class type (as the return value of the nameof operator)
         /// </summary>
         public string CommandType { get; set; }
 
         /// <summary>
-        /// Большая картинка
+        /// URI string for large button image
         /// </summary>
         public string LargeImage { get; set; }
 
         /// <summary>
-        /// Маленькая картинка
+        /// URI string for small button image
         /// </summary>
         public string SmallImage { get; set; }
 
         /// <summary>
-        /// Описание
+        /// Button description
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Всплывающее описание
+        /// Button tooltip
         /// </summary>
         public string ToolTip { get; set; }
     }

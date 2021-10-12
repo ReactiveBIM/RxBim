@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
 {
+    using System;
     using Models;
     using Ribbon.Abstractions;
 
@@ -21,6 +22,24 @@
             }
 
             return button;
+        }
+
+        /// <summary>
+        /// Sets a large image for the button in a light theme
+        /// </summary>
+        /// <param name="button">Button</param>
+        /// <param name="imageUri">Image <see cref="Uri"/></param>
+        public static IButton SetLargeImageLight(this IButton button, Uri imageUri)
+        {
+        }
+
+        /// <summary>
+        /// Sets a small image for the button in a light theme
+        /// </summary>
+        /// <param name="button">Button</param>
+        /// <param name="imageUri">Image <see cref="Uri"/></param>
+        public static IButton SetSmallImageLight(this IButton button, Uri imageUri)
+        {
         }
     }
 }

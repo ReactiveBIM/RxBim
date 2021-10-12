@@ -11,7 +11,7 @@
         public IRibbon Create(IContainer container, Action<IRibbon> action)
         {
             var ribbon = Create(container);
-            if (ribbon.RibbonIsOn)
+            if (ribbon.IsEnabled)
             {
                 action(ribbon);
             }
@@ -22,7 +22,7 @@
         /// <summary>
         /// Creates and returns a ribbon
         /// </summary>
-        /// <param name="container">DI-container</param>
+        /// <param name="container">DI container</param>
         protected abstract IRibbon Create(IContainer container);
     }
 }

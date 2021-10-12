@@ -4,10 +4,8 @@ namespace RxBim.Application.Ribbon.Models
     using System.Collections.Generic;
     using Abstractions;
 
-    /// <summary>
-    /// StackedItem
-    /// </summary>
-    public abstract class StackedItemBase<TButton> : IStackedItem
+    /// <inheritdoc />
+    public abstract class StackedItemsBase<TButton> : IStackedItems
         where TButton : IButton
     {
         /// <summary>
@@ -28,15 +26,14 @@ namespace RxBim.Application.Ribbon.Models
         /// <param name="externalCommandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
-        /// <returns>Panel where button were created</returns>
-        public IStackedItem Button(string name, string text, Type externalCommandType, Action<IButton> action = null)
+        public IStackedItems Button(string name, string text, Type externalCommandType, Action<IButton> action = null)
         {
             if (Buttons.Count == 3)
             {
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             }
 
-            var button = GetButton(name, text, externalCommandType);
+            var button = CreateButton(name, text, externalCommandType);
             action?.Invoke(button);
 
             Buttons.Add(button);
@@ -45,11 +42,11 @@ namespace RxBim.Application.Ribbon.Models
         }
 
         /// <summary>
-        /// Возвращает кнопку
+        /// Returns a new button
         /// </summary>
-        /// <param name="name">Название</param>
-        /// <param name="text">Текст</param>
-        /// <param name="externalCommandType">Тип команды</param>
-        protected abstract TButton GetButton(string name, string text, Type externalCommandType);
+        /// <param name="name">Button name</param>
+        /// <param name="text">Button label text</param>
+        /// <param name="commandType">Button command class type</param>
+        protected abstract TButton CreateButton(string name, string text, Type commandType);
     }
 }

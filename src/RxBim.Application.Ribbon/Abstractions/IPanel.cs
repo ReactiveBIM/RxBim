@@ -4,9 +4,9 @@
     using Di;
 
     /// <summary>
-    /// Панель
+    /// Ribbon panel
     /// </summary>
-    public interface IPanel : IRibbonBuilder, IRibbonElement
+    public interface IPanel : IRibbonBuilder
     {
         /// <summary>
         /// The tab on which the panel is located
@@ -18,7 +18,7 @@
         /// </summary>
         /// <param name="action">Action where you must add items to the stacked panel</param>
         /// <returns>Panel where stacked items were created</returns>
-        IPanel StackedItems(Action<IStackedItem> action);
+        IPanel StackedItems(Action<IStackedItems> action);
 
         /// <summary>
         /// Create push button on the panel
@@ -47,14 +47,14 @@
         IPanel Separator();
 
         /// <summary>
-        /// Добавляет на панель кнопку "О программе"
+        /// Adds button for displaying About window
         /// </summary>
-        /// <param name="name">Название</param>
-        /// <param name="text">Описание</param>
-        /// <param name="tabName">Название вкладки плагина</param>
-        /// <param name="panelName">Название панели</param>
-        /// <param name="container">Контейнер</param>
-        /// <param name="action">Действие</param>
+        /// <param name="name">Button name</param>
+        /// <param name="text">Button label text</param>
+        /// <param name="tabName">Name of the ribbon tab for the plugin</param>
+        /// <param name="panelName">Panel name</param>
+        /// <param name="container">DI container</param>
+        /// <param name="action">Additional actions for the button</param>
         void AddAboutButton(
             string name,
             string text,

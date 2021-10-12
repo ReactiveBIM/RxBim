@@ -14,9 +14,9 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// </summary>
         /// <param name="name">Имя</param>
         /// <param name="text">Текст</param>
-        /// <param name="externalCommandType">Тип вызываемой команды</param>
-        public Button(string name, string text, Type externalCommandType)
-            : base(name, text, externalCommandType)
+        /// <param name="commandType">Тип вызываемой команды</param>
+        public Button(string name, string text, Type commandType)
+            : base(name, text, commandType)
         {
         }
 
@@ -30,8 +30,8 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// </summary>
         internal virtual ButtonData GetButtonData()
         {
-            var pushButtonData = new PushButtonData(Name, Text, AssemblyLocation, ClassName);
-            pushButtonData.AvailabilityClassName = ClassName;
+            var pushButtonData = new PushButtonData(Name, Text, CommandAssemblyLocation, CommandClassTypeName);
+            pushButtonData.AvailabilityClassName = CommandClassTypeName;
             SetBaseProperties(pushButtonData);
             return pushButtonData;
         }

@@ -5,22 +5,24 @@ namespace RxBim.Application.Ribbon.Models
     using Di;
 
     /// <summary>
-    /// Панель revit
+    /// Ribbon panel base implementation
     /// </summary>
-    public abstract class PanelBase<TRibbon, TStackedItem, TButton> : RibbonBuilderBase<TRibbon>, IPanel
+    /// <typeparam name="TRibbon">Ribbon implementation type for a specific type of CAD platform</typeparam>
+    /// <typeparam name="TStackedItems">StackedItems implementation type for a specific type of CAD platform</typeparam>
+    /// <typeparam name="TButton">Button implementation type for a specific type of CAD platform</typeparam>
+    public abstract class PanelBase<TRibbon, TStackedItems, TButton> : RibbonBuilderBase<TRibbon>, IPanel
         where TRibbon : IRibbon
-        where TStackedItem : StackedItemBase<TButton>
+        where TStackedItems : StackedItemsBase<TButton>
         where TButton : IButton
     {
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="ribbon">Лента</param>
+        /// <param name="ribbon">Ribbon object</param>
         /// <param name="container"><see cref="IContainer"/></param>
-        /// <param name="id">The identifier of a panel</param>
         /// <param name="tab"><see cref="Tab"/></param>
-        protected PanelBase(TRibbon ribbon, IContainer container, string id, ITab tab)
-            : base(ribbon, id, container)
+        protected PanelBase(TRibbon ribbon, IContainer container, ITab tab)
+            : base(ribbon, container)
         {
             Tab = tab;
         }
@@ -29,26 +31,26 @@ namespace RxBim.Application.Ribbon.Models
         public ITab Tab { get; }
 
         /// <summary>
-        /// Create new Stacked items at the panel
+        /// Create new stacked items at the panel
         /// </summary>
         /// <param name="action">Action where you must add items to the stacked panel</param>
         /// <returns>Panel where stacked items were created</returns>
-        public IPanel StackedItems(Action<IStackedItem> action)
+        public IPanel StackedItems(Action<IStackedItems> action)
         {
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
 
-            var stackedItem = CreateStackedItem();
-            action.Invoke(stackedItem);
+            var stackedItems = CreateStackedItems();
+            action.Invoke(stackedItems);
 
-            if (stackedItem.ItemsCount is < 2 or > 3)
+            if (stackedItems.ItemsCount is < 2 or > 3)
             {
                 throw new InvalidOperationException("You must create two or three items in the StackedItems");
             }
 
-            AddStackedItemButtonsToRibbon(stackedItem);
+            AddStackedButtonsToRibbon(stackedItems);
 
             return this;
         }
@@ -93,14 +95,14 @@ namespace RxBim.Application.Ribbon.Models
             Action<IAboutButton> action);
 
         /// <summary>
-        /// Возвращает новую группу кнопок
+        /// Returns a new stack of ribbon items
         /// </summary>
-        protected abstract TStackedItem CreateStackedItem();
+        protected abstract TStackedItems CreateStackedItems();
 
         /// <summary>
-        /// Добавляет кнопки на ленту CAD-приложения
+        /// Add stacked buttons to ribbon in specific CAD platform
         /// </summary>
-        /// <param name="stackedItem">Сгруппированные кнопки</param>
-        protected abstract void AddStackedItemButtonsToRibbon(TStackedItem stackedItem);
+        /// <param name="stackedItems">Stack of ribbon items</param>
+        protected abstract void AddStackedButtonsToRibbon(TStackedItems stackedItems);
     }
 }

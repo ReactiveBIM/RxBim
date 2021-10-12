@@ -3,39 +3,40 @@
     using System;
 
     /// <summary>
-    /// Кнопка
+    /// Ribbon button
     /// </summary>
     public interface IButton
     {
         /// <summary>
-        /// Добавляет всплывающее описание кнопки
+        /// Sets a tooltip for the button
         /// </summary>
-        /// <param name="toolTip">Текст всплывающего описания</param>
-        /// <param name="addVersion">Флаг добавления версии</param>
-        IButton SetToolTip(string toolTip, bool addVersion = true);
+        /// <param name="toolTip">Tooltip text</param>
+        /// <param name="addVersion">If true, a version number will be added to the tooltip text</param>
+        /// <param name="versionInfoPrefix">Prefix for version info</param>
+        IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoPrefix = "");
 
         /// <summary>
-        /// Устанавливает большое изображение
+        /// Sets a large image for the button
         /// </summary>
-        /// <param name="imageUri">imageUri</param>
+        /// <param name="imageUri">Image <see cref="Uri"/></param>
         IButton SetLargeImage(Uri imageUri);
 
         /// <summary>
-        /// Устанавливает маленькое изображение
+        /// Sets a small image for the button
         /// </summary>
-        /// <param name="imageUri">изображение</param>
+        /// <param name="imageUri">Image <see cref="Uri"/></param>
         IButton SetSmallImage(Uri imageUri);
 
         /// <summary>
-        /// Устанавливает описание
+        /// Set description for the button
         /// </summary>
-        /// <param name="description">описание</param>
-        IButton SetLongDescription(string description);
+        /// <param name="description">Description text</param>
+        IButton SetDescription(string description);
 
         /// <summary>
-        /// Устанавливает url справки
+        /// Sets the help URL for the button command
         /// </summary>
-        /// <param name="url">url</param>
+        /// <param name="url">URL address</param>
         IButton SetHelpUrl(string url);
     }
 }

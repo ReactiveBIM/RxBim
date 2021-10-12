@@ -3,17 +3,17 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Конфигурация вкладки
+    /// Ribbon tab configuration
     /// </summary>
     public class TabConfiguration
     {
         /// <summary>
-        /// Имя вкладки
+        /// Tab name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Панели
+        /// Panels on the tab
         /// </summary>
         public List<PanelConfiguration> Panels { get; set; }
     }

@@ -28,7 +28,7 @@
         /// Returns <see cref="RibbonPanel"/> for <see cref="IPanel"/>
         /// </summary>
         /// <param name="panel"><see cref="IPanel"/> object</param>
-        public static RibbonPanel GetRibbonPanel(this IPanel panel)
+        internal static RibbonPanel GetRibbonPanel(this IPanel panel)
         {
             return panel.Tab.GetRibbonTab().Panels.Single(p => p.Id == panel.Id);
         }

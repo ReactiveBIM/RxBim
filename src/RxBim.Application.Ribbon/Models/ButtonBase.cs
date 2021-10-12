@@ -6,81 +6,81 @@
     using Abstractions;
 
     /// <summary>
-    /// Базовый класс кнопки
+    /// Base implementation of a ribbon button
     /// </summary>
     public abstract class ButtonBase : IButton
     {
-        private readonly Type _externalCommandType;
+        private readonly Type _commandType;
 
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="ButtonBase"/> class.
         /// </summary>
-        /// <param name="name">Имя</param>
-        /// <param name="text">Текст</param>
-        /// <param name="externalCommandType">Тип вызываемой команды</param>
-        protected ButtonBase(string name, string text, Type externalCommandType)
+        /// <param name="name">Button name</param>
+        /// <param name="text">Button label text</param>
+        /// <param name="commandType">Button command class type</param>
+        protected ButtonBase(string name, string text, Type commandType)
         {
             Name = name;
             Text = text;
-            _externalCommandType = externalCommandType;
+            _commandType = commandType;
 
-            if (externalCommandType != null)
+            if (commandType != null)
             {
-                ClassName = externalCommandType.FullName;
-                AssemblyLocation = externalCommandType.Assembly.Location;
+                CommandClassTypeName = commandType.FullName;
+                CommandAssemblyLocation = commandType.Assembly.Location;
             }
         }
 
         /// <summary>
-        /// Полное название типа командного класса
+        /// Button command class type full name
         /// </summary>
-        protected string ClassName { get; }
+        protected string CommandClassTypeName { get; }
 
         /// <summary>
-        /// Путь к сборке с командным классом
+        /// The path to the assembly that contains the command class
         /// </summary>
-        protected string AssemblyLocation { get; }
+        protected string CommandAssemblyLocation { get; }
 
         /// <summary>
-        /// Имя кнопки
+        /// Button name
         /// </summary>
         protected string Name { get; set; }
 
         /// <summary>
-        /// Текст кнопки
+        /// Button label name
         /// </summary>
         protected string Text { get; set; }
 
         /// <summary>
-        /// Всплывающий текст с описанием кнопки
+        /// Button tooltip
         /// </summary>
         protected string ToolTip { get; set; }
 
         /// <summary>
-        /// Большое изображение
+        /// Large image for the button
         /// </summary>
         protected ImageSource LargeImage { get; set; }
 
         /// <summary>
-        /// Малое изображение
+        /// Small image for the button
         /// </summary>
         protected ImageSource SmallImage { get; set; }
 
         /// <summary>
-        /// Описание
+        /// Button description
         /// </summary>
         protected string Description { get; set; }
 
         /// <inheritdoc />
-        public virtual IButton SetToolTip(string toolTip, bool addVersion = true)
+        public virtual IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoPrefix = "")
         {
             ToolTip = toolTip;
-            if (_externalCommandType != null
+            if (_commandType != null
                 && addVersion)
             {
                 if (!string.IsNullOrEmpty(toolTip))
                     ToolTip += Environment.NewLine;
-                ToolTip += $"Версия: {_externalCommandType.Assembly.GetName().Version}";
+                ToolTip += $"{versionInfoPrefix}{_commandType.Assembly.GetName().Version}";
             }
 
             return this;
@@ -109,7 +109,7 @@
         }
 
         /// <inheritdoc />
-        public IButton SetLongDescription(string description)
+        public IButton SetDescription(string description)
         {
             Description = description;
             return this;

@@ -26,7 +26,7 @@
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-         <Description>RxBim Application UI api Library</Description>
+        <Description>RxBim Application UI api Library</Description>
         <PackageId>RxBim.Application.Ribbon</PackageId>
     </PropertyGroup>
 

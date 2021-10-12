@@ -3,14 +3,14 @@
     using Di;
 
     /// <summary>
-    /// Сервис построения меню
+    /// Plugin Ribbon Menu Build Service
     /// </summary>
     public interface IMenuBuildService
     {
         /// <summary>
-        /// Построение меню
+        /// Builds a ribbon menu for a plugin
         /// </summary>
-        /// <param name="container">DI-Контейнер</param>
+        /// <param name="container">DI container</param>
         void BuildMenu(IContainer container);
     }
 }

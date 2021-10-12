@@ -11,14 +11,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonBase"/> class.
         /// </summary>
-        /// <param name="container">DI-container</param>
+        /// <param name="container">DI container</param>
         protected RibbonBase(IContainer container)
         {
             Container = container;
         }
 
         /// <inheritdoc />
-        public abstract bool RibbonIsOn { get; }
+        public abstract bool IsEnabled { get; }
 
         /// <summary>
         /// Tabs
@@ -38,40 +38,37 @@
                 throw new InvalidOperationException("Tab title is not set!");
             }
 
-            if (!TabIsExists(tabTitle, out var tabId))
+            if (!TabIsExists(tabTitle))
             {
-                tabId = CreateTabAndAddToRibbon(tabTitle);
+                CreateTabAndAddToRibbon(tabTitle);
             }
 
-            return GetTab(tabTitle, tabId);
+            return GetTab(tabTitle);
         }
 
         /// <summary>
         /// Returns true if the tab with a title exists, otherwise returns false
         /// </summary>
         /// <param name="tabTitle">Title of a tab</param>
-        /// <param name="tabId">Existing tab identifier</param>
-        protected abstract bool TabIsExists(string tabTitle, out string tabId);
+        protected abstract bool TabIsExists(string tabTitle);
 
         /// <summary>
         /// Создаёт вкладку и добавляет её на ленту
         /// </summary>
         /// <param name="tabTitle">Название вкладки</param>
-        /// <returns>New tab identifier</returns>
-        protected abstract string CreateTabAndAddToRibbon(string tabTitle);
+        protected abstract void CreateTabAndAddToRibbon(string tabTitle);
 
         /// <summary>
         /// Возвращает вкладку
         /// </summary>
         /// <param name="title">Название вкладки</param>
-        /// <param name="id">Tab identifier</param>
-        protected abstract ITab CreateTab(string title, string id);
+        protected abstract ITab CreateTab(string title);
 
-        private ITab GetTab(string title, string id)
+        private ITab GetTab(string title)
         {
             if (!Tabs.TryGetValue(title, out var tab))
             {
-                tab = CreateTab(title, id);
+                tab = CreateTab(title);
                 Tabs[title] = tab;
             }
 

@@ -11,7 +11,7 @@
     /// <summary>
     /// Панель
     /// </summary>
-    public class Panel : PanelBase<Ribbon, StackedItem, Button>
+    public class Panel : PanelBase<Ribbon, StackedItems, Button>
     {
         /// <inheritdoc />
         public Panel(Ribbon ribbon, IContainer container, string id, ITab tab)
@@ -88,25 +88,25 @@
         }
 
         /// <inheritdoc />
-        protected override StackedItem CreateStackedItem()
+        protected override StackedItems CreateStackedItems()
         {
             return new ();
         }
 
         /// <inheritdoc />
-        protected override void AddStackedItemButtonsToRibbon(StackedItem stackedItem)
+        protected override void AddStackedButtonsToRibbon(StackedItems stackedItems)
         {
             var rowPanel = new RibbonRowPanel();
             _currentPanelRow?.Items.Add(rowPanel);
 
-            for (var i = 0; i < stackedItem.Buttons.Count; i++)
+            for (var i = 0; i < stackedItems.Buttons.Count; i++)
             {
                 if (i > 0)
                 {
                     rowPanel.Items.Add(new RibbonRowBreak());
                 }
 
-                var button = stackedItem.Buttons[i];
+                var button = stackedItems.Buttons[i];
                 var cadButton = button.GetRibbonButton();
                 cadButton.Size = RibbonItemSize.Standard;
                 cadButton.Orientation = Orientation.Horizontal;

@@ -9,9 +9,9 @@ namespace RxBim.Application.Ribbon.Revit.Models
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>
-    /// Панель revit
+    /// Revit ribbon panel
     /// </summary>
-    public class Panel : PanelBase<Ribbon, StackedItem, Button>
+    public class Panel : PanelBase<Ribbon, StackedItems, Button>
     {
         private readonly RibbonPanel _revitPanel;
 
@@ -21,8 +21,9 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// <param name="ribbon"><see cref="Ribbon"/></param>
         /// <param name="revitPanel"><see cref="RibbonPanel"/></param>
         /// <param name="container"><see cref="IContainer"/></param>
-        public Panel(Ribbon ribbon, RibbonPanel revitPanel, IContainer container)
-            : base(ribbon, container)
+        /// <param name="tab">Parent tab</param>
+        public Panel(Ribbon ribbon, RibbonPanel revitPanel, IContainer container, ITab tab)
+            : base(ribbon, container, tab)
         {
             _revitPanel = revitPanel;
         }
@@ -107,19 +108,19 @@ namespace RxBim.Application.Ribbon.Revit.Models
         }
 
         /// <inheritdoc />
-        protected override StackedItem CreateStackedItem()
+        protected override StackedItems CreateStackedItems()
         {
-            return new StackedItem();
+            return new StackedItems();
         }
 
         /// <inheritdoc />
-        protected override void AddStackedItemButtonsToRibbon(StackedItem stackedItem)
+        protected override void AddStackedButtonsToRibbon(StackedItems stackedItems)
         {
-            var item1 = stackedItem.Buttons[0].GetButtonData();
-            var item2 = stackedItem.Buttons[1].GetButtonData();
-            if (stackedItem.ItemsCount == 3)
+            var item1 = stackedItems.Buttons[0].GetButtonData();
+            var item2 = stackedItems.Buttons[1].GetButtonData();
+            if (stackedItems.ItemsCount == 3)
             {
-                var item3 = stackedItem.Buttons[2].GetButtonData();
+                var item3 = stackedItems.Buttons[2].GetButtonData();
                 _revitPanel.AddStackedItems(item1, item2, item3);
             }
             else

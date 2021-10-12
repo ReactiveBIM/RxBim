@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     /// <summary>
-    /// Строитель ленты
+    /// Ribbon builder
     /// </summary>
     public interface IRibbonBuilder
     {
         /// <summary>
-        /// Возвращает ленту
+        /// Returns ribbon object
         /// </summary>
         IRibbon And();
     }
