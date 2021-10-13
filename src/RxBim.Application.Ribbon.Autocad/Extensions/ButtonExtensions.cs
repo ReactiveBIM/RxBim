@@ -6,53 +6,53 @@
     using Ribbon.Abstractions;
 
     /// <summary>
-    /// Extensions for <see cref="IButton"/>
+    /// Extensions for <see cref="IButtonBuilder"/>
     /// </summary>
     public static class ButtonExtensions
     {
         /// <summary>
         /// Set the show state for the button label text
         /// </summary>
-        /// <param name="button">Button</param>
+        /// <param name="buttonBuilder">Button</param>
         /// <param name="show">If true, show label text</param>
-        public static IButton SetShowText(this IButton button, bool show)
+        public static IButtonBuilder SetShowText(this IButtonBuilder buttonBuilder, bool show)
         {
-            if (button is Button acadButton)
+            if (buttonBuilder is ButtonBuilder acadButton)
             {
                 acadButton.ShowText = show;
             }
 
-            return button;
+            return buttonBuilder;
         }
 
         /// <summary>
         /// Sets a large image for the button in a light theme
         /// </summary>
-        /// <param name="button">Button</param>
+        /// <param name="buttonBuilder">Button</param>
         /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButton SetLargeImageLight(this IButton button, Uri? imageUri)
+        public static IButtonBuilder SetLargeImageLight(this IButtonBuilder buttonBuilder, Uri? imageUri)
         {
-            if (button is Button acButton && imageUri != null)
+            if (buttonBuilder is ButtonBuilder acButton && imageUri != null)
             {
                 acButton.LargeImageLight = new BitmapImage(imageUri);
             }
 
-            return button;
+            return buttonBuilder;
         }
 
         /// <summary>
         /// Sets a small image for the button in a light theme
         /// </summary>
-        /// <param name="button">Button</param>
+        /// <param name="buttonBuilder">Button</param>
         /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButton SetSmallImageLight(this IButton button, Uri? imageUri)
+        public static IButtonBuilder SetSmallImageLight(this IButtonBuilder buttonBuilder, Uri? imageUri)
         {
-            if (button is Button acButton && imageUri != null)
+            if (buttonBuilder is ButtonBuilder acButton && imageUri != null)
             {
                 acButton.SmallImageLight = new BitmapImage(imageUri);
             }
 
-            return button;
+            return buttonBuilder;
         }
     }
 }

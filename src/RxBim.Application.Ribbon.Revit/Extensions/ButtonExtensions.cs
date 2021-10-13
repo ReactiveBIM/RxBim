@@ -12,20 +12,20 @@
         /// <summary>
         /// Устанавливает справку
         /// </summary>
-        /// <param name="button">Кнопка</param>
+        /// <param name="buttonBuilder">Кнопка</param>
         /// <param name="contextualHelpType">Справка</param>
         /// <param name="helpPath">путь к справке</param>
-        public static IButton SetContextualHelp(
-            this IButton button,
+        public static IButtonBuilder SetContextualHelp(
+            this IButtonBuilder buttonBuilder,
             ContextualHelpType contextualHelpType,
             string helpPath)
         {
-            if (button is Button revitButton)
+            if (buttonBuilder is ButtonBuilder revitButton)
             {
                 revitButton.ContextualHelp = new ContextualHelp(contextualHelpType, helpPath);
             }
 
-            return button;
+            return buttonBuilder;
         }
     }
 }

@@ -12,20 +12,20 @@
         /// <summary>
         /// Create push button on the panel
         /// </summary>
-        /// <param name="pulldownButton">PulldownButton</param>
+        /// <param name="pulldownButtonBuilder">PulldownButton</param>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public static IButton Button<TExternalCommandClass>(
-            this IPulldownButton pulldownButton,
+        public static IButtonBuilder Button<TExternalCommandClass>(
+            this IPulldownButtonBuilder pulldownButtonBuilder,
             string name,
             string text,
-            Action<IButton> action = null)
+            Action<IButtonBuilder> action = null)
             where TExternalCommandClass : class, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
-            return pulldownButton.Button(name, text, commandClassType, action);
+            return pulldownButtonBuilder.Button(name, text, commandClassType, action);
         }
     }
 }

@@ -5,10 +5,10 @@
     using System.Linq;
     using System.Reflection;
     using Abstractions;
-    using Configurations;
     using Di;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
+    using Models;
     using Services;
 
     /// <summary>
@@ -27,7 +27,7 @@
         /// </param>
         public static void AddMenu<TFactory, TBuildService>(
             this IContainer container,
-            Action<IRibbon> action,
+            Action<IRibbonBuilder> action,
             bool createOnlyOnce)
             where TFactory : class, IRibbonFactory
             where TBuildService : class, IMenuBuildService
@@ -35,7 +35,7 @@
             container.AddRibbonBuildTypes<TFactory, TBuildService>();
 
             var menuWasCreated = false;
-            container.AddInstance<Action<IRibbon>>(ribbon =>
+            container.AddInstance<Action<IRibbonBuilder>>(ribbon =>
             {
                 if (!menuWasCreated || !createOnlyOnce)
                 {
@@ -68,7 +68,7 @@
             container.AddRibbonBuildTypes<TFactory, TBuildService>();
 
             var menuWasCreated = false;
-            container.AddTransient<Action<IRibbon>>(() =>
+            container.AddTransient<Action<IRibbonBuilder>>(() =>
             {
                 var menuConfiguration = GetMenuConfiguration(container, config);
 
@@ -131,26 +131,26 @@
             };
         }
 
-        private static void SetupButton(Assembly assembly, IButton button, ButtonConfiguration b)
+        private static void SetupButton(Assembly assembly, IButtonBuilder buttonBuilder, Button b)
         {
-            button.SetDescription(b.Description);
-            button.SetToolTip(b.ToolTip);
+            buttonBuilder.SetDescription(b.Description);
+            buttonBuilder.SetToolTip(b.ToolTip);
 
             if (TryGetImagePath(assembly, b.LargeImage, out var largeImagePath))
             {
-                button.SetLargeImage(new Uri(largeImagePath, UriKind.RelativeOrAbsolute));
+                buttonBuilder.SetLargeImage(new Uri(largeImagePath, UriKind.RelativeOrAbsolute));
             }
 
             if (TryGetImagePath(assembly, b.SmallImage, out var smallImagePath))
             {
-                button.SetSmallImage(new Uri(smallImagePath, UriKind.RelativeOrAbsolute));
+                buttonBuilder.SetSmallImage(new Uri(smallImagePath, UriKind.RelativeOrAbsolute));
             }
         }
 
-        private static MenuConfiguration GetMenuConfiguration(IContainer container, IConfiguration cfg)
+        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var menuConfiguration = cfg.GetSection("Menu").Get<MenuConfiguration>();
+            var menuConfiguration = cfg.GetSection("Menu").Get<Ribbon>();
             return menuConfiguration;
         }
 

@@ -1,13 +1,19 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions
+namespace RxBim.Application.Ribbon.Abstractions
 {
     /// <summary>
-    /// Ribbon builder
+    /// Ribbon
     /// </summary>
     public interface IRibbonBuilder
     {
         /// <summary>
-        /// Returns ribbon object
+        /// Ribbon control is enabled
         /// </summary>
-        IRibbon And();
+        bool IsEnabled { get; }
+
+        /// <summary>
+        /// Creates or returns exists tab
+        /// </summary>
+        /// <param name="tabTitle">Tab title</param>
+        ITabBuilder Tab(string tabTitle = null);
     }
 }

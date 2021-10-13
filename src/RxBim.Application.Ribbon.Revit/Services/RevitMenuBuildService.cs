@@ -8,7 +8,7 @@
     public class RevitMenuBuildService : MenuBuildServiceBase
     {
         /// <inheritdoc />
-        public RevitMenuBuildService(IRibbonFactory ribbonFactory, Action<IRibbon> action)
+        public RevitMenuBuildService(IRibbonFactory ribbonFactory, Action<IRibbonBuilder> action)
             : base(ribbonFactory, action)
         {
         }

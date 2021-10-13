@@ -8,9 +8,9 @@
     public abstract class MenuBuildServiceBase : IMenuBuildService
     {
         private readonly IRibbonFactory _ribbonFactory;
-        private readonly Action<IRibbon> _action;
+        private readonly Action<IRibbonBuilder> _action;
         private IContainer _container;
-        private IRibbon _ribbon;
+        private IRibbonBuilder _ribbonBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuBuildServiceBase"/> class.
@@ -19,7 +19,7 @@
         /// <param name="action">Action to build a ribbon</param>
         protected MenuBuildServiceBase(
             IRibbonFactory ribbonFactory,
-            Action<IRibbon> action)
+            Action<IRibbonBuilder> action)
         {
             _ribbonFactory = ribbonFactory;
             _action = action;
@@ -37,7 +37,7 @@
         /// </summary>
         protected void BuildMenuInternal()
         {
-            _ribbon ??= _ribbonFactory.Create(_container, _action);
+            _ribbonBuilder ??= _ribbonFactory.Create(_container, _action);
         }
     }
 }

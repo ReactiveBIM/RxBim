@@ -12,20 +12,20 @@
         /// <summary>
         /// Create push button on the panel
         /// </summary>
-        /// <param name="stackedItems">Stacked item</param>
+        /// <param name="stackedItemsBuilder">Stacked item</param>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public static IStackedItems Button<TExternalCommandClass>(
-            this IStackedItems stackedItems,
+        public static IStackedItemsBuilder Button<TExternalCommandClass>(
+            this IStackedItemsBuilder stackedItemsBuilder,
             string name,
             string text,
-            Action<IButton> action = null)
+            Action<IButtonBuilder> action = null)
             where TExternalCommandClass : class, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
-            return stackedItems.Button(name, text, commandClassType, action);
+            return stackedItemsBuilder.Button(name, text, commandClassType, action);
         }
     }
 }

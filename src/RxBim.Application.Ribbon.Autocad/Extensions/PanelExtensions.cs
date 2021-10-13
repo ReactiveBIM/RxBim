@@ -7,32 +7,32 @@
     using Ribbon.Abstractions;
 
     /// <summary>
-    /// Extensions for <see cref="IPanel"/>
+    /// Extensions for <see cref="IPanelBuilder"/>
     /// </summary>
     public static class PanelExtensions
     {
         /// <summary>
         /// Switches the panel to SlideOut fill mode
         /// </summary>
-        /// <param name="panel"><see cref="IPanel"/> object</param>
-        public static IPanel SlideOut(this IPanel panel)
+        /// <param name="panelBuilder"><see cref="IPanelBuilder"/> object</param>
+        public static IPanelBuilder SlideOut(this IPanelBuilder panelBuilder)
         {
-            if (panel is Panel cadPanel)
+            if (panelBuilder is PanelBuilder cadPanel)
             {
                 cadPanel.SwitchToSlideOut();
             }
 
-            return panel;
+            return panelBuilder;
         }
 
         /// <summary>
-        /// Returns <see cref="RibbonPanel"/> for <see cref="IPanel"/>
+        /// Returns <see cref="RibbonPanel"/> for <see cref="IPanelBuilder"/>
         /// </summary>
-        /// <param name="panel"><see cref="IPanel"/> object</param>
-        internal static RibbonPanel GetRibbonPanel(this IPanel panel)
+        /// <param name="panelBuilder"><see cref="IPanelBuilder"/> object</param>
+        internal static RibbonPanel GetRibbonPanel(this IPanelBuilder panelBuilder)
         {
-            if (panel is Panel acPanel)
-                return panel.Tab.GetRibbonTab().Panels.Single(p => p.Id == acPanel.Id);
+            if (panelBuilder is PanelBuilder acPanel)
+                return panelBuilder.TabBuilder.GetRibbonTab().Panels.Single(p => p.Id == acPanel.Id);
             throw new InvalidOperationException("Can't get RibbonPanel for this panel type!");
         }
     }

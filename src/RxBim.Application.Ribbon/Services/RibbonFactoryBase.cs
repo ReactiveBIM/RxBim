@@ -8,7 +8,7 @@
     public abstract class RibbonFactoryBase : IRibbonFactory
     {
         /// <inheritdoc />
-        public IRibbon Create(IContainer container, Action<IRibbon> action)
+        public IRibbonBuilder Create(IContainer container, Action<IRibbonBuilder> action)
         {
             var ribbon = Create(container);
             if (ribbon.IsEnabled)
@@ -23,6 +23,6 @@
         /// Creates and returns a ribbon
         /// </summary>
         /// <param name="container">DI container</param>
-        protected abstract IRibbon Create(IContainer container);
+        protected abstract IRibbonBuilder Create(IContainer container);
     }
 }

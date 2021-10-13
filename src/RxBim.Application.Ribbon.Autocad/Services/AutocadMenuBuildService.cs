@@ -21,7 +21,7 @@
         /// <param name="onlineHelpService">Сервис онлайн-справки</param>
         public AutocadMenuBuildService(
             IRibbonFactory ribbonFactory,
-            Action<IRibbon> action,
+            Action<IRibbonBuilder> action,
             IRibbonEvents ribbonEvents,
             IOnlineHelpService onlineHelpService)
             : base(ribbonFactory, action)

@@ -21,9 +21,9 @@
         }
 
         /// <inheritdoc />
-        protected override IRibbon Create(IContainer container)
+        protected override IRibbonBuilder Create(IContainer container)
         {
-            return new Ribbon(_controlledApp, container);
+            return new RibbonBuilder(_controlledApp, container);
         }
     }
 }

@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="container">контейнер</param>
         /// <param name="action">метод создания меню</param>
-        public static void AddMenu(this IContainer container, Action<IRibbon> action)
+        public static void AddMenu(this IContainer container, Action<IRibbonBuilder> action)
         {
             container.AddInternalObjects();
             container.AddMenu<AutocadRibbonFactory, AutocadMenuBuildService>(action, CreateMenuOnlyOnce);
