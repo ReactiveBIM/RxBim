@@ -34,7 +34,7 @@
         protected AboutBoxContent Content { get; set; }
 
         /// <inheritdoc />
-        public override IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoPrefix = "")
+        public override IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoHeader = "")
         {
             ToolTip = toolTip;
             return this;

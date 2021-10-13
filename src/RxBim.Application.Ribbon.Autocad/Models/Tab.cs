@@ -19,23 +19,25 @@
         /// Initializes a new instance of the <see cref="Tab"/> class.
         /// </summary>
         /// <param name="ribbon">The entity of a ribbon</param>
-        /// <param name="tabName">The name of this ribbon tab</param>
-        /// <param name="tabId">The identifier of this ribbon tab</param>
+        /// <param name="tabId">The identifier of this ribbon tab control</param>
         /// <param name="container">DI container</param>
-        public Tab(Ribbon ribbon, string tabName, string tabId, IContainer container)
-            : base(ribbon, tabId, container)
+        public Tab(Ribbon ribbon, string tabId, IContainer container)
+            : base(ribbon, container)
         {
-            Title = tabName;
+            Id = tabId;
         }
 
-        /// <inheritdoc />
-        public string Title { get; }
+        /// <summary>
+        /// Ribbon tab control identifier
+        /// </summary>
+        public string Id { get; }
 
         /// <inheritdoc />
         public IPanel Panel(string panelTitle)
         {
             var tab = this.GetRibbonTab();
             var panel = tab.Panels.FirstOrDefault(x => x.Source.Title.Equals(panelTitle, StringComparison.Ordinal));
+            var id = $"PANEL_{tab.Id}_{panelTitle.GetHashCode()}";
 
             if (panel is null)
             {
@@ -44,14 +46,14 @@
                     Source = new RibbonPanelSource
                     {
                         Title = panelTitle,
-                        Id = $"PANEL_{tab.Id}_{panelTitle.GetHashCode()}"
+                        Id = id
                     }
                 };
 
                 tab.Panels.Add(panel);
             }
 
-            return new Panel(Ribbon, panel, Container);
+            return new Panel(Ribbon, Container, id, this);
         }
 
         /// <inheritdoc />
@@ -68,8 +70,8 @@
                 text = name;
 
             var panel = Panel(panelName!);
-
-            panel.AddAboutButton(name, text, Name, panelName, Container, action);
+            var tab = this.GetRibbonTab();
+            panel.AddAboutButton(name, text, tab.Name, panelName, Container, action);
 
             _isAddAboutButton = true;
             return this;

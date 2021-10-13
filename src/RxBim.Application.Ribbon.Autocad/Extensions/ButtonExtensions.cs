@@ -31,6 +31,7 @@
         /// <param name="imageUri">Image <see cref="Uri"/></param>
         public static IButton SetLargeImageLight(this IButton button, Uri imageUri)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -40,6 +41,7 @@
         /// <param name="imageUri">Image <see cref="Uri"/></param>
         public static IButton SetSmallImageLight(this IButton button, Uri imageUri)
         {
+            throw new NotImplementedException();
         }
     }
 }

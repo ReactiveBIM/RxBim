@@ -7,33 +7,45 @@
     using Application.Ribbon.Models;
     using Autodesk.Windows;
     using Di;
+    using Extensions;
 
     /// <summary>
-    /// Панель
+    /// Ribbon panel implementation for AutoCAD-based products
     /// </summary>
     public class Panel : PanelBase<Ribbon, StackedItems, Button>
     {
         /// <inheritdoc />
         public Panel(Ribbon ribbon, IContainer container, string id, ITab tab)
-            : base(ribbon, container, id, tab)
+            : base(ribbon, container, tab)
         {
-            _currentPanelRow = acadPanel.Source.Items.FirstOrDefault(x => x is RibbonRowPanel) as RibbonRowPanel;
+            Id = id;
+            var acadPanel = this.GetRibbonPanel();
 
-            if (_currentPanelRow is null)
+            var mainPanelRow = acadPanel.Source.Items.FirstOrDefault(x => x is RibbonRowPanel);
+            if (mainPanelRow is null)
             {
-                _currentPanelRow = new RibbonRowPanel();
-                acadPanel.Source.Items.Add(_currentPanelRow);
+                mainPanelRow = new RibbonRowPanel();
+                acadPanel.Source.Items.Add(mainPanelRow);
             }
         }
 
+        /// <summary>
+        /// Ribbon panel control identifier
+        /// </summary>
+        public string Id { get; }
+
         /// <inheritdoc />
-        public override IPanel Button(string name, string text, Type externalCommandType, Action<IButton>? action = null)
+        public override IPanel Button(
+            string name,
+            string text,
+            Type externalCommandType,
+            Action<IButton>? action = null)
         {
             var button = new Button(name, text, externalCommandType);
             action?.Invoke(button);
             var cadButton = button.GetRibbonButton();
             cadButton.Size = RibbonItemSize.Large;
-            _currentPanelRow?.Items.Add(cadButton);
+            AddToCurrentRow(cadButton);
             return this;
         }
 
@@ -44,14 +56,14 @@
             action?.Invoke(button);
             var cadButton = button.GetRibbonButton();
             cadButton.Size = RibbonItemSize.Large;
-            _currentPanelRow?.Items.Add(cadButton);
+            AddToCurrentRow(cadButton);
             return this;
         }
 
         /// <inheritdoc />
         public override IPanel Separator()
         {
-            _currentPanelRow?.Items.Add(new RibbonSeparator());
+            AddToCurrentRow(new RibbonSeparator());
             return this;
         }
 
@@ -67,37 +79,33 @@
             var button = new AboutButton(name, text, container);
             action?.Invoke(button);
             var cadButton = button.BuildButton();
-            _currentPanelRow?.Items.Add(cadButton);
+            AddToCurrentRow(cadButton);
         }
 
         /// <summary>
-        /// Переключает панель на заполнение её выдвигающейся части
+        /// Switches the panel to SlideOut fill mode
         /// </summary>
         internal void SwitchToSlideOut()
         {
-            _currentPanelRow = _ribbonPanel.Source?.Items
-                .SkipWhile(x => x is not RibbonPanelBreak)
-                .FirstOrDefault(x => x is RibbonRowPanel) as RibbonRowPanel;
+            var ribbonPanel = this.GetRibbonPanel();
+            if (ribbonPanel.Source.Items.Any(x => x is RibbonPanelBreak))
+                return;
 
-            if (_currentPanelRow is null)
-            {
-                _currentPanelRow = new RibbonRowPanel();
-                _ribbonPanel.Source?.Items.Add(new RibbonPanelBreak());
-                _ribbonPanel.Source?.Items.Add(_currentPanelRow);
-            }
+            ribbonPanel.Source.Items.Add(new RibbonPanelBreak());
+            ribbonPanel.Source.Items.Add(new RibbonRowPanel());
         }
 
         /// <inheritdoc />
         protected override StackedItems CreateStackedItems()
         {
-            return new ();
+            return new StackedItems();
         }
 
         /// <inheritdoc />
         protected override void AddStackedButtonsToRibbon(StackedItems stackedItems)
         {
             var rowPanel = new RibbonRowPanel();
-            _currentPanelRow?.Items.Add(rowPanel);
+            AddToCurrentRow(rowPanel);
 
             for (var i = 0; i < stackedItems.Buttons.Count; i++)
             {
@@ -112,6 +120,12 @@
                 cadButton.Orientation = Orientation.Horizontal;
                 rowPanel.Items.Add(cadButton);
             }
+        }
+
+        private void AddToCurrentRow(RibbonItem item)
+        {
+            var row = (RibbonRowPanel)this.GetRibbonPanel().Source.Items.Last(x => x is RibbonRowPanel);
+            row.Items.Add(item);
         }
     }
 }

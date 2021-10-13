@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Models
 {
-    using System;
     using System.Linq;
     using Application.Ribbon.Abstractions;
     using Application.Ribbon.Models;
@@ -23,17 +22,16 @@
         public override bool IsEnabled => ComponentManager.Ribbon != null;
 
         /// <inheritdoc />
-        protected override bool TabIsExists(string tabTitle, out string tabId)
+        protected override bool TabIsExists(string tabTitle)
         {
             var ribbonTab = ComponentManager.Ribbon?.Tabs.FirstOrDefault(t => t.Title.Equals(tabTitle));
-            tabId = ribbonTab?.Id ?? string.Empty;
             return ribbonTab != null;
         }
 
         /// <inheritdoc />
-        protected override string CreateTabAndAddToRibbon(string tabTitle)
+        protected override void CreateTabAndAddToRibbon(string tabTitle)
         {
-            var newId = $"TAB_{Guid.NewGuid()}";
+            var newId = $"TAB_{tabTitle.GetHashCode()}";
             var tab = new RibbonTab
             {
                 Title = tabTitle,
@@ -41,13 +39,13 @@
                 Id = newId
             };
             ComponentManager.Ribbon?.Tabs.Add(tab);
-            return newId;
         }
 
         /// <inheritdoc />
-        protected override ITab CreateTab(string title, string id)
+        protected override ITab CreateTab(string title)
         {
-            return new Tab(this, title, id, Container);
+            var ribbonTab = ComponentManager.Ribbon.Tabs.Single(t => t.Title.Equals(title));
+            return new Tab(this, ribbonTab.Id, Container);
         }
     }
 }

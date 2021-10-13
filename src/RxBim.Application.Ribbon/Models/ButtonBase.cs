@@ -72,15 +72,14 @@
         protected string Description { get; set; }
 
         /// <inheritdoc />
-        public virtual IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoPrefix = "")
+        public virtual IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoHeader = "")
         {
             ToolTip = toolTip;
-            if (_commandType != null
-                && addVersion)
+            if (_commandType != null && addVersion)
             {
                 if (!string.IsNullOrEmpty(toolTip))
                     ToolTip += Environment.NewLine;
-                ToolTip += $"{versionInfoPrefix}{_commandType.Assembly.GetName().Version}";
+                ToolTip += $"{versionInfoHeader}{_commandType.Assembly.GetName().Version}";
             }
 
             return this;
