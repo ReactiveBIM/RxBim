@@ -1,19 +1,20 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
 {
     using System;
+    using System.Windows.Media.Imaging;
     using Models;
     using Ribbon.Abstractions;
 
     /// <summary>
-    /// Расширения для кнопки
+    /// Extensions for <see cref="IButton"/>
     /// </summary>
     public static class ButtonExtensions
     {
         /// <summary>
-        /// Задать свойство отображения текста
+        /// Set the show state for the button label text
         /// </summary>
-        /// <param name="button">Кнопка</param>
-        /// <param name="show">Отображать текст</param>
+        /// <param name="button">Button</param>
+        /// <param name="show">If true, show label text</param>
         public static IButton SetShowText(this IButton button, bool show)
         {
             if (button is Button acadButton)
@@ -29,9 +30,14 @@
         /// </summary>
         /// <param name="button">Button</param>
         /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButton SetLargeImageLight(this IButton button, Uri imageUri)
+        public static IButton SetLargeImageLight(this IButton button, Uri? imageUri)
         {
-            throw new NotImplementedException();
+            if (button is Button acButton && imageUri != null)
+            {
+                acButton.LargeImageLight = new BitmapImage(imageUri);
+            }
+
+            return button;
         }
 
         /// <summary>
@@ -39,9 +45,14 @@
         /// </summary>
         /// <param name="button">Button</param>
         /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButton SetSmallImageLight(this IButton button, Uri imageUri)
+        public static IButton SetSmallImageLight(this IButton button, Uri? imageUri)
         {
-            throw new NotImplementedException();
+            if (button is Button acButton && imageUri != null)
+            {
+                acButton.SmallImageLight = new BitmapImage(imageUri);
+            }
+
+            return button;
         }
     }
 }

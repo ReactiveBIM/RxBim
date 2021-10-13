@@ -15,28 +15,46 @@
     public abstract class AboutButtonBase : ButtonBase, IAboutButton
     {
         private readonly IContainer _container;
+        private readonly RibbonButton _aboutRibbonButton;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AboutButtonBase"/> class.
         /// </summary>
-        /// <param name="name">Button name</param>
-        /// <param name="text">Button label text</param>
+        /// <param name="aboutRibbonButton">About ribbon button</param>
         /// <param name="container">DI container</param>
-        protected AboutButtonBase(string name, string text, IContainer container)
-            : base(name, text, null)
+        protected AboutButtonBase(RibbonButton aboutRibbonButton, IContainer container)
+            : base(null)
         {
+            _aboutRibbonButton = aboutRibbonButton;
             _container = container;
+
+            _aboutRibbonButton.AllowInStatusBar = true;
+            _aboutRibbonButton.AllowInToolBar = true;
+            _aboutRibbonButton.GroupLocation = RibbonItemGroupLocation.Middle;
+            _aboutRibbonButton.IsEnabled = true;
+            _aboutRibbonButton.IsToolTipEnabled = false;
+            _aboutRibbonButton.IsVisible = true;
+            _aboutRibbonButton.ShowImage = true;
+            _aboutRibbonButton.ShowText = true;
+            _aboutRibbonButton.ShowToolTipOnDisabled = false;
+            _aboutRibbonButton.MinHeight = 0;
+            _aboutRibbonButton.MinWidth = 0;
+            _aboutRibbonButton.Size = RibbonItemSize.Large;
+            _aboutRibbonButton.ResizeStyle = RibbonItemResizeStyles.HideText;
+            _aboutRibbonButton.IsCheckable = true;
+            _aboutRibbonButton.Orientation = Orientation.Vertical;
+            _aboutRibbonButton.CommandHandler = new RelayCommand(RibbonClick, true);
         }
 
         /// <summary>
         /// About window content
         /// </summary>
-        protected AboutBoxContent Content { get; set; }
+        protected AboutBoxContent Content { get; private set; }
 
         /// <inheritdoc />
-        public override IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoHeader = "")
+        public override IButton SetToolTip(string toolTip, bool addVersion = true, string versionHeader = "")
         {
-            ToolTip = toolTip;
+            SetTooltipInternal(toolTip);
             return this;
         }
 
@@ -45,39 +63,6 @@
         {
             Content = content;
             return this;
-        }
-
-        /// <summary>
-        /// Creates and returns RibbonButton
-        /// </summary>
-        public RibbonButton BuildButton()
-        {
-            var button = new RibbonButton
-            {
-                Name = Name,
-                Image = SmallImage,
-                LargeImage = LargeImage,
-                AllowInStatusBar = true,
-                AllowInToolBar = true,
-                GroupLocation = RibbonItemGroupLocation.Middle,
-                IsEnabled = true,
-                IsToolTipEnabled = true,
-                IsVisible = true,
-                ShowImage = true,
-                ShowText = true,
-                ShowToolTipOnDisabled = true,
-                Text = Text,
-                ToolTip = ToolTip,
-                MinHeight = 0,
-                MinWidth = 0,
-                Size = RibbonItemSize.Large,
-                ResizeStyle = RibbonItemResizeStyles.HideText,
-                IsCheckable = true,
-                Orientation = Orientation.Vertical,
-                CommandHandler = new RelayCommand(RibbonClick, true)
-            };
-
-            return button;
         }
 
         /// <summary>
@@ -91,8 +76,19 @@
             // no help url
         }
 
+        /// <inheritdoc />
+        protected override void SetTooltipInternal(string tooltip)
+        {
+            _aboutRibbonButton.IsToolTipEnabled = true;
+            _aboutRibbonButton.ShowToolTipOnDisabled = true;
+            _aboutRibbonButton.ToolTip = tooltip;
+        }
+
         private void RibbonClick()
         {
+            if (Content is null)
+                return;
+
             var viewer = TryGetService();
             if (viewer != null)
             {

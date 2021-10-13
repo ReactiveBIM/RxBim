@@ -9,7 +9,7 @@
         /// <inheritdoc />
         protected override Button CreateButton(string name, string text, Type commandType)
         {
-            return new (name, text, commandType);
+            return new Button(name, text, commandType);
         }
     }
 }

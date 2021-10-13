@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Models
 {
     using System;
-    using System.Reflection;
     using System.Windows.Controls;
+    using System.Windows.Media;
     using Application.Ribbon.Models;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.Windows;
+    using Extensions;
     using GalaSoft.MvvmLight.Command;
 
     /// <summary>
@@ -21,13 +22,28 @@
             : base(name, text, commandType)
         {
             if (commandType != null)
-                _command = GetCommandName(commandType);
+                _command = commandType.GetCommandName();
         }
 
         /// <summary>
-        /// Show button text
+        /// Show button label text
         /// </summary>
         public bool ShowText { get; set; }
+
+        /// <summary>
+        /// Button identifier
+        /// </summary>
+        internal string Id { get; }
+
+        /// <summary>
+        /// Large image for the button in light theme
+        /// </summary>
+        internal ImageSource? LargeImageLight { get; set; }
+
+        /// <summary>
+        /// Small image for the button in light theme
+        /// </summary>
+        internal ImageSource? SmallImageLight { get; set; }
 
         /// <summary>
         /// Creates and returns <see cref="RibbonButton"/> for this button definition
@@ -79,11 +95,16 @@
         private RibbonToolTip GetToolTip()
         {
             var tip = new RibbonToolTip();
+
             if (ToolTip != null)
                 tip.Content = ToolTip;
-            tip.IsHelpEnabled = true;
+
             if (_helpUrl != null)
+            {
+                tip.IsHelpEnabled = true;
                 tip.HelpTopic = _helpUrl;
+            }
+
             return tip;
         }
 
@@ -91,34 +112,6 @@
         {
             Application.DocumentManager.MdiActiveDocument?
                 .SendStringToExecute($"{_command} ", false, false, true);
-        }
-
-        private string GetCommandName(MemberInfo externalCommandType)
-        {
-            const string cmdNameProperty = "CommandName";
-            var attributes = Attribute.GetCustomAttributes(externalCommandType);
-
-            foreach (var attribute in attributes)
-            {
-                try
-                {
-                    var cmdProperty = attribute.GetType()
-                        .GetProperty(cmdNameProperty,
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-
-                    if (cmdProperty is null)
-                        continue;
-
-                    return cmdProperty.GetValue(attribute).ToString();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw new InvalidOperationException("Failed to retrieve command name!", e);
-                }
-            }
-
-            return externalCommandType.Name;
         }
     }
 }

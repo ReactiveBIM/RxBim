@@ -12,8 +12,8 @@
         /// </summary>
         /// <param name="toolTip">Tooltip text</param>
         /// <param name="addVersion">If true, a version number will be added to the tooltip text</param>
-        /// <param name="versionInfoHeader">Prefix for version info</param>
-        IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoHeader = "");
+        /// <param name="versionHeader">Prefix for version info</param>
+        IButton SetToolTip(string toolTip, bool addVersion = true, string versionHeader = "");
 
         /// <summary>
         /// Sets a large image for the button

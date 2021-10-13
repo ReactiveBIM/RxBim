@@ -9,6 +9,8 @@ namespace RxBim.Application.Ribbon.Revit.Models
     /// </summary>
     public class Button : ButtonBase
     {
+        private readonly ButtonData _revitButton;
+
         /// <summary>
         /// ctor
         /// </summary>

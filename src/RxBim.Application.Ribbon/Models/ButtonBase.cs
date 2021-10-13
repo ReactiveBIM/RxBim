@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Models
 {
     using System;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Abstractions;
 
@@ -15,72 +14,31 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonBase"/> class.
         /// </summary>
-        /// <param name="name">Button name</param>
-        /// <param name="text">Button label text</param>
         /// <param name="commandType">Button command class type</param>
-        protected ButtonBase(string name, string text, Type commandType)
+        protected ButtonBase(Type commandType)
         {
-            Name = name;
-            Text = text;
+            // Name = name;
+            // Text = text;
             _commandType = commandType;
 
-            if (commandType != null)
-            {
-                CommandClassTypeName = commandType.FullName;
-                CommandAssemblyLocation = commandType.Assembly.Location;
-            }
+            // if (commandType != null)
+            // {
+            //     CommandClassTypeName = commandType.FullName;
+            //     CommandAssemblyLocation = commandType.Assembly.Location;
+            // }
         }
 
-        /// <summary>
-        /// Button command class type full name
-        /// </summary>
-        protected string CommandClassTypeName { get; }
-
-        /// <summary>
-        /// The path to the assembly that contains the command class
-        /// </summary>
-        protected string CommandAssemblyLocation { get; }
-
-        /// <summary>
-        /// Button name
-        /// </summary>
-        protected string Name { get; set; }
-
-        /// <summary>
-        /// Button label name
-        /// </summary>
-        protected string Text { get; set; }
-
-        /// <summary>
-        /// Button tooltip
-        /// </summary>
-        protected string ToolTip { get; set; }
-
-        /// <summary>
-        /// Large image for the button
-        /// </summary>
-        protected ImageSource LargeImage { get; set; }
-
-        /// <summary>
-        /// Small image for the button
-        /// </summary>
-        protected ImageSource SmallImage { get; set; }
-
-        /// <summary>
-        /// Button description
-        /// </summary>
-        protected string Description { get; set; }
-
         /// <inheritdoc />
-        public virtual IButton SetToolTip(string toolTip, bool addVersion = true, string versionInfoHeader = "")
+        public virtual IButton SetToolTip(string toolTip, bool addVersion = true, string versionHeader = "")
         {
-            ToolTip = toolTip;
             if (_commandType != null && addVersion)
             {
                 if (!string.IsNullOrEmpty(toolTip))
-                    ToolTip += Environment.NewLine;
-                ToolTip += $"{versionInfoHeader}{_commandType.Assembly.GetName().Version}";
+                    toolTip += Environment.NewLine;
+                toolTip += $"{versionHeader}{_commandType.Assembly.GetName().Version}";
             }
+
+            SetTooltipInternal(toolTip);
 
             return this;
         }
@@ -90,7 +48,7 @@
         {
             if (imageUri != null)
             {
-                LargeImage = new BitmapImage(imageUri);
+                SetLargeImageInternal(new BitmapImage(imageUri));
             }
 
             return this;
@@ -101,7 +59,7 @@
         {
             if (imageUri != null)
             {
-                SmallImage = new BitmapImage(imageUri);
+                SetSmallImageInternal(new BitmapImage(imageUri));
             }
 
             return this;
@@ -110,7 +68,7 @@
         /// <inheritdoc />
         public IButton SetDescription(string description)
         {
-            Description = description;
+            SetDescriptionInternal(description);
             return this;
         }
 
@@ -122,7 +80,31 @@
         }
 
         /// <summary>
-        /// Set URL for help
+        /// Sets tooltip
+        /// </summary>
+        /// <param name="tooltip">Tooltip text</param>
+        protected abstract void SetTooltipInternal(string tooltip);
+
+        /// <summary>
+        /// Sets large image
+        /// </summary>
+        /// <param name="image">Image</param>
+        protected abstract void SetLargeImageInternal(BitmapImage image);
+
+        /// <summary>
+        /// Sets small image
+        /// </summary>
+        /// <param name="image">Image</param>
+        protected abstract void SetSmallImageInternal(BitmapImage image);
+
+        /// <summary>
+        /// Sets description
+        /// </summary>
+        /// <param name="description">Description text</param>
+        protected abstract void SetDescriptionInternal(string description);
+
+        /// <summary>
+        /// Sets URL for help
         /// </summary>
         /// <param name="url">Url</param>
         protected abstract void SetHelpUrlInternal(string url);
