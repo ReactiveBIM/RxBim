@@ -5,6 +5,7 @@
     using Di;
     using Models;
     using Ribbon.Services;
+    using RibbonBuilder = Models.RibbonBuilder;
 
     /// <inheritdoc />
     public class RevitRibbonFactory : RibbonFactoryBase

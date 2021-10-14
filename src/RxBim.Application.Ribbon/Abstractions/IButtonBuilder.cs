@@ -5,7 +5,7 @@
     /// <summary>
     /// Ribbon button
     /// </summary>
-    public interface IButtonBuilder
+    public interface IButtonBuilder : IRibbonControlBuilder
     {
         /// <summary>
         /// Sets a large image for the button
@@ -26,5 +26,11 @@
         /// </summary>
         /// <param name="description">Description text</param>
         IButtonBuilder SetDescription(string description);
+
+        /// <summary>
+        /// Sets tooltip for the button
+        /// </summary>
+        /// <param name="toolTip">Tooltip text</param>
+        IButtonBuilder SetToolTip(string toolTip);
     }
 }

@@ -4,6 +4,7 @@
     using Models;
     using Ribbon.Abstractions;
     using Ribbon.Services;
+    using RibbonBuilder = Models.RibbonBuilder;
 
     /// <inheritdoc />
     public class AutocadRibbonFactory : RibbonFactoryBase

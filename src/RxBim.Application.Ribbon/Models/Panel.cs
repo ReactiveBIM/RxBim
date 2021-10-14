@@ -16,6 +16,6 @@
         /// <summary>
         /// Elements on the panel
         /// </summary>
-        public List<IRibbonPanelElement>? Elements { get; set; }
+        public List<IRibbonPanelElement> Elements { get; set; } = new ();
     }
 }

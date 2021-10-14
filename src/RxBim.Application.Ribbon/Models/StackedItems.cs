@@ -11,6 +11,6 @@
         /// <summary>
         /// Stacked buttons
         /// </summary>
-        public List<Button>? Buttons { get; set; }
+        public List<Button> Buttons { get; set; } = new ();
     }
 }

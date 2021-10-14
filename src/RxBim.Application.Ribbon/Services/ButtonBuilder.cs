@@ -6,7 +6,7 @@
     /// <summary>
     /// Base implementation of a button builder
     /// </summary>
-    public abstract class ButtonBuilder<TButton> : IButtonBuilder
+    public abstract class ButtonBuilder<TButton> : RibbonControlBuilder<TButton>, IButtonBuilder
         where TButton : Button, new()
     {
         /// <summary>
@@ -16,17 +16,9 @@
         /// <param name="text">Button label text</param>
         protected ButtonBuilder(string name, string text)
         {
-            Button = new TButton
-            {
-                Name = name,
-                Text = text
-            };
+            Control.Name = name;
+            Control.Text = text;
         }
-
-        /// <summary>
-        /// Building button
-        /// </summary>
-        protected TButton Button { get; }
 
         /// <inheritdoc />
         public IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme)
@@ -34,13 +26,13 @@
             switch (theme)
             {
                 case ThemeType.All:
-                    Button.LargeImage = imageRelativePath;
+                    Control.LargeImage = imageRelativePath;
                     break;
                 case ThemeType.Dark:
-                    Button.LargeImageDark = imageRelativePath;
+                    Control.LargeImageDark = imageRelativePath;
                     break;
                 case ThemeType.Light:
-                    Button.LargeImageLight = imageRelativePath;
+                    Control.LargeImageLight = imageRelativePath;
                     break;
             }
 
@@ -53,13 +45,13 @@
             switch (theme)
             {
                 case ThemeType.All:
-                    Button.SmallImage = imageRelativePath;
+                    Control.SmallImage = imageRelativePath;
                     break;
                 case ThemeType.Dark:
-                    Button.SmallImageDark = imageRelativePath;
+                    Control.SmallImageDark = imageRelativePath;
                     break;
                 case ThemeType.Light:
-                    Button.SmallImageLight = imageRelativePath;
+                    Control.SmallImageLight = imageRelativePath;
                     break;
             }
 
@@ -69,7 +61,14 @@
         /// <inheritdoc />
         public IButtonBuilder SetDescription(string description)
         {
-            Button.Description = description;
+            Control.Description = description;
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IButtonBuilder SetToolTip(string toolTip)
+        {
+            Control.ToolTip = toolTip;
             return this;
         }
     }

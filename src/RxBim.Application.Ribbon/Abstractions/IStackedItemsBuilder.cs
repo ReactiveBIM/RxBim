@@ -8,6 +8,11 @@
     public interface IStackedItemsBuilder
     {
         /// <summary>
+        /// Items count is correct
+        /// </summary>
+        public bool HasCorrectItemsCount { get; }
+
+        /// <summary>
         /// Creates a button on the stack
         /// </summary>
         /// <param name="name">Internal name of the button</param>
@@ -21,6 +26,6 @@
             string name,
             string text,
             Type commandType,
-            Action<IButtonBuilder>? action = null);
+            Action<ICommandButtonBuilder>? action = null);
     }
 }

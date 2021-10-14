@@ -1,26 +1,27 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     using System;
+    using Shared;
 
     /// <summary>
     /// Ribbon panel
     /// </summary>
-    public interface IPanelBuilder : IRibbonItemsContainerBuilder
+    public interface IPanelBuilder : IRibbonItemsContainerBuilder, IRibbonControlBuilder
     {
         /// <summary>
         /// Create push button on the panel
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
+        /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
         IPanelBuilder AddCommandButton(
             string name,
             string text,
-            Type externalCommandType,
-            Action<IButtonBuilder>? action = null);
+            Type commandType,
+            Action<ICommandButtonBuilder>? action = null);
 
         /// <summary>
         /// Create new Stacked items at the panel
@@ -53,10 +54,17 @@
         /// </summary>
         /// <param name="name">Button name</param>
         /// <param name="text">Button label text</param>
+        /// <param name="content">About button content</param>
         /// <param name="action">Additional actions for the button</param>
         IPanelBuilder AddAboutButton(
             string name,
             string text,
-            Action<IAboutButtonBuilder> action);
+            AboutBoxContent content,
+            Action<IButtonBuilder>? action = null);
+
+        /// <summary>
+        /// Returns tab builder object
+        /// </summary>
+        ITabBuilder ToTabBuilder();
     }
 }

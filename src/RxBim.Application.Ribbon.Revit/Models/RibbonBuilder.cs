@@ -12,7 +12,7 @@
     /// <summary>
     /// Ribbon wrapper
     /// </summary>
-    public class RibbonBuilder : RibbonBuilderBase
+    public class RibbonBuilder : Ribbon.Services.RibbonBuilder
     {
         private readonly RibbonControl _ribbonControl;
 

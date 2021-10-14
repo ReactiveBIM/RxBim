@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     using System;
+    using Shared;
 
     /// <summary>
     /// Ribbon tab
     /// </summary>
-    public interface ITabBuilder : IRibbonItemsContainerBuilder
+    public interface ITabBuilder : IRibbonItemsContainerBuilder, IRibbonControlBuilder
     {
         /// <summary>
         /// Creates and returns a panel on this tab
@@ -17,13 +18,15 @@
         /// Creates "About" button on the own panel
         /// </summary>
         /// <param name="name">Button name</param>
+        /// <param name="text">Button label text</param>
+        /// <param name="content">About window content</param>
         /// <param name="action">"About" button additional actions</param>
         /// <param name="panelName">Panel name</param>
-        /// <param name="text">Button label text</param>
         ITabBuilder AddAboutButton(
             string name,
-            Action<IAboutButtonBuilder> action,
-            string? panelName = null,
-            string? text = null);
+            string text,
+            AboutBoxContent content,
+            Action<IButtonBuilder>? action = null,
+            string? panelName = null);
     }
 }

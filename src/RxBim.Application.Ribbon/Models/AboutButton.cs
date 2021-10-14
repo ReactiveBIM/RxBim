@@ -10,6 +10,6 @@
         /// <summary>
         /// About window content
         /// </summary>
-        public AboutBoxContent? Content { get; set; }
+        public AboutBoxContent Content { get; set; } = new ();
     }
 }

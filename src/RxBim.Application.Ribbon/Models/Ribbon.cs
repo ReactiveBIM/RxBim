@@ -10,6 +10,6 @@
         /// <summary>
         /// Ribbon tabs
         /// </summary>
-        public List<Tab>? Tabs { get; set; }
+        public List<Tab> Tabs { get; set; } = new ();
     }
 }

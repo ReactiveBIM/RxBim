@@ -7,7 +7,7 @@
     using Ribbon.Services;
 
     /// <inheritdoc />
-    public class RibbonBuilder : RibbonBuilderBase
+    public class RibbonBuilder : Ribbon.Services.RibbonBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonBuilder"/> class.
