@@ -35,7 +35,7 @@
         public string Id { get; }
 
         /// <inheritdoc />
-        public override IPanelBuilder Button(
+        public override IPanelBuilder AddCommandButton(
             string name,
             string text,
             Type externalCommandType,
@@ -50,7 +50,7 @@
         }
 
         /// <inheritdoc />
-        public override IPanelBuilder PullDownButton(string name, string text, Action<IPulldownButtonBuilder>? action)
+        public override IPanelBuilder AddPullDownButton(string name, string text, Action<IPulldownButtonBuilder>? action)
         {
             var button = new PulldownButtonBuilder(name, text);
             action?.Invoke(button);
@@ -61,7 +61,7 @@
         }
 
         /// <inheritdoc />
-        public override IPanelBuilder Separator()
+        public override IPanelBuilder AddSeparator()
         {
             AddToCurrentRow(new RibbonSeparator());
             return this;

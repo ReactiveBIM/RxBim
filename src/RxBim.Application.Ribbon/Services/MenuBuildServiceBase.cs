@@ -10,7 +10,7 @@
         private readonly IRibbonFactory _ribbonFactory;
         private readonly Action<IRibbonBuilder> _action;
         private IContainer _container;
-        private IRibbonBuilder _ribbonBuilder;
+        private IRibbonBuilder? _ribbonBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuBuildServiceBase"/> class.

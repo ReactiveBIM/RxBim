@@ -23,12 +23,12 @@
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
+        /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <returns>Panel where button were created</returns>
-        public IPulldownButtonBuilder Button(string name, string text, Type externalCommandType)
+        public IPulldownButtonBuilder AddCommandButton(string name, string text, Type commandType)
         {
-            return Button(name, text, externalCommandType, null);
+            return AddCommandButton(name, text, commandType, null);
         }
 
         /// <summary>
@@ -36,13 +36,13 @@
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
+        /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public IPulldownButtonBuilder Button(string name, string text, Type externalCommandType, Action<IButtonBuilder> action)
+        public IPulldownButtonBuilder AddCommandButton(string name, string text, Type commandType, Action<IButtonBuilder> action)
         {
-            var button = new ButtonBuilder(name, text, externalCommandType);
+            var button = new ButtonBuilder(name, text, commandType);
             action?.Invoke(button);
             _buttons.Add(button);
             return this;

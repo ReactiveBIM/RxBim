@@ -21,15 +21,15 @@
         }
 
         /// <inheritdoc />
-        public IPulldownButtonBuilder Button(string name, string text, Type externalCommandType)
+        public IPulldownButtonBuilder AddCommandButton(string name, string text, Type commandType)
         {
-            return Button(name, text, externalCommandType, null);
+            return AddCommandButton(name, text, commandType, null);
         }
 
         /// <inheritdoc />
-        public IPulldownButtonBuilder Button(string name, string text, Type externalCommandType, Action<IButtonBuilder>? action)
+        public IPulldownButtonBuilder AddCommandButton(string name, string text, Type commandType, Action<IButtonBuilder>? action)
         {
-            var button = new ButtonBuilder(name, text, externalCommandType);
+            var button = new ButtonBuilder(name, text, commandType);
             action?.Invoke(button);
             _buttons.Add(button);
             return this;

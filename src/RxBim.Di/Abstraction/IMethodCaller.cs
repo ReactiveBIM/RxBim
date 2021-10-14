@@ -5,18 +5,19 @@
     /// <summary>
     /// MethodCaller
     /// </summary>
-    public interface IMethodCaller<T>
+    /// <typeparam name="T">The return type of the method</typeparam>
+    public interface IMethodCaller<out T>
     {
         /// <summary>
-        /// Тип объекта у которого вызыается метод
+        /// The type of the original object to call the method
         /// </summary>
         public Type SourceObjectType { get; }
 
         /// <summary>
-        /// Вызывает комманду
+        /// Returns the result of a method call
         /// </summary>
-        /// <param name="container">конетйнер</param>
-        /// <param name="methodName">имя метода</param>
-        T InvokeCommand(IContainer container, string methodName);
+        /// <param name="container">DI container</param>
+        /// <param name="methodName">Method name</param>
+        T InvokeMethod(IContainer container, string methodName);
     }
 }

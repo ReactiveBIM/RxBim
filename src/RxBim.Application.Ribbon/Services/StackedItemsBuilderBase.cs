@@ -23,17 +23,17 @@ namespace RxBim.Application.Ribbon.Services
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
+        /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
-        public IStackedItemsBuilder Button(string name, string text, Type externalCommandType, Action<IButtonBuilder> action = null)
+        public IStackedItemsBuilder AddCommandButton(string name, string text, Type commandType, Action<IButtonBuilder> action = null)
         {
             if (Buttons.Count == 3)
             {
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             }
 
-            var button = CreateButton(name, text, externalCommandType);
+            var button = CreateButton(name, text, commandType);
             action?.Invoke(button);
 
             Buttons.Add(button);

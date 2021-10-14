@@ -37,7 +37,7 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public override IPanelBuilder Button(string name, string text, Type externalCommandType, Action<IButtonBuilder> action = null)
+        public override IPanelBuilder AddCommandButton(string name, string text, Type externalCommandType, Action<IButtonBuilder> action = null)
         {
             var button = new ButtonBuilder(name, text, externalCommandType);
             action?.Invoke(button);
@@ -53,12 +53,12 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// <param name="text">Text user will see</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public override IPanelBuilder PullDownButton(string name, string text, Action<IPulldownButtonBuilder> action)
+        public override IPanelBuilder AddPullDownButton(string name, string text, Action<IPulldownButtonBuilder> action)
         {
             var button = new PulldownButtonBuilder(name, text);
             action?.Invoke(button);
             var buttonData = (PulldownButtonData)button.GetButtonData();
-            var ribbonItem = _revitPanel.AddItem(buttonData) as Autodesk.Revit.UI.PulldownButton;
+            var ribbonItem = _revitPanel.AddItem(buttonData) as PulldownButton;
             button.BuildButtons(ribbonItem);
             return this;
         }
@@ -67,7 +67,7 @@ namespace RxBim.Application.Ribbon.Revit.Models
         /// Create separator on the panel
         /// </summary>
         /// <returns></returns>
-        public override IPanelBuilder Separator()
+        public override IPanelBuilder AddSeparator()
         {
             _revitPanel.AddSeparator();
             return this;

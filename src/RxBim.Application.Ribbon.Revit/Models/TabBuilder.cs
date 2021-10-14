@@ -46,7 +46,7 @@
         /// <param name="action">Дополнительны действия для кнопки о программе</param>
         /// <param name="panelName">имя панели</param>
         /// <param name="text">Тест описания</param>
-        public ITabBuilder AboutButton(string name, Action<IAboutButtonBuilder> action, string panelName = null, string text = null)
+        public ITabBuilder AddAboutButton(string name, Action<IAboutButtonBuilder> action, string panelName = null, string text = null)
         {
             if (_isAddAboutButton)
                 return this;

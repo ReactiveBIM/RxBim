@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
-    using System;
+    using Models;
 
     /// <summary>
     /// Ribbon button
@@ -8,35 +8,23 @@
     public interface IButtonBuilder
     {
         /// <summary>
-        /// Sets a tooltip for the button
-        /// </summary>
-        /// <param name="toolTip">Tooltip text</param>
-        /// <param name="addVersion">If true, a version number will be added to the tooltip text</param>
-        /// <param name="versionHeader">Prefix for version info</param>
-        IButtonBuilder SetToolTip(string toolTip, bool addVersion = true, string versionHeader = "");
-
-        /// <summary>
         /// Sets a large image for the button
         /// </summary>
-        /// <param name="imageUri">Image <see cref="Uri"/></param>
-        IButtonBuilder SetLargeImage(Uri imageUri);
+        /// <param name="imageRelativePath">Image relative path</param>
+        /// <param name="theme">Color theme for image</param>
+        IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme = ThemeType.All);
 
         /// <summary>
         /// Sets a small image for the button
         /// </summary>
-        /// <param name="imageUri">Image <see cref="Uri"/></param>
-        IButtonBuilder SetSmallImage(Uri imageUri);
+        /// <param name="imageRelativePath">Image relative path</param>
+        /// <param name="theme">Color theme for image</param>
+        IButtonBuilder SetSmallImage(string imageRelativePath, ThemeType theme = ThemeType.All);
 
         /// <summary>
         /// Set description for the button
         /// </summary>
         /// <param name="description">Description text</param>
         IButtonBuilder SetDescription(string description);
-
-        /// <summary>
-        /// Sets the help URL for the button command
-        /// </summary>
-        /// <param name="url">URL address</param>
-        IButtonBuilder SetHelpUrl(string url);
     }
 }

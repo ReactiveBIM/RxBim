@@ -31,7 +31,7 @@
         protected IContainer Container { get; }
 
         /// <inheritdoc />
-        public ITabBuilder Tab(string tabTitle)
+        public ITabBuilder AddTab(string tabTitle)
         {
             if (string.IsNullOrEmpty(tabTitle))
             {

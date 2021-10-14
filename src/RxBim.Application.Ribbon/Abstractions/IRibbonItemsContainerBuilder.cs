@@ -6,8 +6,8 @@
     public interface IRibbonItemsContainerBuilder
     {
         /// <summary>
-        /// Returns ribbon object
+        /// Returns ribbon builder object
         /// </summary>
-        IRibbonBuilder And();
+        IRibbonBuilder ToRibbonBuilder();
     }
 }

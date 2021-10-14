@@ -25,7 +25,7 @@
             where TExternalCommandClass : class, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
-            return stackedItemsBuilder.Button(name, text, commandClassType, action);
+            return stackedItemsBuilder.AddCommandButton(name, text, commandClassType, action);
         }
     }
 }

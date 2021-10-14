@@ -22,7 +22,7 @@ namespace RxBim.Di.Tests
             var badObject = new BadMethodNameObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(container, "Execute");
+            Action act = () => methodCaller.InvokeMethod(container, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -34,7 +34,7 @@ namespace RxBim.Di.Tests
             var badObject = new BadReturnTypeObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeCommand(container, "Execute");
+            Action act = () => methodCaller.InvokeMethod(container, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -47,7 +47,7 @@ namespace RxBim.Di.Tests
 
             var methodCaller = new MethodCaller<int>(testObject);
             int result = 0;
-            Action act = () => result = methodCaller.InvokeCommand(container, "Execute");
+            Action act = () => result = methodCaller.InvokeMethod(container, "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

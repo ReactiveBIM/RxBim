@@ -1,20 +1,21 @@
 ﻿namespace RxBim.Application.Ribbon.Models
 {
     using System.Collections.Generic;
+    using Abstractions;
 
     /// <summary>
     /// Ribbon panel configuration
     /// </summary>
-    public class Panel
+    public class Panel : RibbonControl
     {
         /// <summary>
         /// Panel name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
-        /// Buttons on the panel
+        /// Elements on the panel
         /// </summary>
-        public List<Button> Buttons { get; set; }
+        public List<IRibbonPanelElement>? Elements { get; set; }
     }
 }

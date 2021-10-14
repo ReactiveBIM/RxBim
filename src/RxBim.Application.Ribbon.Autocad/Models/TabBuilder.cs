@@ -57,7 +57,7 @@
         }
 
         /// <inheritdoc />
-        public ITabBuilder AboutButton(string name, Action<IAboutButtonBuilder> action, string? panelName = null, string? text = null)
+        public ITabBuilder AddAboutButton(string name, Action<IAboutButtonBuilder> action, string? panelName = null, string? text = null)
         {
             if (_isAddAboutButton)
                 return this;

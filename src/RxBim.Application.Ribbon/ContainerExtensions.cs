@@ -80,7 +80,7 @@
                     menuConfiguration.Tabs
                         .ForEach(t =>
                         {
-                            var tab = ribbon.Tab(t.Name);
+                            var tab = ribbon.AddTab(t.Name);
                             t.Panels.ForEach(p =>
                             {
                                 var panel = tab.Panel(p.Name);
@@ -88,7 +88,7 @@
                                 p.Buttons.ForEach(b =>
                                 {
                                     var commandType = GetType(b.CommandType, assembly);
-                                    panel.Button(b.Name,
+                                    panel.AddCommandButton(b.Name,
                                         b.Text,
                                         commandType,
                                         button => SetupButton(assembly, button, b));
@@ -147,7 +147,7 @@
             }
         }
 
-        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration cfg)
+        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
             var menuConfiguration = cfg.GetSection("Menu").Get<Ribbon>();

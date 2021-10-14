@@ -5,16 +5,16 @@
     /// <summary>
     /// Ribbon tab configuration
     /// </summary>
-    public class Tab
+    public class Tab : RibbonControl
     {
         /// <summary>
         /// Tab name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Panels on the tab
         /// </summary>
-        public List<Panel> Panels { get; set; }
+        public List<Panel>? Panels { get; set; }
     }
 }

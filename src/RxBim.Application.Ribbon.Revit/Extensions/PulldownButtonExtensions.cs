@@ -25,7 +25,7 @@
             where TExternalCommandClass : class, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
-            return pulldownButtonBuilder.Button(name, text, commandClassType, action);
+            return pulldownButtonBuilder.AddCommandButton(name, text, commandClassType, action);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace RxBim.Application.Ribbon.Services
         /// </summary>
         /// <param name="action">Action where you must add items to the stacked panel</param>
         /// <returns>Panel where stacked items were created</returns>
-        public IPanelBuilder StackedItems(Action<IStackedItemsBuilder> action)
+        public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> action)
         {
             if (action == null)
             {
@@ -64,7 +64,7 @@ namespace RxBim.Application.Ribbon.Services
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public abstract IPanelBuilder Button(
+        public abstract IPanelBuilder AddCommandButton(
             string name,
             string text,
             Type externalCommandType,
@@ -77,13 +77,13 @@ namespace RxBim.Application.Ribbon.Services
         /// <param name="text">Text user will see</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        public abstract IPanelBuilder PullDownButton(string name, string text, Action<IPulldownButtonBuilder> action);
+        public abstract IPanelBuilder AddPullDownButton(string name, string text, Action<IPulldownButtonBuilder> action);
 
         /// <summary>
         /// Create separator on the panel
         /// </summary>
         /// <returns></returns>
-        public abstract IPanelBuilder Separator();
+        public abstract IPanelBuilder AddSeparator();
 
         /// <inheritdoc />
         public abstract void AddAboutButton(

@@ -7,7 +7,7 @@
     /// <summary>
     /// Decorator creating the plugin ribbon
     /// </summary>
-    /// <typeparam name="T">Return type</typeparam>
+    /// <typeparam name="T">The return type of the method</typeparam>
     public class MenuBuilderMethodCaller<T> : MethodCallerDecorator<T>
     {
         /// <summary>
@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeCommand(IContainer container, string methodName)
+        public override T InvokeMethod(IContainer container, string methodName)
         {
             try
             {
@@ -32,7 +32,7 @@
                 throw new MethodCallerException("Failed to build ribbon", e);
             }
 
-            return Decorated.InvokeCommand(container, methodName);
+            return Decorated.InvokeMethod(container, methodName);
         }
     }
 }

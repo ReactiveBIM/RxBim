@@ -35,7 +35,7 @@
                     _diConfigurator.Configure(GetType().Assembly);
 
                     var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeCommand(_diConfigurator.Container, Constants.StartMethodName);
+                    methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
                 }
             }
             catch (Exception exception)
@@ -56,7 +56,7 @@
             }
 
             var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeCommand(_diConfigurator.Container, Constants.ShutdownMethodName);
+            methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
         }
     }
 }
