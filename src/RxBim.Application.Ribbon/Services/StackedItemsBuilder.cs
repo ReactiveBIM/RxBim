@@ -30,7 +30,7 @@ namespace RxBim.Application.Ribbon.Services
             var buttonBuilder = new CommandButtonBuilder(name, text, commandType);
             action?.Invoke(buttonBuilder);
 
-            StackedItems.Buttons.Add(buttonBuilder.Button);
+            StackedItems.Buttons.Add(buttonBuilder.Control);
 
             return this;
         }

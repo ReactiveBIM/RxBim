@@ -16,6 +16,7 @@
         public IRibbonControlBuilder SetId(string id)
         {
             Control.Id = id;
+            return this;
         }
     }
 }

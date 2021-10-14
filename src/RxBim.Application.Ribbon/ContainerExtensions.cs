@@ -66,38 +66,9 @@
             where TBuildService : class, IMenuBuildService
         {
             container.AddRibbonBuildTypes<TFactory, TBuildService>();
-
-            var menuWasCreated = false;
             container.AddTransient<Action<IRibbonBuilder>>(() =>
             {
                 var menuConfiguration = GetMenuConfiguration(container, config);
-
-                return ribbon =>
-                {
-                    if (menuWasCreated && createOnlyOnce)
-                        return;
-
-                    menuConfiguration.Tabs
-                        .ForEach(t =>
-                        {
-                            var tab = ribbon.AddTab(t.Name);
-                            t.Panels.ForEach(p =>
-                            {
-                                var panel = tab.Panel(p.Name);
-                                //// TODO: add other types of button processing
-                                p.Buttons.ForEach(b =>
-                                {
-                                    var commandType = GetType(b.CommandType, assembly);
-                                    panel.AddCommandButton(b.Name,
-                                        b.Text,
-                                        commandType,
-                                        button => SetupButton(assembly, button, b));
-                                });
-                            });
-                        });
-
-                    menuWasCreated = true;
-                };
             });
 
             container.DecorateContainer();
@@ -116,7 +87,7 @@
             container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
-        private static Type GetType(string commandType, [NotNull] Assembly assembly)
+        private static Type GetType(string commandType, Assembly assembly)
         {
             var strings = commandType.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
@@ -124,27 +95,12 @@
 
             return strings.Length switch
             {
-                1 => assembly.GetType(commandType), 2 => Assembly
+                1 => assembly.GetType(commandType),
+                2 => Assembly
                     .LoadFrom(Path.Combine(GetAssemblyDirectory(assembly), strings[1] + ".dll"))
                     .GetType(strings[0]),
                 _ => throw new ArgumentException()
             };
-        }
-
-        private static void SetupButton(Assembly assembly, IButtonBuilder buttonBuilder, Button b)
-        {
-            buttonBuilder.SetDescription(b.Description);
-            buttonBuilder.SetToolTip(b.ToolTip);
-
-            if (TryGetImagePath(assembly, b.LargeImage, out var largeImagePath))
-            {
-                buttonBuilder.SetLargeImage(new Uri(largeImagePath, UriKind.RelativeOrAbsolute));
-            }
-
-            if (TryGetImagePath(assembly, b.SmallImage, out var smallImagePath))
-            {
-                buttonBuilder.SetSmallImage(new Uri(smallImagePath, UriKind.RelativeOrAbsolute));
-            }
         }
 
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
@@ -152,16 +108,6 @@
             cfg ??= container.GetService<IConfiguration>();
             var menuConfiguration = cfg.GetSection("Menu").Get<Ribbon>();
             return menuConfiguration;
-        }
-
-        private static bool TryGetImagePath(Assembly assembly, string imagePathFromConfig, out string path)
-        {
-            path = imagePathFromConfig;
-            if (File.Exists(path))
-                return true;
-
-            path = Path.Combine(GetAssemblyDirectory(assembly), imagePathFromConfig);
-            return File.Exists(path);
         }
 
         private static string GetAssemblyDirectory(Assembly assembly)

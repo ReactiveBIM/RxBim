@@ -21,7 +21,7 @@
             : base(name, text)
         {
             _commandType = commandType;
-            Button.CommandType = commandType.FullName;
+            Control.CommandType = commandType.FullName;
         }
 
         /// <inheritdoc />
@@ -37,7 +37,7 @@
                 toolTip += $"{versionInfoHeader}{_commandType.Assembly.GetName().Version}";
             }
 
-            Button.ToolTip = toolTip;
+            Control.ToolTip = toolTip;
 
             return this;
         }
@@ -45,7 +45,7 @@
         /// <inheritdoc />
         public ICommandButtonBuilder SetHelpUrl(string url)
         {
-            Button.HelpUrl = url;
+            Control.HelpUrl = url;
             return this;
         }
     }
