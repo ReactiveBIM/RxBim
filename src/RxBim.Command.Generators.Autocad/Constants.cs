@@ -1,15 +1,15 @@
 ﻿namespace RxBim.Command.Generators.Autocad
 {
     /// <summary>
-    /// Константы
+    /// Constants
     /// </summary>
     public static class Constants
     {
         /// <summary>
-        /// Полное название типа атрибута для командного класса
+        /// Full name of the command class attribute type
         /// </summary>
         public const string CommandClassAttributeTypeFullName =
-            "RxBim.Command.Autocad.ApiRxBimCommandClassAttribute";
+            "RxBim.Command.Autocad.RxBimCommandClassAttribute";
 
         /// <summary>
         /// Название базового класса команды
