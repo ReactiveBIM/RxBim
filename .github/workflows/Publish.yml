@@ -39,3 +39,7 @@ jobs:
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PROJECTS: ${{ secrets.ALL_PROJECTS }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: packages
+          path: artifacts/packages

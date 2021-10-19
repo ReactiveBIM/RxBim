@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.7.2" />
-        <PackageReference Include="Nuke.Common" Version="5.1.2" />
+        <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.8.0-dev002" />
+        <PackageReference Include="Nuke.Common" Version="5.2.1" />
         <PackageReference Include="SharpCompress" Version="0.30.0" />
         <PackageReference Include="CommandLineParser" Version="2.8.0" />
         <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
