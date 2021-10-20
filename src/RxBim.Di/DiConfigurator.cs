@@ -52,17 +52,25 @@
         private IContainer LoadDefaultContainer(Assembly assembly)
         {
             var assemblyDir = Path.GetDirectoryName(assembly.Location);
-            var paths = Directory.EnumerateFiles(assemblyDir)
+            var paths = Directory.EnumerateFiles(assemblyDir!)
                 .Where(x => Path.GetExtension(x).Equals(".dll", StringComparison.OrdinalIgnoreCase) &&
                             Path.GetFileName(x).StartsWith("RxBim.Di.", StringComparison.OrdinalIgnoreCase));
 
             var containerType = paths
-                                    .Select(Assembly.LoadFile)
+                                    .Select(GetAssemblyOrLoad)
                                     .SelectMany(x => x.GetTypes())
                                     .FirstOrDefault(x => x.GetInterfaces().Any(i => i.Name == nameof(IContainer)))
                                 ?? throw new DllNotFoundException("IContainer implementation not found");
 
             return (IContainer)Activator.CreateInstance(containerType);
+        }
+
+        private Assembly GetAssemblyOrLoad(string pathToDllFile)
+        {
+            var assemblyName = Path.GetFileNameWithoutExtension(pathToDllFile);
+            var loadedAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(x => x.FullName.StartsWith($"{assemblyName},"));
+            return loadedAssembly ?? Assembly.LoadFrom(pathToDllFile);
         }
 
         private void ConfigureAdditionalDependencies(Assembly assembly)
