@@ -5,11 +5,12 @@
     using System.Linq;
     using System.Reflection;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Di;
-    using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
-    using Models;
+    using Models.Configurations;
     using Services;
+    using Services.ConfigurationBuilders;
 
     /// <summary>
     /// DI Container Extensions for Ribbon Menu
@@ -21,65 +22,59 @@
         /// </summary>
         /// <param name="container">DI container</param>
         /// <param name="action">Action to create a menu</param>
-        /// <param name="createOnlyOnce">
-        /// If true, the menu for the plugin on the ribbon is
-        /// created only once when the plugin is loaded
+        /// <param name="assembly">
+        /// Menu definition assembly.
+        /// Used to get the command type from the command type name
+        /// and to define the root directory for relative icon paths
         /// </param>
-        public static void AddMenu<TFactory, TBuildService>(
+        public static void AddMenu<T>(
             this IContainer container,
             Action<IRibbonBuilder> action,
-            bool createOnlyOnce)
-            where TFactory : class, IRibbonFactory
-            where TBuildService : class, IMenuBuildService
+            Assembly assembly)
+            where T : class, IRibbonMenuBuilderFactory
         {
-            container.AddRibbonBuildTypes<TFactory, TBuildService>();
-
-            var menuWasCreated = false;
-            container.AddInstance<Action<IRibbonBuilder>>(ribbon =>
+            container.AddBuilder<T>(assembly);
+            container.AddTransient(() =>
             {
-                if (!menuWasCreated || !createOnlyOnce)
-                {
-                    action(ribbon);
-                    menuWasCreated = true;
-                }
+                var builder = new RibbonBuilder();
+                action(builder);
+                return builder.Ribbon;
             });
-
             container.DecorateContainer();
         }
 
         /// <summary>
-        /// Adds a plugin ribbon menu from config
+        /// Adds a plugin ribbon menu from configuration
         /// </summary>
         /// <param name="container">DI container</param>
-        /// <param name="assembly">Plugin main assembly</param>
-        /// <param name="config">Plugin config</param>
-        /// <param name="createOnlyOnce">
-        /// If true, the menu for the plugin on the ribbon is
-        /// created only once when the plugin is loaded
+        /// <param name="config">Plugin configuration</param>
+        /// <param name="assembly">
+        /// Menu definition assembly.
+        /// Used to get the command type from the command type name
+        /// and to define the root directory for relative icon paths
         /// </param>
-        public static void AddMenu<TFactory, TBuildService>(
+        public static void AddMenu<T>(
             this IContainer container,
-            Assembly assembly,
-            IConfiguration config,
-            bool createOnlyOnce)
-            where TFactory : class, IRibbonFactory
-            where TBuildService : class, IMenuBuildService
+            IConfiguration? config,
+            Assembly assembly)
+            where T : class, IRibbonMenuBuilderFactory
         {
-            container.AddRibbonBuildTypes<TFactory, TBuildService>();
-            container.AddTransient<Action<IRibbonBuilder>>(() =>
-            {
-                var menuConfiguration = GetMenuConfiguration(container, config);
-            });
-
+            container.AddBuilder<T>(assembly);
+            container.AddTransient(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
 
-        private static void AddRibbonBuildTypes<TFactory, TBuildService>(this IContainer container)
-            where TFactory : class, IRibbonFactory
-            where TBuildService : class, IMenuBuildService
+        private static void AddBuilder<T>(
+            this IContainer container,
+            Assembly assembly)
+            where T : class, IRibbonMenuBuilderFactory
         {
-            container.AddTransient<IRibbonFactory, TFactory>();
-            container.AddTransient<IMenuBuildService, TBuildService>();
+            container.AddTransient<IRibbonMenuBuilderFactory, T>();
+            container.AddTransient(() =>
+            {
+                var builderFactory = container.GetService<IRibbonMenuBuilderFactory>();
+                return builderFactory.CreateMenuBuilder(assembly);
+            });
         }
 
         private static void DecorateContainer(this IContainer container)
@@ -95,8 +90,7 @@
 
             return strings.Length switch
             {
-                1 => assembly.GetType(commandType),
-                2 => Assembly
+                1 => assembly.GetType(commandType), 2 => Assembly
                     .LoadFrom(Path.Combine(GetAssemblyDirectory(assembly), strings[1] + ".dll"))
                     .GetType(strings[0]),
                 _ => throw new ArgumentException()
@@ -112,7 +106,7 @@
 
         private static string GetAssemblyDirectory(Assembly assembly)
         {
-            return Path.GetDirectoryName(assembly.Location);
+            return Path.GetDirectoryName(assembly.Location) !;
         }
     }
 }

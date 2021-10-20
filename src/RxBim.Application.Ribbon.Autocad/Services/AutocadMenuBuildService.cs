@@ -4,6 +4,7 @@
     using Abstractions;
     using Di;
     using Ribbon.Abstractions;
+    using Ribbon.Abstractions.ConfigurationBuilders;
     using Ribbon.Services;
 
     /// <inheritdoc />

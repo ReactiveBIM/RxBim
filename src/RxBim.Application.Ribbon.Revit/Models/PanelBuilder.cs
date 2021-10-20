@@ -2,6 +2,7 @@ namespace RxBim.Application.Ribbon.Revit.Models
 {
     using System;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using Di;

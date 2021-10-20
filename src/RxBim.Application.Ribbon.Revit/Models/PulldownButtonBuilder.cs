@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Autodesk.Revit.UI;
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Revit.Extensions
 {
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Autodesk.Revit.UI;
     using Models;
 

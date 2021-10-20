@@ -5,7 +5,7 @@
     using Ribbon.Services;
 
     /// <inheritdoc />
-    public class AboutButtonBuilder : Ribbon.Services.AboutButtonBuilder
+    public class AboutButtonBuilder : Ribbon.Services.ConfigurationBuilders.AboutButtonBuilder
     {
         /// <inheritdoc />
         public AboutButtonBuilder(string name, string text, IContainer container)

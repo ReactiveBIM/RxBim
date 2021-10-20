@@ -4,10 +4,11 @@
     using Application.Ribbon.Abstractions;
     using Autodesk.Windows;
     using Di;
+    using Ribbon.Abstractions.ConfigurationBuilders;
     using Ribbon.Services;
 
     /// <inheritdoc />
-    public class RibbonBuilder : Ribbon.Services.RibbonBuilder
+    public class RibbonBuilder : Ribbon.Services.ConfigurationBuilders.RibbonBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonBuilder"/> class.

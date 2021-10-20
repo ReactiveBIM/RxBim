@@ -2,6 +2,7 @@
 {
     using System;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Di;
     using Ribbon.Services;
 

@@ -3,6 +3,7 @@
     using System;
     using Abstractions;
     using Di;
+    using Models.Configurations;
 
     /// <summary>
     /// Decorator creating the plugin ribbon
@@ -24,8 +25,9 @@
         {
             try
             {
-                var menuBuilder = container.GetService<IMenuBuildService>();
-                menuBuilder.BuildMenu(container);
+                var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
+                var ribbonConfiguration = container.GetService<Ribbon>();
+                ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration);
             }
             catch (Exception e)
             {

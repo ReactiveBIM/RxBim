@@ -5,6 +5,7 @@
     using Autodesk.Windows;
     using Models;
     using Ribbon.Abstractions;
+    using Ribbon.Abstractions.ConfigurationBuilders;
 
     /// <summary>
     /// Extensions for <see cref="IPanelBuilder"/>

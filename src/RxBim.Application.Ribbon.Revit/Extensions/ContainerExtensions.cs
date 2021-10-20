@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Services;

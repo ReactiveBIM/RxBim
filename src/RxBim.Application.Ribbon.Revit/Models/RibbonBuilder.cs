@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using Di;
@@ -12,7 +13,7 @@
     /// <summary>
     /// Ribbon wrapper
     /// </summary>
-    public class RibbonBuilder : Ribbon.Services.RibbonBuilder
+    public class RibbonBuilder : Ribbon.Services.ConfigurationBuilders.RibbonBuilder
     {
         private readonly RibbonControl _ribbonControl;
 

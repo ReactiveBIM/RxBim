@@ -4,6 +4,7 @@
     using System.Windows.Media.Imaging;
     using Models;
     using Ribbon.Abstractions;
+    using Ribbon.Abstractions.ConfigurationBuilders;
 
     /// <summary>
     /// Extensions for <see cref="IButtonBuilder"/>
