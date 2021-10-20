@@ -10,7 +10,7 @@
         /// <summary>
         /// Creates ribbon menu builder
         /// </summary>
-        /// <param name="menuAssembly">The assembly defining the menu</param>
+        /// <param name="menuAssembly">Menu defining assembly</param>
         IRibbonMenuBuilder CreateMenuBuilder(Assembly menuAssembly);
     }
 }

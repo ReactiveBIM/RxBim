@@ -34,7 +34,7 @@
             where T : class, IRibbonMenuBuilderFactory
         {
             container.AddBuilder<T>(assembly);
-            container.AddTransient(() =>
+            container.AddSingleton(() =>
             {
                 var builder = new RibbonBuilder();
                 action(builder);
@@ -60,7 +60,7 @@
             where T : class, IRibbonMenuBuilderFactory
         {
             container.AddBuilder<T>(assembly);
-            container.AddTransient(() => GetMenuConfiguration(container, config));
+            container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
 
@@ -69,8 +69,8 @@
             Assembly assembly)
             where T : class, IRibbonMenuBuilderFactory
         {
-            container.AddTransient<IRibbonMenuBuilderFactory, T>();
-            container.AddTransient(() =>
+            container.AddSingleton<IRibbonMenuBuilderFactory, T>();
+            container.AddSingleton(() =>
             {
                 var builderFactory = container.GetService<IRibbonMenuBuilderFactory>();
                 return builderFactory.CreateMenuBuilder(assembly);

@@ -10,7 +10,7 @@
         /// <summary>
         /// Constructs CAD platform-specific ribbon
         /// </summary>
-        /// <param name="ribbonConfiguration">Ribbon configuration</param>
-        void BuildRibbonMenu(Ribbon ribbonConfiguration);
+        /// <param name="ribbonConfig">Ribbon configuration</param>
+        void BuildRibbonMenu(Ribbon ribbonConfig);
     }
 }
