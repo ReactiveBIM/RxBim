@@ -3,6 +3,7 @@
     using System;
     using Abstractions;
     using Di;
+    using Extensions;
     using Models.Configurations;
 
     /// <summary>
@@ -27,7 +28,8 @@
             {
                 var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
                 var ribbonConfiguration = container.GetService<Ribbon>();
-                ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration);
+                var aboutShowService = container.TryGetAboutShowService();
+                ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration, aboutShowService);
             }
             catch (Exception e)
             {

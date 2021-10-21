@@ -1,59 +1,105 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
 {
     using System;
-    using System.Windows.Media.Imaging;
-    using Models;
-    using Ribbon.Abstractions;
+    using System.Windows.Controls;
+    using Autodesk.Windows;
     using Ribbon.Abstractions.ConfigurationBuilders;
+    using Ribbon.Models.Configurations;
+    using Button = Ribbon.Models.Configurations.Button;
 
     /// <summary>
     /// Extensions for <see cref="IButtonBuilder"/>
     /// </summary>
-    public static class ButtonExtensions
+    internal static class ButtonExtensions
     {
         /// <summary>
-        /// Set the show state for the button label text
+        /// Sets tooltip for command button
         /// </summary>
-        /// <param name="buttonBuilder">Button</param>
-        /// <param name="show">If true, show label text</param>
-        public static IButtonBuilder SetShowText(this IButtonBuilder buttonBuilder, bool show)
+        /// <param name="ribbonButton">Ribbon button</param>
+        /// <param name="cmdButtonConfig">Command button config</param>
+        public static void SetTooltipForCommandButton(this RibbonButton ribbonButton, CommandButton cmdButtonConfig)
         {
-            if (buttonBuilder is ButtonBuilder acadButton)
+            var hasToolTip = !string.IsNullOrWhiteSpace(cmdButtonConfig.ToolTip);
+            var hasHelpUrl = !string.IsNullOrWhiteSpace(cmdButtonConfig.HelpUrl);
+
+            if (!hasToolTip && !hasHelpUrl)
+                return;
+
+            var toolTip = new RibbonToolTip();
+
+            if (hasToolTip)
             {
-                acadButton.ShowText = show;
+                toolTip.Content = cmdButtonConfig.ToolTip;
             }
 
-            return buttonBuilder;
+            if (hasHelpUrl)
+            {
+                toolTip.HelpTopic = cmdButtonConfig.HelpUrl;
+                toolTip.IsHelpEnabled = true;
+            }
+            else
+            {
+                toolTip.IsHelpEnabled = false;
+            }
+
+            ribbonButton.ToolTip = toolTip;
         }
 
         /// <summary>
-        /// Sets a large image for the button in a light theme
+        /// Sets tooltip for non-command button
         /// </summary>
-        /// <param name="buttonBuilder">Button</param>
-        /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButtonBuilder SetLargeImageLight(this IButtonBuilder buttonBuilder, Uri? imageUri)
+        /// <param name="ribbonButton">Ribbon button</param>
+        /// <param name="buttonConfig">Button config</param>
+        public static void SetTooltipForNonCommandButton(this RibbonButton ribbonButton, Button buttonConfig)
         {
-            if (buttonBuilder is ButtonBuilder acButton && imageUri != null)
-            {
-                acButton.LargeImageLight = new BitmapImage(imageUri);
-            }
+            if (string.IsNullOrWhiteSpace(buttonConfig.ToolTip))
+                return;
 
-            return buttonBuilder;
+            var toolTip = new RibbonToolTip
+            {
+                Content = buttonConfig.ToolTip,
+                IsHelpEnabled = false
+            };
+            ribbonButton.ToolTip = toolTip;
         }
 
         /// <summary>
-        /// Sets a small image for the button in a light theme
+        /// Sets the base properties for the ribbon button from the button configuration
         /// </summary>
-        /// <param name="buttonBuilder">Button</param>
-        /// <param name="imageUri">Image <see cref="Uri"/></param>
-        public static IButtonBuilder SetSmallImageLight(this IButtonBuilder buttonBuilder, Uri? imageUri)
+        /// <param name="ribbonButton">Ribbon button</param>
+        /// <param name="buttonConfig">Button configuration</param>
+        /// <param name="isSmall">Button is small</param>
+        /// <exception cref="InvalidOperationException">If the button name is not specified</exception>
+        public static void SetButtonProperties(this RibbonButton ribbonButton, Button buttonConfig, bool isSmall)
         {
-            if (buttonBuilder is ButtonBuilder acButton && imageUri != null)
+            if (string.IsNullOrWhiteSpace(buttonConfig.Name))
+                throw new InvalidOperationException("Button name can't be null or empty!");
+            ribbonButton.Name = buttonConfig.Name;
+
+            if (!string.IsNullOrWhiteSpace(buttonConfig.Text))
             {
-                acButton.SmallImageLight = new BitmapImage(imageUri);
+                ribbonButton.Text = buttonConfig.Text;
+                ribbonButton.ShowText = true;
             }
 
-            return buttonBuilder;
+            if (!string.IsNullOrWhiteSpace(buttonConfig.Description))
+            {
+                ribbonButton.Description = buttonConfig.Description;
+            }
+
+            ribbonButton.IsCheckable = false;
+            ribbonButton.ShowImage = true;
+
+            if (isSmall)
+            {
+                ribbonButton.Orientation = Orientation.Horizontal;
+                ribbonButton.Size = RibbonItemSize.Standard;
+            }
+            else
+            {
+                ribbonButton.Orientation = Orientation.Vertical;
+                ribbonButton.Size = RibbonItemSize.Large;
+            }
         }
     }
 }

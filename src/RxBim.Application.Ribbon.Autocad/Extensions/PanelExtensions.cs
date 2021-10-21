@@ -3,8 +3,6 @@
     using System;
     using System.Linq;
     using Autodesk.Windows;
-    using Models;
-    using Ribbon.Abstractions;
     using Ribbon.Abstractions.ConfigurationBuilders;
 
     /// <summary>
@@ -13,28 +11,53 @@
     public static class PanelExtensions
     {
         /// <summary>
-        /// Switches the panel to SlideOut fill mode
+        /// Returns current row for panel
         /// </summary>
-        /// <param name="panelBuilder"><see cref="IPanelBuilder"/> object</param>
-        public static IPanelBuilder SlideOut(this IPanelBuilder panelBuilder)
+        /// <param name="panel">Panel</param>
+        public static RibbonRowPanel? GetCurrentRowOrNull(this RibbonPanel panel)
         {
-            if (panelBuilder is PanelBuilder cadPanel)
-            {
-                cadPanel.SwitchToSlideOut();
-            }
-
-            return panelBuilder;
+            return panel.Source.Items.Last() as RibbonRowPanel;
         }
 
         /// <summary>
-        /// Returns <see cref="RibbonPanel"/> for <see cref="IPanelBuilder"/>
+        /// Returns current row for panel
         /// </summary>
-        /// <param name="panelBuilder"><see cref="IPanelBuilder"/> object</param>
-        internal static RibbonPanel GetRibbonPanel(this IPanelBuilder panelBuilder)
+        /// <param name="panel">Panel</param>
+        /// <exception cref="InvalidOperationException">If there is no current row panel</exception>
+        public static RibbonRowPanel GetCurrentRow(this RibbonPanel panel)
         {
-            if (panelBuilder is PanelBuilder acPanel)
-                return panelBuilder.TabBuilder.GetRibbonTab().Panels.Single(p => p.Id == acPanel.Id);
-            throw new InvalidOperationException("Can't get RibbonPanel for this panel type!");
+            var currentRow = panel.GetCurrentRowOrNull();
+            if (currentRow is null)
+                throw new InvalidOperationException("Can't find the current panel row!");
+            return currentRow;
+        }
+
+        /// <summary>
+        /// Adds ribbon item to the panel
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        /// <param name="item">Ribbon item</param>
+        public static void AddToCurrentRow(this RibbonPanel panel, RibbonItem item)
+        {
+            panel.GetCurrentRow().Source.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Panel already contains slide-out
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        public static bool HasSlideOut(this RibbonPanel panel)
+        {
+            return panel.Source.Items.Any(x => x is RibbonPanelBreak);
+        }
+
+        /// <summary>
+        /// Creates and adds new row panel
+        /// </summary>
+        /// <param name="acRibbonPanel">Panel</param>
+        public static void AddNewRow(this RibbonPanel acRibbonPanel)
+        {
+            acRibbonPanel.Source.Items.Add(new RibbonRowPanel());
         }
     }
 }

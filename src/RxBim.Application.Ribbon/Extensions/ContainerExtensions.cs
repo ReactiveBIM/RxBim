@@ -1,8 +1,6 @@
-﻿namespace RxBim.Application.Ribbon
+﻿namespace RxBim.Application.Ribbon.Extensions
 {
     using System;
-    using System.IO;
-    using System.Linq;
     using System.Reflection;
     using Abstractions;
     using Abstractions.ConfigurationBuilders;
@@ -11,6 +9,7 @@
     using Models.Configurations;
     using Services;
     using Services.ConfigurationBuilders;
+    using Shared.Abstractions;
 
     /// <summary>
     /// DI Container Extensions for Ribbon Menu
@@ -64,6 +63,22 @@
             container.DecorateContainer();
         }
 
+        /// <summary>
+        /// Returns AboutShowService
+        /// </summary>
+        /// <param name="container">DI container</param>
+        internal static IAboutShowService? TryGetAboutShowService(this IContainer container)
+        {
+            try
+            {
+                return container.GetService<IAboutShowService>();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private static void AddBuilder<T>(
             this IContainer container,
             Assembly assembly)
@@ -82,31 +97,11 @@
             container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
-        private static Type GetType(string commandType, Assembly assembly)
-        {
-            var strings = commandType.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim())
-                .ToArray();
-
-            return strings.Length switch
-            {
-                1 => assembly.GetType(commandType), 2 => Assembly
-                    .LoadFrom(Path.Combine(GetAssemblyDirectory(assembly), strings[1] + ".dll"))
-                    .GetType(strings[0]),
-                _ => throw new ArgumentException()
-            };
-        }
-
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
             var menuConfiguration = cfg.GetSection("Menu").Get<Ribbon>();
             return menuConfiguration;
-        }
-
-        private static string GetAssemblyDirectory(Assembly assembly)
-        {
-            return Path.GetDirectoryName(assembly.Location) !;
         }
     }
 }
