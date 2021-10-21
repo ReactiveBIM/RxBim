@@ -35,7 +35,7 @@
         }
 
         /// <inheritdoc />
-        public IPanelBuilder Panel(string panelTitle)
+        public IPanelBuilder AddPanel(string panelTitle)
         {
             var builder = new PanelBuilder(panelTitle, _ribbonBuilder, this);
             BuildingTab.Panels.Add(builder.BuildingPanel);
@@ -45,13 +45,12 @@
         /// <inheritdoc />
         public ITabBuilder AddAboutButton(
             string name,
-            string text,
             AboutBoxContent content,
             Action<IButtonBuilder>? action = null,
             string? panelName = null)
         {
-            var builder = new PanelBuilder(panelName ?? text, _ribbonBuilder, this);
-            builder.AddAboutButton(name, text, content, action);
+            var builder = new PanelBuilder(panelName ?? name, _ribbonBuilder, this);
+            builder.AddAboutButton(name, content, action);
             BuildingTab.Panels.Add(builder.BuildingPanel);
             return this;
         }

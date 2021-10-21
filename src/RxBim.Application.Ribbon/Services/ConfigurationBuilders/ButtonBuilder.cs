@@ -14,11 +14,9 @@
         /// Initializes a new instance of the button builder
         /// </summary>
         /// <param name="name">Button name</param>
-        /// <param name="text">Button label text</param>
-        protected ButtonBuilder(string name, string text)
+        protected ButtonBuilder(string name)
         {
             BuildingButton.Name = name;
-            BuildingButton.Text = text;
         }
 
         /// <summary>
@@ -71,6 +69,13 @@
         public IButtonBuilder SetToolTip(string toolTip)
         {
             BuildingButton.ToolTip = toolTip;
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IButtonBuilder SetText(string text)
+        {
+            BuildingButton.Text = text;
             return this;
         }
     }

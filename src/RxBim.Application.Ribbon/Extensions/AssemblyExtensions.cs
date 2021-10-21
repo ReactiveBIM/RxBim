@@ -36,18 +36,22 @@
         /// </summary>
         /// <param name="assembly">Base assembly. Used to get the root directory if the path is relative</param>
         /// <param name="fullOrRelativePath">Full or relative path to support file</param>
-        /// <param name="fullPath">Full path to the support file</param>
+        /// <param name="pathUri">URI for the support file</param>
         /// <returns>Returns true if the path was found, otherwise returns false</returns>
-        public static bool TryGetSupportFileFullPath(this Assembly assembly, string fullOrRelativePath, out string fullPath)
+        public static bool TryGetSupportFileUri(this Assembly assembly, string fullOrRelativePath, out Uri? pathUri)
         {
-            if (File.Exists(fullOrRelativePath))
+            string path = File.Exists(fullOrRelativePath)
+                ? fullOrRelativePath
+                : Path.Combine(GetAssemblyDirectory(assembly), fullOrRelativePath);
+
+            if (File.Exists(path))
             {
-                fullPath = fullOrRelativePath;
+                pathUri = new Uri(path, UriKind.RelativeOrAbsolute);
                 return true;
             }
 
-            fullPath = Path.Combine(GetAssemblyDirectory(assembly), fullOrRelativePath);
-            return File.Exists(fullPath);
+            pathUri = null;
+            return false;
         }
 
         private static string GetAssemblyDirectory(this Assembly assembly)

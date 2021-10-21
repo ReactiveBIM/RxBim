@@ -12,14 +12,12 @@
         /// Create push button on the panel
         /// </summary>
         /// <param name="name">Internal name of the button</param>
-        /// <param name="text">Text user will see</param>
         /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
         IPanelBuilder AddCommandButton(
             string name,
-            string text,
             Type commandType,
             Action<ICommandButtonBuilder>? action = null);
 
@@ -34,10 +32,9 @@
         /// Create pull down button on the panel
         /// </summary>
         /// <param name="name">Internal name of the button</param>
-        /// <param name="text">Text user will see</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        IPanelBuilder AddPullDownButton(string name, string text, Action<IPulldownButtonBuilder> action);
+        IPanelBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action);
 
         /// <summary>
         /// Creates and adds a separator to the panel
@@ -53,12 +50,10 @@
         /// Adds button for displaying About window
         /// </summary>
         /// <param name="name">Button name</param>
-        /// <param name="text">Button label text</param>
         /// <param name="content">About button content</param>
         /// <param name="action">Additional actions for the button</param>
         IPanelBuilder AddAboutButton(
             string name,
-            string text,
             AboutBoxContent content,
             Action<IButtonBuilder>? action = null);
 

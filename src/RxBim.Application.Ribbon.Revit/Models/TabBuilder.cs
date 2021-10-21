@@ -31,7 +31,7 @@
         /// Создает панель на закладке
         /// </summary>
         /// <param name="panelTitle">имя панели</param>
-        public IPanelBuilder Panel(string panelTitle)
+        public IPanelBuilder AddPanel(string panelTitle)
         {
             var ribbonPanel = string.IsNullOrEmpty(_tabName)
                 ? RibbonBuilder.Application.CreateRibbonPanel(panelTitle)
@@ -57,7 +57,7 @@
             if (string.IsNullOrEmpty(text))
                 text = name;
 
-            var panel = Panel(panelName);
+            var panel = AddPanel(panelName);
 
             panel.AddAboutButton(name, text, _tabName, panelName, Container, action);
 

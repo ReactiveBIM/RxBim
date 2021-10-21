@@ -18,7 +18,6 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IStackedItemsBuilder AddCommandButton(
             string name,
-            string text,
             Type commandType,
             Action<ICommandButtonBuilder>? action = null)
         {
@@ -27,7 +26,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             }
 
-            var buttonBuilder = new CommandButtonBuilder(name, text, commandType);
+            var buttonBuilder = new CommandButtonBuilder(name, commandType);
             action?.Invoke(buttonBuilder);
 
             StackedItems.Buttons.Add(buttonBuilder.BuildingButton);

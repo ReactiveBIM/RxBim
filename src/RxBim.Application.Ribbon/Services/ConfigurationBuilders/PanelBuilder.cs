@@ -58,11 +58,10 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddCommandButton(
             string name,
-            string text,
             Type commandType,
             Action<ICommandButtonBuilder>? action = null)
         {
-            var buttonBuilder = new CommandButtonBuilder(name, text, commandType);
+            var buttonBuilder = new CommandButtonBuilder(name, commandType);
             action?.Invoke(buttonBuilder);
             BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
             return this;
@@ -71,10 +70,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddPullDownButton(
             string name,
-            string text,
             Action<IPulldownButtonBuilder> action)
         {
-            var builder = new PulldownButtonBuilder(name, text);
+            var builder = new PulldownButtonBuilder(name);
             action.Invoke(builder);
             BuildingPanel.Elements.Add(builder.BuildingButton);
             return this;
@@ -99,11 +97,10 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddAboutButton(
             string name,
-            string text,
             AboutBoxContent content,
             Action<IButtonBuilder>? action = null)
         {
-            var builder = new AboutButtonBuilder(name, text, content);
+            var builder = new AboutButtonBuilder(name, content);
             action?.Invoke(builder);
             BuildingPanel.Elements.Add(builder.BuildingButton);
             return this;

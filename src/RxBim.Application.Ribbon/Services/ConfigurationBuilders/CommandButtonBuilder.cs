@@ -15,10 +15,9 @@
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.
         /// </summary>
         /// <param name="name">Button name</param>
-        /// <param name="text">Button label text</param>
         /// <param name="commandType">Command class type</param>
-        public CommandButtonBuilder(string name, string text, Type commandType)
-            : base(name, text)
+        public CommandButtonBuilder(string name, Type commandType)
+            : base(name)
         {
             _commandType = commandType;
             BuildingButton.CommandType = commandType.FullName;

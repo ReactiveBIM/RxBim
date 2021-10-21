@@ -5,7 +5,7 @@
     using Extensions;
 
     /// <inheritdoc />
-    public abstract class MethodCaller<T> : IMethodCaller<T>
+    public class MethodCaller<T> : IMethodCaller<T>
     {
         private readonly object _sourceObject;
 
@@ -13,7 +13,7 @@
         /// Initializes a new instance of the <see cref="MethodCaller{T}"/> class.
         /// </summary>
         /// <param name="sourceObject">The source object for the method</param>
-        protected MethodCaller(object sourceObject)
+        public MethodCaller(object sourceObject)
         {
             _sourceObject = sourceObject;
         }

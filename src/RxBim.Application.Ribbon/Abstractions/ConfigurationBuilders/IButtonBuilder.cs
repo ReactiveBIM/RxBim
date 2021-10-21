@@ -32,5 +32,11 @@
         /// </summary>
         /// <param name="toolTip">Tooltip text</param>
         IButtonBuilder SetToolTip(string toolTip);
+
+        /// <summary>
+        /// Sets button label text
+        /// </summary>
+        /// <param name="text">Button label text</param>
+        IButtonBuilder SetText(string text);
     }
 }

@@ -152,9 +152,9 @@
         protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
         {
             if (!string.IsNullOrWhiteSpace(fullOrRelativeImagePath) &&
-                MenuAssembly.TryGetSupportFileFullPath(fullOrRelativeImagePath!, out var path))
+                MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!, out var uri) &&
+                uri != null)
             {
-                var uri = new Uri(path, UriKind.Absolute);
                 return new BitmapImage(uri);
             }
 

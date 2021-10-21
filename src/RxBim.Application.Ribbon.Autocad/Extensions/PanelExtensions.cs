@@ -16,7 +16,7 @@
         /// <param name="panel">Panel</param>
         public static RibbonRowPanel? GetCurrentRowOrNull(this RibbonPanel panel)
         {
-            return panel.Source.Items.Last() as RibbonRowPanel;
+            return panel.Source.Items.LastOrDefault() as RibbonRowPanel;
         }
 
         /// <summary>
@@ -39,7 +39,8 @@
         /// <param name="item">Ribbon item</param>
         public static void AddToCurrentRow(this RibbonPanel panel, RibbonItem item)
         {
-            panel.GetCurrentRow().Source.Items.Add(item);
+            var ribbonRowPanel = panel.GetCurrentRow();
+            ribbonRowPanel.Items.Add(item);
         }
 
         /// <summary>

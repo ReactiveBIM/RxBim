@@ -52,11 +52,12 @@
         protected override RibbonTab GetOrCreateTab(string tabName)
         {
             var acRibbonTab = ComponentManager.Ribbon.Tabs.FirstOrDefault(x =>
-                x.Name.Equals(tabName, StringComparison.OrdinalIgnoreCase));
+                x.IsVisible &&
+                x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
 
             if (acRibbonTab is null)
             {
-                acRibbonTab = new RibbonTab { Name = tabName };
+                acRibbonTab = new RibbonTab { Title = tabName };
                 ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
             }
 
