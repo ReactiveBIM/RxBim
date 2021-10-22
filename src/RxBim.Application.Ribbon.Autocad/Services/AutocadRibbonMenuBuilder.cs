@@ -53,11 +53,13 @@
         {
             var acRibbonTab = ComponentManager.Ribbon.Tabs.FirstOrDefault(x =>
                 x.IsVisible &&
+                x.Title != null &&
                 x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
 
             if (acRibbonTab is null)
             {
-                acRibbonTab = new RibbonTab { Title = tabName };
+                acRibbonTab = new RibbonTab
+                    { Title = tabName, Id = $"TAB_{tabName.GetHashCode():0}" };
                 ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
             }
 
@@ -68,6 +70,7 @@
         protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName)
         {
             var acRibbonPanel = acRibbonTab.Panels.FirstOrDefault(x =>
+                x.Source.Name != null &&
                 x.Source.Name.Equals(panelName, StringComparison.OrdinalIgnoreCase));
             if (acRibbonPanel is null)
             {
@@ -76,9 +79,11 @@
                     Source = new RibbonPanelSource
                     {
                         Name = panelName,
-                        Title = panelName
-                    }
+                        Title = panelName,
+                        Id = $"{acRibbonTab.Id}_PANEL_{panelName.GetHashCode():0}"
+                    },
                 };
+
                 acRibbonTab.Panels.Add(acRibbonPanel);
             }
 
@@ -148,11 +153,11 @@
             }
         }
 
-        private T CreateNewButton<T>(Button buttonConfig, bool isSmall)
+        private T CreateNewButton<T>(Button buttonConfig, bool isSmall, bool forceTextSettings = false)
             where T : RibbonButton, new()
         {
             var ribbonButton = new T();
-            ribbonButton.SetButtonProperties(buttonConfig, isSmall);
+            ribbonButton.SetButtonProperties(buttonConfig, isSmall, forceTextSettings);
             SetButtonImages(ribbonButton, buttonConfig, GetCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
@@ -174,7 +179,8 @@
 
         private ThemeType GetCurrentTheme()
         {
-            return Application.GetSystemVariable(ThemeVariableName).Equals(0) ? ThemeType.Dark : ThemeType.Light;
+            var themeTypeValue = (short)Application.GetSystemVariable(ThemeVariableName);
+            return themeTypeValue == 0 ? ThemeType.Dark : ThemeType.Light;
         }
 
         private RibbonButton CreateAboutButtonInternal(AboutButton aboutButtonConfig, bool isSmall)
@@ -198,10 +204,11 @@
             button.SetTooltipForCommandButton(buttonConfig);
             if (!string.IsNullOrWhiteSpace(buttonConfig.CommandType))
             {
+                var commandName = GetCommandName(buttonConfig.CommandType!);
                 button.CommandHandler = new RelayCommand(() =>
                     {
                         Application.DocumentManager.MdiActiveDocument?
-                            .SendStringToExecute($"{GetCommandName(buttonConfig.CommandType!)} ", false, false, true);
+                            .SendStringToExecute($"{commandName} ", false, false, true);
                     },
                     true);
             }
@@ -211,9 +218,12 @@
 
         private RibbonButton CreatePullDownButtonInternal(PullDownButton pullDownButtonConfig, bool isSmall)
         {
-            var splitButton = CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, isSmall);
+            var forceTextSettings = pullDownButtonConfig.Buttons.Any(x => !string.IsNullOrWhiteSpace(x.Text));
+            var splitButton = CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, isSmall, forceTextSettings);
+
             splitButton.ListStyle = RibbonSplitButtonListStyle.List;
             splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
+            splitButton.ListImageSize = isSmall ? RibbonImageSize.Standard : RibbonImageSize.Large;
 
             foreach (var commandButtonConfig in pullDownButtonConfig.Buttons)
             {

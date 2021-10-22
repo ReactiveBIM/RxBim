@@ -142,7 +142,7 @@
         /// <exception cref="ArgumentException">Type name is invalid</exception>
         protected Type GetCommandType(string commandTypeName)
         {
-            return MenuAssembly.GetType(commandTypeName);
+            return MenuAssembly.GetTypeFromName(commandTypeName);
         }
 
         /// <summary>
@@ -151,14 +151,10 @@
         /// <param name="fullOrRelativeImagePath">Image path</param>
         protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
         {
-            if (!string.IsNullOrWhiteSpace(fullOrRelativeImagePath) &&
-                MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!, out var uri) &&
-                uri != null)
-            {
-                return new BitmapImage(uri);
-            }
-
-            return null;
+            if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
+                return null;
+            var uri = MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!);
+            return uri != null ? new BitmapImage(uri) : null;
         }
 
         private void CreateTab(Tab tabConfig)

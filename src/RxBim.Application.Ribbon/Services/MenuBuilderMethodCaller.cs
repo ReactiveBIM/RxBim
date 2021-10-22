@@ -5,6 +5,7 @@
     using Di;
     using Extensions;
     using Models.Configurations;
+    using Shared;
 
     /// <summary>
     /// Decorator creating the plugin ribbon
@@ -24,16 +25,19 @@
         /// <inheritdoc />
         public override T InvokeMethod(IContainer container, string methodName)
         {
-            try
+            if (methodName == Constants.StartMethodName)
             {
-                var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = container.GetService<Ribbon>();
-                var aboutShowService = container.TryGetAboutShowService();
-                ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration, aboutShowService);
-            }
-            catch (Exception e)
-            {
-                throw new MethodCallerException("Failed to build ribbon", e);
+                try
+                {
+                    var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
+                    var ribbonConfiguration = container.GetService<Ribbon>();
+                    var aboutShowService = container.TryGetAboutShowService();
+                    ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration, aboutShowService);
+                }
+                catch (Exception e)
+                {
+                    throw new MethodCallerException("Failed to build ribbon", e);
+                }
             }
 
             return Decorated.InvokeMethod(container, methodName);

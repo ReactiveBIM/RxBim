@@ -52,6 +52,8 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
                 throw new InvalidOperationException("StackedItems has incorrect items count!");
             }
 
+            BuildingPanel.Elements.Add(stackedItems.StackedItems);
+
             return this;
         }
 
