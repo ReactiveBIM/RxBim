@@ -7,5 +7,9 @@
     /// </summary>
     public class Separator : IRibbonPanelElement
     {
+        /// <summary>
+        /// Separator type
+        /// </summary>
+        public SeparatorType SeparatorType { get; set; }
     }
 }

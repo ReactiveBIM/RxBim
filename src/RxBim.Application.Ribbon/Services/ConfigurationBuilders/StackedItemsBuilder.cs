@@ -13,7 +13,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public StackedItems StackedItems { get; } = new ();
 
         /// <inheritdoc />
-        public bool HasCorrectItemsCount => StackedItems.Buttons.Count is >= 2 and <= 3;
+        public bool HasCorrectItemsCount => StackedItems.StackedButtons.Count is >= 2 and <= 3;
 
         /// <inheritdoc />
         public IStackedItemsBuilder AddCommandButton(
@@ -21,7 +21,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
             Type commandType,
             Action<ICommandButtonBuilder>? action = null)
         {
-            if (StackedItems.Buttons.Count == 3)
+            if (StackedItems.StackedButtons.Count == 3)
             {
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             }
@@ -29,7 +29,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             action?.Invoke(buttonBuilder);
 
-            StackedItems.Buttons.Add(buttonBuilder.BuildingButton);
+            StackedItems.StackedButtons.Add(buttonBuilder.BuildingButton);
 
             return this;
         }

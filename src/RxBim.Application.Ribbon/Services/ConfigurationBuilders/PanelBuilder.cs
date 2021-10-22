@@ -3,6 +3,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using System;
     using System.Linq;
     using Abstractions.ConfigurationBuilders;
+    using Models;
     using Models.Configurations;
     using Shared;
 
@@ -83,16 +84,16 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddSeparator()
         {
-            BuildingPanel.Elements.Add(new Separator());
+            BuildingPanel.Elements.Add(new Separator { SeparatorType = SeparatorType.Separator });
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder AddSlideOut()
         {
-            if (BuildingPanel.Elements.Any(e => e is SlideOut))
+            if (BuildingPanel.Elements.Any(e => e is Separator { SeparatorType: SeparatorType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Elements.Add(new SlideOut());
+            BuildingPanel.Elements.Add(new Separator { SeparatorType = SeparatorType.SlideOut });
             return this;
         }
 

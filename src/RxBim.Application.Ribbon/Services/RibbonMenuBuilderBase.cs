@@ -5,6 +5,7 @@
     using System.Windows.Media.Imaging;
     using Abstractions;
     using Extensions;
+    using Models;
     using Models.Configurations;
     using Shared;
     using Shared.Abstractions;
@@ -190,10 +191,10 @@
                     case PullDownButton pullDownButton:
                         CreatePullDownButton(panel, pullDownButton);
                         break;
-                    case Separator:
+                    case Separator separator when separator.SeparatorType == SeparatorType.Separator:
                         AddSeparator(panel);
                         break;
-                    case SlideOut:
+                    case Separator separator when separator.SeparatorType == SeparatorType.SlideOut:
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:

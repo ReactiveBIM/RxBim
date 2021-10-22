@@ -133,14 +133,14 @@
             var stackedItemsRow = new RibbonRowPanel();
             panel.AddToCurrentRow(stackedItemsRow);
 
-            for (var i = 0; i < stackedItems.Buttons.Count; i++)
+            for (var i = 0; i < stackedItems.StackedButtons.Count; i++)
             {
                 if (i > 0)
                 {
                     stackedItemsRow.Items.Add(new RibbonRowBreak());
                 }
 
-                var buttonConfig = stackedItems.Buttons[i];
+                var buttonConfig = stackedItems.StackedButtons[i];
                 var buttonItem = buttonConfig switch
                 {
                     AboutButton aboutButton => CreateAboutButtonInternal(aboutButton, true),
@@ -218,14 +218,14 @@
 
         private RibbonButton CreatePullDownButtonInternal(PullDownButton pullDownButtonConfig, bool isSmall)
         {
-            var forceTextSettings = pullDownButtonConfig.Buttons.Any(x => !string.IsNullOrWhiteSpace(x.Text));
+            var forceTextSettings = pullDownButtonConfig.CommandButtonsList.Any(x => !string.IsNullOrWhiteSpace(x.Text));
             var splitButton = CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, isSmall, forceTextSettings);
 
             splitButton.ListStyle = RibbonSplitButtonListStyle.List;
             splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
             splitButton.ListImageSize = isSmall ? RibbonImageSize.Standard : RibbonImageSize.Large;
 
-            foreach (var commandButtonConfig in pullDownButtonConfig.Buttons)
+            foreach (var commandButtonConfig in pullDownButtonConfig.CommandButtonsList)
             {
                 splitButton.Items.Add(CreateCommandButtonInternal(commandButtonConfig, isSmall));
             }
