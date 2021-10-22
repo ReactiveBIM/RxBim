@@ -3,7 +3,7 @@
     /// <summary>
     /// Separator type
     /// </summary>
-    public enum SeparatorType
+    public enum PanelLayoutElementType
     {
         /// <summary>
         /// Separator

@@ -3,6 +3,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using System;
     using System.Linq;
     using Abstractions.ConfigurationBuilders;
+    using Microsoft.Extensions.Configuration;
     using Models;
     using Models.Configurations;
     using Shared;
@@ -41,20 +42,11 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> action)
         {
             if (action == null)
-            {
                 throw new ArgumentNullException(nameof(action));
-            }
 
             var stackedItems = new StackedItemsBuilder();
             action.Invoke(stackedItems);
-
-            if (!stackedItems.HasCorrectItemsCount)
-            {
-                throw new InvalidOperationException("StackedItems has incorrect items count!");
-            }
-
             BuildingPanel.Elements.Add(stackedItems.StackedItems);
-
             return this;
         }
 
@@ -84,16 +76,17 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddSeparator()
         {
-            BuildingPanel.Elements.Add(new Separator { SeparatorType = SeparatorType.Separator });
+            BuildingPanel.Elements.Add(new PanelLayoutElement { ElementType = PanelLayoutElementType.Separator });
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder AddSlideOut()
         {
-            if (BuildingPanel.Elements.Any(e => e is Separator { SeparatorType: SeparatorType.SlideOut }))
+            if (BuildingPanel.Elements.Any(
+                e => e is PanelLayoutElement { ElementType: PanelLayoutElementType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Elements.Add(new Separator { SeparatorType = SeparatorType.SlideOut });
+            BuildingPanel.Elements.Add(new PanelLayoutElement { ElementType = PanelLayoutElementType.SlideOut });
             return this;
         }
 
@@ -119,6 +112,66 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IRibbonBuilder ToRibbonBuilder()
         {
             return _ribbonBuilder;
+        }
+
+        /// <summary>
+        /// Load from config
+        /// </summary>
+        /// <param name="panelSection">Config section</param>
+        internal void LoadFromConfig(IConfigurationSection panelSection)
+        {
+            var elementsSection = panelSection.GetSection(nameof(Panel.Elements));
+            if (!elementsSection.Exists())
+                return;
+
+            foreach (var elementSection in elementsSection.GetChildren())
+            {
+                var stackedButtons = elementSection.GetSection(nameof(StackedItems.StackedButtons));
+                if (stackedButtons.Exists())
+                {
+                    var stackedItems = new StackedItemsBuilder();
+                    stackedItems.LoadButtonsFromConfig(stackedButtons);
+                    BuildingPanel.Elements.Add(stackedItems.StackedItems);
+                }
+                else if (elementSection.GetSection(nameof(CommandButton.CommandType)).Exists())
+                {
+                    CreateFromConfigAndAdd<CommandButton>(elementSection);
+                }
+                else if (elementSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists())
+                {
+                    CreateFromConfigAndAdd<PullDownButton>(elementSection);
+                }
+                else if (elementSection.GetSection(nameof(AboutButton.Content)).Exists())
+                {
+                    CreateFromConfigAndAdd<AboutButton>(elementSection);
+                }
+                else
+                {
+                    var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.ElementType));
+                    if (typeSection.Exists())
+                    {
+                        var type = typeSection.Get<PanelLayoutElementType>();
+                        switch (type)
+                        {
+                            case PanelLayoutElementType.Separator:
+                                AddSeparator();
+                                break;
+                            case PanelLayoutElementType.SlideOut:
+                                AddSlideOut();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException($"Unknown panel layout element type: {type}");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CreateFromConfigAndAdd<T>(IConfigurationSection elementSection)
+            where T : IRibbonPanelElement
+        {
+            var button = elementSection.Get<T>();
+            BuildingPanel.Elements.Add(button);
         }
     }
 }

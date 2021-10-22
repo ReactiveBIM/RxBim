@@ -9,6 +9,8 @@
     /// </summary>
     public class AboutBoxContent
     {
+        private Version _version = new ();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AboutBoxContent"/> class.
         /// </summary>
@@ -59,7 +61,20 @@
         /// <summary>
         /// Версия сборки
         /// </summary>
-        public Version BuildVersion { get; set; }
+        public Version BuildVersion
+        {
+            get => _version;
+            set => _version = value;
+        }
+
+        /// <summary>
+        /// Версия сборки в виде строки
+        /// </summary>
+        public string BuildVersionString
+        {
+            get => _version.ToString();
+            set => _version = new Version(value);
+        }
 
         /// <summary>
         /// Название компании

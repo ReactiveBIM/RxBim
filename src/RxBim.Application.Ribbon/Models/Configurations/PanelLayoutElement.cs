@@ -3,13 +3,13 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Ribbon panel elements separator
+    /// Ribbon panel layout element
     /// </summary>
-    public class Separator : IRibbonPanelElement
+    public class PanelLayoutElement : IRibbonPanelElement
     {
         /// <summary>
-        /// Separator type
+        /// Layout element type
         /// </summary>
-        public SeparatorType SeparatorType { get; set; }
+        public PanelLayoutElementType ElementType { get; set; }
     }
 }

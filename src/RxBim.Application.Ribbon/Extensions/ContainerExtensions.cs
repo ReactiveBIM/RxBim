@@ -100,8 +100,9 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var menuConfiguration = cfg.GetSection("Menu").Get<Ribbon>();
-            return menuConfiguration;
+            var builder = new RibbonBuilder();
+            builder.LoadFromConfig(cfg);
+            return builder.Ribbon;
         }
     }
 }

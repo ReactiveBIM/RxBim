@@ -8,11 +8,6 @@
     public interface IStackedItemsBuilder
     {
         /// <summary>
-        /// Items count is correct
-        /// </summary>
-        public bool HasCorrectItemsCount { get; }
-
-        /// <summary>
         /// Creates a button on the stack
         /// </summary>
         /// <param name="name">Internal name of the button</param>
@@ -25,5 +20,13 @@
             string name,
             Type commandType,
             Action<ICommandButtonBuilder>? action = null);
+
+        /// <summary>
+        /// Create pull down button on the stack
+        /// </summary>
+        /// <param name="name">Internal name of the button</param>
+        /// <param name="action">Additional action with whe button</param>
+        /// <returns><see cref="IStackedItemsBuilder"/> object where button were created</returns>
+        IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action);
     }
 }
