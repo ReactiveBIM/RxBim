@@ -24,7 +24,7 @@
         /// <param name="config">Configuration</param>
         internal void LoadFromConfig(IConfiguration config)
         {
-            var tabs = config.GetSection("Menu").GetSection(nameof(Ribbon.Tabs));
+            var tabs = config.GetSection(nameof(Ribbon)).GetSection(nameof(Ribbon.Tabs));
             if (!tabs.Exists())
                 return;
 

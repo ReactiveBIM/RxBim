@@ -8,6 +8,6 @@
         /// <summary>
         /// Returns ribbon builder object
         /// </summary>
-        IRibbonBuilder ToRibbonBuilder();
+        IRibbonBuilder ReturnToRibbon();
     }
 }

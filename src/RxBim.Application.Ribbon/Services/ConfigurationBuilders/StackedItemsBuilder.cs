@@ -9,6 +9,11 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     public class StackedItemsBuilder : IStackedItemsBuilder
     {
         /// <summary>
+        /// Max size of a stack
+        /// </summary>
+        public const int MaxStackSize = 3;
+
+        /// <summary>
         /// Builds StackedItems
         /// </summary>
         public StackedItems StackedItems { get; } = new ();
@@ -57,7 +62,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
 
         private StackedItemsBuilder AddButton(Button button)
         {
-            if (StackedItems.StackedButtons.Count == 3)
+            if (StackedItems.StackedButtons.Count == MaxStackSize)
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             StackedItems.StackedButtons.Add(button);
             return this;

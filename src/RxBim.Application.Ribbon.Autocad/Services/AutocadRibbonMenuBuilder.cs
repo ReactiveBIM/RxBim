@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Windows.Controls;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
@@ -13,6 +14,8 @@
     using Models.Configurations;
     using Ribbon.Abstractions;
     using Ribbon.Services;
+    using Ribbon.Services.ConfigurationBuilders;
+    using Button = Models.Configurations.Button;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD
@@ -96,19 +99,24 @@
         /// <inheritdoc />
         protected override void CreateAboutButton(RibbonPanel panel, AboutButton aboutButton)
         {
-            panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButton, false));
+            var orientation = aboutButton.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButton, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButton)
         {
-            panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButton, false));
+            var orientation = cmdButton.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButton, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButton)
         {
-            panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButton, false));
+            var orientation = pullDownButton.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButton,
+                RibbonItemSize.Large,
+                orientation));
         }
 
         /// <inheritdoc />
@@ -130,10 +138,15 @@
         /// <inheritdoc />
         protected override void CreateStackedItems(RibbonPanel panel, StackedItems stackedItems)
         {
+            var stackSize = stackedItems.StackedButtons.Count;
             var stackedItemsRow = new RibbonRowPanel();
+            var size = stackSize == StackedItemsBuilder.MaxStackSize
+                ? RibbonItemSize.Standard
+                : RibbonItemSize.Large;
+
             panel.AddToCurrentRow(stackedItemsRow);
 
-            for (var i = 0; i < stackedItems.StackedButtons.Count; i++)
+            for (var i = 0; i < stackSize; i++)
             {
                 if (i > 0)
                 {
@@ -143,9 +156,11 @@
                 var buttonConfig = stackedItems.StackedButtons[i];
                 var buttonItem = buttonConfig switch
                 {
-                    AboutButton aboutButton => CreateAboutButtonInternal(aboutButton, true),
-                    CommandButton cmdButton => CreateCommandButtonInternal(cmdButton, true),
-                    PullDownButton pullDownButton => CreatePullDownButtonInternal(pullDownButton, true),
+                    AboutButton aboutButton => CreateAboutButtonInternal(aboutButton, size, Orientation.Horizontal),
+                    CommandButton cmdButton => CreateCommandButtonInternal(cmdButton, size, Orientation.Horizontal),
+                    PullDownButton pullDownButton => CreatePullDownButtonInternal(pullDownButton,
+                        size,
+                        Orientation.Horizontal),
                     _ => throw new ArgumentOutOfRangeException($"Unknown button type: {buttonConfig.GetType().Name}")
                 };
 
@@ -153,11 +168,15 @@
             }
         }
 
-        private T CreateNewButton<T>(Button buttonConfig, bool isSmall, bool forceTextSettings = false)
+        private T CreateNewButton<T>(
+            Button buttonConfig,
+            RibbonItemSize size,
+            Orientation orientation,
+            bool forceTextSettings = false)
             where T : RibbonButton, new()
         {
             var ribbonButton = new T();
-            ribbonButton.SetButtonProperties(buttonConfig, isSmall, forceTextSettings);
+            ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
             SetButtonImages(ribbonButton, buttonConfig, GetCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
@@ -183,9 +202,12 @@
             return themeTypeValue == 0 ? ThemeType.Dark : ThemeType.Light;
         }
 
-        private RibbonButton CreateAboutButtonInternal(AboutButton aboutButtonConfig, bool isSmall)
+        private RibbonButton CreateAboutButtonInternal(
+            AboutButton aboutButtonConfig,
+            RibbonItemSize size,
+            Orientation orientation)
         {
-            var button = CreateNewButton<RibbonButton>(aboutButtonConfig, isSmall);
+            var button = CreateNewButton<RibbonButton>(aboutButtonConfig, size, orientation);
             button.SetTooltipForNonCommandButton(aboutButtonConfig);
             button.CommandHandler = new RelayCommand(() =>
                 {
@@ -198,9 +220,12 @@
             return button;
         }
 
-        private RibbonButton CreateCommandButtonInternal(CommandButton buttonConfig, bool isSmall)
+        private RibbonButton CreateCommandButtonInternal(
+            CommandButton buttonConfig,
+            RibbonItemSize size,
+            Orientation orientation)
         {
-            var button = CreateNewButton<RibbonButton>(buttonConfig, isSmall);
+            var button = CreateNewButton<RibbonButton>(buttonConfig, size, orientation);
             button.SetTooltipForCommandButton(buttonConfig);
             if (!string.IsNullOrWhiteSpace(buttonConfig.CommandType))
             {
@@ -216,18 +241,24 @@
             return button;
         }
 
-        private RibbonButton CreatePullDownButtonInternal(PullDownButton pullDownButtonConfig, bool isSmall)
+        private RibbonButton CreatePullDownButtonInternal(
+            PullDownButton pullDownButtonConfig,
+            RibbonItemSize size,
+            Orientation orientation)
         {
-            var forceTextSettings = pullDownButtonConfig.CommandButtonsList.Any(x => !string.IsNullOrWhiteSpace(x.Text));
-            var splitButton = CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, isSmall, forceTextSettings);
+            var forceTextSettings =
+                pullDownButtonConfig.CommandButtonsList.Any(x => !string.IsNullOrWhiteSpace(x.Text));
+            var splitButton =
+                CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, size, orientation, forceTextSettings);
 
             splitButton.ListStyle = RibbonSplitButtonListStyle.List;
             splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
-            splitButton.ListImageSize = isSmall ? RibbonImageSize.Standard : RibbonImageSize.Large;
+            splitButton.ListImageSize =
+                size == RibbonItemSize.Standard ? RibbonImageSize.Standard : RibbonImageSize.Large;
 
             foreach (var commandButtonConfig in pullDownButtonConfig.CommandButtonsList)
             {
-                splitButton.Items.Add(CreateCommandButtonInternal(commandButtonConfig, isSmall));
+                splitButton.Items.Add(CreateCommandButtonInternal(commandButtonConfig, size, orientation));
             }
 
             return splitButton;

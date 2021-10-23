@@ -68,20 +68,23 @@
         /// </summary>
         /// <param name="ribbonButton">Ribbon button</param>
         /// <param name="buttonConfig">Button configuration</param>
-        /// <param name="isSmall">Button is small</param>
+        /// <param name="size">Button size</param>
+        /// <param name="orientation">Button orientation</param>
         /// <param name="forceTextSettings">Force settings for text placement</param>
         /// <exception cref="InvalidOperationException">If the button name is not specified</exception>
         public static void SetButtonProperties(
             this RibbonButton ribbonButton,
             Button buttonConfig,
-            bool isSmall,
+            RibbonItemSize size,
+            Orientation orientation,
             bool forceTextSettings)
         {
             if (string.IsNullOrWhiteSpace(buttonConfig.Name))
                 throw new InvalidOperationException("Button name can't be null or empty!");
 
             ribbonButton.Name = buttonConfig.Name;
-            ribbonButton.Size = isSmall ? RibbonItemSize.Standard : RibbonItemSize.Large;
+            ribbonButton.Size = size;
+            ribbonButton.Orientation = orientation;
 
             var hasText = !string.IsNullOrWhiteSpace(buttonConfig.Text);
             if (hasText)
@@ -92,11 +95,6 @@
             if (hasText || forceTextSettings)
             {
                 ribbonButton.ShowText = true;
-                ribbonButton.Orientation = isSmall ? Orientation.Horizontal : Orientation.Vertical;
-            }
-            else
-            {
-                ribbonButton.Orientation = Orientation.Horizontal;
             }
 
             if (!string.IsNullOrWhiteSpace(buttonConfig.Description))
@@ -106,6 +104,17 @@
 
             ribbonButton.IsCheckable = false;
             ribbonButton.ShowImage = true;
+        }
+
+        /// <summary>
+        /// Returns orientation for single large button
+        /// </summary>
+        /// <param name="button">Button config</param>
+        public static Orientation GetSingleLargeButtonOrientation(this Button button)
+        {
+            return !string.IsNullOrWhiteSpace(button.Text)
+                ? Orientation.Vertical
+                : Orientation.Horizontal;
         }
     }
 }

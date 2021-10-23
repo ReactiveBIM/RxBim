@@ -76,7 +76,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddSeparator()
         {
-            BuildingPanel.Elements.Add(new PanelLayoutElement { ElementType = PanelLayoutElementType.Separator });
+            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.Separator });
             return this;
         }
 
@@ -84,9 +84,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPanelBuilder AddSlideOut()
         {
             if (BuildingPanel.Elements.Any(
-                e => e is PanelLayoutElement { ElementType: PanelLayoutElementType.SlideOut }))
+                e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Elements.Add(new PanelLayoutElement { ElementType = PanelLayoutElementType.SlideOut });
+            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.SlideOut });
             return this;
         }
 
@@ -103,13 +103,13 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public ITabBuilder ToTabBuilder()
+        public ITabBuilder ReturnToTab()
         {
             return _tabBuilder;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder ToRibbonBuilder()
+        public IRibbonBuilder ReturnToRibbon()
         {
             return _ribbonBuilder;
         }
@@ -147,7 +147,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
                 }
                 else
                 {
-                    var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.ElementType));
+                    var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.LayoutElementType));
                     if (typeSection.Exists())
                     {
                         var type = typeSection.Get<PanelLayoutElementType>();

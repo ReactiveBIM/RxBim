@@ -191,10 +191,10 @@
                     case PullDownButton pullDownButton:
                         CreatePullDownButton(panel, pullDownButton);
                         break;
-                    case PanelLayoutElement separator when separator.ElementType == PanelLayoutElementType.Separator:
+                    case PanelLayoutElement separator when separator.LayoutElementType == PanelLayoutElementType.Separator:
                         AddSeparator(panel);
                         break;
-                    case PanelLayoutElement separator when separator.ElementType == PanelLayoutElementType.SlideOut:
+                    case PanelLayoutElement separator when separator.LayoutElementType == PanelLayoutElementType.SlideOut:
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:

@@ -10,6 +10,6 @@
         /// <summary>
         /// Layout element type
         /// </summary>
-        public PanelLayoutElementType ElementType { get; set; }
+        public PanelLayoutElementType LayoutElementType { get; set; }
     }
 }

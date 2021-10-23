@@ -60,6 +60,6 @@
         /// <summary>
         /// Returns tab builder object
         /// </summary>
-        ITabBuilder ToTabBuilder();
+        ITabBuilder ReturnToTab();
     }
 }

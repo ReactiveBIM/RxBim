@@ -30,7 +30,7 @@
         public Tab BuildingTab { get; } = new ();
 
         /// <inheritdoc />
-        public IRibbonBuilder ToRibbonBuilder()
+        public IRibbonBuilder ReturnToRibbon()
         {
             return _ribbonBuilder;
         }
