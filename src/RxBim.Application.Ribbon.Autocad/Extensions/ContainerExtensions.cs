@@ -19,15 +19,15 @@
         /// </summary>
         /// <param name="container">DI container</param>
         /// <param name="action">Menu building action</param>
-        /// <param name="assembly">Menu assembly</param>
+        /// <param name="menuAssembly">Menu assembly</param>
         public static void AddAutocadMenu(
             this IContainer container,
             Action<IRibbonBuilder> action,
-            Assembly? assembly = null)
+            Assembly? menuAssembly = null)
         {
-            assembly ??= Assembly.GetCallingAssembly();
+            menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(action, assembly);
+            container.AddMenu<AutocadRibbonMenuBuilderFactory>(action, menuAssembly);
         }
 
         /// <summary>
@@ -35,15 +35,15 @@
         /// </summary>
         /// <param name="container">DI container</param>
         /// <param name="cfg">Configuration</param>
-        /// <param name="assembly">Menu assembly</param>
+        /// <param name="menuAssembly">Menu assembly</param>
         public static void AddAutocadMenu(
             this IContainer container,
             IConfiguration? cfg = null,
-            Assembly? assembly = null)
+            Assembly? menuAssembly = null)
         {
-            assembly ??= Assembly.GetCallingAssembly();
+            menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(cfg, assembly);
+            container.AddMenu<AutocadRibbonMenuBuilderFactory>(cfg, menuAssembly);
         }
 
         private static void AddInternalObjects(this IContainer container)
