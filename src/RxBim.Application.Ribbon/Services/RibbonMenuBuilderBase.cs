@@ -98,23 +98,24 @@
         /// <summary>
         /// Creates about button
         /// </summary>
+        /// <param name="tab">Ribbon tab</param>
         /// <param name="panel">Panel</param>
-        /// <param name="aboutButton">About button configuration</param>
-        protected abstract void CreateAboutButton(TPanel panel, AboutButton aboutButton);
+        /// <param name="aboutButtonConfig">About button configuration</param>
+        protected abstract void CreateAboutButton(TTab tab, TPanel panel, AboutButton aboutButtonConfig);
 
         /// <summary>
         /// Creates command button
         /// </summary>
         /// <param name="panel">Panel</param>
-        /// <param name="cmdButton">Command button configuration</param>
-        protected abstract void CreateCommandButton(TPanel panel, CommandButton cmdButton);
+        /// <param name="cmdButtonConfig">Command button configuration</param>
+        protected abstract void CreateCommandButton(TPanel panel, CommandButton cmdButtonConfig);
 
         /// <summary>
         /// Creates pull-down button
         /// </summary>
         /// <param name="panel">Panel</param>
-        /// <param name="pullDownButton">Pull-down button configuration</param>
-        protected abstract void CreatePullDownButton(TPanel panel, PullDownButton pullDownButton);
+        /// <param name="pullDownButtonConfig">Pull-down button configuration</param>
+        protected abstract void CreatePullDownButton(TPanel panel, PullDownButton pullDownButtonConfig);
 
         /// <summary>
         /// Creates and adds separator
@@ -183,7 +184,7 @@
                 switch (elementConfig)
                 {
                     case AboutButton aboutButton:
-                        CreateAboutButton(panel, aboutButton);
+                        CreateAboutButton(tab, panel, aboutButton);
                         break;
                     case CommandButton cmdButton:
                         CreateCommandButton(panel, cmdButton);

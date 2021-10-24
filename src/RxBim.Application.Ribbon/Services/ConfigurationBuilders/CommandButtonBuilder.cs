@@ -40,12 +40,5 @@
 
             return this;
         }
-
-        /// <inheritdoc />
-        public ICommandButtonBuilder SetHelpUrl(string url)
-        {
-            BuildingButton.HelpUrl = url;
-            return this;
-        }
     }
 }

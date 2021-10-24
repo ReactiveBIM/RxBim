@@ -46,5 +46,10 @@
         /// Button tooltip
         /// </summary>
         public string? ToolTip { get; set; }
+
+        /// <summary>
+        /// Help url for button
+        /// </summary>
+        public string? HelpUrl { get; set; }
     }
 }

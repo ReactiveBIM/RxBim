@@ -9,10 +9,5 @@
         /// Command class type <see cref="System.Type.FullName"/>
         /// </summary>
         public string? CommandType { get; set; }
-
-        /// <summary>
-        /// Help url for command
-        /// </summary>
-        public string? HelpUrl { get; set; }
     }
 }

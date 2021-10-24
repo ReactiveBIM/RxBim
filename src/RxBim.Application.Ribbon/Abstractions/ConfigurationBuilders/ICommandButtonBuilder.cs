@@ -15,11 +15,5 @@
         /// Examples: "v" -> "v1.0.0", "Ver." -> "Ver.1.0.0", "Version: " -> "Version: 1.0.0"
         /// </param>
         ICommandButtonBuilder SetToolTip(string toolTip, bool addVersion = true, string versionHeader = "");
-
-        /// <summary>
-        /// Sets the help URL for the button command
-        /// </summary>
-        /// <param name="url">URL address</param>
-        ICommandButtonBuilder SetHelpUrl(string url);
     }
 }

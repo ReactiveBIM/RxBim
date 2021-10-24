@@ -20,19 +20,6 @@
         }
 
         /// <summary>
-        /// Returns current row for panel
-        /// </summary>
-        /// <param name="panel">Panel</param>
-        /// <exception cref="InvalidOperationException">If there is no current row panel</exception>
-        public static RibbonRowPanel GetCurrentRow(this RibbonPanel panel)
-        {
-            var currentRow = panel.GetCurrentRowOrNull();
-            if (currentRow is null)
-                throw new InvalidOperationException("Can't find the current panel row!");
-            return currentRow;
-        }
-
-        /// <summary>
         /// Adds ribbon item to the panel
         /// </summary>
         /// <param name="panel">Panel</param>
@@ -59,6 +46,19 @@
         public static void AddNewRow(this RibbonPanel acRibbonPanel)
         {
             acRibbonPanel.Source.Items.Add(new RibbonRowPanel());
+        }
+
+        /// <summary>
+        /// Returns current row for panel
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        /// <exception cref="InvalidOperationException">If there is no current row panel</exception>
+        private static RibbonRowPanel GetCurrentRow(this RibbonPanel panel)
+        {
+            var currentRow = panel.GetCurrentRowOrNull();
+            if (currentRow is null)
+                throw new InvalidOperationException("Can't find the current panel row!");
+            return currentRow;
         }
     }
 }

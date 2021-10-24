@@ -78,5 +78,12 @@
             BuildingButton.Text = text;
             return this;
         }
+
+        /// <inheritdoc />
+        public IButtonBuilder SetHelpUrl(string url)
+        {
+            BuildingButton.HelpUrl = url;
+            return this;
+        }
     }
 }

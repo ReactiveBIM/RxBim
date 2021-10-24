@@ -38,5 +38,11 @@
         /// </summary>
         /// <param name="text">Button label text</param>
         IButtonBuilder SetText(string text);
+
+        /// <summary>
+        /// Sets the help URL for the button
+        /// </summary>
+        /// <param name="url">URL address</param>
+        IButtonBuilder SetHelpUrl(string url);
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Windows.Controls;
     using Autodesk.Windows;
-    using Models.Configurations;
     using Ribbon.Abstractions.ConfigurationBuilders;
     using Button = Models.Configurations.Button;
 
@@ -17,7 +16,7 @@
         /// </summary>
         /// <param name="ribbonButton">Ribbon button</param>
         /// <param name="cmdButtonConfig">Command button config</param>
-        public static void SetTooltipForCommandButton(this RibbonButton ribbonButton, CommandButton cmdButtonConfig)
+        public static void SetTooltipForButton(this RibbonButton ribbonButton, Button cmdButtonConfig)
         {
             var hasToolTip = !string.IsNullOrWhiteSpace(cmdButtonConfig.ToolTip);
             var hasHelpUrl = !string.IsNullOrWhiteSpace(cmdButtonConfig.HelpUrl);
@@ -42,24 +41,6 @@
                 toolTip.IsHelpEnabled = false;
             }
 
-            ribbonButton.ToolTip = toolTip;
-        }
-
-        /// <summary>
-        /// Sets tooltip for non-command button
-        /// </summary>
-        /// <param name="ribbonButton">Ribbon button</param>
-        /// <param name="buttonConfig">Button config</param>
-        public static void SetTooltipForNonCommandButton(this RibbonButton ribbonButton, Button buttonConfig)
-        {
-            if (string.IsNullOrWhiteSpace(buttonConfig.ToolTip))
-                return;
-
-            var toolTip = new RibbonToolTip
-            {
-                Content = buttonConfig.ToolTip,
-                IsHelpEnabled = false
-            };
             ribbonButton.ToolTip = toolTip;
         }
 

@@ -97,24 +97,24 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAboutButton(RibbonPanel panel, AboutButton aboutButton)
+        protected override void CreateAboutButton(RibbonTab tab, RibbonPanel panel, AboutButton aboutButtonConfig)
         {
-            var orientation = aboutButton.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButton, RibbonItemSize.Large, orientation));
+            var orientation = aboutButtonConfig.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
-        protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButton)
+        protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButtonConfig)
         {
-            var orientation = cmdButton.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButton, RibbonItemSize.Large, orientation));
+            var orientation = cmdButtonConfig.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
-        protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButton)
+        protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButtonConfig)
         {
-            var orientation = pullDownButton.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButton,
+            var orientation = pullDownButtonConfig.GetSingleLargeButtonOrientation();
+            panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButtonConfig,
                 RibbonItemSize.Large,
                 orientation));
         }
@@ -177,6 +177,7 @@
         {
             var ribbonButton = new T();
             ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
+            ribbonButton.SetTooltipForButton(buttonConfig);
             SetButtonImages(ribbonButton, buttonConfig, GetCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
@@ -208,13 +209,10 @@
             Orientation orientation)
         {
             var button = CreateNewButton<RibbonButton>(aboutButtonConfig, size, orientation);
-            button.SetTooltipForNonCommandButton(aboutButtonConfig);
             button.CommandHandler = new RelayCommand(() =>
                 {
-                    if (TryShowAboutWindow(aboutButtonConfig.Content))
-                        return;
-
-                    Application.ShowAlertDialog(aboutButtonConfig.Content.ToString());
+                    if (!TryShowAboutWindow(aboutButtonConfig.Content))
+                        Application.ShowAlertDialog(aboutButtonConfig.Content.ToString());
                 },
                 true);
             return button;
@@ -226,7 +224,6 @@
             Orientation orientation)
         {
             var button = CreateNewButton<RibbonButton>(buttonConfig, size, orientation);
-            button.SetTooltipForCommandButton(buttonConfig);
             if (!string.IsNullOrWhiteSpace(buttonConfig.CommandType))
             {
                 var commandName = GetCommandName(buttonConfig.CommandType!);
