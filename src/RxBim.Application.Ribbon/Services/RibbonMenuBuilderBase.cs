@@ -159,6 +159,22 @@
             return uri != null ? new BitmapImage(uri) : null;
         }
 
+        /// <summary>
+        /// Returns tooltip content for command button
+        /// </summary>
+        /// <param name="cmdButtonConfig">Command button configuration</param>
+        /// <param name="commandType">Type of command class</param>
+        protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
+        {
+            var toolTip = cmdButtonConfig.ToolTip;
+            if (toolTip is null || !cmdButtonConfig.ToolTipSettings.AddVersion)
+                return toolTip;
+            if (toolTip.Length > 0)
+                toolTip += Environment.NewLine;
+            toolTip += $"{cmdButtonConfig.ToolTipSettings.VersionHeader}{commandType.Assembly.GetName().Version}";
+            return toolTip;
+        }
+
         private void CreateTab(Tab tabConfig)
         {
             if (string.IsNullOrWhiteSpace(tabConfig.Name))
@@ -192,10 +208,12 @@
                     case PullDownButton pullDownButton:
                         CreatePullDownButton(panel, pullDownButton);
                         break;
-                    case PanelLayoutElement separator when separator.LayoutElementType == PanelLayoutElementType.Separator:
+                    case PanelLayoutElement separator
+                        when separator.LayoutElementType == PanelLayoutElementType.Separator:
                         AddSeparator(panel);
                         break;
-                    case PanelLayoutElement separator when separator.LayoutElementType == PanelLayoutElementType.SlideOut:
+                    case PanelLayoutElement separator
+                        when separator.LayoutElementType == PanelLayoutElementType.SlideOut:
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:

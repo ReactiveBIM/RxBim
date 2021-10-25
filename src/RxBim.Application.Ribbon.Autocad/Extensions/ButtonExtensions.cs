@@ -12,28 +12,39 @@
     internal static class ButtonExtensions
     {
         /// <summary>
-        /// Sets tooltip for command button
+        /// Sets tooltip for button
         /// </summary>
         /// <param name="ribbonButton">Ribbon button</param>
-        /// <param name="cmdButtonConfig">Command button config</param>
-        public static void SetTooltipForButton(this RibbonButton ribbonButton, Button cmdButtonConfig)
+        /// <param name="tooltip">Tooltip text</param>
+        /// <param name="helpUrl">Help url string</param>
+        /// <param name="description">Description</param>
+        public static void SetTooltipForButton(
+            this RibbonButton ribbonButton,
+            string? tooltip,
+            string? helpUrl,
+            string? description)
         {
-            var hasToolTip = !string.IsNullOrWhiteSpace(cmdButtonConfig.ToolTip);
-            var hasHelpUrl = !string.IsNullOrWhiteSpace(cmdButtonConfig.HelpUrl);
+            var hasToolTip = !string.IsNullOrWhiteSpace(tooltip);
+            var hasHelpUrl = !string.IsNullOrWhiteSpace(helpUrl);
 
             if (!hasToolTip && !hasHelpUrl)
                 return;
 
             var toolTip = new RibbonToolTip();
 
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                toolTip.ExpandedContent = description;
+            }
+
             if (hasToolTip)
             {
-                toolTip.Content = cmdButtonConfig.ToolTip;
+                toolTip.Content = tooltip;
             }
 
             if (hasHelpUrl)
             {
-                toolTip.HelpTopic = cmdButtonConfig.HelpUrl;
+                toolTip.HelpTopic = helpUrl;
                 toolTip.IsHelpEnabled = true;
             }
             else

@@ -112,6 +112,7 @@
                 pullDownButtonConfig.Name,
                 pullDownButtonConfig.Text ?? pullDownButtonConfig.Name);
             SetButtonProperties(pulldownButtonData, pullDownButtonConfig);
+            SetTooltip(pulldownButtonData, pullDownButtonConfig.ToolTip);
             var pulldownButton = (PulldownButton)panel.AddItem(pulldownButtonData);
 
             foreach (var cmdButtonConfig in pullDownButtonConfig.CommandButtonsList)
@@ -158,14 +159,18 @@
 
         private void SetButtonProperties(ButtonData buttonData, Button buttonConfig)
         {
-            if (buttonConfig.ToolTip != null)
-                buttonData.ToolTip = buttonConfig.ToolTip;
             if (buttonConfig.Description != null)
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
             buttonData.Image = GetIconImage(buttonConfig.SmallImage);
             buttonData.LargeImage = GetIconImage(buttonConfig.LargeImage);
+        }
+
+        private void SetTooltip(RibbonItemData buttonData, string tooltip)
+        {
+            if (tooltip != null)
+                buttonData.ToolTip = tooltip;
         }
 
         private PushButtonData CreateCommandButtonData(CommandButton cmdButtonConfig)
@@ -186,6 +191,7 @@
                     AvailabilityClassName = className
                 };
             SetButtonProperties(pushButtonData, cmdButtonConfig);
+            SetTooltip(pushButtonData, GetTooltipContent(cmdButtonConfig, cmdType));
             return pushButtonData;
         }
 

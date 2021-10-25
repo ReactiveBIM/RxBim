@@ -34,7 +34,7 @@
                 if (!args.Name.Equals(ThemeVariableName, StringComparison.OrdinalIgnoreCase))
                     return;
                 var theme = GetCurrentTheme();
-                _createdButtons.ForEach(x => SetButtonImages(x.Item1, x.Item2, theme));
+                _createdButtons.ForEach(x => SetRibbonItemImages(x.Item1, x.Item2, theme));
             };
         }
 
@@ -175,15 +175,26 @@
             bool forceTextSettings = false)
             where T : RibbonButton, new()
         {
+            var ribbonButton = CreateNewButtonBase<T>(buttonConfig, size, orientation, forceTextSettings);
+            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip, buttonConfig.HelpUrl, buttonConfig.Description);
+            return ribbonButton;
+        }
+
+        private T CreateNewButtonBase<T>(
+            Button buttonConfig,
+            RibbonItemSize size,
+            Orientation orientation,
+            bool forceTextSettings = false)
+            where T : RibbonButton, new()
+        {
             var ribbonButton = new T();
             ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
-            ribbonButton.SetTooltipForButton(buttonConfig);
-            SetButtonImages(ribbonButton, buttonConfig, GetCurrentTheme());
+            SetRibbonItemImages(ribbonButton, buttonConfig, GetCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
         }
 
-        private void SetButtonImages(RibbonButton button, Button buttonConfig, ThemeType themeType)
+        private void SetRibbonItemImages(RibbonItem button, Button buttonConfig, ThemeType themeType)
         {
             if (themeType is ThemeType.Light)
             {
@@ -223,16 +234,23 @@
             RibbonItemSize size,
             Orientation orientation)
         {
-            var button = CreateNewButton<RibbonButton>(buttonConfig, size, orientation);
+            var button = CreateNewButtonBase<RibbonButton>(buttonConfig, size, orientation);
             if (!string.IsNullOrWhiteSpace(buttonConfig.CommandType))
             {
-                var commandName = GetCommandName(buttonConfig.CommandType!);
+                var commandType = GetCommandType(buttonConfig.CommandType!);
+                var tooltip = GetTooltipContent(buttonConfig, commandType);
+                button.SetTooltipForButton(tooltip, buttonConfig.HelpUrl, buttonConfig.Description);
+                var commandName = commandType.GetCommandName();
                 button.CommandHandler = new RelayCommand(() =>
                     {
                         Application.DocumentManager.MdiActiveDocument?
                             .SendStringToExecute($"{commandName} ", false, false, true);
                     },
                     true);
+            }
+            else
+            {
+                button.SetTooltipForButton(buttonConfig.ToolTip, buttonConfig.HelpUrl, buttonConfig.Description);
             }
 
             return button;
@@ -259,36 +277,6 @@
             }
 
             return splitButton;
-        }
-
-        private string GetCommandName(string commandTypeName)
-        {
-            var commandType = GetCommandType(commandTypeName);
-
-            const string cmdNameProperty = "CommandName";
-            var attributes = Attribute.GetCustomAttributes(commandType);
-
-            foreach (var attribute in attributes)
-            {
-                try
-                {
-                    var cmdProperty = attribute.GetType()
-                        .GetProperty(cmdNameProperty,
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-
-                    if (cmdProperty is null)
-                        continue;
-
-                    return cmdProperty.GetValue(attribute).ToString();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw new InvalidOperationException("Failed to retrieve command name!", e);
-                }
-            }
-
-            return commandType.Name;
         }
     }
 }

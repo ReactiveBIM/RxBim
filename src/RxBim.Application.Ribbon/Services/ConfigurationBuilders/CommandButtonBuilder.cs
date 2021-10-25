@@ -9,8 +9,6 @@
     /// </summary>
     public class CommandButtonBuilder : ButtonBuilder<CommandButton>, ICommandButtonBuilder
     {
-        private readonly Type _commandType;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.
         /// </summary>
@@ -19,9 +17,14 @@
         public CommandButtonBuilder(string name, Type commandType)
             : base(name)
         {
-            _commandType = commandType;
+            CommandType = commandType;
             BuildingButton.CommandType = commandType.FullName;
         }
+
+        /// <summary>
+        /// Command class type
+        /// </summary>
+        public Type CommandType { get; }
 
         /// <inheritdoc />
         public ICommandButtonBuilder SetToolTip(
@@ -29,14 +32,9 @@
             bool addVersion = true,
             string versionInfoHeader = "")
         {
-            if (addVersion)
-            {
-                if (toolTip.Length > 0)
-                    toolTip += Environment.NewLine;
-                toolTip += $"{versionInfoHeader}{_commandType.Assembly.GetName().Version}";
-            }
-
             BuildingButton.ToolTip = toolTip;
+            BuildingButton.ToolTipSettings.AddVersion = addVersion;
+            BuildingButton.ToolTipSettings.VersionHeader = versionInfoHeader;
 
             return this;
         }
