@@ -58,12 +58,16 @@
             var existsPanel = _application.GetRibbonPanels(tabName)
                 .FirstOrDefault(x => x.Title.Equals(panelName, StringComparison.OrdinalIgnoreCase));
 
-            return existsPanel ?? _application.CreateRibbonPanel(tabName, panelName);
+            var panel = existsPanel ?? _application.CreateRibbonPanel(tabName, panelName);
+            panel.Title = panelName;
+
+            return panel;
         }
 
         /// <inheritdoc />
         protected override void CreateAboutButton(string tabName, RibbonPanel panel, AboutButton aboutButtonConfig)
         {
+            CheckButtonName(aboutButtonConfig);
             var button = new RibbonButton
             {
                 Name = aboutButtonConfig.Name,
@@ -86,8 +90,10 @@
             };
 
             ComponentManager.Ribbon?
-                .Tabs.FirstOrDefault(x => x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase))?
-                .Panels.FirstOrDefault(x => x.Source.Title.Equals(panel.Name))?
+                .Tabs.FirstOrDefault(x => x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase))
+                ?
+                .Panels.FirstOrDefault(x => x.Source.Title.Equals(panel.Name))
+                ?
                 .Source.Items.Add(button);
         }
 
@@ -101,7 +107,10 @@
         /// <inheritdoc />
         protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButtonConfig)
         {
-            var pulldownButtonData = new PulldownButtonData(pullDownButtonConfig.Name, pullDownButtonConfig.Text);
+            CheckButtonName(pullDownButtonConfig);
+            var pulldownButtonData = new PulldownButtonData(
+                pullDownButtonConfig.Name,
+                pullDownButtonConfig.Text ?? pullDownButtonConfig.Name);
             SetButtonProperties(pulldownButtonData, pullDownButtonConfig);
             var pulldownButton = (PulldownButton)panel.AddItem(pulldownButtonData);
 
@@ -161,18 +170,29 @@
 
         private PushButtonData CreateCommandButtonData(CommandButton cmdButtonConfig)
         {
+            CheckButtonName(cmdButtonConfig);
             if (string.IsNullOrWhiteSpace(cmdButtonConfig.CommandType))
                 throw new ArgumentException($"Command type not found! Button: {cmdButtonConfig.Name}");
-            var cmdType = GetCommandType(cmdButtonConfig.CommandType);
+            var cmdType = GetCommandType(cmdButtonConfig.CommandType!);
             var className = cmdType.FullName;
             var assemblyLocation = cmdType.Assembly.Location;
             var pushButtonData =
-                new PushButtonData(cmdButtonConfig.Name, cmdButtonConfig.Text, assemblyLocation, className)
+                new PushButtonData(
+                    cmdButtonConfig.Name,
+                    cmdButtonConfig.Text ?? cmdButtonConfig.Name,
+                    assemblyLocation,
+                    className)
                 {
                     AvailabilityClassName = className
                 };
             SetButtonProperties(pushButtonData, cmdButtonConfig);
             return pushButtonData;
+        }
+
+        private void CheckButtonName(Button buttonConfig)
+        {
+            if (string.IsNullOrWhiteSpace(buttonConfig.Name))
+                throw new ArgumentException($"Button name not found!");
         }
     }
 }
