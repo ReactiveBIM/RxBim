@@ -3,20 +3,28 @@
     using System;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
+    using Models;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
-    /// <summary>
-    /// Ribbon events service
-    /// </summary>
-    public class RibbonEventService : IRibbonEvents, IDisposable
+    /// <inheritdoc cref="IThemeService" />
+    public class ThemeService : IThemeService, IDisposable
     {
+        private const string ThemeVariableName = "COLORTHEME";
+
         /// <inheritdoc />
-        public event EventHandler? NeedRebuild;
+        public event EventHandler? ThemeChanged;
 
         /// <inheritdoc />
         public void Run()
         {
             Application.SystemVariableChanged += ApplicationOnSystemVariableChanged;
+        }
+
+        /// <inheritdoc />
+        public ThemeType GetCurrentTheme()
+        {
+            var themeTypeValue = (short)Application.GetSystemVariable(ThemeVariableName);
+            return themeTypeValue == 0 ? ThemeType.Dark : ThemeType.Light;
         }
 
         /// <inheritdoc />
@@ -27,17 +35,10 @@
 
         private void ApplicationOnSystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
-            const string wsCurrentVariableName = "WSCURRENT";
-            if (e.Name.Equals(wsCurrentVariableName))
+            if (e.Name.Equals(ThemeVariableName, StringComparison.OrdinalIgnoreCase))
             {
-                Application.Idle += ApplicationOnIdle;
+                ThemeChanged?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        private void ApplicationOnIdle(object sender, EventArgs e)
-        {
-            NeedRebuild?.Invoke(this, EventArgs.Empty);
-            Application.Idle -= ApplicationOnIdle;
         }
     }
 }

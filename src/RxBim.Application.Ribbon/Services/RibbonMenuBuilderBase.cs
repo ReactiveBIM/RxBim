@@ -38,7 +38,7 @@
         private Ribbon? RibbonConfiguration { get; set; }
 
         /// <inheritdoc />
-        public void BuildRibbonMenu(Ribbon? ribbonConfig, IAboutShowService? aboutShowService)
+        public void BuildRibbonMenu(Ribbon? ribbonConfig = null, IAboutShowService? aboutShowService = null)
         {
             RibbonConfiguration ??= ribbonConfig;
             AboutShowService ??= aboutShowService;

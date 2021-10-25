@@ -22,20 +22,23 @@
     /// </summary>
     public class AutocadRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
-        private const string ThemeVariableName = "COLORTHEME";
+        private readonly Func<ThemeType> _getCurrentTheme;
         private readonly List<(RibbonButton, Button)> _createdButtons = new ();
 
         /// <inheritdoc />
-        public AutocadRibbonMenuBuilder(Assembly menuAssembly)
+        public AutocadRibbonMenuBuilder(Func<ThemeType> getCurrentTheme, Assembly menuAssembly)
             : base(menuAssembly)
         {
-            Application.SystemVariableChanged += (_, args) =>
-            {
-                if (!args.Name.Equals(ThemeVariableName, StringComparison.OrdinalIgnoreCase))
-                    return;
-                var theme = GetCurrentTheme();
-                _createdButtons.ForEach(x => SetRibbonItemImages(x.Item1, x.Item2, theme));
-            };
+            _getCurrentTheme = getCurrentTheme;
+        }
+
+        /// <summary>
+        /// Apply current theme for all menu buttons
+        /// </summary>
+        public void ApplyCurrentTheme()
+        {
+            var theme = _getCurrentTheme();
+            _createdButtons.ForEach(x => SetRibbonItemImages(x.Item1, x.Item2, theme));
         }
 
         /// <inheritdoc />
@@ -189,7 +192,7 @@
         {
             var ribbonButton = new T();
             ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
-            SetRibbonItemImages(ribbonButton, buttonConfig, GetCurrentTheme());
+            SetRibbonItemImages(ribbonButton, buttonConfig, _getCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
         }
@@ -206,12 +209,6 @@
                 button.Image = GetIconImage(buttonConfig.SmallImage);
                 button.LargeImage = GetIconImage(buttonConfig.LargeImage);
             }
-        }
-
-        private ThemeType GetCurrentTheme()
-        {
-            var themeTypeValue = (short)Application.GetSystemVariable(ThemeVariableName);
-            return themeTypeValue == 0 ? ThemeType.Dark : ThemeType.Light;
         }
 
         private RibbonButton CreateAboutButtonInternal(

@@ -3,17 +3,17 @@
     using System;
 
     /// <summary>
-    /// События ленты
+    /// Ribbon service
     /// </summary>
-    public interface IRibbonEvents
+    public interface IRibbonService
     {
         /// <summary>
-        /// Лента была перестроена
+        /// Ribbon need to rebuild
         /// </summary>
         event EventHandler NeedRebuild;
 
         /// <summary>
-        /// Запуск сервиса
+        /// Runs the service
         /// </summary>
         void Run();
     }

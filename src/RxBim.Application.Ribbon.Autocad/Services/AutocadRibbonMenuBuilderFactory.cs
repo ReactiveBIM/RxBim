@@ -10,27 +10,37 @@
     public class AutocadRibbonMenuBuilderFactory : IRibbonMenuBuilderFactory
     {
         private readonly IOnlineHelpService _onlineHelpService;
-        private readonly IRibbonEvents _ribbonEvents;
+        private readonly IRibbonService _ribbonService;
+        private readonly IThemeService _themeService;
+        private AutocadRibbonMenuBuilder? _builder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadRibbonMenuBuilderFactory"/> class.
         /// </summary>
         /// <param name="onlineHelpService">Online help service</param>
-        /// <param name="ribbonEvents">Ribbon events service</param>
-        public AutocadRibbonMenuBuilderFactory(IOnlineHelpService onlineHelpService, IRibbonEvents ribbonEvents)
+        /// <param name="ribbonService">Ribbon service</param>
+        /// <param name="themeService">Theme service</param>
+        public AutocadRibbonMenuBuilderFactory(IOnlineHelpService onlineHelpService, IRibbonService ribbonService, IThemeService themeService)
         {
             _onlineHelpService = onlineHelpService;
-            _ribbonEvents = ribbonEvents;
+            _ribbonService = ribbonService;
+            _themeService = themeService;
         }
 
         /// <inheritdoc />
         public IRibbonMenuBuilder CreateMenuBuilder(Assembly menuAssembly)
         {
-            _onlineHelpService.Run();
-            _ribbonEvents.Run();
-            var builder = new AutocadRibbonMenuBuilder(menuAssembly);
-            _ribbonEvents.NeedRebuild += (_, _) => builder.BuildRibbonMenu(null, null);
-            return builder;
+            if (_builder is null)
+            {
+                _onlineHelpService.Run();
+                _ribbonService.Run();
+                _themeService.Run();
+                _builder = new AutocadRibbonMenuBuilder(_themeService.GetCurrentTheme, menuAssembly);
+                _ribbonService.NeedRebuild += (_, _) => _builder.BuildRibbonMenu();
+                _themeService.ThemeChanged += (_, _) => _builder.ApplyCurrentTheme();
+            }
+
+            return _builder;
         }
     }
 }
