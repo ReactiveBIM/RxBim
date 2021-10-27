@@ -5,7 +5,7 @@
     /// <summary>
     /// Ribbon service
     /// </summary>
-    public interface IRibbonService
+    public interface IRibbonEventsService
     {
         /// <summary>
         /// Ribbon need to rebuild
