@@ -74,7 +74,7 @@
                             .SetText("Command\n#3"))
                     .AddSeparator()
                     .AddPullDownButton(
-                        "Pulldown",
+                        "Pulldown1",
                         pulldown => pulldown
                             .AddCommandButton(
                                 "Command #1",
@@ -87,7 +87,10 @@
                             .AddCommandButton(
                                 "Command #3",
                                 typeof(Cmd3),
-                                button => SetupCommand3Button(button).SetText("Command\n#3")))
+                                button => SetupCommand3Button(button).SetText("Command\n#3"))
+                            .SetLargeImage(@"img\command_32.png", ThemeType.Dark)
+                            .SetLargeImage(@"img\command_32_light.png", ThemeType.Light)
+                            .SetText("Pulldown #1"))
                     .AddSlideOut()
                     .AddCommandButton(
                         "Command1_Large_SlideOut",
@@ -129,7 +132,7 @@
                     .AddSeparator()
                     .AddStackedItems(items => items
                         .AddPullDownButton(
-                            "Pulldown",
+                            "Pulldown2",
                             pulldown => pulldown
                                 .AddCommandButton(
                                     "Command #1",
@@ -142,7 +145,9 @@
                                 .AddCommandButton(
                                     "Command #3",
                                     typeof(Cmd3),
-                                    button => SetupCommand3Button(button)))
+                                    button => SetupCommand3Button(button))
+                                .SetSmallImage(@"img\command_16.png", ThemeType.Dark)
+                                .SetSmallImage(@"img\command_16_light.png", ThemeType.Light))
                         .AddCommandButton(
                             "Command1_Small",
                             typeof(Cmd1),

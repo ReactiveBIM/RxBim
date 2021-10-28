@@ -267,6 +267,8 @@
             splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
             splitButton.ListImageSize =
                 size == RibbonItemSize.Standard ? RibbonImageSize.Standard : RibbonImageSize.Large;
+            splitButton.IsSplit = false;
+            splitButton.IsSynchronizedWithCurrentItem = false;
 
             foreach (var commandButtonConfig in pullDownButtonConfig.CommandButtonsList)
             {
