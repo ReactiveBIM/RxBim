@@ -10,7 +10,7 @@ namespace RxBim.Analyzers.Tests
     using RxBim.Analyzers;
 
     [TestClass]
-    public class UnitTest : CodeFixVerifier
+    public class RxBimAnalyzersUnitTest : CodeFixVerifier
     {
         [TestMethod]
         public void CommandTest()

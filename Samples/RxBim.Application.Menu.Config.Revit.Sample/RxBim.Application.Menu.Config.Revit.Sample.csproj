@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <None Update="img\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>    
+    <None Update="appsettings.RxBim.Application.Menu.Config.Revit.Sample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>   
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
+    <ProjectReference Include="..\..\src\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
+    <ProjectReference Include="..\..\src\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
+    <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageGuid>ea6e2830-9a99-4f41-8a0b-d0fb3903a97a</PackageGuid>
+    <UpgradeCode>53aa8346-f79f-4e9a-9fe0-48c44eeae1c4</UpgradeCode>
+  </PropertyGroup>
+</Project>

@@ -3,16 +3,12 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(MSBuildProjectName.EndsWith(`Tests`))' == 'True'">
-        <IsPackable>False</IsPackable>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(IsPackable)' != 'False'">
+    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(MSBuldProjectName.EndsWith(`Tests`))'">
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(IsPackable)' != 'False'">
+    <ItemGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

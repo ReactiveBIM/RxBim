@@ -12,8 +12,6 @@
       <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
       <PackageReference Include="Scrutor" Version="3.3.0" />
     </ItemGroup>
-
-
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>RxBim DI Library</Description>
