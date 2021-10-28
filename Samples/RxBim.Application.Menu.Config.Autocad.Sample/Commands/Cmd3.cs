@@ -4,14 +4,12 @@
     using Command.Autocad;
     using Shared;
 
-    /// <summary>
-    /// Команда
-    /// </summary>
+    /// <inheritdoc />
     [RxBimCommandClass("HelloCmd3Example")]
     public class Cmd3 : RxBimCommand
     {
         /// <summary>
-        /// Метод запуска команды
+        /// Command execution
         /// </summary>
         public PluginResult ExecuteCommand()
         {

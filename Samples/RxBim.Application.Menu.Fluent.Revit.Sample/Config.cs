@@ -17,8 +17,8 @@
                     "About",
                     new AboutBoxContent(
                         "RxBim4Revit",
-                        "2.0",
-                        "RxBim-Example - RxBim product module for API demo and validation",
+                        "1.0",
+                        "RxBim product module for API demo and validation",
                         GetType().Assembly.GetName().Version,
                         "ReactiveBIM",
                         new Dictionary<string, string>
@@ -60,6 +60,7 @@
                         .SetSmallImage(@"img\num3_16.png")
                         .SetLargeImage(@"img\num3_32.png")
                         .SetHelpUrl("https://www.autodesk.com/"))
+                .AddSeparator()
                 .AddPullDownButton(
                     "Pulldown",
                     pulldown => pulldown
@@ -96,25 +97,25 @@
                     "Command1_SlideOut",
                     typeof(Cmd1),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #6. Push me!")
-                        .SetText("Command #6")
-                        .SetDescription("Description: This is command #6")
+                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                        .SetText("Command #1")
+                        .SetDescription("Description: This is command #1")
                         .SetLargeImage(@"img\num1_32.png"))
                 .AddCommandButton(
                     "Command2_SlideOut",
                     typeof(Cmd2),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #7. Push me!")
-                        .SetText("Command #7")
-                        .SetDescription("Description: This is command #7")
+                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                        .SetText("Command #2")
+                        .SetDescription("Description: This is command #2")
                         .SetLargeImage(@"img\num2_32.png"))
                 .AddCommandButton(
                     "Command3_SlideOut",
                     typeof(Cmd3),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #8. Push me!")
-                        .SetText("Command #8")
-                        .SetDescription("Description: This is command #8")
+                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                        .SetText("Command #3")
+                        .SetDescription("Description: This is command #3")
                         .SetLargeImage(@"img\num3_32.png"))
                 .ReturnToTab()
                 .AddPanel("RxBim_Panel_2")

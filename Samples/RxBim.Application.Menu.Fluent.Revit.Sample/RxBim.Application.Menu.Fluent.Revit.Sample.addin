@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
     <AddIn Type="Application">
-        <Name>RxBim.Application.Menu.Fluent.Revit.Example</Name>
+        <Name>RxBim.Application.Menu.Fluent.Revit.Sample</Name>
         <Assembly>RxBim.Application.Menu.Fluent.Revit.Sample\RxBim.Application.Menu.Fluent.Revit.Sample.dll</Assembly>
-        <AddInId>2fb3d191-9da3-564f-b8ba-1628a5c2841e</AddInId>
-        <FullClassName>RxBim.Application.Menu.Fluent.Revit.Example.App</FullClassName>
+        <AddInId>e7bcce84-d64a-46db-9237-3bcc21cd3cd4</AddInId>
+        <FullClassName>RxBim.Application.Menu.Fluent.Revit.Sample.App</FullClassName>
         <VendorId>ReactiveBIM</VendorId>
         <VendorDescription>RxBim</VendorDescription>
     </AddIn>

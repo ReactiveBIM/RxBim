@@ -72,21 +72,22 @@
                             .SetLargeImage(@"img\num3_32_light.png", ThemeType.Light)
                             .SetHelpUrl("https://www.autodesk.com/")
                             .SetText("Command\n#3"))
+                    .AddSeparator()
                     .AddPullDownButton(
                         "Pulldown",
                         pulldown => pulldown
                             .AddCommandButton(
                                 "Command #1",
                                 typeof(Cmd1),
-                                button => SetupCommand1Button(button).SetText("Command #1"))
+                                button => SetupCommand1Button(button).SetText("Command\n#1"))
                             .AddCommandButton(
                                 "Command #2",
                                 typeof(Cmd2),
-                                button => SetupCommand2Button(button).SetText("Command #2"))
+                                button => SetupCommand2Button(button).SetText("Command\n#2"))
                             .AddCommandButton(
                                 "Command #3",
                                 typeof(Cmd3),
-                                button => SetupCommand3Button(button).SetText("Command #3")))
+                                button => SetupCommand3Button(button).SetText("Command\n#3")))
                     .AddSlideOut()
                     .AddCommandButton(
                         "Command1_Large_SlideOut",
@@ -115,6 +116,7 @@
                             "Command3_Small_WithText",
                             typeof(Cmd3),
                             button => SetupCommand3Button(button).SetText("Command #3")))
+                    .AddSeparator()
                     .AddStackedItems(items => items
                         .AddCommandButton(
                             "Command1_Large_WithText",

@@ -9,7 +9,6 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            AssemblyResolveService.AddAssemblies("Newtonsoft.Json");
             container.AddAutocadMenu();
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Menu.Config.Revit.Sample
+﻿namespace RxBim.Application.Menu.Config.Revit.Sample.Commands
 {
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
@@ -8,14 +8,14 @@
     /// <inheritdoc />
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public class Cmd3 : RxBimCommand
+    public class Cmd1 : RxBimCommand
     {
         /// <summary>
         /// cmd
         /// </summary>
         public PluginResult ExecuteCommand()
         {
-            TaskDialog.Show(nameof(Cmd3), "Command executed");
+            TaskDialog.Show(nameof(Cmd1), "Command executed");
             return PluginResult.Succeeded;
         }
     }

@@ -4,13 +4,11 @@
     using Autodesk.Revit.UI;
     using Shared;
 
-    /// <summary>
-    /// app
-    /// </summary>
+    /// <inheritdoc />
     public class App : RxBimApplication
     {
         /// <summary>
-        /// start
+        /// Start application
         /// </summary>
         public PluginResult Start()
         {
@@ -19,7 +17,7 @@
         }
 
         /// <summary>
-        /// shutdown
+        /// Shutdown application
         /// </summary>
         public PluginResult Shutdown()
         {

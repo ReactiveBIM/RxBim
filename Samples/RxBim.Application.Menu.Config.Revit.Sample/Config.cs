@@ -4,7 +4,7 @@
     using Ribbon.Revit.Extensions;
 
     /// <inheritdoc />
-    public class MyConfig : IApplicationConfiguration
+    public class Config : IApplicationConfiguration
     {
         /// <inheritdoc />
         public void Configure(IContainer container)

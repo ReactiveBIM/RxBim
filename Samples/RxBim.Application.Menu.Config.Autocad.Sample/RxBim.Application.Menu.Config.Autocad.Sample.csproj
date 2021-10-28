@@ -15,8 +15,4 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>        
     </ItemGroup>
-    <PropertyGroup>
-        <PackageGuid>ea978527-80a7-4e62-b940-64033fc1b5fa</PackageGuid>
-        <UpgradeCode>46c5e291-635e-451e-9d42-955e3e31d57d</UpgradeCode>       
-    </PropertyGroup>
 </Project>

@@ -10,7 +10,7 @@
     public class App : RxBimApplication
     {
         /// <summary>
-        /// start
+        /// Start application
         /// </summary>
         public PluginResult Start()
         {
@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// shutdown
+        /// Shutdown application
         /// </summary>
         public PluginResult Shutdown()
         {
