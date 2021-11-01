@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Bimlab.Nuke.Components;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
@@ -17,60 +18,53 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
-    OnPullRequestBranches = new[] { DevelopBranch },
-    InvokedTargets = new[] { nameof(Test), nameof(Compile) },
-    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
+    OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
+    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
+    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { MasterBranch },
-    InvokedTargets = new[] { nameof(Publish) },
-    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
+    OnPushBranches = new[] { MasterBranch, "release/**" },
+    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
+    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [SpaceAutomation(
     name: "CI",
     image: "mcr.microsoft.com/dotnet/sdk:3.1",
     OnPushBranchIncludes = new[] { DevelopBranch },
     OnPush = true,
     InvokedTargets = new[] { nameof(Test) })]
-partial class Build : NukeBuild
+partial class Build : NukeBuild,
+    IPublish
 {
+    const string MasterBranch = "master";
+    const string DevelopBranch = "develop";
+
     public Build()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        _packageInfoProvider = new PackageInfoProvider(() => Solution);
     }
 
-    public static int Main() => Execute<Build>(x => x.List);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().List);
 
     Target Clean => _ => _
         .Executes(() =>
         {
-            GlobDirectories(Solution.Directory, "**/bin", "**/obj")
+            GlobDirectories(From<IHazSolution>().Solution.Directory, "**/bin", "**/obj")
                 .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
-
-    Target Restore => _ => _
-        .DependsOn(Clean)
-        .Executes(() =>
-        {
-            DotNetRestore(s => s
-                .SetProjectFile(Solution.Path));
-        });
-
-    Target Compile => _ => _
-        .DependsOn(Restore)
-        .Executes(() =>
-        {
-            DotNetBuild(settings => settings
-                .SetProjectFile(Solution.Path)
-                .SetConfiguration(Configuration));
-        });
+    
 
     public Target Test => _ => _
+        .Before(Clean)
+        .Before<ICompile>()
         .Executes(() =>
         {
             DotNetTest(settings => settings
-                .SetProjectFile(Solution.Path)
-                .SetConfiguration(Configuration));
+                .SetProjectFile(From<IHazSolution>().Solution.Path)
+                .SetConfiguration(From<IHazConfiguration>().Configuration));
         });
+    
+    private T From<T>()
+        where T : INukeBuild
+        => (T)(object)this;
 }
