@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BimLab.Nuke" Version="2021.2.1" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.7.2" />
+    <PackageReference Include="BimLab.Nuke" Version="2021.3.0" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.8.0" />
     <PackageReference Include="NuGet.CommandLine" Version="5.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
