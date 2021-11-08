@@ -9,10 +9,5 @@
         /// Command class type <see cref="System.Type.FullName"/>
         /// </summary>
         public string? CommandType { get; set; }
-
-        /// <summary>
-        /// Tooltip settings
-        /// </summary>
-        public CommandButtonToolTipSettings ToolTipSettings { get; set; } = new ();
     }
 }

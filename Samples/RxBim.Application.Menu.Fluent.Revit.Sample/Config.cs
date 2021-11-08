@@ -12,6 +12,8 @@
         public void Configure(IContainer container)
         {
             container.AddRevitMenu(ribbon => ribbon
+                .SetAddVersionToCommandTooltip(true)
+                .SetCommandTooltipVersionHeader("Version: ")
                 .AddTab("RxBim_Tab_FromAction")
                 .AddAboutButton(
                     "About",
@@ -35,7 +37,7 @@
                     "Command1_Large_WithText",
                     typeof(Cmd1),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #1. Push me!")
                         .SetText("Command\n#1")
                         .SetDescription("Description: This is command #1")
                         .SetLargeImage(@"img\num1_32.png")
@@ -44,7 +46,7 @@
                     "Command2_Large_WithText",
                     typeof(Cmd2),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #2. Push me!")
                         .SetText("Command\n#2")
                         .SetDescription("Description: This is command #2")
                         .SetSmallImage(@"img\num2_16.png")
@@ -54,7 +56,7 @@
                     "Command3_Large_WithText",
                     typeof(Cmd3),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #3. Push me!")
                         .SetText("Command\n#3")
                         .SetDescription("Description: This is command #3")
                         .SetSmallImage(@"img\num3_16.png")
@@ -68,7 +70,7 @@
                             "Command1_Pulldown1",
                             typeof(Cmd1),
                             button => button
-                                .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                                .SetToolTip("Tooltip: I'm run command #1. Push me!")
                                 .SetText("Command\n#1")
                                 .SetDescription("Description: This is command #1")
                                 .SetLargeImage(@"img\num1_32.png")
@@ -77,7 +79,7 @@
                             "Command2_Pulldown1",
                             typeof(Cmd2),
                             button => button
-                                .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                                .SetToolTip("Tooltip: I'm run command #2. Push me!")
                                 .SetText("Command\n#2")
                                 .SetDescription("Description: This is command #2")
                                 .SetLargeImage(@"img\num2_32.png")
@@ -86,7 +88,7 @@
                             "Command3_Pulldown1",
                             typeof(Cmd3),
                             button => button
-                                .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                                .SetToolTip("Tooltip: I'm run command #3. Push me!")
                                 .SetText("Command\n#3")
                                 .SetDescription("Description: This is command #3")
                                 .SetLargeImage(@"img\num3_32.png")
@@ -98,7 +100,7 @@
                     "Command1_SlideOut",
                     typeof(Cmd1),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #1. Push me!")
                         .SetText("Command\n#1")
                         .SetDescription("Description: This is command #1")
                         .SetLargeImage(@"img\num1_32.png"))
@@ -106,7 +108,7 @@
                     "Command2_SlideOut",
                     typeof(Cmd2),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #2. Push me!")
                         .SetText("Command\n#2")
                         .SetDescription("Description: This is command #2")
                         .SetLargeImage(@"img\num2_32.png"))
@@ -114,7 +116,7 @@
                     "Command3_SlideOut",
                     typeof(Cmd3),
                     button => button
-                        .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                        .SetToolTip("Tooltip: I'm run command #3. Push me!")
                         .SetText("Command\n#3")
                         .SetDescription("Description: This is command #3")
                         .SetLargeImage(@"img\num3_32.png"))
@@ -125,7 +127,7 @@
                         "Command1_Stacked1",
                         typeof(Cmd1),
                         button => button
-                            .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                            .SetToolTip("Tooltip: I'm run command #1. Push me!")
                             .SetText("Command #1")
                             .SetDescription("Description: This is command #1")
                             .SetSmallImage(@"img\num1_16.png")
@@ -134,7 +136,7 @@
                         "Command2_Stacked1",
                         typeof(Cmd2),
                         button => button
-                            .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                            .SetToolTip("Tooltip: I'm run command #2. Push me!")
                             .SetText("Command #2")
                             .SetDescription("Description: This is command #2")
                             .SetSmallImage(@"img\num2_16.png")
@@ -143,7 +145,7 @@
                         "Command3_Stacked1",
                         typeof(Cmd3),
                         button => button
-                            .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                            .SetToolTip("Tooltip: I'm run command #3. Push me!")
                             .SetText("Command #3")
                             .SetDescription("Description: This is command #3")
                             .SetSmallImage(@"img\num3_16.png")
@@ -157,7 +159,7 @@
                                 "Command1_Pulldown2",
                                 typeof(Cmd1),
                                 button => button
-                                    .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                                    .SetToolTip("Tooltip: I'm run command #1. Push me!")
                                     .SetText("Command\n#1")
                                     .SetDescription("Description: This is command #1")
                                     .SetLargeImage(@"img\num1_32.png")
@@ -166,7 +168,7 @@
                                 "Command2_Pulldown2",
                                 typeof(Cmd2),
                                 button => button
-                                    .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                                    .SetToolTip("Tooltip: I'm run command #2. Push me!")
                                     .SetText("Command\n#2")
                                     .SetDescription("Description: This is command #2")
                                     .SetLargeImage(@"img\num2_32.png")
@@ -175,7 +177,7 @@
                                 "Command3_Pulldown2",
                                 typeof(Cmd3),
                                 button => button
-                                    .SetToolTipWithGlobalSettings("Tooltip: I'm run command #3. Push me!")
+                                    .SetToolTip("Tooltip: I'm run command #3. Push me!")
                                     .SetText("Command\n#3")
                                     .SetDescription("Description: This is command #3")
                                     .SetLargeImage(@"img\num3_32.png")
@@ -186,7 +188,7 @@
                         "Command1_Stacked2",
                         typeof(Cmd1),
                         button => button
-                            .SetToolTipWithGlobalSettings("Tooltip: I'm run command #1. Push me!")
+                            .SetToolTip("Tooltip: I'm run command #1. Push me!")
                             .SetText("Command #1")
                             .SetDescription("Description: This is command #1")
                             .SetSmallImage(@"img\num1_16.png")
@@ -195,7 +197,7 @@
                         "Command2_Stacked2",
                         typeof(Cmd2),
                         button => button
-                            .SetToolTipWithGlobalSettings("Tooltip: I'm run command #2. Push me!")
+                            .SetToolTip("Tooltip: I'm run command #2. Push me!")
                             .SetText("Command #2")
                             .SetDescription("Description: This is command #2")
                             .SetSmallImage(@"img\num2_16.png")

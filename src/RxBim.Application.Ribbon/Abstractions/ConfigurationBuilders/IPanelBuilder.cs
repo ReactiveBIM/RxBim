@@ -19,7 +19,7 @@
         IPanelBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<ICommandButtonBuilder>? action = null);
+            Action<IButtonBuilder>? action = null);
 
         /// <summary>
         /// Create new Stacked items at the panel

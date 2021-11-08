@@ -4,7 +4,7 @@
     using System.Windows.Controls;
     using Autodesk.Windows;
     using Ribbon.Abstractions.ConfigurationBuilders;
-    using Button = RxBim.Application.Ribbon.Models.Configurations.Button;
+    using Button = Models.Configurations.Button;
 
     /// <summary>
     /// Extensions for <see cref="IButtonBuilder"/>
@@ -30,7 +30,8 @@
             if (!hasToolTip && !hasHelpUrl)
                 return;
 
-            var toolTip = new RibbonToolTip();
+            var toolTip = new RibbonToolTip
+                { Title = string.IsNullOrWhiteSpace(ribbonButton.Text) ? ribbonButton.Name : ribbonButton.Text };
 
             if (!string.IsNullOrWhiteSpace(description))
             {

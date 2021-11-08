@@ -19,7 +19,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPulldownButtonBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<ICommandButtonBuilder>? action = null)
+            Action<IButtonBuilder>? action = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             action?.Invoke(buttonBuilder);

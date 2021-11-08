@@ -16,6 +16,8 @@
         {
             container.AddAutocadMenu(ribbon =>
                 ribbon
+                    .SetAddVersionToCommandTooltip(true)
+                    .SetCommandTooltipVersionHeader("Version: ")
                     .AddTab("RxBim_Tab_FromAction")
                     .AddAboutButton(
                         "About",
@@ -40,7 +42,7 @@
                         "Command1_Large_WithText",
                         typeof(Cmd1),
                         button => button
-                            .SetToolTip("Tooltip: I'm run command #1. Push me!", true, "Version: ")
+                            .SetToolTip("Tooltip: I'm run command #1. Push me!")
                             .SetDescription("Description: This is command #1")
                             .SetSmallImage(@"img\num1_16.png", ThemeType.Dark)
                             .SetSmallImage(@"img\num1_16_light.png", ThemeType.Light)
@@ -52,7 +54,7 @@
                         "Command2_Large_WithText",
                         typeof(Cmd2),
                         button => button
-                            .SetToolTip("Tooltip: I'm run command #2. Push me!", true, "Version: ")
+                            .SetToolTip("Tooltip: I'm run command #2. Push me!")
                             .SetDescription("Description: This is command #2")
                             .SetSmallImage(@"img\num2_16.png", ThemeType.Dark)
                             .SetSmallImage(@"img\num2_16_light.png", ThemeType.Light)
@@ -64,7 +66,7 @@
                         "Command3_Large_WithText",
                         typeof(Cmd3),
                         button => button
-                            .SetToolTip("Tooltip: I'm run command #3. Push me!", true, "Version: ")
+                            .SetToolTip("Tooltip: I'm run command #3. Push me!")
                             .SetDescription("Description: This is command #3")
                             .SetSmallImage(@"img\num3_16.png", ThemeType.Dark)
                             .SetSmallImage(@"img\num3_16_light.png", ThemeType.Light)
@@ -158,10 +160,10 @@
                             button => SetupCommand2Button(button))));
         }
 
-        private static IButtonBuilder SetupCommand1Button(ICommandButtonBuilder button)
+        private static IButtonBuilder SetupCommand1Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #1. Push me!", true, "Version: ")
+                .SetToolTip("Tooltip: I'm run command #1. Push me!")
                 .SetDescription("Description: This is command #1")
                 .SetSmallImage(@"img\num1_16.png", ThemeType.Dark)
                 .SetSmallImage(@"img\num1_16_light.png", ThemeType.Light)
@@ -170,10 +172,10 @@
                 .SetHelpUrl("https://github.com/ReactiveBIM/RxBim");
         }
 
-        private static IButtonBuilder SetupCommand2Button(ICommandButtonBuilder button)
+        private static IButtonBuilder SetupCommand2Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #2. Push me!", true, "Version: ")
+                .SetToolTip("Tooltip: I'm run command #2. Push me!")
                 .SetDescription("Description: This is command #2")
                 .SetSmallImage(@"img\num2_16.png", ThemeType.Dark)
                 .SetSmallImage(@"img\num2_16_light.png", ThemeType.Light)
@@ -182,10 +184,10 @@
                 .SetHelpUrl("https://www.google.com/");
         }
 
-        private static IButtonBuilder SetupCommand3Button(ICommandButtonBuilder button)
+        private static IButtonBuilder SetupCommand3Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #3. Push me!", true, "Version: ")
+                .SetToolTip("Tooltip: I'm run command #3. Push me!")
                 .SetDescription("Description: This is command #3")
                 .SetSmallImage(@"img\num3_16.png", ThemeType.Dark)
                 .SetSmallImage(@"img\num3_16_light.png", ThemeType.Light)

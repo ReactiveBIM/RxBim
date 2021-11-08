@@ -167,11 +167,11 @@
         protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
         {
             var toolTip = cmdButtonConfig.ToolTip;
-            if (toolTip is null || !cmdButtonConfig.ToolTipSettings.AddVersion)
+            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
                 return toolTip;
             if (toolTip.Length > 0)
                 toolTip += Environment.NewLine;
-            toolTip += $"{cmdButtonConfig.ToolTipSettings.VersionHeader}{commandType.Assembly.GetName().Version}";
+            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
             return toolTip;
         }
 

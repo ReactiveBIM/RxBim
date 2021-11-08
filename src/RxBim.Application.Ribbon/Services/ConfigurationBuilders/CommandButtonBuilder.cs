@@ -1,13 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
 {
     using System;
-    using Abstractions.ConfigurationBuilders;
     using Models.Configurations;
 
     /// <summary>
     /// Command button builder
     /// </summary>
-    public class CommandButtonBuilder : ButtonBuilder<CommandButton>, ICommandButtonBuilder
+    public class CommandButtonBuilder : ButtonBuilder<CommandButton>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.
@@ -25,18 +24,5 @@
         /// Command class type
         /// </summary>
         public Type CommandType { get; }
-
-        /// <inheritdoc />
-        public ICommandButtonBuilder SetToolTip(
-            string toolTip,
-            bool addVersion = true,
-            string versionInfoHeader = "")
-        {
-            BuildingButton.ToolTip = toolTip;
-            BuildingButton.ToolTipSettings.AddVersion = addVersion;
-            BuildingButton.ToolTipSettings.VersionHeader = versionInfoHeader;
-
-            return this;
-        }
     }
 }
