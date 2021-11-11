@@ -1,25 +1,64 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
 {
-    using Models;
-    using Ribbon.Abstractions;
+    using System;
+    using System.Linq;
+    using Autodesk.Windows;
+    using Ribbon.Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Расширения для панели
+    /// Extensions for <see cref="IPanelBuilder"/>
     /// </summary>
     public static class PanelExtensions
     {
         /// <summary>
-        /// Переключает панель в режим заполнения выдвигающейся части
+        /// Returns current row for panel
         /// </summary>
-        /// <param name="panel">Панель</param>
-        public static IPanel SlideOut(this IPanel panel)
+        /// <param name="panel">Panel</param>
+        public static RibbonRowPanel? GetCurrentRowOrNull(this RibbonPanel panel)
         {
-            if (panel is Panel cadPanel)
-            {
-                cadPanel.SwitchToSlideOut();
-            }
+            return panel.Source.Items.LastOrDefault() as RibbonRowPanel;
+        }
 
-            return panel;
+        /// <summary>
+        /// Adds ribbon item to the panel
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        /// <param name="item">Ribbon item</param>
+        public static void AddToCurrentRow(this RibbonPanel panel, RibbonItem item)
+        {
+            var ribbonRowPanel = panel.GetCurrentRow();
+            ribbonRowPanel.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Panel already contains slide-out
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        public static bool HasSlideOut(this RibbonPanel panel)
+        {
+            return panel.Source.Items.Any(x => x is RibbonPanelBreak);
+        }
+
+        /// <summary>
+        /// Creates and adds new row panel
+        /// </summary>
+        /// <param name="acRibbonPanel">Panel</param>
+        public static void AddNewRow(this RibbonPanel acRibbonPanel)
+        {
+            acRibbonPanel.Source.Items.Add(new RibbonRowPanel());
+        }
+
+        /// <summary>
+        /// Returns current row for panel
+        /// </summary>
+        /// <param name="panel">Panel</param>
+        /// <exception cref="InvalidOperationException">If there is no current row panel</exception>
+        private static RibbonRowPanel GetCurrentRow(this RibbonPanel panel)
+        {
+            var currentRow = panel.GetCurrentRowOrNull();
+            if (currentRow is null)
+                throw new InvalidOperationException("Can't find the current panel row!");
+            return currentRow;
         }
     }
 }

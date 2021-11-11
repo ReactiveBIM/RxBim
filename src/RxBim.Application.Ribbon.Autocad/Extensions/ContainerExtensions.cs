@@ -5,45 +5,52 @@
     using Abstractions;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Ribbon;
-    using Ribbon.Abstractions;
+    using Ribbon.Abstractions.ConfigurationBuilders;
+    using Ribbon.Extensions;
     using Services;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// Extensions for <see cref="IContainer"/>
     /// </summary>
     public static class ContainerExtensions
     {
-        private const bool CreateMenuOnlyOnce = false;
-
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds ribbon menu from action
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="action">метод создания меню</param>
-        public static void AddMenu(this IContainer container, Action<IRibbon> action)
+        /// <param name="container">DI container</param>
+        /// <param name="action">Menu building action</param>
+        /// <param name="menuAssembly">Menu assembly</param>
+        public static void AddAutocadMenu(
+            this IContainer container,
+            Action<IRibbonBuilder> action,
+            Assembly? menuAssembly = null)
         {
+            menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonFactory, AutocadMenuBuildService>(action, CreateMenuOnlyOnce);
+            container.AddMenu<AutocadRibbonMenuBuilderFactory>(action, menuAssembly);
         }
 
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds ribbon menu from config
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="cfg">конфигурация</param>
-        /// <param name="assembly">сборка</param>
-        public static void AddMenu(this IContainer container, IConfiguration? cfg = null, Assembly? assembly = null)
+        /// <param name="container">DI container</param>
+        /// <param name="cfg">Configuration</param>
+        /// <param name="menuAssembly">Menu assembly</param>
+        public static void AddAutocadMenu(
+            this IContainer container,
+            IConfiguration? cfg = null,
+            Assembly? menuAssembly = null)
         {
-            assembly ??= Assembly.GetCallingAssembly();
+            menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonFactory, AutocadMenuBuildService>(assembly, cfg, CreateMenuOnlyOnce);
+            container.AddMenu<AutocadRibbonMenuBuilderFactory>(cfg, menuAssembly);
         }
 
         private static void AddInternalObjects(this IContainer container)
         {
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
-            container.AddSingleton<IRibbonEvents, RibbonEventService>();
+            container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
+            container.AddSingleton<IThemeService, ThemeService>();
         }
     }
 }

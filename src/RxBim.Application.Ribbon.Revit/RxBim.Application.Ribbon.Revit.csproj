@@ -8,19 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1"/>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1"/>
+        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" />
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj"/>
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj"/>
+        <ProjectReference Include="..\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
+        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="PresentationCore"/>
-        <Reference Include="PresentationFramework"/>
-        <Reference Include="WindowsBase"/>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
     </ItemGroup>
 
     <PropertyGroup>

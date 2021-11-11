@@ -15,9 +15,9 @@
         }
 
         /// <inheritdoc />
-        public override PluginResult InvokeCommand(IContainer container, string methodName)
+        public override PluginResult InvokeMethod(IContainer container, string methodName)
         {
-            var result = Decorated.InvokeCommand(container, methodName);
+            var result = Decorated.InvokeMethod(container, methodName);
 
             if (methodName == Constants.ShutdownMethodName)
             {

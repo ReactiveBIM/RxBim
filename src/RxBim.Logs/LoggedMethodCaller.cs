@@ -21,12 +21,12 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeCommand(IContainer container, string methodName)
+        public override T InvokeMethod(IContainer container, string methodName)
         {
             T result;
             try
             {
-                result = Decorated.InvokeCommand(container, methodName);
+                result = Decorated.InvokeMethod(container, methodName);
             }
             catch (Exception e)
             {

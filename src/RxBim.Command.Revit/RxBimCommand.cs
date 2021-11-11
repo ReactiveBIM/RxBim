@@ -48,7 +48,7 @@
         private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
             var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeCommand(di.Container, Constants.ExecuteMethodName);
+            var commandResult = methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
             return commandResult;
         }
 

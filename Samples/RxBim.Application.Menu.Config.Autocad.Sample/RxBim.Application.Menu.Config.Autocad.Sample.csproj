@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">    
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
+        <ProjectReference Include="..\..\src\RxBim.Application.Ribbon.Autocad\RxBim.Application.Ribbon.Autocad.csproj" />
+        <ProjectReference Include="..\..\src\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
+        <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+        <ProjectReference Include="..\..\src\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="img\*.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>        
+        <None Update="appsettings.RxBim.Application.Menu.Config.Autocad.Sample.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>        
+    </ItemGroup>
+</Project>

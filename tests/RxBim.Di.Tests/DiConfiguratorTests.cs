@@ -31,7 +31,7 @@
             var methodCaller = new MethodCaller<int>(new ObjectWithDependencies());
 
             int result = 0;
-            Action act = () => result = methodCaller.InvokeCommand(testDiConfigurator.Container, "Execute");
+            Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Container, "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

@@ -1,0 +1,30 @@
+﻿<Project>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(MSBuldProjectName.EndsWith(`Tests`))'">
+        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Company>pik-group.com</Company>
+        <Authors>Reactive BIM</Authors>
+        <Product>RxBim</Product>
+        <Copyright>Copyright ©2021 Reactive BIM</Copyright>
+        <PackageTags>BIM Plugin Framework</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/ReactiveBIM/RxBim</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ReactiveBIM/RxBim.git</RepositoryUrl>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+    </PropertyGroup>
+
+</Project>

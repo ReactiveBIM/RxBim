@@ -9,6 +9,15 @@
     /// </summary>
     public class AboutBoxContent
     {
+        private Version _version = new ();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AboutBoxContent"/> class.
+        /// </summary>
+        public AboutBoxContent()
+        {
+        }
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -37,32 +46,45 @@
         /// <summary>
         /// Зоголовок
         /// </summary>
-        public string Title { get; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Версия продукта
         /// </summary>
-        public string ProductVersion { get; }
+        public string ProductVersion { get; set; }
 
         /// <summary>
         /// Описание программы
         /// </summary>
-        public string Description { get; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Версия сборки
         /// </summary>
-        public Version BuildVersion { get; }
+        public Version BuildVersion
+        {
+            get => _version;
+            set => _version = value;
+        }
+
+        /// <summary>
+        /// Версия сборки в виде строки
+        /// </summary>
+        public string BuildVersionString
+        {
+            get => _version.ToString();
+            set => _version = new Version(value);
+        }
 
         /// <summary>
         /// Название компании
         /// </summary>
-        public string CompanyName { get; }
+        public string CompanyName { get; set; }
 
         /// <summary>
         /// Список ссылок
         /// </summary>
-        public Dictionary<string, string> Links { get; }
+        public Dictionary<string, string> Links { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
