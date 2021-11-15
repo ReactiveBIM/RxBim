@@ -207,28 +207,38 @@
             BuilderUtils.Build(s =>
             {
                 var outputDir = (AbsolutePath)OutputTmpDir;
+                var installDir = options.InstallDir.Replace("%AppDataFolder%", "{userappdata}");
                 s.Setup.Create(options.ProductProjectName)
                     .AppVersion(options.Version)
-                    .DefaultDirName(options.InstallDir)
+                    .DefaultDirName($@"{installDir}\{options.ProjectName}")
                     .PrivilegesRequired(PrivilegesRequired.Lowest)
-                    .OutputBaseFilename(options.OutFileName)
+                    .OutputBaseFilename($"{options.OutFileName}_{options.Version}")
                     .DisableDirPage(YesNo.Yes);
                 s.Files
                     .CreateEntry(
-                        outputDir / "*",
+                        (AbsolutePath)OutputTmpDirBin / "*",
                         InnoConstants.App).Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
-                s.Files.CreateEntry(source: outputDir / @"Fonts\GraphikLCG-Medium.ttf", destDir: @"{autofonts}")
-                    .FontInstall("Graphik LCG")
-                    .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
-                s.Files.CreateEntry(source: outputDir / @"Fonts\GraphikLCG-Regular.ttf", destDir: @"{autofonts}")
-                    .FontInstall("Graphik LCG")
-                    .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
+                s.Files
+                    .CreateEntry(source: outputDir / "*", destDir: installDir);
+
+                var fontsDir = outputDir / "Fonts";
+                if (DirectoryExists(fontsDir))
+                {
+                    s.Files.CreateEntry(source: fontsDir / "GraphikLCG-Medium.ttf", destDir: @"{autofonts}")
+                        .FontInstall("Graphik LCG")
+                        .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
+                    s.Files.CreateEntry(source: fontsDir / "GraphikLCG-Regular.ttf", destDir: @"{autofonts}")
+                        .FontInstall("Graphik LCG")
+                        .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall); 
+                }
             }, iss);
 
             InnoSetupTasks.InnoSetup(config => config
                 .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
                 .SetScriptFile(iss)
-                .SetOutputDir(OutputTmpDirBin));
+                .SetOutputDir(project.Solution.Directory / "out"));
+
+            DeleteDirectory(OutputTmpDir);
         }
 
         /// <summary>
