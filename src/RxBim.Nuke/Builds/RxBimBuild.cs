@@ -1,16 +1,22 @@
 ﻿namespace RxBim.Nuke.Builds
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Bimlab.Nuke.Components;
     using Extensions;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Tools.InnoSetup;
+    using InnoSetup.ScriptBuilder;
+    using InnoSetup.ScriptBuilder.Model.SetupSection;
     using JetBrains.Annotations;
     using Models;
     using static global::Nuke.Common.IO.FileSystemTasks;
@@ -51,7 +57,21 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildInstaller(ProjectForMsiBuild, Configuration);
+                BuildMsiInstaller(ProjectForMsiBuild, Configuration);
+            });
+
+        /// <summary>
+        /// Build an EXE package.
+        /// </summary>
+        public Target BuildInnoExe => _ => _
+            .Description("Build installation EXE from selected project (if Release - sign assemblies)")
+            .DependsOn(SignAssemblies)
+            .DependsOn(GenerateAdditionalFiles)
+            .DependsOn(GeneratePackageContentsFile)
+            .Executes(() =>
+            {
+                CreateOutDirectory();
+                BuildInnoInstaller(ProjectForMsiBuild, Configuration);
             });
 
         /// <summary>
@@ -86,7 +106,7 @@
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    BuildInstaller(project, Configuration.Debug);
+                    BuildMsiInstaller(project, Configuration.Debug);
                 }
             });
 
@@ -165,7 +185,7 @@
             }
         }
 
-        private void BuildInstaller(
+        private void BuildMsiInstaller(
             Project project,
             string configuration)
         {
@@ -175,6 +195,40 @@
                 OutputTmpDir,
                 OutputTmpDirBin);
             DeleteDirectory(OutputTmpDir);
+        }
+
+        private void BuildInnoInstaller(
+            Project project,
+            string configuration)
+        {
+            var iss = TemporaryDirectory / "package.iss";
+            var options = _wix.GetBuildMsiOptions(project, OutputTmpDir, configuration);
+
+            BuilderUtils.Build(s =>
+            {
+                var outputDir = (AbsolutePath)OutputTmpDir;
+                s.Setup.Create(options.ProductProjectName)
+                    .AppVersion(options.Version)
+                    .DefaultDirName(options.InstallDir)
+                    .PrivilegesRequired(PrivilegesRequired.Lowest)
+                    .OutputBaseFilename(options.OutFileName)
+                    .DisableDirPage(YesNo.Yes);
+                s.Files
+                    .CreateEntry(
+                        outputDir / "*",
+                        InnoConstants.App).Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
+                s.Files.CreateEntry(source: outputDir / @"Fonts\GraphikLCG-Medium.ttf", destDir: @"{autofonts}")
+                    .FontInstall("Graphik LCG")
+                    .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
+                s.Files.CreateEntry(source: outputDir / @"Fonts\GraphikLCG-Regular.ttf", destDir: @"{autofonts}")
+                    .FontInstall("Graphik LCG")
+                    .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
+            }, iss);
+
+            InnoSetupTasks.InnoSetup(config => config
+                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
+                .SetScriptFile(iss)
+                .SetOutputDir(OutputTmpDirBin));
         }
 
         /// <summary>
