@@ -201,9 +201,13 @@
         {
             var iss = TemporaryDirectory / "package.iss";
             var options = _wix.GetBuildMsiOptions(project, OutputTmpDir, configuration);
+            var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder.Create(
-                options, (AbsolutePath)OutputTmpDir, (AbsolutePath)OutputTmpDirBin)
+                options,
+                (AbsolutePath)OutputTmpDir,
+                (AbsolutePath)OutputTmpDirBin,
+                setupFileName)
                 .AddIcons()
                 .AddFonts()
                 .Build(iss);
@@ -214,6 +218,20 @@
                 .SetOutputDir(project.Solution.Directory / "out"));
 
             DeleteDirectory(OutputTmpDir);
+            SignSetupFile(setupFileName);
+        }
+
+        private void SignSetupFile(string filePath)
+        {
+            if (Configuration != Configuration.Release)
+                return;
+
+            filePath.SignFile(
+                (AbsolutePath)Cert,
+                PrivateKey,
+                Csp,
+                Algorithm,
+                ServerUrl);
         }
 
         /// <summary>

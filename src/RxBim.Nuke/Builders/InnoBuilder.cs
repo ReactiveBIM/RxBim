@@ -25,7 +25,8 @@
         private InnoBuilder(
             Options options,
             AbsolutePath outputProjDir,
-            AbsolutePath outputProjBinDir)
+            AbsolutePath outputProjBinDir,
+            string setupFileName = null)
         {
             _options = options;
             _outputProjDir = outputProjDir;
@@ -33,13 +34,14 @@
 
             var installDir = options.InstallDir.Replace("%AppDataFolder%", "{userappdata}");
             _projInstallDir = $@"{installDir}\{options.ProjectName}";
+            var outputFileName = setupFileName ?? $"{options.OutFileName}_{options.Version}";
 
             _setupBuilder = Setup.Create(options.ProductProjectName)
                 .AppId(options.PackageGuid)
                 .AppVersion(options.Version)
                 .DefaultDirName(_projInstallDir)
                 .PrivilegesRequired(PrivilegesRequired.Lowest)
-                .OutputBaseFilename($"{options.OutFileName}_{options.Version}")
+                .OutputBaseFilename(outputFileName)
                 .DisableDirPage(YesNo.Yes);
 
             Files
@@ -56,11 +58,13 @@
         /// <param name="options">Setup options</param>
         /// <param name="outputProjDir">Output compile project directory</param>
         /// <param name="outputProjBinDir">Output "bin" directory of compile project</param>
+        /// <param name="setupFileName">Setup file name</param>
         public static InnoBuilder Create(
             Options options,
             AbsolutePath outputProjDir,
-            AbsolutePath outputProjBinDir)
-            => new (options, outputProjDir, outputProjBinDir);
+            AbsolutePath outputProjBinDir,
+            string setupFileName = null)
+            => new (options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
         /// Add setup and uninstall icons from <see cref="Options"/>
