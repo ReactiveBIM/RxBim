@@ -83,7 +83,9 @@
                 OutFileName = outputFileName,
                 AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
                 ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
+                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon))
             };
             return options;
         }

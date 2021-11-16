@@ -208,13 +208,20 @@
             {
                 var outputDir = (AbsolutePath)OutputTmpDir;
                 var installDir = options.InstallDir.Replace("%AppDataFolder%", "{userappdata}");
-                s.Setup.Create(options.ProductProjectName)
+                var projInstallDir = $@"{installDir}\{options.ProjectName}";
+                var setupBuilder = s.Setup.Create(options.ProductProjectName)
                     .AppId(options.PackageGuid)
                     .AppVersion(options.Version)
-                    .DefaultDirName($@"{installDir}\{options.ProjectName}")
+                    .DefaultDirName(projInstallDir)
                     .PrivilegesRequired(PrivilegesRequired.Lowest)
                     .OutputBaseFilename($"{options.OutFileName}_{options.Version}")
                     .DisableDirPage(YesNo.Yes);
+
+                if (!string.IsNullOrWhiteSpace(options.SetupIcon))
+                    setupBuilder.SetupIconFile($@"{OutputTmpDirBin}\{options.SetupIcon}");
+                if (!string.IsNullOrWhiteSpace(options.UninstallIcon))
+                    setupBuilder.UninstallDisplayIcon($@"{projInstallDir}\{options.UninstallIcon}");
+
                 s.Files
                     .CreateEntry(
                         (AbsolutePath)OutputTmpDirBin / "*",

@@ -61,6 +61,12 @@ namespace RxBim.MsiBuilder
         [Option('x', "msiFilePrefix", Required = false, HelpText = "Set msi file prefix.")]
         public string MsiFilePrefix { get; set; }
 
+        [Option('n', "setupIcon", Required = false, HelpText = "Set setup icon file.")]
+        public string SetupIcon { get; set; }
+
+        [Option('l', "uninstallIcon", Required = false, HelpText = "Set uninstall icon file.")]
+        public string UninstallIcon { get; set; }
+
         public override string ToString()
         {
             return string.Join(" ",
