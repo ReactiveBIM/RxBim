@@ -8,15 +8,15 @@
     using Models;
 
     /// <summary>
-    /// Генерирует PackageContents.xml
+    /// Generator of PackageContents.xml
     /// </summary>
     public abstract class PackageContentsGenerator
     {
         /// <summary>
-        /// Генерирует PackageContents.xml
+        /// Generate PackageContents.xml
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="outputDirectory">Путь к папке, куда нужно сохранить сгенерированный файл</param>
+        /// <param name="project">Project</param>
+        /// <param name="outputDirectory">Output path</param>
         public void Generate(Project project, string outputDirectory)
         {
             var outputFilePath = Path.Combine(outputDirectory, "PackageContents.xml");
@@ -27,9 +27,9 @@
         }
 
         /// <summary>
-        /// Возвращает компоненты
+        /// Get <see cref="Components"/> collection
         /// </summary>
-        /// <param name="project">Проект</param>
+        /// <param name="project">Project</param>
         protected abstract IEnumerable<Components> GetComponents(Project project);
     }
 }

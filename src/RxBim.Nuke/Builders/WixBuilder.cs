@@ -1,4 +1,4 @@
-﻿namespace RxBim.Nuke.Models
+﻿namespace RxBim.Nuke.Builders
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,8 @@
     using Extensions;
     using Generators;
     using global::Nuke.Common.ProjectModel;
+    using Models;
     using MsiBuilder;
-    using static Helpers.WixHelper;
 
     /// <summary>
     /// Wix extension
@@ -51,7 +51,7 @@
             string configuration)
         {
             var installDir = GetInstallDir(project, configuration);
-            return _options ??= project.GetBuildMsiOptions(
+            return _options ??= project.GetSetupOptions(
                 installDir, outputDir, configuration);
         }
 

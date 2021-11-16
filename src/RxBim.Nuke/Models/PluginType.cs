@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Nuke.Models
 {
     /// <summary>
-    /// Тип плагина
+    /// Types of plugin
     /// </summary>
     public enum PluginType
     {

@@ -1,11 +1,10 @@
 ﻿namespace RxBim.Nuke.Builds
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Bimlab.Nuke.Components;
+    using Builders;
     using Extensions;
     using Generators;
     using global::Nuke.Common;
@@ -16,7 +15,6 @@
     using global::Nuke.Common.Tools.Git;
     using global::Nuke.Common.Tools.InnoSetup;
     using InnoSetup.ScriptBuilder;
-    using InnoSetup.ScriptBuilder.Model.SetupSection;
     using JetBrains.Annotations;
     using Models;
     using static global::Nuke.Common.IO.FileSystemTasks;
@@ -63,7 +61,7 @@
         /// <summary>
         /// Build an EXE package.
         /// </summary>
-        public Target BuildInnoExe => _ => _
+        public virtual Target BuildInnoExe => _ => _
             .Description("Build installation EXE from selected project (if Release - sign assemblies)")
             .DependsOn(SignAssemblies)
             .DependsOn(GenerateAdditionalFiles)
@@ -143,7 +141,7 @@
                     (AbsolutePath)OutputTmpDirBin,
                     (AbsolutePath)Cert,
                     PrivateKey,
-                    Csp, 
+                    Csp,
                     Algorithm,
                     ServerUrl);
             });
@@ -204,42 +202,11 @@
             var iss = TemporaryDirectory / "package.iss";
             var options = _wix.GetBuildMsiOptions(project, OutputTmpDir, configuration);
 
-            BuilderUtils.Build(s =>
-            {
-                var outputDir = (AbsolutePath)OutputTmpDir;
-                var installDir = options.InstallDir.Replace("%AppDataFolder%", "{userappdata}");
-                var projInstallDir = $@"{installDir}\{options.ProjectName}";
-                var setupBuilder = s.Setup.Create(options.ProductProjectName)
-                    .AppId(options.PackageGuid)
-                    .AppVersion(options.Version)
-                    .DefaultDirName(projInstallDir)
-                    .PrivilegesRequired(PrivilegesRequired.Lowest)
-                    .OutputBaseFilename($"{options.OutFileName}_{options.Version}")
-                    .DisableDirPage(YesNo.Yes);
-
-                if (!string.IsNullOrWhiteSpace(options.SetupIcon))
-                    setupBuilder.SetupIconFile($@"{OutputTmpDirBin}\{options.SetupIcon}");
-                if (!string.IsNullOrWhiteSpace(options.UninstallIcon))
-                    setupBuilder.UninstallDisplayIcon($@"{projInstallDir}\{options.UninstallIcon}");
-
-                s.Files
-                    .CreateEntry(
-                        (AbsolutePath)OutputTmpDirBin / "*",
-                        InnoConstants.App).Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
-                s.Files
-                    .CreateEntry(source: outputDir / "*", destDir: installDir);
-
-                var fontsDir = outputDir / "Fonts";
-                if (DirectoryExists(fontsDir))
-                {
-                    s.Files.CreateEntry(source: fontsDir / "GraphikLCG-Medium.ttf", destDir: @"{autofonts}")
-                        .FontInstall("Graphik LCG")
-                        .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
-                    s.Files.CreateEntry(source: fontsDir / "GraphikLCG-Regular.ttf", destDir: @"{autofonts}")
-                        .FontInstall("Graphik LCG")
-                        .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall); 
-                }
-            }, iss);
+            InnoBuilder.Create(
+                options, (AbsolutePath)OutputTmpDir, (AbsolutePath)OutputTmpDirBin)
+                .AddIcons()
+                .AddFonts()
+                .Build(iss);
 
             InnoSetupTasks.InnoSetup(config => config
                 .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))

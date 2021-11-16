@@ -12,14 +12,14 @@
     using static Helpers.AssemblyScanner;
 
     /// <summary>
-    /// Расширения для типов сборок
+    /// <see cref="AssemblyType"/> extensions
     /// </summary>
     public static class AssemblyTypeExtensions
     {
         /// <summary>
         /// Sign assemblies
         /// </summary>
-        /// <param name="assemblyTypes">Assemly types</param>
+        /// <param name="assemblyTypes">Assembly types</param>
         /// <param name="outputDirectory">Output directory</param>
         /// <param name="cert">Certificate path</param>
         /// <param name="keyContainer">Private key</param>
@@ -75,9 +75,9 @@
         }
 
         /// <summary>
-        /// Тип является типом плагина
+        /// Is assembly type plugin
         /// </summary>
-        /// <param name="type">Тип</param>
+        /// <param name="type"><see cref="AssemblyType"/></param>
         public static bool IsPluginType(this AssemblyType type)
         {
             return type.BaseTypeName == RxBimCommand ||
@@ -85,9 +85,9 @@
         }
 
         /// <summary>
-        /// Возвращает типы плагинов для сборки
+        /// Get <see cref="AssemblyType"/> from build path
         /// </summary>
-        /// <param name="binPath">Путь к сборке</param>
+        /// <param name="binPath">Build path</param>
         public static List<AssemblyType> GetPluginTypes(this AbsolutePath binPath)
         {
             var assemblyTypes = Scan(binPath)

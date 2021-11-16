@@ -20,18 +20,18 @@
     using static Helpers.AssemblyScanner;
 
     /// <summary>
-    /// Расширения для проекта
+    /// Project extensions
     /// </summary>
     public static class ProjectExtensions
     {
         /// <summary>
-        /// Возвращает опции для установки
+        /// Get setup options
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="installDir">Папка установки</param>
-        /// <param name="sourceDir">Папка исходников</param>
-        /// <param name="configuration">Конфигурация</param>
-        public static Options GetBuildMsiOptions(
+        /// <param name="project">Project</param>
+        /// <param name="installDir">Install directory</param>
+        /// <param name="sourceDir">Source build directory</param>
+        /// <param name="configuration">Configuration</param>
+        public static Options GetSetupOptions(
             this Project project,
             string installDir,
             string sourceDir,
@@ -91,11 +91,11 @@
         }
 
         /// <summary>
-        /// Собирает Msi
+        /// Build Msi
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="toolPath">Путь к инструменту сборки</param>
-        /// <param name="options">Опции</param>
+        /// <param name="project">Project</param>
+        /// <param name="toolPath">Build MSI tool path</param>
+        /// <param name="options">Options</param>
         public static void BuildMsiWithTool(
             this Project project,
             string toolPath,
@@ -115,10 +115,10 @@
         }
 
         /// <summary>
-        /// Собирает проект с помощью dotnet и возвращает путь к сборке
+        /// DotNet build project and return build path
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="config">Конфигурация</param>
+        /// <param name="project">Project</param>
+        /// <param name="config">Configuration</param>
         public static AbsolutePath BuildProject(this Project project, string config)
         {
             DotNetBuild(settings => settings
@@ -130,10 +130,10 @@
         }
 
         /// <summary>
-        /// Добавляет свойства в проект
+        /// Add properties to project
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="properties">Свойства в виде XML-элементов</param>
+        /// <param name="project">Project</param>
+        /// <param name="properties">Properties via <see cref="XElement"/> collection</param>
         public static void AddPropertiesToProject(this Project project, IReadOnlyCollection<XElement> properties)
         {
             if (properties.Any())
@@ -151,10 +151,10 @@
         }
 
         /// <summary>
-        /// Генерирует свойства проекта для MSI
+        /// Generate project properties for installation
         /// </summary>
-        /// <param name="project">Проект</param>
-        public static IEnumerable<XElement> GenerateMsiProperties(this Project project)
+        /// <param name="project">Project</param>
+        public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
         {
             if (project.GetProperty(nameof(Options.PackageGuid)) == null)
             {
@@ -168,11 +168,11 @@
         }
 
         /// <summary>
-        /// Возвращает типы сборок
+        /// Get <see cref="AssemblyType"/> collection from project
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="output">Папка со сборками</param>
-        /// <param name="options">Опции</param>
+        /// <param name="project">Project</param>
+        /// <param name="output">Output path</param>
+        /// <param name="options">Options</param>
         public static List<AssemblyType> GetAssemblyTypes(
             this Project project,
             string output,
@@ -200,7 +200,7 @@
                 if (additionalFiles.Any(f => !File.Exists(f)))
                 {
                     throw new FileNotFoundException(
-                        $"Не найдена сборка указанная в параметре {nameof(Options.ProjectsAddingToManifest)}");
+                        $"Assembly not found from property {nameof(Options.ProjectsAddingToManifest)}");
                 }
             }
 
@@ -213,9 +213,9 @@
         }
 
         /// <summary>
-        /// Возвращает целевую папку для проекта
+        /// Get target project directory
         /// </summary>
-        /// <param name="project">Проект</param>
+        /// <param name="project">Project</param>
         public static AbsolutePath GetTargetDir(this Project project)
         {
             var targetFx = project.GetTargetFramework(out var multiple);
@@ -231,18 +231,37 @@
         }
 
         /// <summary>
-        /// Возвращает путь к сборке проекта
+        /// Get project assembly path
         /// </summary>
-        /// <param name="project">Проект</param>
+        /// <param name="project">Project</param>
         public static AbsolutePath GetTargetPath(this Project project)
         {
             return project.GetTargetDir() / $"{project.GetProperty("AssemblyName")}.dll";
         }
 
         /// <summary>
-        /// Зафиксировать изменения проекта в GIT
+        /// Map <see cref="Project"/> to <see cref="ApplicationPackage"/>
         /// </summary>
-        /// <param name="project">Проект</param>
+        /// <param name="project">Project</param>
+        /// <param name="components">Components</param>
+        public static ApplicationPackage ToApplicationPackage(this Project project, List<Components> components)
+        {
+            return new ApplicationPackage
+            {
+                Description = project.GetProperty(nameof(ApplicationPackage.Description)) ?? string.Empty,
+                Name = project.Name,
+                AppVersion = project.GetProperty("Version"),
+                FriendlyVersion = project.GetProperty("Version"),
+                ProductCode = project.GetProperty("PackageGuid"),
+                UpgradeCode = project.GetProperty("UpgradeCode"),
+                Components = components
+            };
+        }
+
+        /// <summary>
+        /// Commit changes to GIT
+        /// </summary>
+        /// <param name="project">Project</param>
         private static void CommitChanges(this Project project)
         {
             var commit = ConsoleUtility.PromptForChoice("Commit changes?", ("Yes", "Yes"), ("No", "No"));
@@ -262,10 +281,10 @@
         }
 
         /// <summary>
-        /// Возвращает название целевого фреймворка
+        /// Get target framework name
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="multiple">Задано несколько (свойством TargetFrameworks)</param>
+        /// <param name="project">Project</param>
+        /// <param name="multiple">True if set properties TargetFrameworks</param>
         private static string GetTargetFramework(this Project project, out bool multiple)
         {
             var fxNameSingle = project.GetProperty("TargetFramework");
@@ -275,7 +294,7 @@
                 return string.Empty;
             }
 
-            var fxNameFirst = project.GetTargetFrameworks().FirstOrDefault();
+            var fxNameFirst = project.GetTargetFrameworks()?.FirstOrDefault();
             if (string.IsNullOrEmpty(fxNameFirst))
             {
                 throw new InvalidOperationException($"Can't find target framework for project {project.Name}");
@@ -285,12 +304,6 @@
             return fxNameFirst;
         }
 
-        /// <summary>
-        /// Возвращает типы сборок
-        /// </summary>
-        /// <param name="file">Файл</param>
-        /// <param name="typeNames">Названия типов</param>
-        /// <returns></returns>
         private static List<AssemblyType> GetAssemblyTypes(
             string file,
             string[] typeNames)

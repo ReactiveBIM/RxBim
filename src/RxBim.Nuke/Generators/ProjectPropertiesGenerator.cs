@@ -46,7 +46,7 @@
         private List<XElement> GenerateProperties(Project project, IEnumerable<AssemblyType> pluginTypes)
         {
             var properties = new List<XElement>();
-            properties.AddRange(project.GenerateMsiProperties());
+            properties.AddRange(project.GenerateInstallationProperties());
             properties.AddRange(GenerateAdditionalProperties(project, pluginTypes));
             return properties;
         }

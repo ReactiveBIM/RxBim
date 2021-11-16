@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Nuke.Revit.Generators.Models
 {
     using System.Xml.Linq;
-    using RxBim.Nuke.Generators.Models;
+    using Nuke.Models;
 
     /// <inheritdoc />
     public class RevitComponents : Components

@@ -11,7 +11,7 @@
     using static global::Nuke.Common.IO.FileSystemTasks;
 
     /// <summary>
-    /// Вспомогательные методы Wix
+    /// Wix extensions
     /// </summary>
     public static class WixHelper
     {
@@ -20,7 +20,7 @@
         private const string WixBin = nameof(WixBin);
 
         /// <summary>
-        /// Устанавливает WixSharp
+        /// Install WixSharp
         /// </summary>
         public static void SetupWixTools()
         {
@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        /// Скачивает WixSharp
+        /// Download WixSharp
         /// </summary>
         private static string DownloadWixSharp()
         {

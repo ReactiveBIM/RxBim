@@ -1,19 +1,18 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
     using System;
-    using Generators.Models;
     using Models;
     using static Constants;
 
     /// <summary>
-    /// Расширения для строк
+    /// String extensions
     /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// Имя типа в <see cref="PluginType"/>
+        /// Type name of <see cref="PluginType"/>
         /// </summary>
-        /// <param name="type">имя типа</param>
+        /// <param name="type">Type name</param>
         public static PluginType ToPluginType(this string type)
         {
             return type switch

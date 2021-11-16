@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Nuke.AutoCAD
 {
     using System.Xml.Linq;
-    using Generators.Models;
+    using Models;
 
     /// <inheritdoc />
     public class AutocadComponents : Components
