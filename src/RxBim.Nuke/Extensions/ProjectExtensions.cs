@@ -25,7 +25,7 @@
     public static class ProjectExtensions
     {
         /// <summary>
-        /// Get setup options
+        /// Gets setup options
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="installDir">Install directory</param>
@@ -91,7 +91,7 @@
         }
 
         /// <summary>
-        /// Build Msi
+        /// Builds Msi
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="toolPath">Build MSI tool path</param>
@@ -115,7 +115,7 @@
         }
 
         /// <summary>
-        /// DotNet build project and return build path
+        /// DotNet builds project and return build path
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="config">Configuration</param>
@@ -130,7 +130,7 @@
         }
 
         /// <summary>
-        /// Add properties to project
+        /// Adds properties to project
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="properties">Properties via <see cref="XElement"/> collection</param>
@@ -151,7 +151,7 @@
         }
 
         /// <summary>
-        /// Generate project properties for installation
+        /// Generates project properties for installation
         /// </summary>
         /// <param name="project">Project</param>
         public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
@@ -168,7 +168,7 @@
         }
 
         /// <summary>
-        /// Get <see cref="AssemblyType"/> collection from project
+        /// Gets <see cref="AssemblyType"/> collection from project
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="output">Output path</param>
@@ -213,7 +213,7 @@
         }
 
         /// <summary>
-        /// Get target project directory
+        /// Gets target project directory
         /// </summary>
         /// <param name="project">Project</param>
         public static AbsolutePath GetTargetDir(this Project project)
@@ -231,7 +231,7 @@
         }
 
         /// <summary>
-        /// Get project assembly path
+        /// Gets project assembly path
         /// </summary>
         /// <param name="project">Project</param>
         public static AbsolutePath GetTargetPath(this Project project)
@@ -240,7 +240,7 @@
         }
 
         /// <summary>
-        /// Map <see cref="Project"/> to <see cref="ApplicationPackage"/>
+        /// Maps <see cref="Project"/> to <see cref="ApplicationPackage"/>
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="components">Components</param>
@@ -259,7 +259,7 @@
         }
 
         /// <summary>
-        /// Commit changes to GIT
+        /// Commits changes to GIT
         /// </summary>
         /// <param name="project">Project</param>
         private static void CommitChanges(this Project project)
@@ -281,7 +281,7 @@
         }
 
         /// <summary>
-        /// Get target framework name
+        /// Gets target framework name
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="multiple">True if set properties TargetFrameworks</param>

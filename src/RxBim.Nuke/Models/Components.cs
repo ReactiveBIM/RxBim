@@ -38,7 +38,7 @@
         public string ModuleName { get; set; }
 
         /// <summary>
-        /// Map <see cref="Components"/> to <see cref="XElement"/>
+        /// Maps <see cref="Components"/> to <see cref="XElement"/>
         /// </summary>
         public XElement ToXElement()
         {
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Get component entry
+        /// Gets component entry
         /// </summary>
         protected abstract XElement GetComponentEntry();
 

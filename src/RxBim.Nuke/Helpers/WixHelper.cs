@@ -20,7 +20,7 @@
         private const string WixBin = nameof(WixBin);
 
         /// <summary>
-        /// Install WixSharp
+        /// Installs WixSharp
         /// </summary>
         public static void SetupWixTools()
         {
@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        /// Download WixSharp
+        /// Downloads WixSharp
         /// </summary>
         private static string DownloadWixSharp()
         {

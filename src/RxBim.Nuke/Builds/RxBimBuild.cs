@@ -59,7 +59,7 @@
             });
 
         /// <summary>
-        /// Build an EXE package.
+        /// Builds an EXE package.
         /// </summary>
         public virtual Target BuildInnoExe => _ => _
             .Description("Build installation EXE from selected project (if Release - sign assemblies)")
@@ -88,7 +88,7 @@
             });
 
         /// <summary>
-        /// Build MSI from tag Testing{ProjectName}
+        /// Builds MSI from tag Testing{ProjectName}
         /// </summary>
         public Target BuildFromTag => _ => _
             .Executes(() =>
@@ -109,7 +109,7 @@
             });
 
         /// <summary>
-        /// Generate project properties (PackageGuid, UpgradeCode and other)
+        /// Generates project properties (PackageGuid, UpgradeCode and other)
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
@@ -235,7 +235,7 @@
         }
 
         /// <summary>
-        /// Get assembly types
+        /// Gets assembly types
         /// </summary>
         /// <param name="project">Selected Project</param>
         /// <param name="outputBinDir">Output assembly directory</param>

@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Create instance of <see cref="InnoBuilder"/>
+        /// Creates instance of <see cref="InnoBuilder"/>
         /// </summary>
         /// <param name="options">Setup options</param>
         /// <param name="outputProjDir">Output compile project directory</param>
@@ -67,7 +67,7 @@
             => new (options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
-        /// Add setup and uninstall icons from <see cref="Options"/>
+        /// Adds setup and uninstall icons from <see cref="Options"/>
         /// </summary>
         public InnoBuilder AddIcons()
         {
@@ -80,7 +80,7 @@
         }
 
         /// <summary>
-        /// Add fonts files
+        /// Adds fonts files
         /// </summary>
         public InnoBuilder AddFonts()
         {
