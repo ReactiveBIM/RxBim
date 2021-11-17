@@ -115,7 +115,7 @@
         }
 
         /// <summary>
-        /// DotNet builds project and return build path
+        /// DotNet builds project and returns build path
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="config">Configuration</param>
