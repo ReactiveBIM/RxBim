@@ -1,9 +1,11 @@
 ﻿namespace RxBim.Nuke.Builders
 {
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Drawing.Text;
     using System.IO;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
     using InnoSetup.ScriptBuilder;
@@ -100,11 +102,37 @@
 
         private static string GetFontName(string fontPath)
         {
+            using var fontStream = new FileStream(fontPath, FileMode.Open);
+
 #pragma warning disable CA1416
-            var fontCol = new PrivateFontCollection();
-            fontCol.AddFontFile(fontPath);
-            return fontCol.Families.FirstOrDefault()?.Name;
+            return LoadFontFamily(fontStream).Name;
 #pragma warning restore CA1416
+        }
+
+        /// <summary>
+        /// Reads Font file as stream, because PrivateFontCollection.Dispose() does not work
+        /// </summary>
+        /// <param name="stream">Font file stream</param>
+        private static FontFamily LoadFontFamily(Stream stream)
+        {
+            var buffer = new byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
+            var data = Marshal.AllocCoTaskMem((int)stream.Length);
+
+            try
+            {
+                Marshal.Copy(buffer, 0, data, (int)stream.Length);
+#pragma warning disable CA1416
+                var prvFontCollection = new PrivateFontCollection();
+                prvFontCollection.AddMemoryFont(data, (int)stream.Length);
+
+                return prvFontCollection.Families.First();
+#pragma warning restore CA1416
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(data);
+            }
         }
     }
 }

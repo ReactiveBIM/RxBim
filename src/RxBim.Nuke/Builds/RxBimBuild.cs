@@ -218,7 +218,7 @@
                 .SetOutputDir(project.Solution.Directory / "out"));
 
             DeleteDirectory(OutputTmpDir);
-            SignSetupFile(setupFileName);
+            SignSetupFile($"{setupFileName}.exe");
         }
 
         private void SignSetupFile(string filePath)
