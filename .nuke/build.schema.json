@@ -102,6 +102,7 @@
               "Publish",
               "Release",
               "Restore",
+              "TagList",
               "Test"
             ]
           }
@@ -124,6 +125,7 @@
               "Publish",
               "Release",
               "Restore",
+              "TagList",
               "Test"
             ]
           }
