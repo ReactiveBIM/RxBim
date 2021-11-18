@@ -11,6 +11,7 @@ using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.Git;
+using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -21,7 +22,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
     OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
-    InvokedTargets = new[] { nameof(IPublish.List), nameof(TagList) },
+    InvokedTargets = new[] { nameof(TagList) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
@@ -68,8 +69,10 @@ partial class Build : NukeBuild,
     public Target TagList => _ => _
         .Executes(() =>
         {
-            GitTasks.Git("tag --points-at HEAD").ToList().ForEach(x =>
-                Console.WriteLine($"tag: {x.Text}"));
+            GitTasks.Git("status");
+            GitTasks.Git("tag --points-at HEAD");
+            /*GitTasks.Git("tag --points-at HEAD").ToList().ForEach(x =>
+                Console.WriteLine($"tag: {x.Text}"));*/
         });
 
     private T From<T>()

@@ -38,8 +38,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd List TagList'
-        run: ./build.cmd List TagList
+      - name: Run './build.cmd TagList'
+        run: ./build.cmd TagList
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PACKAGES: ${{ secrets.ALL_PACKAGES }}
