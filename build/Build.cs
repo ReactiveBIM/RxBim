@@ -69,6 +69,7 @@ partial class Build : NukeBuild,
     public Target TagList => _ => _
         .Executes(() =>
         {
+            GitTasks.Git("rev-parse HEAD");
             GitTasks.Git("status");
             GitTasks.Git("tag --points-at HEAD");
             /*GitTasks.Git("tag --points-at HEAD").ToList().ForEach(x =>
