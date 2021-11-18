@@ -12,7 +12,7 @@
     public static class AssemblyScanner
     {
         /// <summary>
-        /// Scan assembly
+        /// Scans assembly
         /// </summary>
         /// <param name="file">Assembly file</param>
         public static IEnumerable<AssemblyType> Scan(string file)

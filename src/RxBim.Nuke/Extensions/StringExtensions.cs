@@ -10,7 +10,7 @@
     public static class StringExtensions
     {
         /// <summary>
-        /// Type name of <see cref="PluginType"/>
+        /// Gets type name of <see cref="PluginType"/>
         /// </summary>
         /// <param name="type">Type name</param>
         public static PluginType ToPluginType(this string type)

@@ -9,15 +9,15 @@
     using Nuke.Models;
 
     /// <summary>
-    /// Генератор свойств проекта csproj
+    /// Project properties generator
     /// </summary>
     public class ProjectPropertiesGenerator
     {
         /// <summary>
-        /// Генерирует свойства проекта
+        /// Generates project properties
         /// </summary>
-        /// <param name="project">проект</param>
-        /// <param name="config">конфигурация</param>
+        /// <param name="project">Project</param>
+        /// <param name="config">Configuration</param>
         public void GenerateProperties(Project project, string config)
         {
             var binPath = project.BuildProject(config);
@@ -32,10 +32,10 @@
         }
 
         /// <summary>
-        /// Возвращает коллекцию XML объектов-свойств проекта с данными о типах для приложений и команд
+        /// Generates additional projects properties as <see cref="XElement"/> collection
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="pluginTypes">Типы приложений и команд</param>
+        /// <param name="project">Project</param>
+        /// <param name="pluginTypes"><see cref="AssemblyType"/> collection</param>
         protected virtual IEnumerable<XElement> GenerateAdditionalProperties(
             Project project,
             IEnumerable<AssemblyType> pluginTypes)

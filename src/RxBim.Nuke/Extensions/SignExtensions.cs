@@ -12,7 +12,7 @@
     public static class SignExtensions
     {
         /// <summary>
-        /// Sign files
+        /// Signs files
         /// </summary>
         /// <param name="filesPath">Files path</param>
         /// <param name="cert">Certificate path</param>
@@ -63,7 +63,7 @@
         }
 
         /// <summary>
-        /// Sign file
+        /// Signs file
         /// </summary>
         /// <param name="filePath">File path</param>
         /// <param name="cert">Certificate path</param>

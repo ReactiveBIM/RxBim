@@ -55,7 +55,7 @@
         public List<Components> Components { get; set; }
 
         /// <summary>
-        /// Map <see cref="ApplicationPackage"/> to <see cref="XElement"/>
+        /// Maps <see cref="ApplicationPackage"/> to <see cref="XElement"/>
         /// </summary>
         public XElement ToXElement()
         {

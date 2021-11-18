@@ -13,7 +13,7 @@
     public static class AssemblyTypeExtensions
     {
         /// <summary>
-        /// Sign assemblies
+        /// Signs assemblies
         /// </summary>
         /// <param name="assemblyTypes">Assembly types</param>
         /// <param name="outputDirectory">Output directory</param>
@@ -55,7 +55,7 @@
         }
 
         /// <summary>
-        /// Get <see cref="AssemblyType"/> from build path
+        /// Gets <see cref="AssemblyType"/> from build path
         /// </summary>
         /// <param name="binPath">Build path</param>
         public static List<AssemblyType> GetPluginTypes(this AbsolutePath binPath)

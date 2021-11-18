@@ -14,7 +14,7 @@
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Check release branch version name
+        /// Checks release branch version name
         /// </summary>
         public Target CheckCurrentBranch => _ => _
             .Executes(() =>
@@ -28,7 +28,7 @@
             });
 
         /// <summary>
-        /// Check project version and release branch version name
+        /// Checks project version and release branch version name
         /// </summary>
         public Target CheckStageVersion => _ => _
             .DependsOn(CheckCurrentBranch)
@@ -44,7 +44,7 @@
             });
 
         /// <summary>
-        /// Check master branch version name
+        /// Checks master branch version name
         /// </summary>
         public Target CheckProductionVersion => _ => _
             .Executes(() =>
@@ -97,7 +97,7 @@
             });
 
         /// <summary>
-        /// Tag project for testing
+        /// Tags project for testing
         /// </summary>
         public Target TagProject => _ => _
             .Requires(() => Project)

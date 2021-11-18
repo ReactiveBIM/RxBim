@@ -13,7 +13,7 @@
     public abstract class PackageContentsGenerator
     {
         /// <summary>
-        /// Generate PackageContents.xml
+        /// Generates PackageContents.xml
         /// </summary>
         /// <param name="project">Project</param>
         /// <param name="outputDirectory">Output path</param>
@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Get <see cref="Components"/> collection
+        /// Gets <see cref="Components"/> collection
         /// </summary>
         /// <param name="project">Project</param>
         protected abstract IEnumerable<Components> GetComponents(Project project);
