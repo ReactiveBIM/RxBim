@@ -8,9 +8,7 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.SpaceAutomation;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.Git;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -21,7 +19,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
     OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
-    InvokedTargets = new[] { nameof(IPublish.List), nameof(TagList) },
+    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
@@ -54,6 +52,7 @@ partial class Build : NukeBuild,
                 .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
+    
 
     public Target Test => _ => _
         .Before(Clean)
@@ -64,14 +63,7 @@ partial class Build : NukeBuild,
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
                 .SetConfiguration(From<IHazConfiguration>().Configuration));
         });
-
-    public Target TagList => _ => _
-        .Executes(() =>
-        {
-            GitTasks.Git("tag --points-at HEAD").ToList().ForEach(x =>
-                Console.WriteLine($"tag: {x.Text}"));
-        });
-
+    
     private T From<T>()
         where T : INukeBuild
         => (T)(object)this;
