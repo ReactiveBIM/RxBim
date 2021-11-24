@@ -38,8 +38,12 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd List TagList'
-        run: ./build.cmd List TagList
+      - name: Run './build.cmd Test Publish'
+        run: ./build.cmd Test Publish
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PACKAGES: ${{ secrets.ALL_PACKAGES }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: packages
+          path: artifacts/packages
