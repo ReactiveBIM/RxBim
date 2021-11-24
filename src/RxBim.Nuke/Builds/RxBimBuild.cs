@@ -212,13 +212,14 @@
                 .AddFonts()
                 .Build(iss);
 
+            var outDir = project.Solution.Directory / "out";
             InnoSetupTasks.InnoSetup(config => config
                 .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
                 .SetScriptFile(iss)
-                .SetOutputDir(project.Solution.Directory / "out"));
+                .SetOutputDir(outDir));
 
             DeleteDirectory(OutputTmpDir);
-            SignSetupFile($"{setupFileName}.exe");
+            SignSetupFile(outDir / $"{setupFileName}.exe");
         }
 
         private void SignSetupFile(string filePath)
