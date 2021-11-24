@@ -91,7 +91,7 @@
                 {
                     Files.CreateEntry(font, @"{autofonts}")
                         .FontInstall(GetFontName(font))
-                        .Flags(FileFlags.OnlyIfDestFileExists | FileFlags.UninsNeverUninstall);
+                        .Flags(FileFlags.OnlyIfDoesntExist | FileFlags.UninsNeverUninstall);
                 });
 
             return this;
