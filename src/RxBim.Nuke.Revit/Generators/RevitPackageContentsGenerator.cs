@@ -4,8 +4,8 @@
     using System.Linq;
     using global::Nuke.Common.ProjectModel;
     using Models;
+    using Nuke.Models;
     using RxBim.Nuke.Generators;
-    using RxBim.Nuke.Generators.Models;
 
     /// <summary>
     /// Генерирует PackageContents.xml

@@ -1,61 +1,61 @@
-﻿namespace RxBim.Nuke.Generators.Models
+﻿namespace RxBim.Nuke.Models
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
 
     /// <summary>
-    /// ApplicationPackage
+    /// Application package
     /// </summary>
     public class ApplicationPackage
     {
         /// <summary>
-        /// Версия схемы
+        /// Schema version
         /// </summary>
         public string SchemaVersion { get; set; } = "1.0";
 
         /// <summary>
-        /// Имя
+        /// Package name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Описание
+        /// Description
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Версия приложения
+        /// Application version
         /// </summary>
         public string AppVersion { get; set; }
 
         /// <summary>
-        /// Совместимая версия
+        /// Friendly version
         /// </summary>
         public string FriendlyVersion { get; set; }
 
         /// <summary>
-        /// Тип продукта
+        /// Product type
         /// </summary>
         public string ProductType { get; set; } = "Application";
 
         /// <summary>
-        /// Код продукта
+        /// Product code
         /// </summary>
         public string ProductCode { get; set; }
 
         /// <summary>
-        /// Код обновления
+        /// Upgrade code
         /// </summary>
         public string UpgradeCode { get; set; }
 
         /// <summary>
-        /// Компоненты
+        /// Components
         /// </summary>
         public List<Components> Components { get; set; }
 
         /// <summary>
-        /// Маппит <see cref="ApplicationPackage"/>  в <see cref="XElement"/>
+        /// Maps <see cref="ApplicationPackage"/> to <see cref="XElement"/>
         /// </summary>
         public XElement ToXElement()
         {

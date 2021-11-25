@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using Generators;
-    using Generators.Models;
     using global::Nuke.Common.ProjectModel;
+    using Models;
 
     /// <inheritdoc />
     public class AutocadPackageContentsGenerator : PackageContentsGenerator

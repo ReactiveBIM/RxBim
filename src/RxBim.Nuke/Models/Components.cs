@@ -1,44 +1,44 @@
-﻿namespace RxBim.Nuke.Generators.Models
+﻿namespace RxBim.Nuke.Models
 {
     using System.Xml.Linq;
 
     /// <summary>
-    /// Компонент
+    /// Components
     /// </summary>
     public abstract class Components
     {
         /// <summary>
-        /// Описание
+        /// Description
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Операционная система
+        /// Operation system
         /// </summary>
         public string OS { get; set; }
 
         /// <summary>
-        /// Платформа
+        /// Platform
         /// </summary>
         public string Platform { get; set; }
 
         /// <summary>
-        /// Минимальная версия платформы
+        /// Min platform version
         /// </summary>
         public string SeriesMin { get; set; }
 
         /// <summary>
-        /// Максимальная версия платформы
+        /// Max platform version
         /// </summary>
         public string SeriesMax { get; set; }
 
         /// <summary>
-        /// Имя модуля
+        /// Module name
         /// </summary>
         public string ModuleName { get; set; }
 
         /// <summary>
-        /// Маппит <see cref="Components"/>  в <see cref="XElement"/>
+        /// Maps <see cref="Components"/> to <see cref="XElement"/>
         /// </summary>
         public XElement ToXElement()
         {
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Получение ComponentEntry
+        /// Gets component entry
         /// </summary>
         protected abstract XElement GetComponentEntry();
 

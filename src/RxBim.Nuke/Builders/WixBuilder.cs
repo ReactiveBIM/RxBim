@@ -1,4 +1,4 @@
-﻿namespace RxBim.Nuke.Models
+﻿namespace RxBim.Nuke.Builders
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,8 @@
     using Extensions;
     using Generators;
     using global::Nuke.Common.ProjectModel;
+    using Models;
     using MsiBuilder;
-    using static Helpers.WixHelper;
 
     /// <summary>
     /// Wix extension
@@ -18,7 +18,7 @@
         private Options _options;
 
         /// <summary>
-        /// Build MSI
+        /// Builds MSI
         /// </summary>
         /// <param name="project">Selected project</param>
         /// <param name="configuration">Selected configuration</param>
@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Get build MSI options
+        /// Gets build MSI options
         /// </summary>
         /// <param name="project">Selected Project</param>
         /// <param name="outputDir">Output directory</param>
@@ -51,12 +51,12 @@
             string configuration)
         {
             var installDir = GetInstallDir(project, configuration);
-            return _options ??= project.GetBuildMsiOptions(
+            return _options ??= project.GetSetupOptions(
                 installDir, outputDir, configuration);
         }
 
         /// <summary>
-        /// Generate additional files
+        /// Generates additional files
         /// </summary>
         /// <param name="rootProjectName">Root project name</param>
         /// <param name="allProject">All projects</param>
@@ -71,7 +71,7 @@
         }
 
         /// <summary>
-        /// Generate package contents file
+        /// Generates package contents file
         /// </summary>
         /// <param name="project">Selected project</param>
         /// <param name="configuration">Selected configuration</param>
@@ -89,13 +89,13 @@
         }
 
         /// <summary>
-        /// Return True, if need generate PackageContents
+        /// Returns True, if need generate PackageContents
         /// </summary>
         /// <param name="configuration">Selected configuration</param>
         protected virtual bool NeedGeneratePackageContents(string configuration) => true;
 
         /// <summary>
-        /// Get Debug configuration install directory
+        /// Gets Debug configuration install directory
         /// </summary>
         /// <param name="project">Selected project</param>
         protected virtual string GetDebugInstallDir(Project project)
@@ -104,7 +104,7 @@
         }
 
         /// <summary>
-        /// Get installation directory
+        /// Gets installation directory
         /// </summary>
         /// <param name="project">Selected Project</param>
         /// <param name="configuration">Selected configuration</param>
@@ -121,7 +121,7 @@
         }
 
         /// <summary>
-        /// Get Release configuration install directory
+        /// Gets Release configuration install directory
         /// </summary>
         /// <param name="project">Selected project</param>
         private string GetReleaseInstallDir(Project project)

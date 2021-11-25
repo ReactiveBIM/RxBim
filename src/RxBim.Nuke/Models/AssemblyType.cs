@@ -1,16 +1,16 @@
 ﻿namespace RxBim.Nuke.Models
 {
     /// <summary>
-    /// Тип, извлеченный из сборки
+    /// Type from assembly
     /// </summary>
     public class AssemblyType
     {
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="assemblyName">Имя сборки</param>
-        /// <param name="fullName">полное имя</param>
-        /// <param name="baseTypeName">базовый тип</param>
+        /// <param name="assemblyName">Assembly name</param>
+        /// <param name="fullName">Full name</param>
+        /// <param name="baseTypeName">Base type name</param>
         public AssemblyType(
             string assemblyName, string fullName, string baseTypeName)
         {
@@ -20,17 +20,17 @@
         }
 
         /// <summary>
-        /// Имя сборки
+        /// Assembly name
         /// </summary>
         public string AssemblyName { get; }
 
         /// <summary>
-        /// Полное имя
+        /// Full name
         /// </summary>
         public string FullName { get; }
 
         /// <summary>
-        /// Базовый тип
+        /// Base type name
         /// </summary>
         public string BaseTypeName { get; }
 
