@@ -2,10 +2,8 @@ using System;
 using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
-using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.CI.SpaceAutomation;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
@@ -17,26 +15,24 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { DevelopBranch },
-    OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
+    OnPushBranches = new[] { DevelopBranch, FeatureBranches },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
+/*[GitHubActions("PullRequest",
+    GitHubActionsImage.WindowsLatest,
+    OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
+    InvokedTargets = new[] { nameof(Test) })]*/
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { MasterBranch, "release/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-[SpaceAutomation(
-    name: "CI",
-    image: "mcr.microsoft.com/dotnet/sdk:3.1",
-    OnPushBranchIncludes = new[] { DevelopBranch },
-    OnPush = true,
-    InvokedTargets = new[] { nameof(Test) })]
 partial class Build : NukeBuild,
     IPublish
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
+    const string FeatureBranches = "feature/**";
 
     public Build()
     {
@@ -56,7 +52,7 @@ partial class Build : NukeBuild,
 
     public Target Test => _ => _
         .Before(Clean)
-        .Before<ICompile>()
+        .Before<IRestore>()
         .Executes(() =>
         {
             DotNetTest(settings => settings
