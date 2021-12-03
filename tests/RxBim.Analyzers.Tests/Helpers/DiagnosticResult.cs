@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using System;
+#pragma warning disable 1591
 
 namespace TestHelper
 {
@@ -35,22 +36,22 @@ namespace TestHelper
     /// </summary>
     public struct DiagnosticResult
     {
-        private DiagnosticResultLocation[] locations;
+        private DiagnosticResultLocation[] _locations;
 
         public DiagnosticResultLocation[] Locations
         {
             get
             {
-                if (locations == null)
+                if (_locations == null)
                 {
-                    locations = new DiagnosticResultLocation[] { };
+                    _locations = new DiagnosticResultLocation[] { };
                 }
-                return locations;
+                return _locations;
             }
 
             set
             {
-                locations = value;
+                _locations = value;
             }
         }
 

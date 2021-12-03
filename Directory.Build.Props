@@ -3,7 +3,7 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(MSBuldProjectName.EndsWith(`Tests`))'">
+    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
