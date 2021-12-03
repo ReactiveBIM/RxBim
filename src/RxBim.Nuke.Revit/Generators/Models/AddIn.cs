@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Nuke.Revit.Generators.Models
 {
-    using RxBim.Nuke.Extensions;
     using RxBim.Nuke.Models;
 
     /// <summary>

@@ -9,7 +9,6 @@
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
     using InnoSetup.ScriptBuilder;
-    using InnoSetup.ScriptBuilder.Model.SetupSection;
     using MsiBuilder;
 
     /// <summary>

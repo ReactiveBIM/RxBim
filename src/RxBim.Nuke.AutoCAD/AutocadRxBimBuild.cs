@@ -3,7 +3,6 @@
     using Builders;
     using Builds;
     using Generators;
-    using Models;
 
     /// <inheritdoc />
     public class AutocadRxBimBuild
