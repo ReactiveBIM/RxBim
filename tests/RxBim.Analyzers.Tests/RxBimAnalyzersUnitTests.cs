@@ -4,11 +4,13 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TestHelper;
+#pragma warning disable 1591
 
 namespace RxBim.Analyzers.Tests
 {
-    using RxBim.Analyzers;
+    using Analyzers;
 
+    /// <inheritdoc />
     [TestClass]
     public class RxBimAnalyzersUnitTest : CodeFixVerifier
     {
