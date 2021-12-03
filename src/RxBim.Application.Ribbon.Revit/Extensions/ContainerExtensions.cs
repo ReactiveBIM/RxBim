@@ -2,38 +2,45 @@
 {
     using System;
     using System.Reflection;
-    using Abstractions;
+    using Abstractions.ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
+    using Ribbon.Extensions;
     using Services;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// Extensions for <see cref="IContainer"/>
     /// </summary>
     public static class ContainerExtensions
     {
-        private const bool CreateOnlyOnce = true;
-
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds ribbon menu from action
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="action">метод создания меню</param>
-        public static void AddMenu(this IContainer container, Action<IRibbon> action)
+        /// <param name="container">DI container</param>
+        /// <param name="action">Menu building action</param>
+        /// <param name="menuAssembly">Menu assembly</param>
+        public static void AddRevitMenu(
+            this IContainer container,
+            Action<IRibbonBuilder> action,
+            Assembly menuAssembly = null)
         {
-            container.AddMenu<RevitRibbonFactory, RevitMenuBuildService>(action, CreateOnlyOnce);
+            menuAssembly ??= Assembly.GetCallingAssembly();
+            container.AddMenu<RevitRibbonMenuBuilderFactory>(action, menuAssembly);
         }
 
         /// <summary>
-        /// Добавляет меню приложения
+        /// Adds ribbon menu from config
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="cfg">конфигурация</param>
-        /// <param name="assembly">сборка</param>
-        public static void AddMenu(this IContainer container, IConfiguration cfg = null, Assembly assembly = null)
+        /// <param name="container">DI container</param>
+        /// <param name="cfg">Configuration</param>
+        /// <param name="menuAssembly">Menu assembly</param>
+        public static void AddRevitMenu(
+            this IContainer container,
+            IConfiguration cfg = null,
+            Assembly menuAssembly = null)
         {
-            assembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonFactory, RevitMenuBuildService>(assembly, cfg, CreateOnlyOnce);
+            menuAssembly ??= Assembly.GetCallingAssembly();
+            container.AddMenu<RevitRibbonMenuBuilderFactory>(cfg, menuAssembly);
         }
     }
 }

@@ -91,10 +91,18 @@ namespace RxBim.Nuke.Builds
         [Solution]
         public Solution Solution { get; set; }
 
+        /// <summary>
+        /// Output temp directory
+        /// </summary>
+        protected virtual string OutputTmpDir
+            => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
+
+        /// <summary>
+        /// Output "bin" temp directory
+        /// </summary>
+        protected virtual string OutputTmpDirBin
+            => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
+
         private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
-
-        private string OutputTmpDir => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
-
-        private string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
     }
 }

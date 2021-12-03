@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Builders;
     using Builds;
     using Generators;
     using global::Nuke.Common.ProjectModel;

@@ -4,18 +4,17 @@
     using System.IO;
     using System.Reflection.Metadata;
     using System.Reflection.PortableExecutable;
-    using global::Nuke.Common.IO;
     using Models;
 
     /// <summary>
-    /// 123
+    /// Assembly scanner utils
     /// </summary>
     public static class AssemblyScanner
     {
         /// <summary>
-        /// Сканирует сборку
+        /// Scans assembly
         /// </summary>
-        /// <param name="file">Файл сборки</param>
+        /// <param name="file">Assembly file</param>
         public static IEnumerable<AssemblyType> Scan(string file)
         {
             if (File.Exists(file))

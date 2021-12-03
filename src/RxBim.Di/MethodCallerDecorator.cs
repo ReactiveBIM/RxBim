@@ -6,9 +6,9 @@
     public abstract class MethodCallerDecorator<T> : IMethodCaller<T>
     {
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="MethodCallerDecorator{T}"/> class.
         /// </summary>
-        /// <param name="decorated">декорируемый объект</param>
+        /// <param name="decorated">Decorated object</param>
         protected MethodCallerDecorator(IMethodCaller<T> decorated)
         {
             Decorated = decorated;
@@ -18,11 +18,11 @@
         public Type SourceObjectType => Decorated.SourceObjectType;
 
         /// <summary>
-        /// декорируемый объект
+        /// Decorated object
         /// </summary>
         protected IMethodCaller<T> Decorated { get; }
 
         /// <inheritdoc />
-        public abstract T InvokeCommand(IContainer container, string methodName);
+        public abstract T InvokeMethod(IContainer container, string methodName);
     }
 }

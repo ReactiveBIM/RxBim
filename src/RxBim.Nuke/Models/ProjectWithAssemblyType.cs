@@ -3,15 +3,15 @@
     using global::Nuke.Common.ProjectModel;
 
     /// <summary>
-    /// Проект и тип сборки
+    /// Pair of <see cref="Project"/> and <see cref="AssemblyType"/>
     /// </summary>
     public class ProjectWithAssemblyType
     {
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="project">Проект</param>
-        /// <param name="assemblyType">Тип сборки</param>
+        /// <param name="project"><see cref="Project"/></param>
+        /// <param name="assemblyType"><see cref="AssemblyType"/></param>
         public ProjectWithAssemblyType(
             Project project,
             AssemblyType assemblyType)
@@ -21,12 +21,12 @@
         }
 
         /// <summary>
-        /// Проект
+        /// Project
         /// </summary>
         public Project Project { get; }
 
         /// <summary>
-        /// Тип сборки
+        /// Assembly type
         /// </summary>
         public AssemblyType AssemblyType { get; }
     }

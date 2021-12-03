@@ -29,7 +29,7 @@
         private void CallCommandMethod(CommandDiConfigurator di)
         {
             var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeCommand(di.Container, Constants.ExecuteMethodName);
+            methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
         }
     }
 }

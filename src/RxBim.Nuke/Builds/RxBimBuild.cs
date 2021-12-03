@@ -4,13 +4,17 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Builders;
     using Extensions;
     using Generators;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Tools.InnoSetup;
+    using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
     using static global::Nuke.Common.IO.FileSystemTasks;
@@ -51,7 +55,21 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildInstaller(ProjectForMsiBuild, Configuration);
+                BuildMsiInstaller(ProjectForMsiBuild, Configuration);
+            });
+
+        /// <summary>
+        /// Builds an EXE package.
+        /// </summary>
+        public virtual Target BuildInnoExe => _ => _
+            .Description("Build installation EXE from selected project (if Release - sign assemblies)")
+            .DependsOn(SignAssemblies)
+            .DependsOn(GenerateAdditionalFiles)
+            .DependsOn(GeneratePackageContentsFile)
+            .Executes(() =>
+            {
+                CreateOutDirectory();
+                BuildInnoInstaller(ProjectForMsiBuild, Configuration);
             });
 
         /// <summary>
@@ -70,7 +88,7 @@
             });
 
         /// <summary>
-        /// Build MSI from tag Testing{ProjectName}
+        /// Builds MSI from tag Testing{ProjectName}
         /// </summary>
         public Target BuildFromTag => _ => _
             .Executes(() =>
@@ -86,12 +104,12 @@
                 foreach (var projectName in projectsForBuild)
                 {
                     var project = Solution.AllProjects.Single(x => x.Name == projectName);
-                    BuildInstaller(project, Configuration.Debug);
+                    BuildMsiInstaller(project, Configuration.Debug);
                 }
             });
 
         /// <summary>
-        /// Generate project properties (PackageGuid, UpgradeCode and other)
+        /// Generates project properties (PackageGuid, UpgradeCode and other)
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
@@ -123,7 +141,7 @@
                     (AbsolutePath)OutputTmpDirBin,
                     (AbsolutePath)Cert,
                     PrivateKey,
-                    Csp, 
+                    Csp,
                     Algorithm,
                     ServerUrl);
             });
@@ -165,7 +183,7 @@
             }
         }
 
-        private void BuildInstaller(
+        private void BuildMsiInstaller(
             Project project,
             string configuration)
         {
@@ -177,8 +195,48 @@
             DeleteDirectory(OutputTmpDir);
         }
 
+        private void BuildInnoInstaller(
+            Project project,
+            string configuration)
+        {
+            var iss = TemporaryDirectory / "package.iss";
+            var options = _wix.GetBuildMsiOptions(project, OutputTmpDir, configuration);
+            var setupFileName = $"{options.OutFileName}_{options.Version}";
+
+            InnoBuilder.Create(
+                options,
+                (AbsolutePath)OutputTmpDir,
+                (AbsolutePath)OutputTmpDirBin,
+                setupFileName)
+                .AddIcons()
+                .AddFonts()
+                .Build(iss);
+
+            var outDir = project.Solution.Directory / "out";
+            InnoSetupTasks.InnoSetup(config => config
+                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
+                .SetScriptFile(iss)
+                .SetOutputDir(outDir));
+
+            DeleteDirectory(OutputTmpDir);
+            SignSetupFile(outDir / $"{setupFileName}.exe");
+        }
+
+        private void SignSetupFile(string filePath)
+        {
+            if (Configuration != Configuration.Release)
+                return;
+
+            filePath.SignFile(
+                (AbsolutePath)Cert,
+                PrivateKey,
+                Csp,
+                Algorithm,
+                ServerUrl);
+        }
+
         /// <summary>
-        /// Get assembly types
+        /// Gets assembly types
         /// </summary>
         /// <param name="project">Selected Project</param>
         /// <param name="outputBinDir">Output assembly directory</param>

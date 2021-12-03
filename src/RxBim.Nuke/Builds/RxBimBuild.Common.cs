@@ -14,7 +14,7 @@
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Clean bin/, obj/ in solution
+        /// Cleans bin/, obj/ in solution
         /// </summary>
         public Target Clean => _ => _
             .Description("Clean bin/, obj/")
@@ -26,7 +26,7 @@
             });
 
         /// <summary>
-        /// Restore packages
+        /// Restores packages
         /// </summary>
         public Target Restore => _ => _
             .Description("Restore packages")
@@ -38,7 +38,7 @@
             });
 
         /// <summary>
-        /// Compile solution
+        /// Compiles solution
         /// </summary>
         public Target Compile => _ => _
             .Description("Compile solution")
@@ -51,7 +51,7 @@
             });
 
         /// <summary>
-        /// Run tests
+        /// Runs tests
         /// </summary>
         public Target Test => _ => _
             .Description("Run tests")
