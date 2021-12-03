@@ -8,7 +8,6 @@
     using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;
-    using static global::Nuke.Common.IO.FileSystemTasks;
 
     /// <summary>
     /// Wix extensions
