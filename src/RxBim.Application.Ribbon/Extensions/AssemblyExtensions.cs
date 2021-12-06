@@ -22,14 +22,18 @@
                 .Select(x => x.Trim())
                 .ToArray();
 
-            return strings.Length switch
+            var type = strings.Length switch
             {
                 1 => assembly.GetType(typeName),
-                2 => Assembly
+                _ => Assembly
                     .LoadFrom(Path.Combine(assembly.GetAssemblyDirectory(), strings[1] + ".dll"))
-                    .GetType(strings[0]),
-                _ => throw new ArgumentException()
+                    .GetType(strings[0])
             };
+
+            if (type is null)
+                throw new ArgumentException($"Failed to get type from name: {typeName}", nameof(typeName));
+
+            return type;
         }
 
         /// <summary>
