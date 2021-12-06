@@ -17,7 +17,7 @@
             : base(name)
         {
             CommandType = commandType;
-            BuildingButton.CommandType = commandType.FullName;
+            BuildingButton.CommandType = commandType.AssemblyQualifiedName;
         }
 
         /// <summary>
