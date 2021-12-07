@@ -49,9 +49,7 @@
             PreBuildActions();
 
             foreach (var tabConfig in RibbonConfiguration.Tabs)
-            {
                 CreateTab(tabConfig);
-            }
         }
 
         /// <summary>
@@ -208,12 +206,10 @@
                     case PullDownButton pullDownButton:
                         CreatePullDownButton(panel, pullDownButton);
                         break;
-                    case PanelLayoutElement separator
-                        when separator.LayoutElementType == PanelLayoutElementType.Separator:
+                    case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.Separator } _:
                         AddSeparator(panel);
                         break;
-                    case PanelLayoutElement separator
-                        when separator.LayoutElementType == PanelLayoutElementType.SlideOut:
+                    case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut } _:
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:

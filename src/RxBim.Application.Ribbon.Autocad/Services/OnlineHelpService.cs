@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services
 {
     using System;
+    using System.Collections.Generic;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Internal.Windows;
@@ -15,6 +16,7 @@
     /// </remarks>
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
+        private static readonly HashSet<RibbonToolTip> TrackedToolTips = new ();
         private static bool _dropNextHelpCall;
         private static string? _helpTopic;
 
@@ -45,14 +47,24 @@
             F1 = 0x70,
         }
 
-        /// <summary>
-        /// Starts the service
-        /// </summary>
+        /// <inheritdoc />
         public void Run()
         {
             Application.PreTranslateMessage += AutoCadMessageHandler;
             ComponentManager.ToolTipOpened += ComponentManager_ToolTipOpened;
             ComponentManager.ToolTipClosed += ComponentManager_ToolTipClosed;
+        }
+
+        /// <inheritdoc />
+        public void AddToolTip(RibbonToolTip toolTip)
+        {
+            TrackedToolTips.Add(toolTip);
+        }
+
+        /// <inheritdoc />
+        public void ClearToolTipsCache()
+        {
+            TrackedToolTips.Clear();
         }
 
         /// <inheritdoc />
@@ -65,10 +77,8 @@
 
         private static void ComponentManager_ToolTipOpened(object sender, EventArgs e)
         {
-            if (sender is ToolTip tt)
-            {
-                _helpTopic = tt.Content is RibbonToolTip rtt ? rtt.HelpTopic : tt.HelpTopic;
-            }
+            if (sender is ToolTip { Content: RibbonToolTip ribbonToolTip } && TrackedToolTips.Contains(ribbonToolTip))
+                _helpTopic = ribbonToolTip.HelpTopic;
         }
 
         private static void ComponentManager_ToolTipClosed(object sender, EventArgs e)

@@ -1,13 +1,26 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Abstractions
 {
+    using Autodesk.Windows;
+
     /// <summary>
-    /// Сервис обработки онлайн-справки
+    /// Online help processing service.
     /// </summary>
     public interface IOnlineHelpService
     {
         /// <summary>
-        /// Запускает работу сервиса
+        /// Starts the service.
         /// </summary>
         void Run();
+
+        /// <summary>
+        /// Adds a tracked tooltip.
+        /// </summary>
+        /// <param name="toolTip"><see cref="RibbonToolTip"/> object for tracking.</param>
+        void AddToolTip(RibbonToolTip toolTip);
+
+        /// <summary>
+        /// Clears a tooltip cache.
+        /// </summary>
+        void ClearToolTipsCache();
     }
 }
