@@ -15,16 +15,18 @@
         /// Sets tooltip for button
         /// </summary>
         /// <param name="ribbonButton">Ribbon button</param>
-        /// <param name="tooltip">Tooltip text</param>
+        /// <param name="tooltipText">Tooltip text</param>
         /// <param name="helpUrl">Help url string</param>
         /// <param name="description">Description</param>
+        /// <param name="newToolTipAction">Action for a new tooltip.</param>
         public static void SetTooltipForButton(
             this RibbonButton ribbonButton,
-            string? tooltip,
+            string? tooltipText,
             string? helpUrl,
-            string? description)
+            string? description,
+            Action<RibbonToolTip> newToolTipAction)
         {
-            var hasToolTip = !string.IsNullOrWhiteSpace(tooltip);
+            var hasToolTip = !string.IsNullOrWhiteSpace(tooltipText);
             var hasHelpUrl = !string.IsNullOrWhiteSpace(helpUrl);
 
             if (!hasToolTip && !hasHelpUrl)
@@ -34,14 +36,10 @@
                 { Title = string.IsNullOrWhiteSpace(ribbonButton.Text) ? ribbonButton.Name : ribbonButton.Text };
 
             if (!string.IsNullOrWhiteSpace(description))
-            {
                 toolTip.ExpandedContent = description;
-            }
 
             if (hasToolTip)
-            {
-                toolTip.Content = tooltip;
-            }
+                toolTip.Content = tooltipText;
 
             if (hasHelpUrl)
             {
@@ -52,6 +50,8 @@
             {
                 toolTip.IsHelpEnabled = false;
             }
+
+            newToolTipAction.Invoke(toolTip);
 
             ribbonButton.ToolTip = toolTip;
         }
