@@ -16,9 +16,9 @@
     /// </remarks>
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
-        private static readonly HashSet<RibbonToolTip> TrackedToolTips = new ();
-        private static bool _dropNextHelpCall;
-        private static string? _helpTopic;
+        private readonly HashSet<RibbonToolTip> _trackedToolTips = new ();
+        private bool _dropNextHelpCall;
+        private string? _helpTopic;
 
         /// <summary>
         /// Messages
@@ -58,13 +58,13 @@
         /// <inheritdoc />
         public void AddToolTip(RibbonToolTip toolTip)
         {
-            TrackedToolTips.Add(toolTip);
+            _trackedToolTips.Add(toolTip);
         }
 
         /// <inheritdoc />
         public void ClearToolTipsCache()
         {
-            TrackedToolTips.Clear();
+            _trackedToolTips.Clear();
         }
 
         /// <inheritdoc />
@@ -75,13 +75,13 @@
             ComponentManager.ToolTipClosed -= ComponentManager_ToolTipClosed;
         }
 
-        private static void ComponentManager_ToolTipOpened(object sender, EventArgs e)
+        private void ComponentManager_ToolTipOpened(object sender, EventArgs e)
         {
-            if (sender is ToolTip { Content: RibbonToolTip ribbonToolTip } && TrackedToolTips.Contains(ribbonToolTip))
+            if (sender is ToolTip { Content: RibbonToolTip ribbonToolTip } && _trackedToolTips.Contains(ribbonToolTip))
                 _helpTopic = ribbonToolTip.HelpTopic;
         }
 
-        private static void ComponentManager_ToolTipClosed(object sender, EventArgs e)
+        private void ComponentManager_ToolTipClosed(object sender, EventArgs e)
         {
             _helpTopic = null;
         }
