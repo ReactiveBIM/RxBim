@@ -15,7 +15,7 @@
 
     /// <inheritdoc />
     [PublicAPI]
-    public abstract class RevitRxBimBuild
+    public abstract partial class RevitRxBimBuild
         : RxBimBuild<RevitWixBuilder, RevitPackageContentsGenerator, RevitProjectPropertiesGenerator>
     {
         /// <summary>
