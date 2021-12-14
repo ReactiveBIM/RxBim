@@ -23,13 +23,21 @@
     public class AutocadRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
         private readonly Func<ThemeType> _getCurrentTheme;
+        private readonly Action _prebuildAction;
+        private readonly Action<RibbonToolTip> _toolTipAction;
         private readonly List<(RibbonButton, Button)> _createdButtons = new ();
 
         /// <inheritdoc />
-        public AutocadRibbonMenuBuilder(Func<ThemeType> getCurrentTheme, Assembly menuAssembly)
+        public AutocadRibbonMenuBuilder(
+            Assembly menuAssembly,
+            Func<ThemeType> getCurrentTheme,
+            Action prebuildAction,
+            Action<RibbonToolTip> toolTipAction)
             : base(menuAssembly)
         {
             _getCurrentTheme = getCurrentTheme;
+            _prebuildAction = prebuildAction;
+            _toolTipAction = toolTipAction;
         }
 
         /// <summary>
@@ -46,6 +54,7 @@
         {
             base.PreBuildActions();
             _createdButtons.Clear();
+            _prebuildAction();
         }
 
         /// <inheritdoc />
@@ -179,7 +188,10 @@
             where T : RibbonButton, new()
         {
             var ribbonButton = CreateNewButtonBase<T>(buttonConfig, size, orientation, forceTextSettings);
-            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip, buttonConfig.HelpUrl, buttonConfig.Description);
+            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip,
+                buttonConfig.HelpUrl,
+                buttonConfig.Description,
+                _toolTipAction);
             return ribbonButton;
         }
 
@@ -236,7 +248,7 @@
             {
                 var commandType = GetCommandType(buttonConfig.CommandType!);
                 var tooltip = GetTooltipContent(buttonConfig, commandType);
-                button.SetTooltipForButton(tooltip, buttonConfig.HelpUrl, buttonConfig.Description);
+                button.SetTooltipForButton(tooltip, buttonConfig.HelpUrl, buttonConfig.Description, _toolTipAction);
                 var commandName = commandType.GetCommandName();
                 button.CommandHandler = new RelayCommand(() =>
                     {
@@ -247,7 +259,10 @@
             }
             else
             {
-                button.SetTooltipForButton(buttonConfig.ToolTip, buttonConfig.HelpUrl, buttonConfig.Description);
+                button.SetTooltipForButton(buttonConfig.ToolTip,
+                    buttonConfig.HelpUrl,
+                    buttonConfig.Description,
+                    _toolTipAction);
             }
 
             return button;

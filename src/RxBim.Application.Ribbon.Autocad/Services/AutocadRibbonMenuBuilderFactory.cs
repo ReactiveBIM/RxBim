@@ -20,7 +20,10 @@
         /// <param name="onlineHelpService">Online help service</param>
         /// <param name="ribbonEventsService">Ribbon service</param>
         /// <param name="themeService">Theme service</param>
-        public AutocadRibbonMenuBuilderFactory(IOnlineHelpService onlineHelpService, IRibbonEventsService ribbonEventsService, IThemeService themeService)
+        public AutocadRibbonMenuBuilderFactory(
+            IOnlineHelpService onlineHelpService,
+            IRibbonEventsService ribbonEventsService,
+            IThemeService themeService)
         {
             _onlineHelpService = onlineHelpService;
             _ribbonEventsService = ribbonEventsService;
@@ -35,7 +38,10 @@
                 _onlineHelpService.Run();
                 _ribbonEventsService.Run();
                 _themeService.Run();
-                _builder = new AutocadRibbonMenuBuilder(_themeService.GetCurrentTheme, menuAssembly);
+                _builder = new AutocadRibbonMenuBuilder(menuAssembly,
+                    _themeService.GetCurrentTheme,
+                    _onlineHelpService.ClearToolTipsCache,
+                    _onlineHelpService.AddToolTip);
                 _ribbonEventsService.NeedRebuild += (_, _) => _builder.BuildRibbonMenu();
                 _themeService.ThemeChanged += (_, _) => _builder.ApplyCurrentTheme();
             }

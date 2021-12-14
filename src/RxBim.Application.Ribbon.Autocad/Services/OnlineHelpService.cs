@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services
 {
     using System;
+    using System.Collections.Generic;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Internal.Windows;
@@ -15,8 +16,9 @@
     /// </remarks>
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
-        private static bool _dropNextHelpCall;
-        private static string? _helpTopic;
+        private readonly HashSet<RibbonToolTip> _trackedToolTips = new ();
+        private bool _dropNextHelpCall;
+        private string? _helpTopic;
 
         /// <summary>
         /// Messages
@@ -45,14 +47,24 @@
             F1 = 0x70,
         }
 
-        /// <summary>
-        /// Starts the service
-        /// </summary>
+        /// <inheritdoc />
         public void Run()
         {
             Application.PreTranslateMessage += AutoCadMessageHandler;
             ComponentManager.ToolTipOpened += ComponentManager_ToolTipOpened;
             ComponentManager.ToolTipClosed += ComponentManager_ToolTipClosed;
+        }
+
+        /// <inheritdoc />
+        public void AddToolTip(RibbonToolTip toolTip)
+        {
+            _trackedToolTips.Add(toolTip);
+        }
+
+        /// <inheritdoc />
+        public void ClearToolTipsCache()
+        {
+            _trackedToolTips.Clear();
         }
 
         /// <inheritdoc />
@@ -63,15 +75,13 @@
             ComponentManager.ToolTipClosed -= ComponentManager_ToolTipClosed;
         }
 
-        private static void ComponentManager_ToolTipOpened(object sender, EventArgs e)
+        private void ComponentManager_ToolTipOpened(object sender, EventArgs e)
         {
-            if (sender is ToolTip tt)
-            {
-                _helpTopic = tt.Content is RibbonToolTip rtt ? rtt.HelpTopic : tt.HelpTopic;
-            }
+            if (sender is ToolTip { Content: RibbonToolTip ribbonToolTip } && _trackedToolTips.Contains(ribbonToolTip))
+                _helpTopic = ribbonToolTip.HelpTopic;
         }
 
-        private static void ComponentManager_ToolTipClosed(object sender, EventArgs e)
+        private void ComponentManager_ToolTipClosed(object sender, EventArgs e)
         {
             _helpTopic = null;
         }
