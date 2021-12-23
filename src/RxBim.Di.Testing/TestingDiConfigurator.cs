@@ -1,26 +1,27 @@
-﻿namespace RxBim.Di.Testing;
-
-using Autodesk.Revit.UI;
-
-/// <inheritdoc />
-public class TestingDiConfigurator : DiConfigurator<ITestConfiguration>
+﻿namespace RxBim.Di.Testing
 {
-    private readonly ExternalCommandData _commandData;
+    using Autodesk.Revit.UI;
 
     /// <inheritdoc />
-    public TestingDiConfigurator(ExternalCommandData commandData)
+    public class TestingDiConfigurator : DiConfigurator<ITestConfiguration>
     {
-        _commandData = commandData;
-    }
+        private readonly ExternalCommandData _commandData;
 
-    /// <inheritdoc />
-    protected override void ConfigureBaseDependencies()
-    {
-        Container
-            .AddInstance(_commandData)
-            .AddInstance(_commandData.Application)
-            .AddInstance(_commandData.Application.Application)
-            .AddTransient(() => _commandData.Application.ActiveUIDocument)
-            .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document);
+        /// <inheritdoc />
+        public TestingDiConfigurator(ExternalCommandData commandData)
+        {
+            _commandData = commandData;
+        }
+
+        /// <inheritdoc />
+        protected override void ConfigureBaseDependencies()
+        {
+            Container
+                .AddInstance(_commandData)
+                .AddInstance(_commandData.Application)
+                .AddInstance(_commandData.Application.Application)
+                .AddTransient(() => _commandData.Application.ActiveUIDocument)
+                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document);
+        }
     }
 }
