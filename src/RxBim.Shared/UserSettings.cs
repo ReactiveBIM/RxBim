@@ -98,7 +98,7 @@
         /// <param name="xDoc">XML элемент</param>
         /// <param name="callingAssembly">Сборка</param>
         /// <remarks>Метода исправлен на виртуальный, для того что бы переопределить сохранение во внутренюю переменную в тесте</remarks>
-        public virtual void Save(XElement xDoc, Assembly callingAssembly)
+        protected virtual void Save(XElement xDoc, Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
             using var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read);
@@ -110,7 +110,7 @@
         /// </summary>
         /// <param name="callingAssembly">Сборка.</param>
         /// <remarks>Метода исправлен на виртуальный, для того что бы переопределить сохранение во внутренюю переменную в тесте</remarks>
-        public virtual XElement LoadOrCreate(Assembly callingAssembly)
+        protected virtual XElement LoadOrCreate(Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
             if (File.Exists(fileName))
