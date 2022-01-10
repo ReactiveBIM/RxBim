@@ -12,16 +12,87 @@ namespace RxBim.UserSettings.Tests
     /// </summary>
     public class UserSettingsTest
     {
+        private readonly CustomUserSettingService _userSettingService;
+        
         /// <summary>
-        /// Get not initialized properties
+        /// ctor
+        /// </summary>
+        public UserSettingsTest()
+        {
+            _userSettingService = new CustomUserSettingService();
+        }
+        
+        /// <summary>
+        /// Test for existed integer node
         /// </summary>
         [Fact]
-        public void GetDefaultProperties()
+        public void IntegerExistedNodeCase()
         {
-            var userSettingsService = new CustomUserSettingService();
-            var testString = "Hello world";
             var testIntNum = 123;
+
+            // set saved value in service
+            _userSettingService.Set(testIntNum, nameof(testIntNum));
+
+            // check save
+            Assert.Equal(testIntNum, _userSettingService.Get<int>(nameof(testIntNum)));
+        }
+        
+        /// <summary>
+        /// Test for not existed integer node
+        /// </summary>
+        [Fact]
+        public void IntegerNotExistedNodeCase()
+        {
+            // check save
+            Assert.Equal(0, _userSettingService.Get<int>("defaultInt"));
+        }
+        
+        /// <summary>
+        /// Test for existed string node
+        /// </summary>
+        [Fact]
+        public void StringNodeCase()
+        {
+            var testString = "Hello world";
+
+            // set saved value in service
+            _userSettingService.Set(testString, nameof(testString));
+
+            // check save
+            Assert.Equal(testString, _userSettingService.Get<string>(nameof(testString)));
+        }
+        
+        /// <summary>
+        /// Test for not existed string node
+        /// </summary>
+        [Fact]
+        public void NotExistedStringNodeCase()
+        {
+            // check save
+            Assert.Equal(string.Empty, _userSettingService.Get<string>("defaultString"));
+        }
+        
+        /// <summary>
+        /// Test standard exemplar of test class
+        /// </summary>
+        [Fact]
+        public void StandardClassNodeCase()
+        {
             var testClass = new TestClass();
+
+            // set saved value in service
+            _userSettingService.Set(testClass, nameof(testClass));
+
+            // check save
+            Assert.Equal(testClass, _userSettingService.Get<TestClass>(nameof(testClass)));
+        }
+        
+        /// <summary>
+        /// Test edited exemplar of test class
+        /// </summary>
+        [Fact]
+        public void EditedClassNodeCase()
+        {
             var secondTestVariantClass = new TestClass
             {
                 IntProperty = 321,
@@ -29,19 +100,20 @@ namespace RxBim.UserSettings.Tests
             };
             
             // set saved value in service
-            userSettingsService.Set(testString, nameof(testString));
-            userSettingsService.Set(testIntNum, nameof(testIntNum));
-            userSettingsService.Set(testClass, nameof(testClass));
-            userSettingsService.Set(secondTestVariantClass, nameof(secondTestVariantClass));
+            _userSettingService.Set(secondTestVariantClass, nameof(secondTestVariantClass));
             
             // check save
-            Assert.Equal(testString, userSettingsService.Get<string>(nameof(testString)));
-            Assert.Equal(string.Empty, userSettingsService.Get<string>("defaultString"));
-            Assert.Equal(testIntNum, userSettingsService.Get<int>(nameof(testIntNum)));
-            Assert.Equal(0, userSettingsService.Get<int>("defaultInt"));
-            Assert.Equal(testClass, userSettingsService.Get<TestClass>(nameof(testClass)));
-            Assert.Equal(testClass, userSettingsService.Get<TestClass>("defaultTestClass"));
-            Assert.Equal(secondTestVariantClass, userSettingsService.Get<TestClass>(nameof(secondTestVariantClass)));
+            Assert.Equal(secondTestVariantClass, _userSettingService.Get<TestClass>(nameof(secondTestVariantClass)));
+        }
+        
+        /// <summary>
+        /// Test not exist exemplar of test class
+        /// </summary>
+        [Fact]
+        public void ClassNotExistNodeCase()
+        {
+            // check save
+            Assert.Equal(new TestClass(), _userSettingService.Get<TestClass>("defaultTestClass"));
         }
     }
 
