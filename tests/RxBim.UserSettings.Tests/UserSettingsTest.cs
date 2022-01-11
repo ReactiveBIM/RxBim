@@ -123,21 +123,14 @@ namespace RxBim.UserSettings.Tests
     public class CustomUserSettingService : UserSettings
     {
         private XElement? _xElement;
-        
-        /// <summary>
-        /// Сохранить файл
-        /// </summary>
-        /// <param name="xDoc">XML элемент</param>
-        /// <param name="callingAssembly">Сборка</param>
+
+        /// <inheritdoc />
         protected override void Save(XElement xDoc, Assembly callingAssembly)
         {
             _xElement = xDoc;
         }
 
-        /// <summary>
-        /// Загрузить или создать файл
-        /// </summary>
-        /// <param name="callingAssembly">Сборка.</param>
+        /// <inheritdoc />
         protected override XElement LoadOrCreate(Assembly callingAssembly)
         {
             return _xElement ?? new XElement("UserSettings");
@@ -160,7 +153,7 @@ namespace RxBim.UserSettings.Tests
         public int IntProperty { get; set; } = 123;
 
         /// <inheritdoc />
-        public bool Equals(TestClass other)
+        public bool Equals(TestClass? other)
         {
             if (ReferenceEquals(null, other)) 
                 return false;
@@ -170,7 +163,7 @@ namespace RxBim.UserSettings.Tests
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) 
                 return false;

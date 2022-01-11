@@ -93,11 +93,11 @@
         }
 
         /// <summary>
-        /// Сохранить файл
+        /// Save file
         /// </summary>
-        /// <param name="xDoc">XML элемент</param>
-        /// <param name="callingAssembly">Сборка</param>
-        /// <remarks>Метода исправлен на виртуальный, для того что бы переопределить сохранение во внутренюю переменную в тесте</remarks>
+        /// <param name="xDoc">XML element</param>
+        /// <param name="callingAssembly">CallingAssembly</param>
+        /// <remarks>Method made virtual, for override save action in variable in tests</remarks>
         protected virtual void Save(XElement xDoc, Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
@@ -106,10 +106,10 @@
         }
 
         /// <summary>
-        /// Загрузить или создать файл
+        /// Load or create file
         /// </summary>
-        /// <param name="callingAssembly">Сборка.</param>
-        /// <remarks>Метода исправлен на виртуальный, для того что бы переопределить сохранение во внутренюю переменную в тесте</remarks>
+        /// <param name="callingAssembly">CallingAssembly</param>
+        /// <remarks>Method made virtual, for override save action in variable in tests</remarks>
         protected virtual XElement LoadOrCreate(Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
