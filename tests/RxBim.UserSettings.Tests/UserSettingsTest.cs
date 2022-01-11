@@ -142,6 +142,9 @@ namespace RxBim.UserSettings.Tests
     /// </summary>
     public class TestClass : IEquatable<TestClass>
     {
+        private readonly int _numForHash = Convert.ToInt32(Random.NextDouble() * 1000000000);
+        private static readonly Random Random = new ();
+
         /// <summary>
         /// String property
         /// </summary>
@@ -177,7 +180,7 @@ namespace RxBim.UserSettings.Tests
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return HashCode.Combine(StringProperty, IntProperty);
+            return _numForHash;
         }
     }
 }
