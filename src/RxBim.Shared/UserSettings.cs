@@ -89,17 +89,28 @@
                 // ignore
             }
 
-            return Activator.CreateInstance<T>();
+            return type == typeof(string) ? (T)(object)string.Empty : Activator.CreateInstance<T>();
         }
 
-        private void Save(XElement xDoc, Assembly callingAssembly)
+        /// <summary>
+        /// Save file
+        /// </summary>
+        /// <param name="xDoc">XML element</param>
+        /// <param name="callingAssembly">CallingAssembly</param>
+        /// <remarks>Method made virtual, for override save action in variable in tests</remarks>
+        protected virtual void Save(XElement xDoc, Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
             using var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read);
             xDoc.Save(fStream);
         }
 
-        private XElement LoadOrCreate(Assembly callingAssembly)
+        /// <summary>
+        /// Load or create file
+        /// </summary>
+        /// <param name="callingAssembly">CallingAssembly</param>
+        /// <remarks>Method made virtual, for override save action in variable in tests</remarks>
+        protected virtual XElement LoadOrCreate(Assembly callingAssembly)
         {
             var fileName = GetSettingsFileName(callingAssembly);
             if (File.Exists(fileName))
