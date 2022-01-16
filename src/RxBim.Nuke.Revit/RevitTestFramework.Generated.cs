@@ -216,7 +216,7 @@ public partial class RevitTestSettings : ToolSettings
     /// <summary>
     ///   The Revit executable to be used for testing. If no executable is specified, RTF will use the first version of Revit that is found on the machine using the RevitAddinUtility. (OPTIONAL)
     /// </summary>
-    public virtual RevitVersions Revit { get; internal set; }
+    public virtual string Revit { get; internal set; }
     /// <summary>
     ///   Show this message and exit. (OPTIONAL)
     /// </summary>
@@ -1111,7 +1111,7 @@ public static partial class RevitTestSettingsExtensions
     ///   <p>The Revit executable to be used for testing. If no executable is specified, RTF will use the first version of Revit that is found on the machine using the RevitAddinUtility. (OPTIONAL)</p>
     /// </summary>
     [Pure]
-    public static T SetRevit<T>(this T toolSettings, RevitVersions revit) where T : RevitTestSettings
+    public static T SetRevit<T>(this T toolSettings, string revit) where T : RevitTestSettings
     {
         toolSettings = toolSettings.NewInstance();
         toolSettings.Revit = revit;
@@ -1186,24 +1186,5 @@ public static partial class RevitTestSettingsExtensions
         return toolSettings;
     }
     #endregion
-}
-#endregion
-#region RevitVersions
-/// <summary>
-///   Used within <see cref="RevitTestTasks"/>.
-/// </summary>
-[PublicAPI]
-[Serializable]
-[ExcludeFromCodeCoverage]
-[TypeConverter(typeof(TypeConverter<RevitVersions>))]
-public partial class RevitVersions : Enumeration
-{
-    public static RevitVersions _2019 = (RevitVersions) "2019";
-    public static RevitVersions _2020 = (RevitVersions) "2020";
-    public static RevitVersions _2021 = (RevitVersions) "2021";
-    public static implicit operator RevitVersions(string value)
-    {
-        return new RevitVersions { Value = value };
-    }
 }
 #endregion
