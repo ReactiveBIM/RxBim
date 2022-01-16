@@ -119,7 +119,7 @@
           },
           {
             "name": "Revit",
-            "type": "RevitVersions",
+            "type": "string",
             "format": "--revit={value}",
             "createOverload": true,
             "help": "The Revit executable to be used for testing. If no executable is specified, RTF will use the first version of Revit that is found on the machine using the RevitAddinUtility. (OPTIONAL)"
@@ -133,16 +133,6 @@
           }
         ]
       }
-    }
-  ],
-  "enumerations": [
-    {
-      "name": "RevitVersions",
-      "values": [
-        "2019",
-        "2020",
-        "2021"
-      ]
     }
   ]
 }

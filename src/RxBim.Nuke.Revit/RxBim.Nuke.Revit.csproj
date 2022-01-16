@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Nuke\RxBim.Nuke.csproj"/>
+        <ProjectReference Include="..\RxBim.Nuke\RxBim.Nuke.csproj" />
     </ItemGroup>
 
-<!--    <ItemGroup>-->
-<!--        <NukeSpecificationFiles Include="RevitTestFramework.json"/>-->
-<!--    </ItemGroup>-->
+    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <NukeSpecificationFiles Include="RevitTestFramework.json"/>
+    </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nuke.Common" Version="5.2.1"/>
-        <PackageReference Include="RevitTestFramework" Version="1.19.23">
+        <PackageReference Include="Nuke.Common" Version="5.2.1" />
+        <PackageReference Include="RevitTestFramework" Version="1.19.22">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
