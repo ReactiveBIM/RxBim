@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" />
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
+        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" ExcludeAssets="runtime" />
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
     </ItemGroup>
 
     <ItemGroup>
