@@ -24,5 +24,10 @@ namespace RxBim.Example.IntegrationTests.Setup
             element.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_COMMENTS)?.Set("trulala");
             t.Commit();
         }
+
+        public void Throw()
+        {
+            throw new System.Exception();
+        }
     }
 }

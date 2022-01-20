@@ -1,5 +1,6 @@
 namespace RxBim.Example.IntegrationTests
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.DB;
@@ -57,6 +58,15 @@ namespace RxBim.Example.IntegrationTests
         public void AlwaysSuccess()
         {
             Assert.Pass();
+        }
+        
+        [Test]
+        [TestModel("./model.rvt")]
+        public void Test3()
+        {
+            var testService = _container.GetService<ITestService>();
+
+            testService.Throw();
         }
     }
 }
