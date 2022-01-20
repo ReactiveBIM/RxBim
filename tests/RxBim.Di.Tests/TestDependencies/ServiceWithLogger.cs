@@ -1,13 +1,14 @@
-﻿namespace RxBim.Di.Tests.TestDependencies;
-
-using Serilog;
-
-public class ServiceWithLogger
+﻿namespace RxBim.Di.Tests.TestDependencies
 {
-    private readonly ILogger _logger;
+    using Serilog;
 
-    public ServiceWithLogger(ILogger logger)
+    public class ServiceWithLogger
     {
-        _logger = logger;
+        private readonly ILogger _logger;
+
+        public ServiceWithLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
     }
 }
