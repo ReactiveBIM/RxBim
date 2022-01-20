@@ -11,9 +11,9 @@
         <ProjectReference Include="..\RxBim.Nuke\RxBim.Nuke.csproj" />
     </ItemGroup>
 
-    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <NukeSpecificationFiles Include="RevitTestFramework.json" />
-    </ItemGroup>
+<!--    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">-->
+<!--        <NukeSpecificationFiles Include="RevitTestFramework.json" />-->
+<!--    </ItemGroup>-->
 
     <ItemGroup>
         <PackageReference Include="Nuke.Common" Version="5.2.1" />
