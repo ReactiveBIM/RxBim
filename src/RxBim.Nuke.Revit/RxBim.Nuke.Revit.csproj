@@ -12,15 +12,22 @@
     </ItemGroup>
 
     <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <NukeSpecificationFiles Include="RevitTestFramework.json"/>
+        <NukeSpecificationFiles Include="RevitTestFramework.json" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Nuke.Common" Version="5.2.1" />
+        <PackageReference Include="RazorLight" Version="2.0.0-rc.4" />
         <PackageReference Include="RevitTestFramework" Version="1.19.22">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="TestHelpers\Result.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <PropertyGroup>

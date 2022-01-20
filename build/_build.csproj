@@ -9,17 +9,18 @@
     <LangVersion>8</LangVersion>
     <IsPackable>false</IsPackable>
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BimLab.Nuke" Version="2021.3.0" />
     <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.8.0" />
-    <PackageReference Include="ConsoleTableExt" Version="3.1.9" />
     <PackageReference Include="NuGet.CommandLine" Version="5.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Nuke.Common" Version="5.2.1" />
+    <PackageReference Include="RazorLight" Version="2.0.0-rc.4" />
     <PackageReference Include="RevitTestFramework" Version="1.19.22">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -52,5 +53,5 @@
     <ProjectReference Include="..\src\RxBim.Nuke.Revit\RxBim.Nuke.Revit.csproj" />
     <ProjectReference Include="..\src\RxBim.Nuke\RxBim.Nuke.csproj" />
   </ItemGroup>
-  
+
 </Project>

@@ -10,5 +10,7 @@ namespace RxBim.Example.IntegrationTests.Setup
         /// </summary>
         /// <param name="element">Revit element</param>
         void SetComment(Autodesk.Revit.DB.Element element);
+
+        void Throw();
     }
 }
