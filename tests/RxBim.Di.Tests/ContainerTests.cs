@@ -1,7 +1,10 @@
 ﻿namespace RxBim.Di.Tests
 {
+    using System;
     using System.Collections.Generic;
     using FluentAssertions;
+    using Logs;
+    using TestDependencies;
     using Xunit;
 
     public class ContainerTests
@@ -73,6 +76,18 @@
 
             container.Dispose();
             svc1.Disposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public void LoggerInSingletonService()
+        {
+            var container = new SimpleInjectorContainer();
+            container.AddLogs();
+            container.AddSingleton<ServiceWithLogger>();
+
+            Action act = () => container.GetService<ServiceWithLogger>();
+
+            act.Should().NotThrow();
         }
     }
 }

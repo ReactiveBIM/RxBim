@@ -16,6 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
       <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+      <ProjectReference Include="..\..\src\RxBim.Logs\RxBim.Logs.csproj" />
       <ProjectReference Include="..\..\src\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
