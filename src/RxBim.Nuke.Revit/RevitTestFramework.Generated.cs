@@ -196,7 +196,7 @@ public partial class RevitTestSettings : ToolSettings
     /// <summary>
     ///   The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)
     /// </summary>
-    public virtual bool? Time { get; internal set; }
+    public virtual int? Time { get; internal set; }
     /// <summary>
     ///   Run tests with same model without reopening the model for faster execution, requires continuous. (OPTIONAL)
     /// </summary>
@@ -826,7 +826,7 @@ public static partial class RevitTestSettingsExtensions
     ///   <p>The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)</p>
     /// </summary>
     [Pure]
-    public static T SetTime<T>(this T toolSettings, bool? time) where T : RevitTestSettings
+    public static T SetTime<T>(this T toolSettings, int? time) where T : RevitTestSettings
     {
         toolSettings = toolSettings.NewInstance();
         toolSettings.Time = time;
@@ -841,39 +841,6 @@ public static partial class RevitTestSettingsExtensions
     {
         toolSettings = toolSettings.NewInstance();
         toolSettings.Time = null;
-        return toolSettings;
-    }
-    /// <summary>
-    ///   <p><em>Enables <see cref="RevitTestSettings.Time"/></em></p>
-    ///   <p>The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)</p>
-    /// </summary>
-    [Pure]
-    public static T EnableTime<T>(this T toolSettings) where T : RevitTestSettings
-    {
-        toolSettings = toolSettings.NewInstance();
-        toolSettings.Time = true;
-        return toolSettings;
-    }
-    /// <summary>
-    ///   <p><em>Disables <see cref="RevitTestSettings.Time"/></em></p>
-    ///   <p>The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)</p>
-    /// </summary>
-    [Pure]
-    public static T DisableTime<T>(this T toolSettings) where T : RevitTestSettings
-    {
-        toolSettings = toolSettings.NewInstance();
-        toolSettings.Time = false;
-        return toolSettings;
-    }
-    /// <summary>
-    ///   <p><em>Toggles <see cref="RevitTestSettings.Time"/></em></p>
-    ///   <p>The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)</p>
-    /// </summary>
-    [Pure]
-    public static T ToggleTime<T>(this T toolSettings) where T : RevitTestSettings
-    {
-        toolSettings = toolSettings.NewInstance();
-        toolSettings.Time = !toolSettings.Time;
         return toolSettings;
     }
     #endregion

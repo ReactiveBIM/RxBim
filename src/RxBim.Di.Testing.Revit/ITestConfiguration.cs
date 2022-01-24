@@ -1,4 +1,4 @@
-namespace RxBim.Di.Testing
+namespace RxBim.Di.Testing.Revit
 {
     /// <inheritdoc />
     public interface ITestConfiguration : IPluginConfiguration

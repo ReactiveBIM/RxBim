@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net47</TargetFramework>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 
@@ -17,7 +17,7 @@
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>RxBim Testing Library</Description>
-        <PackageId>RxBim.Di.Testing</PackageId>
+        <PackageId>RxBim.Di.Testing.Revit</PackageId>
     </PropertyGroup>
 
 </Project>
