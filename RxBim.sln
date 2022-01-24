@@ -97,7 +97,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.UserSettings.Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fx.Testing", "Fx.Testing", "{44780372-4217-4AFD-86CB-A777B1B3CD38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.Testing", "src\RxBim.Di.Testing\RxBim.Di.Testing.csproj", "{5BFFC5A3-1A29-4520-A658-59C92F44E9B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.Testing.Revit", "src\RxBim.Di.Testing.Revit\RxBim.Di.Testing.Revit.csproj", "{5BFFC5A3-1A29-4520-A658-59C92F44E9B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Example.IntegrationTests", "tests\RxBim.Example.IntegrationTests\RxBim.Example.IntegrationTests.csproj", "{E57349F4-1638-40FA-849D-DAA0311015FA}"
 EndProject

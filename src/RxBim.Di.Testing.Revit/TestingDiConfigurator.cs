@@ -1,4 +1,4 @@
-﻿namespace RxBim.Di.Testing
+﻿namespace RxBim.Di.Testing.Revit
 {
     using Autodesk.Revit.UI;
 

@@ -4,7 +4,7 @@ namespace RxBim.Example.IntegrationTests
     using System.Reflection;
     using Autodesk.Revit.DB;
     using Di;
-    using Di.Testing;
+    using Di.Testing.Revit;
     using NUnit.Framework;
     using RTF.Applications;
     using RTF.Framework;
