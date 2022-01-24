@@ -16,7 +16,7 @@
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-        <Description>RxBim Testing Library</Description>
+            <Description>RxBim Testing Library</Description>
         <PackageId>RxBim.Di.Testing.Revit</PackageId>
     </PropertyGroup>
 
