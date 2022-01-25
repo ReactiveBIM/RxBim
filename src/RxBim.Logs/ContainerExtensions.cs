@@ -34,7 +34,7 @@
             IConfiguration cfg,
             Action<IContainer, LoggerConfiguration> addEnricher)
         {
-            container.AddTransient(
+            container.AddSingleton(
                 () =>
                 {
                     if (cfg == null)
