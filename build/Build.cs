@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Xml;
 using Bimlab.Nuke.Components;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
@@ -14,7 +9,6 @@ using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
-using RazorLight;
 using RxBim.Nuke.Revit.TestHelpers;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -68,6 +62,9 @@ partial class Build : NukeBuild,
                 .SetFilter("FullyQualifiedName!~IntegrationTests"));
         });
 
+    /// <summary>
+    /// Example target. Runs local only....
+    /// </summary>
     Target IntegrationTests => _ => _
         .Executes(async () =>
         {

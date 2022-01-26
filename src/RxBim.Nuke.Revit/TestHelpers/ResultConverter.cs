@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Revit.TestHelpers
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
@@ -42,32 +43,45 @@
             return testResultData;
         }
 
-        private TestResultData InitTestResultData(XmlDocument doc)
+        private TestResultData InitTestResultData([NotNull] XmlDocument doc)
         {
-            var assemblyPath = doc.SelectSingleNode("/test-results").Attributes["name"].Value;
-            var assemblyName = Path.GetFileName(assemblyPath);
-            var testResultData = new TestResultData
+            var xmlAttributeCollection = doc.SelectSingleNode("/test-results")?.Attributes;
+            if (xmlAttributeCollection != null)
             {
-                AssemblyName = assemblyName
-            };
-            return testResultData;
+                var assemblyPath = xmlAttributeCollection["name"]?.Value;
+                var assemblyName = Path.GetFileName(assemblyPath);
+                var testResultData = new TestResultData
+                {
+                    AssemblyName = assemblyName
+                };
+                return testResultData;
+            }
+
+            throw new ArgumentException($"Result document has wrong structure!");
         }
 
         private IEnumerable<TestFixtureData> CreateFixturesData([NotNull] XmlDocument doc)
         {
-            var fixturesData = doc.DocumentElement.SelectNodes("/test-results/test-suite/results/test-suite");
+            var fixturesData = doc.DocumentElement?.SelectNodes("/test-results/test-suite/results/test-suite");
+            if (fixturesData == null)
+            {
+                yield break;
+            }
+
             foreach (XmlElement node in fixturesData)
             {
                 var testFixtureData = new TestFixtureData
                 {
-                    Name = node.Attributes["name"].Value
+                    Name = node.Attributes["name"]?.Value
                 };
-                var cases = node.FirstChild.ChildNodes;
-                var data = new List<List<object>>();
-                foreach (XmlElement @case in cases)
+                var cases = node.FirstChild?.ChildNodes;
+                if (cases != null)
                 {
-                    var testCaseData = CreateTestCaseData(@case);
-                    testFixtureData.Cases.Add(testCaseData);
+                    foreach (XmlElement @case in cases)
+                    {
+                        var testCaseData = CreateTestCaseData(@case);
+                        testFixtureData.Cases.Add(testCaseData);
+                    }
                 }
 
                 yield return testFixtureData;
@@ -78,13 +92,13 @@
         {
             var testCaseData = new TestCaseData
             {
-                Name = @case.Attributes["name"].Value,
-                Success = @case.Attributes["success"].Value == "True",
-                ExecutionTime = @case.Attributes["time"].Value
+                Name = @case.Attributes["name"]?.Value,
+                Success = @case.Attributes["success"]?.Value == "True",
+                ExecutionTime = @case.Attributes["time"]?.Value
             };
             testCaseData.Failure = testCaseData.Success
                 ? "-"
-                : @case.FirstChild.FirstChild.InnerText + @case.FirstChild.LastChild.InnerText;
+                : @case.FirstChild?.FirstChild?.InnerText + @case.FirstChild?.LastChild?.InnerText;
             return testCaseData;
         }
 

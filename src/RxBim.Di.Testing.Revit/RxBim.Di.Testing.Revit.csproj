@@ -6,17 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
+        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Analyzers\RxBim.Analyzers.csproj" />
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+        <ProjectReference Include="..\RxBim.Analyzers\RxBim.Analyzers.csproj"/>
+        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj"/>
     </ItemGroup>
 
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-            <Description>RxBim Testing Library</Description>
+        <Description>RxBim Testing Library</Description>
         <PackageId>RxBim.Di.Testing.Revit</PackageId>
     </PropertyGroup>
 
