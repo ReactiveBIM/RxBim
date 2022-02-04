@@ -41,6 +41,7 @@
                 .AppId(options.PackageGuid)
                 .AppVersion(options.Version)
                 .DefaultDirName(_projInstallDir)
+                .UsePreviousAppDir(YesNo.No)
                 .PrivilegesRequired(PrivilegesRequired.Lowest)
                 .OutputBaseFilename(outputFileName)
                 .DisableDirPage(YesNo.Yes);
