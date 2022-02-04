@@ -85,7 +85,7 @@
           {
             "name": "Time",
             "type": "int",
-            "format": "--time",
+            "format": "--time={value}",
             "createOverload": true,
             "help": "The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)"
           },

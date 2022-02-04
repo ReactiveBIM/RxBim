@@ -234,7 +234,7 @@ public partial class RevitTestSettings : ToolSettings
           .Add("--concatenate", Concatenate)
           .Add("--copyAddins", CopyAddins)
           .Add("--continuous", Continuous)
-          .Add("--time", Time)
+          .Add("--time={value}", Time)
           .Add("--groupByModel", GroupByModel)
           .Add("--dry", Dry)
           .Add("--clean", Clean)
