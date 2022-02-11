@@ -274,3 +274,4 @@ global.json
 .nuke/temp
 
 testoutput/
+result.html
