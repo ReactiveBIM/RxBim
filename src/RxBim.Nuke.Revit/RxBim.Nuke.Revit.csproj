@@ -30,6 +30,10 @@
       </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Directory.Build.Props" />
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>RxBim nuke plugin for automation of building for Revit</Description>
