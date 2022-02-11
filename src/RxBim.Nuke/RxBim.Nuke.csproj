@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.8.0" />
-        <PackageReference Include="InnoSetup.ScriptBuilder" Version="1.0.1" />
+        <PackageReference Include="InnoSetup.ScriptBuilder" Version="1.1.0" />
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
         <PackageReference Include="Tools.InnoSetup" Version="6.2.0" IncludeAssets="All" />
         <PackageReference Include="Nuke.Common" Version="5.2.1" />

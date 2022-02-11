@@ -37,8 +37,9 @@
             _projInstallDir = $@"{installDir}\{options.ProjectName}";
             var outputFileName = setupFileName ?? $"{options.OutFileName}_{options.Version}";
 
+            // TODO: добавить скрипт удаления
             _setupBuilder = Setup.Create(options.ProductProjectName)
-                .AppId(options.PackageGuid)
+                .AppId(options.PackageGuid) // TODO: обернуть в {} 
                 .AppVersion(options.Version)
                 .DefaultDirName(_projInstallDir)
                 .UsePreviousAppDir(YesNo.No)
