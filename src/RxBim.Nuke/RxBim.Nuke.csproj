@@ -22,6 +22,10 @@
         <Link>Options.cs</Link>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Builders\uninstall.pas" />
+    </ItemGroup>
     
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>

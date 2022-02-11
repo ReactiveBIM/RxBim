@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Runtime.InteropServices;
+    using Extensions;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
     using InnoSetup.ScriptBuilder;
@@ -37,9 +38,8 @@
             _projInstallDir = $@"{installDir}\{options.ProjectName}";
             var outputFileName = setupFileName ?? $"{options.OutFileName}_{options.Version}";
 
-            // TODO: добавить скрипт удаления
             _setupBuilder = Setup.Create(options.ProductProjectName)
-                .AppId(options.PackageGuid) // TODO: обернуть в {} 
+                .AppId($"{{{{{options.PackageGuid}}}")
                 .AppVersion(options.Version)
                 .DefaultDirName(_projInstallDir)
                 .UsePreviousAppDir(YesNo.No)
@@ -79,6 +79,15 @@
             if (!string.IsNullOrWhiteSpace(_options.UninstallIcon))
                 _setupBuilder.UninstallDisplayIcon($@"{_projInstallDir}\{_options.UninstallIcon}");
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds uninstall script
+        /// </summary>
+        public InnoBuilder AddUninstallScript()
+        {
+            Code.CreateEntry(EmbeddedResourceExtensions.ReadResource("uninstall.pas"));
             return this;
         }
 

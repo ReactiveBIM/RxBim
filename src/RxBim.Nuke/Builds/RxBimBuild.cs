@@ -210,6 +210,7 @@
                 setupFileName)
                 .AddIcons()
                 .AddFonts()
+                .AddUninstallScript()
                 .Build(iss);
 
             var outDir = project.Solution.Directory / "out";
