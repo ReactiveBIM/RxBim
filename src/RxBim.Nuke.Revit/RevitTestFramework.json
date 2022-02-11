@@ -1,0 +1,138 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nuke-build/nuke/master/source/Nuke.CodeGeneration/schema.json",
+  "name": "RevitTest",
+  "officialUrl": "https://github.com/DynamoDS/RevitTestFramework",
+  "help": "The Revit Test Framework (RTF) allows you to conduct remote unit testing on Revit. RTF takes care of creating a journal file for running revit which can specify a model to start Revit, and a specific test or fixture of tests to run. You can even specify a model to open before testing and RTF will do that as well.",
+  "packageId": "RevitTestFramework",
+  "packageExecutable": "RevitTestFrameworkConsole.exe",
+  "tasks": [
+    {
+      "settingsClass": {
+        "properties": [
+          {
+            "name": "Dir",
+            "type": "string",
+            "format": "--dir={value}",
+            "createOverload": true,
+            "help": "The full path to the working directory. The working directory is the directory in which RTF will generate the journal and the addin to Run Revit. Revit's run-by-journal capability requires that all addins which need to be loaded are in the same directory as the journal file. So, if you're testing other addins on top of Revit using RTF, you'll need to put those addins in whatever directory you specify as the working directory."
+          },
+          {
+            "name": "Assembly",
+            "type": "string",
+            "format": "--assembly={value}",
+            "createOverload": true,
+            "help": "The full path to the assembly containing your tests."
+          },
+          {
+            "name": "Results",
+            "type": "string",
+            "format": "--results={value}",
+            "createOverload": true,
+            "help": "The full path to an .xml file that will contain the results."
+          },
+          {
+            "name": "Fixture",
+            "type": "List<string>",
+            "format": "--fixture={value}",
+            "separator": " ",
+            "createOverload": true,
+            "help": "The full name (with namespace) of a test fixture to run. If no fixture, no category and no test names are specified, RTF will run all tests in the assembly.(OPTIONAL)"
+          },
+          {
+            "name": "TestName",
+            "type": "List<string>",
+            "format": "--testName={value}",
+            "separator": " ",
+            "createOverload": true,
+            "help": "The name of a test to run. If no fixture, no category and no test names are specified, RTF will run all tests in the assembly. (OPTIONAL)"
+          },
+          {
+            "name": "Category",
+            "type": "List<string>",
+            "format": "--category={value}",
+            "createOverload": true,
+            "help": "The name of a test category to run. If no fixture, no category and no test names are specified, RTF will run all tests in the assembly. (OPTIONAL)"
+          },
+          {
+            "name": "Exclude",
+            "type": "List<string>",
+            "format": "--exclude={value}",
+            "separator": " ",
+            "createOverload": true,
+            "help": "The name of a test category to exclude. This has a higher priority than other settings. If a specified category is set here, any test cases that belongs to that category will not be run. (OPTIONAL)"
+          },
+          {
+            "name": "Concatenate",
+            "type": "bool",
+            "format": "--concatenate",
+            "createOverload": true,
+            "help": "Concatenate the results from this run of RTF with an existing results file if one exists at the path specified. The default behavior is to replace the existing results file. (OPTIONAL)"
+          },
+          {
+            "name": "CopyAddins",
+            "type": "bool",
+            "format": "--copyAddins",
+            "createOverload": true,
+            "help": "Specify whether to copy the addins from the Revit folder to the current working directory. Copying the addins from the Revit folder will cause the test process to simulate the typical setup on your machine. (OPTIONAL)"
+          },
+          {
+            "name": "Continuous",
+            "type": "bool",
+            "format": "--continuous",
+            "createOverload": true,
+            "help": "Run all selected tests in one Revit session. (OPTIONAL)"
+          },
+          {
+            "name": "Time",
+            "type": "int",
+            "format": "--time={value}",
+            "createOverload": true,
+            "help": "The time, in milliseconds, after which RTF will close the testing process automatically. (OPTIONAL)"
+          },
+          {
+            "name": "GroupByModel",
+            "type": "bool",
+            "format": "--groupByModel",
+            "createOverload": true,
+            "help": "Run tests with same model without reopening the model for faster execution, requires continuous. (OPTIONAL)"
+          },
+          {
+            "name": "Dry",
+            "type": "bool",
+            "format": "--dry",
+            "createOverload": true,
+            "help": "Conduct a dry run. (OPTIONAL)"
+          },
+          {
+            "name": "Clean",
+            "type": "bool",
+            "format": "--clean",
+            "createOverload": true,
+            "help": "Cleanup journal files after test completion. (OPTIONAL)"
+          },
+          {
+            "name": "Debug",
+            "type": "bool",
+            "format": "--debug",
+            "createOverload": true,
+            "help": "Should RTF attempt to attach to a debugger?. (OPTIONAL)"
+          },
+          {
+            "name": "Revit",
+            "type": "string",
+            "format": "--revit={value}",
+            "createOverload": true,
+            "help": "The Revit executable to be used for testing. If no executable is specified, RTF will use the first version of Revit that is found on the machine using the RevitAddinUtility. (OPTIONAL)"
+          },
+          {
+            "name": "Help",
+            "type": "bool",
+            "format": "--help",
+            "createOverload": true,
+            "help": "Show this message and exit. (OPTIONAL)"
+          }
+        ]
+      }
+    }
+  ]
+}

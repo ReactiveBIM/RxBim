@@ -6,8 +6,10 @@ using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
+using RxBim.Nuke.Revit.TestHelpers;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -48,7 +50,6 @@ partial class Build : NukeBuild,
                 .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
-    
 
     public Target Test => _ => _
         .Before(Clean)
@@ -57,9 +58,45 @@ partial class Build : NukeBuild,
         {
             DotNetTest(settings => settings
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
-                .SetConfiguration(From<IHazConfiguration>().Configuration));
+                .SetConfiguration(From<IHazConfiguration>().Configuration)
+                .SetFilter("FullyQualifiedName!~IntegrationTests"));
         });
-    
+
+    /// <summary>
+    /// Example target. Runs local only....
+    /// </summary>
+    Target IntegrationTests => _ => _
+        .Executes(async () =>
+        {
+            var solution = From<IHazSolution>().Solution;
+
+            var testProjectName = "RxBim.Example.IntegrationTests";
+            var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
+                          throw new ArgumentException("project not found");
+
+            var outputDirectory = solution.Directory / "testoutput";
+            DotNetBuild(settings => settings
+                .SetProjectFile(project)
+                .SetConfiguration("Debug")
+                .SetOutputDirectory(outputDirectory));
+
+            var assemblyName = testProjectName + ".dll";
+            var assemblyPath = outputDirectory / assemblyName;
+
+            var results = outputDirectory / "result.xml";
+            RevitTestTasks.RevitTest(settings => settings
+                .SetResults(results)
+                .SetDir(outputDirectory)
+                .SetProcessWorkingDirectory(outputDirectory)
+                .EnableContinuous()
+                .SetAssembly(assemblyPath));
+
+            var resultPath = solution.Directory / "result.html";
+
+            await new ResultConverter()
+                .Convert(results, resultPath);
+        });
+
     private T From<T>()
         where T : INukeBuild
         => (T)(object)this;
