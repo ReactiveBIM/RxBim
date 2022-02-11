@@ -26,6 +26,10 @@
     <ItemGroup>
       <EmbeddedResource Include="Builders\uninstall.pas" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Directory.Build.Props" />
+    </ItemGroup>
     
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
