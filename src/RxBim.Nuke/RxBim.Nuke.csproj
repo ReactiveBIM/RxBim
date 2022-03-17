@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Directory.Build.Props" />
+      <None Include="Directory.Build.Props" />
     </ItemGroup>
     
     <PropertyGroup>
