@@ -22,7 +22,7 @@
         /// <summary>
         /// Building ribbon control
         /// </summary>
-        public TButton BuildingButton { get; } = new ();
+        public TButton BuildingButton { get; } = new();
 
         /// <inheritdoc />
         public IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)

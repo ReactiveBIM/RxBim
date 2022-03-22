@@ -10,6 +10,6 @@
         /// <summary>
         /// Buttons contained in the pull-down button
         /// </summary>
-        public List<CommandButton> CommandButtonsList { get; set; } = new ();
+        public List<CommandButton> CommandButtonsList { get; set; } = new();
     }
 }

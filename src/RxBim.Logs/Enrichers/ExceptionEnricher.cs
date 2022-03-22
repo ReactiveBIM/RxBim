@@ -17,7 +17,8 @@
                     {
                         Name = logEvent.Exception.GetType().FullName,
                         Message = GetMessage(logEvent.Exception),
-                    }, true));
+                    },
+                    true));
             }
         }
 

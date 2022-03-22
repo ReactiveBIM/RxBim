@@ -9,7 +9,7 @@
     /// </summary>
     public class AboutBoxContent
     {
-        private Version _version = new ();
+        private Version _version = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AboutBoxContent"/> class.

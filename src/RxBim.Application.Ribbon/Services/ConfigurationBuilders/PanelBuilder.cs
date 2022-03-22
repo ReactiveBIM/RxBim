@@ -32,7 +32,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <summary>
         /// Building panel
         /// </summary>
-        public Panel BuildingPanel { get; } = new ();
+        public Panel BuildingPanel { get; } = new();
 
         /// <summary>
         /// Create new stacked items at the panel

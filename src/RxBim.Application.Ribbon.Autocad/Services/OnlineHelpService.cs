@@ -16,7 +16,7 @@
     /// </remarks>
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
-        private readonly HashSet<RibbonToolTip> _trackedToolTips = new ();
+        private readonly HashSet<RibbonToolTip> _trackedToolTips = new();
         private bool _dropNextHelpCall;
         private string? _helpTopic;
 

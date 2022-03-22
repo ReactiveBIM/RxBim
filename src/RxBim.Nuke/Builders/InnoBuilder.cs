@@ -67,7 +67,7 @@
             AbsolutePath outputProjDir,
             AbsolutePath outputProjBinDir,
             string setupFileName = null)
-            => new (options, outputProjDir, outputProjBinDir, setupFileName);
+            => new(options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
         /// Adds setup and uninstall icons from <see cref="Options"/>

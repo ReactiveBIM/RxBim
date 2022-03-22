@@ -16,7 +16,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <summary>
         /// Builds StackedItems
         /// </summary>
-        public StackedItems StackedItems { get; } = new ();
+        public StackedItems StackedItems { get; } = new();
 
         /// <inheritdoc />
         public IStackedItemsBuilder AddCommandButton(

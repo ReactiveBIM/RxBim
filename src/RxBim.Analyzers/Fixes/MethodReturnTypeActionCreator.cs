@@ -31,7 +31,8 @@
                         root.FindToken(diagnosticSpan.Start)
                             .Parent.AncestorsAndSelf()
                             .OfType<MethodDeclarationSyntax>()
-                            .First(), c),
+                            .First(),
+                        c),
                 equivalenceKey: title);
         }
 

@@ -10,7 +10,7 @@
         /// <summary>
         /// Building ribbon
         /// </summary>
-        public Ribbon Ribbon { get; } = new ();
+        public Ribbon Ribbon { get; } = new();
 
         /// <inheritdoc />
         public ITabBuilder AddTab(string tabTitle)
