@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BimLab.Nuke" Version="2022.2.0-dev001" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.3.0-dev001" />
+    <PackageReference Include="BimLab.Nuke" Version="2022.2.0" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.3.0" />
     <PackageReference Include="NuGet.CommandLine" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
