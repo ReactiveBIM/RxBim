@@ -56,7 +56,7 @@
         }
 
         /// <summary>
-        /// Creates instance of <see cref="InnoBuilder"/>
+        /// Creates an instance of <see cref="InnoBuilder"/>
         /// </summary>
         /// <param name="options">Setup options</param>
         /// <param name="outputProjDir">Output compile project directory</param>
