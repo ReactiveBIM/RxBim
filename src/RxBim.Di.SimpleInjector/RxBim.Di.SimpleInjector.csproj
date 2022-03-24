@@ -12,6 +12,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+      <ProjectReference Include="..\RxBim.Transactions\RxBim.Transactions.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

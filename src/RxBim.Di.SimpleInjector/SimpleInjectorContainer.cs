@@ -3,13 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Castle.Core.Internal;
+    using Castle.DynamicProxy.Internal;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
+    using Transactions.Abstractions;
+    using Transactions.Attributes;
 
     /// <summary>
     /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
     /// </summary>
-    public class SimpleInjectorContainer : IContainer
+    public class SimpleInjectorContainer : IContainer, ITransactionProxyProvider
     {
         private readonly Container _container;
 
@@ -38,7 +42,7 @@
         }
 
         /// <inheritdoc />
-        public IContainer AddSingleton(Type serviceType,  object implementationInstance)
+        public IContainer AddSingleton(Type serviceType, object implementationInstance)
         {
             _container.Register(serviceType, () => implementationInstance, Lifestyle.Singleton);
             return this;
@@ -90,5 +94,40 @@
             Lifetime.Singleton => Lifestyle.Singleton,
             _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
         };
+
+        /// <inheritdoc />
+        public void SetupProxy()
+        {
+            _container.ExpressionBuilding += ContainerOnExpressionBuilding;
+            _container.ExpressionBuilt += ContainerOnExpressionBuilt;
+        }
+
+        private void ContainerOnExpressionBuilding(object sender, ExpressionBuildingEventArgs e)
+        {
+            var type = e.KnownImplementationType;
+           
+        }
+
+        private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)
+        {
+            //     var type = typeof(ProxyGenerator);
+//     var proxyGenerator = Expression.New(type);
+//
+//     var methodInfos = type
+//         .GetMethods();
+//     var methodInfo = methodInfos
+//         .FirstOrDefault(x => x.Name == "CreateClassProxyWithTarget" &&
+//                              x.GetParameters().Length == 3 &&
+//                              x.GetParameters().Skip(1).First().ParameterType == typeof(object));
+//
+//     var unaryExpression = Expression.Convert(Expression.New(typeof(Interceptor)), typeof(IInterceptor));
+//     var newArrayExpression = Expression.NewArrayInit(typeof(IInterceptor),
+//         unaryExpression);
+//     var constantExpression = Expression.Constant(eventArgs.KnownImplementationType);
+//     var methodCallExpression =
+//         Expression.Call(proxyGenerator, methodInfo, constantExpression, eventArgs.Expression, newArrayExpression);
+//
+//     eventArgs.Expression = Expression.Convert(methodCallExpression, eventArgs.KnownImplementationType);
+        }
     }
 }
