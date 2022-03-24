@@ -56,7 +56,7 @@
         }
 
         /// <summary>
-        /// Creates instance of <see cref="InnoBuilder"/>
+        /// Creates an instance of <see cref="InnoBuilder"/>
         /// </summary>
         /// <param name="options">Setup options</param>
         /// <param name="outputProjDir">Output compile project directory</param>
@@ -67,7 +67,7 @@
             AbsolutePath outputProjDir,
             AbsolutePath outputProjBinDir,
             string setupFileName = null)
-            => new (options, outputProjDir, outputProjBinDir, setupFileName);
+            => new(options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
         /// Adds setup and uninstall icons from <see cref="Options"/>

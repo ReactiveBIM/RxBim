@@ -10,7 +10,7 @@
         /// <summary>
         /// Ribbon tabs
         /// </summary>
-        public List<Tab> Tabs { get; set; } = new ();
+        public List<Tab> Tabs { get; set; } = new();
 
         /// <summary>
         /// If true, the version number will be added to the tooltip text for the command element.

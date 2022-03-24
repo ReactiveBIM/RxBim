@@ -15,6 +15,6 @@
         /// <summary>
         /// Panels on the tab
         /// </summary>
-        public List<Panel> Panels { get; set; } = new ();
+        public List<Panel> Panels { get; set; } = new();
     }
 }

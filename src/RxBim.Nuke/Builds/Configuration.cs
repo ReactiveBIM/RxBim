@@ -13,12 +13,12 @@ namespace RxBim.Nuke.Builds
         /// <summary>
         /// Debug.
         /// </summary>
-        public static Configuration Debug = new () { Value = nameof(Debug) };
+        public static Configuration Debug = new() { Value = nameof(Debug) };
 
         /// <summary>
         /// Release.
         /// </summary>
-        public static Configuration Release = new () { Value = nameof(Release) };
+        public static Configuration Release = new() { Value = nameof(Release) };
 
         /// <summary>
         /// Casts an instance of type <see cref="Configuration"/> to <see cref="string"/>.

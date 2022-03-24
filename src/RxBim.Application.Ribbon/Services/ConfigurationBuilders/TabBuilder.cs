@@ -27,7 +27,7 @@
         /// <summary>
         /// Building tab
         /// </summary>
-        public Tab BuildingTab { get; } = new ();
+        public Tab BuildingTab { get; } = new();
 
         /// <inheritdoc />
         public IRibbonBuilder ReturnToRibbon()

@@ -25,7 +25,7 @@
         private readonly Func<ThemeType> _getCurrentTheme;
         private readonly Action _prebuildAction;
         private readonly Action<RibbonToolTip> _toolTipAction;
-        private readonly List<(RibbonButton, Button)> _createdButtons = new ();
+        private readonly List<(RibbonButton, Button)> _createdButtons = new();
 
         /// <inheritdoc />
         public AutocadRibbonMenuBuilder(

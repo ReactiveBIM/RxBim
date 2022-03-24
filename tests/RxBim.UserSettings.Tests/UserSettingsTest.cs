@@ -143,7 +143,7 @@ namespace RxBim.UserSettings.Tests
     public class TestClass : IEquatable<TestClass>
     {
         private readonly int _numForHash = Convert.ToInt32(Random.NextDouble() * 1000000000);
-        private static readonly Random Random = new ();
+        private static readonly Random Random = new();
 
         /// <summary>
         /// String property

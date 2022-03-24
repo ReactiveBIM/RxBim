@@ -88,7 +88,7 @@
             _context.AddSource($"{commandClass}{Generated}", classSource);
         }
 
-        private List<(string Namespace, string Command, string commandName, string CommandFlags)> GetCommands(
+        private List<(string Namespace, string Command, string CommandName, string CommandFlags)> GetCommands(
             INamedTypeSymbol attributeSymbol)
         {
             return _context.Compilation.SyntaxTrees.SelectMany(tree => tree.GetRoot().DescendantNodes())

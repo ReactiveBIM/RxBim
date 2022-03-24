@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <NoWarn>NU1701;NU1702</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
