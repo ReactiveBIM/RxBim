@@ -4,6 +4,8 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using global::Nuke.Common.IO;
     using Octokit;
     using SharpCompress.Archives;
@@ -76,12 +78,26 @@
             if (!Directory.EnumerateFiles(tempFolder).Any())
             {
                 Console.WriteLine("Downloading " + browserDownloadUrl + "...");
-                var webClient = new WebClient();
-                webClient.DownloadFile(browserDownloadUrl, result);
+                Downloader.DownLoadFile(browserDownloadUrl, result);
                 Console.WriteLine("Done.");
             }
 
             return result;
         }
-    }
+
+        private static class Downloader
+        {
+            public static void DownLoadFile(string url, string path)
+            {
+                DownLoadFileAsync(url, path).GetAwaiter().GetResult();
+            }
+            
+            public static async Task DownLoadFileAsync(string url, string path)
+            {
+                var client = new HttpClient();
+                var bytes = await client.GetByteArrayAsync(url);
+                File.WriteAllBytes(path, bytes);
+            } 
+        }
+}
 }
