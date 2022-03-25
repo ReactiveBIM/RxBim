@@ -11,15 +11,6 @@
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Adds transaction interceptor into DI container
-        /// </summary>
-        /// <param name="container">DI container</param>
-        public static IContainer AddTransactionInterceptor(this IContainer container)
-        {
-            return container.AddTransient<IInterceptor, TransactionInterceptor>();
-        }
-
-        /// <summary>
         /// Tries add transaction proxy functionality
         /// </summary>
         /// <param name="container">DI container</param>
@@ -27,7 +18,7 @@
         {
             if (container is ITransactionProxyProvider proxyProvider)
             {
-                proxyProvider.SetupProxy();
+                proxyProvider.SetupContainer();
             }
             else
             {
@@ -36,6 +27,15 @@
             }
 
             return container.AddTransactionInterceptor();
+        }
+
+        /// <summary>
+        /// Adds transaction interceptor into DI container
+        /// </summary>
+        /// <param name="container">DI container</param>
+        private static IContainer AddTransactionInterceptor(this IContainer container)
+        {
+            return container.AddTransient<IInterceptor, TransactionInterceptor>();
         }
     }
 }

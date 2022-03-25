@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Castle.Core.Internal;
-    using Castle.DynamicProxy.Internal;
+    using Castle.DynamicProxy;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
+    using Transactions;
     using Transactions.Abstractions;
-    using Transactions.Attributes;
+    using Transactions.Extensions;
 
     /// <summary>
     /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
@@ -87,6 +87,13 @@
             _container.Dispose();
         }
 
+        /// <inheritdoc />
+        public void SetupContainer()
+        {
+            _container.ExpressionBuilding += ContainerOnExpressionBuilding;
+            _container.ExpressionBuilt += ContainerOnExpressionBuilt;
+        }
+
         private Lifestyle GetLifestyle(Lifetime lifetime) => lifetime switch
         {
             Lifetime.Transient => Lifestyle.Transient,
@@ -95,39 +102,21 @@
             _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
         };
 
-        /// <inheritdoc />
-        public void SetupProxy()
-        {
-            _container.ExpressionBuilding += ContainerOnExpressionBuilding;
-            _container.ExpressionBuilt += ContainerOnExpressionBuilt;
-        }
-
         private void ContainerOnExpressionBuilding(object sender, ExpressionBuildingEventArgs e)
         {
-            var type = e.KnownImplementationType;
-           
+            e.KnownImplementationType.CheckType();
         }
 
         private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)
         {
-            //     var type = typeof(ProxyGenerator);
-//     var proxyGenerator = Expression.New(type);
-//
-//     var methodInfos = type
-//         .GetMethods();
-//     var methodInfo = methodInfos
-//         .FirstOrDefault(x => x.Name == "CreateClassProxyWithTarget" &&
-//                              x.GetParameters().Length == 3 &&
-//                              x.GetParameters().Skip(1).First().ParameterType == typeof(object));
-//
-//     var unaryExpression = Expression.Convert(Expression.New(typeof(Interceptor)), typeof(IInterceptor));
-//     var newArrayExpression = Expression.NewArrayInit(typeof(IInterceptor),
-//         unaryExpression);
-//     var constantExpression = Expression.Constant(eventArgs.KnownImplementationType);
-//     var methodCallExpression =
-//         Expression.Call(proxyGenerator, methodInfo, constantExpression, eventArgs.Expression, newArrayExpression);
-//
-//     eventArgs.Expression = Expression.Convert(methodCallExpression, eventArgs.KnownImplementationType);
+            if (e.RegisteredServiceType.Assembly.FullName != typeof(ITransaction).Assembly.FullName &&
+                e.RegisteredServiceType != typeof(IInterceptor))
+            {
+                var instanceProducer = e.Lifestyle.CreateProducer<IInterceptor, TransactionInterceptor>(_container);
+                var interceptorExpression = instanceProducer.BuildExpression();
+                e.Expression =
+                    e.RegisteredServiceType.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
+            }
         }
     }
 }

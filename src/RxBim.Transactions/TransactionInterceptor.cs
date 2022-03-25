@@ -1,13 +1,12 @@
 ﻿namespace RxBim.Transactions
 {
-    using System;
     using System.Reflection;
     using Abstractions;
     using Attributes;
     using Castle.DynamicProxy;
 
     /// <inheritdoc />
-    internal class TransactionInterceptor : IInterceptor
+    public class TransactionInterceptor : IInterceptor
     {
         private readonly ITransactionFactory _factory;
 
@@ -23,7 +22,7 @@
          /// <inheritdoc />
         public void Intercept(IInvocation invocation)
         {
-            var customAttribute = invocation.Method.GetCustomAttribute<TransactionalAttribute>();
+            var customAttribute = invocation.MethodInvocationTarget.GetCustomAttribute<TransactionalAttribute>();
             if (customAttribute != null)
             {
                 var transactionName = customAttribute.TransactionName ?? invocation.Method.Name;
