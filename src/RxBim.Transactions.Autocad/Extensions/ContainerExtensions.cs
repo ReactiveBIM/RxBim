@@ -1,4 +1,4 @@
-﻿namespace RxBim.Transactions.Revit.Extensions
+﻿namespace RxBim.Transactions.Autocad.Extensions
 {
     using Abstractions;
     using Di;
@@ -7,7 +7,7 @@
     /// <summary>
     /// Container extensions
     /// </summary>
-    public static class ContainerExtension
+    public static class ContainerExtensions
     {
         /// <summary>
         /// Adds transaction factory in DI container
@@ -17,7 +17,7 @@
         {
             return container
                 .TrySetupProxy()
-                .AddTransient<ITransactionFactory, RevitTransactionFactory>();
+                .AddTransient<ITransactionFactory, AutocadTransactionFactory>();
         }
     }
 }

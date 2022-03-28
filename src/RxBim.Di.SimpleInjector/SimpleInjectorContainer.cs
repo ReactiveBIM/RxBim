@@ -3,11 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Castle.DynamicProxy;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
     using Transactions;
     using Transactions.Abstractions;
+    using Transactions.Attributes;
     using Transactions.Extensions;
 
     /// <summary>
@@ -109,13 +111,14 @@
 
         private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)
         {
-            if (e.RegisteredServiceType.Assembly.FullName != typeof(ITransaction).Assembly.FullName &&
-                e.RegisteredServiceType != typeof(IInterceptor))
+            var type = e.RegisteredServiceType;
+
+            if (type.IsTransactional())
             {
                 var instanceProducer = e.Lifestyle.CreateProducer<IInterceptor, TransactionInterceptor>(_container);
                 var interceptorExpression = instanceProducer.BuildExpression();
                 e.Expression =
-                    e.RegisteredServiceType.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
+                    type.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
             }
         }
     }

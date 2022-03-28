@@ -16,6 +16,16 @@
     public static class TypeExtensions
     {
         /// <summary>
+        /// Checks if any type methods has <see cref="TransactionalAttribute"/> 
+        /// </summary>
+        /// <param name="type">type</param>
+        public static bool IsTransactional(this Type type)
+        {
+            return ImplementationsOfRequestedTypeHasTransactionalAttribute(type) ||
+                   RequestedTypeHasTransactionalAttribute(type);
+        }
+
+        /// <summary>
         /// Checks that type can be wrapped by transaction proxy
         /// </summary>
         /// <param name="type">type</param>
@@ -96,6 +106,22 @@
                     newArrayExpression);
             result = Expression.Convert(createProxyExpression, implementationType);
             return result;
+        }
+
+        private static bool ImplementationsOfRequestedTypeHasTransactionalAttribute(Type type)
+        {
+            var implementationsOfRequestedTypeHasTransactionalAttribute = type.IsInterface && type.Assembly.GetTypes()
+                .Where(x => !x.IsInterface && x.GetInterfaces().Any(i => i == type))
+                .SelectMany(x => x.GetMethods())
+                .Any(x => x.GetCustomAttribute<TransactionalAttribute>() != null);
+            return implementationsOfRequestedTypeHasTransactionalAttribute;
+        }
+
+        private static bool RequestedTypeHasTransactionalAttribute(Type type)
+        {
+            var requestedTypeHasTransactionalAttribute = type.GetMethods()
+                .Any(x => x.GetCustomAttribute<TransactionalAttribute>() != null);
+            return requestedTypeHasTransactionalAttribute;
         }
     }
 }

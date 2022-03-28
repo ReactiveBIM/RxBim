@@ -14,7 +14,7 @@ namespace RxBim.Transactions.Tests
         {
             Action act = () => typeof(NonVirtual).CheckType();
             act.Should().Throw<RegistrationException>().WithMessage(
-                "Method `NonVirtualMethod` of type RxBim.Transactions.Tests.NonVirtual can't be transactional. " +
+                "Method `NonVirtualMethod` of type RxBim.Transactions.Tests.TestClasses.NonVirtual can't be transactional. " +
                 "Transactional methods should be virtual or" +
                 " implemented from any interface.");
         }
@@ -31,7 +31,7 @@ namespace RxBim.Transactions.Tests
         {
             Action act = () => typeof(A).CheckType();
             act.Should().Throw<RegistrationException>().WithMessage(
-                "Method `BadMethod` of type RxBim.Transactions.Tests.A can't be transactional. " +
+                "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.A can't be transactional. " +
                 "Transactional methods should be virtual or" +
                 " implemented from any interface.");
         }
@@ -41,7 +41,7 @@ namespace RxBim.Transactions.Tests
         {
             Action act = () => typeof(A2).CheckType();
             act.Should().Throw<RegistrationException>().WithMessage(
-                "Method `BadMethod` of type RxBim.Transactions.Tests.A2 can't be transactional. " +
+                "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.A2 can't be transactional. " +
                 "Transactional methods should be virtual or" +
                 " implemented from any interface.");
         }
@@ -65,7 +65,7 @@ namespace RxBim.Transactions.Tests
         {
             Action act = () => typeof(Ab3).CheckType();
             act.Should().Throw<RegistrationException>().WithMessage(
-                "Method `BadMethod` of type RxBim.Transactions.Tests.Ab3 can't be transactional. " +
+                "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.Ab3 can't be transactional. " +
                 "Transactional methods should be virtual or" +
                 " implemented from any interface.");
         }

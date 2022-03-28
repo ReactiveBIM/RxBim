@@ -62,6 +62,8 @@ partial class Build : NukeBuild,
                 .SetFilter("FullyQualifiedName!~IntegrationTests"));
         });
 
+    [Parameter] public bool Debug = false;
+
     /// <summary>
     /// Example target. Runs local only....
     /// </summary>
@@ -70,7 +72,7 @@ partial class Build : NukeBuild,
         {
             var solution = From<IHazSolution>().Solution;
 
-            var testProjectName = "RxBim.Example.IntegrationTests";
+            var testProjectName = "RxBim.Transactions.IntegrationsTests";
             var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
                           throw new ArgumentException("project not found");
 
@@ -89,6 +91,7 @@ partial class Build : NukeBuild,
                 .SetDir(outputDirectory)
                 .SetProcessWorkingDirectory(outputDirectory)
                 .EnableContinuous()
+                .SetDebug(Debug)
                 .SetAssembly(assemblyPath));
 
             var resultPath = solution.Directory / "result.html";
