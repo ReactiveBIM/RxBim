@@ -59,7 +59,7 @@ partial class Build : NukeBuild,
             DotNetTest(settings => settings
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
                 .SetConfiguration(From<IHazConfiguration>().Configuration)
-                .SetFilter("FullyQualifiedName!~IntegrationTests"));
+                .SetFilter("FullyQualifiedName!~Integration"));
         });
 
     [Parameter] public bool Debug = false;
