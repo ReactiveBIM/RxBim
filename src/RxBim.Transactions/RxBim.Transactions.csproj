@@ -12,4 +12,10 @@
       <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Description>RxBim transactions API</Description>
+        <PackageId>RxBim.Transactions</PackageId>
+    </PropertyGroup>
+
 </Project>

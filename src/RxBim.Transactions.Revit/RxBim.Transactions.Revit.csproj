@@ -11,5 +11,11 @@
     <ItemGroup>
         <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" />
     </ItemGroup>
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Description>RxBim transactions API Library for Revit</Description>
+        <PackageId>RxBim.Transactions.Revit</PackageId>
+    </PropertyGroup>
+    
 
 </Project>
