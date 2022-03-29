@@ -91,13 +91,13 @@
             {
                 DownLoadFileAsync(url, path).GetAwaiter().GetResult();
             }
-            
+
             public static async Task DownLoadFileAsync(string url, string path)
             {
                 var client = new HttpClient();
                 var bytes = await client.GetByteArrayAsync(url);
-                File.WriteAllBytes(path, bytes);
-            } 
+                await File.WriteAllBytesAsync(path, bytes);
+            }
         }
-}
+    }
 }

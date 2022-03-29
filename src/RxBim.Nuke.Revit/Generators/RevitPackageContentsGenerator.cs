@@ -4,19 +4,16 @@
     using System.Linq;
     using global::Nuke.Common.ProjectModel;
     using Models;
+    using Nuke.Generators;
     using Nuke.Models;
-    using RxBim.Nuke.Generators;
 
     /// <summary>
-    /// Генерирует PackageContents.xml
+    /// Generates "PackageContents.xml" file for Revit plugin.
     /// </summary>
     public class RevitPackageContentsGenerator : PackageContentsGenerator
     {
-        /// <summary>
-        /// Возвращает компоненты для Revit
-        /// </summary>
-        /// <param name="project">Проект</param>
-        protected override IEnumerable<Components> GetComponents(Project project)
+        /// <inheritdoc/>
+        protected override IEnumerable<Components> GetComponents(Project project, IEnumerable<string> assembliesNames)
         {
             var revitVersions = Enumerable.Range(2017, 4);
             return revitVersions

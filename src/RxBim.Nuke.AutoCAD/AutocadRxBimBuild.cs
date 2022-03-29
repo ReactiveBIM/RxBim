@@ -5,9 +5,8 @@
     using Generators;
 
     /// <inheritdoc />
-    public class AutocadRxBimBuild
-        : RxBimBuild<WixBuilder<AutocadPackageContentsGenerator>, AutocadPackageContentsGenerator,
-            ProjectPropertiesGenerator>
+    public class AutocadRxBimBuild : RxBimBuild<InstallerBuilder<AutocadPackageContentsGenerator>,
+        AutocadPackageContentsGenerator, ProjectPropertiesGenerator>
     {
         //// Тут можно добавить таргеты для облегчения дебага
     }

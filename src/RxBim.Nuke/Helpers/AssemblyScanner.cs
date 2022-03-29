@@ -17,62 +17,55 @@
         /// <param name="file">Assembly file</param>
         public static IEnumerable<AssemblyType> Scan(string file)
         {
-            if (File.Exists(file))
+            if (!File.Exists(file))
+                yield break;
+
+            using var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var peReader = new PEReader(fileStream);
+            var metadataReader = peReader.GetMetadataReader();
+
+            foreach (var typeDefinitionHandle in metadataReader.TypeDefinitions)
             {
-                using var fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                using var peReader = new PEReader(fs);
-                var mr = peReader.GetMetadataReader();
+                var typeDefinition = metadataReader.GetTypeDefinition(typeDefinitionHandle);
+                var baseTypeName = GetBaseTypeName(metadataReader, typeDefinition);
+                var fullName = GetFullName(metadataReader, typeDefinition);
+                if (string.IsNullOrEmpty(fullName))
+                    continue;
 
-                foreach (var typeDefinitionHandle in mr.TypeDefinitions)
-                {
-                    var typeDefinition = mr.GetTypeDefinition(typeDefinitionHandle);
-                    var baseTypeName = GetBaseTypeName(mr, typeDefinition);
-                    var fullName = GetFullName(mr, typeDefinition);
-                    if (string.IsNullOrEmpty(fullName))
-                    {
-                        continue;
-                    }
-
-                    yield return new AssemblyType(Path.GetFileNameWithoutExtension(file), fullName, baseTypeName);
-                }
+                yield return new AssemblyType(Path.GetFileNameWithoutExtension(file), fullName, baseTypeName);
             }
         }
 
-        private static string GetBaseTypeName(MetadataReader mr, TypeDefinition typeDefinition)
+        private static string GetBaseTypeName(MetadataReader metadataReader, TypeDefinition typeDefinition)
         {
             var baseTypeDefinition = typeDefinition.BaseType;
-            string baseTypeName = null;
-            if (!baseTypeDefinition.IsNil)
-            {
-                try
-                {
-                    var referenceHandle = (TypeReferenceHandle)baseTypeDefinition;
-                    var typeReference = mr.GetTypeReference(referenceHandle);
-                    baseTypeName = mr.GetString(typeReference.Name);
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
+            if (baseTypeDefinition.IsNil)
+                return null;
 
-            return baseTypeName;
-        }
-
-        private static string GetFullName(MetadataReader mr, TypeDefinition typeDefinition)
-        {
             try
             {
-                var ns = mr.GetString(typeDefinition.Namespace);
-                var name = mr.GetString(typeDefinition.Name);
-                return $"{ns}.{name}";
+                var referenceHandle = (TypeReferenceHandle)baseTypeDefinition;
+                var typeReference = metadataReader.GetTypeReference(referenceHandle);
+                return metadataReader.GetString(typeReference.Name);
             }
             catch
             {
-                // ignore
+                return null;
             }
+        }
 
-            return null;
+        private static string GetFullName(MetadataReader metadataReader, TypeDefinition typeDefinition)
+        {
+            try
+            {
+                var nameSpace = metadataReader.GetString(typeDefinition.Namespace);
+                var name = metadataReader.GetString(typeDefinition.Name);
+                return $"{nameSpace}.{name}";
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

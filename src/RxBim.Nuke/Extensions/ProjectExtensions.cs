@@ -81,8 +81,8 @@
                 ProductProjectName = outputFileName,
                 SourceDir = Path.Combine(sourceDir, "bin"),
                 OutFileName = outputFileName,
-                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
-                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
+                AddAllApps = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllApps))),
+                AdditionalApps = project.GetProperty(nameof(Options.AdditionalApps))
                     ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
                 SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
                 UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon))
@@ -183,24 +183,20 @@
             var types = GetAssemblyTypes(file, new[] { RxBimCommand, RxBimApplication });
 
             var additionalFiles = new List<string>();
-            if (options.AddAllAppToManifest)
+            if (options.AddAllApps)
             {
-                // Добавляем все сборки с Application из out папки
-                additionalFiles = Directory.GetFiles(output, "*.dll")
-                    .Except(new[] { file })
-                    .ToList();
+                additionalFiles = Directory.GetFiles(output, "*.dll").ToList();
+                additionalFiles.Remove(file);
             }
-            else if (options.ProjectsAddingToManifest != null
-                     && options.ProjectsAddingToManifest.Any())
+            else if (options.AdditionalApps != null && options.AdditionalApps.Any())
             {
-                // Добавляет дополнительно Application только из заданных в опции сборок
-                additionalFiles = options.ProjectsAddingToManifest
+                additionalFiles = options.AdditionalApps
                     .Select(p => Path.Combine(output, $"{p.Trim()}.dll"))
                     .ToList();
                 if (additionalFiles.Any(f => !File.Exists(f)))
                 {
                     throw new FileNotFoundException(
-                        $"Assembly not found from property {nameof(Options.ProjectsAddingToManifest)}");
+                        $"Assembly not found from property {nameof(Options.AdditionalApps)}");
                 }
             }
 
@@ -223,9 +219,7 @@
             var targetDir = project.Directory / project.GetProperty("OutputPath");
 
             if (multiple)
-            {
                 targetDir /= targetFx;
-            }
 
             return targetDir;
         }
@@ -296,22 +290,17 @@
 
             var fxNameFirst = project.GetTargetFrameworks()?.FirstOrDefault();
             if (string.IsNullOrEmpty(fxNameFirst))
-            {
                 throw new InvalidOperationException($"Can't find target framework for project {project.Name}");
-            }
 
             multiple = true;
             return fxNameFirst;
         }
 
-        private static List<AssemblyType> GetAssemblyTypes(
-            string file,
-            string[] typeNames)
+        private static List<AssemblyType> GetAssemblyTypes(string file, string[] typeNames)
         {
-            var types = Scan(file)
+            return Scan(file)
                 .Where(x => typeNames.Contains(x.BaseTypeName))
                 .ToList();
-            return types;
         }
     }
 }

@@ -11,8 +11,7 @@
         /// <param name="assemblyName">Assembly name</param>
         /// <param name="fullName">Full name</param>
         /// <param name="baseTypeName">Base type name</param>
-        public AssemblyType(
-            string assemblyName, string fullName, string baseTypeName)
+        public AssemblyType(string assemblyName, string fullName, string baseTypeName)
         {
             AssemblyName = assemblyName;
             FullName = fullName;

@@ -11,7 +11,7 @@
     /// <content>
     /// GIT build targets
     /// </content>
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen>
     {
         /// <summary>
         /// Checks release branch version name

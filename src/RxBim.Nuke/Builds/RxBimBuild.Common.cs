@@ -11,7 +11,7 @@
     /// <content>
     /// Common build targets
     /// </content>
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen>
     {
         /// <summary>
         /// Cleans bin/, obj/ in solution

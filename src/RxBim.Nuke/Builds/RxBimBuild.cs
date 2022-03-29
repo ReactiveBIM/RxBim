@@ -22,14 +22,14 @@
     using static Helpers.WixHelper;
 
     /// <summary>
-    /// Contains tools for MSI packages creating.
+    /// Contains tools for install packages creating.
     /// </summary>
-    /// <typeparam name="TWix">WIX-builder</typeparam>
+    /// <typeparam name="TBuilder">Installer builder</typeparam>
     /// <typeparam name="TPackGen">PackageContents file generator</typeparam>
     /// <typeparam name="TPropGen">Project properties generator</typeparam>
     [PublicAPI]
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeBuild
-        where TWix : WixBuilder<TPackGen>, new()
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen> : NukeBuild
+        where TBuilder : InstallerBuilder<TPackGen>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()
     {
@@ -38,7 +38,7 @@
         /// </summary>
         protected RxBimBuild()
         {
-            _wix = new TWix();
+            _builder = new TBuilder();
         }
 
         /// <summary>
@@ -134,8 +134,7 @@
                 if (Configuration != Configuration.Release)
                     return;
 
-                var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
+                var types = GetAssemblyTypes(ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -155,11 +154,8 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
-
-                _wix.GenerateAdditionalFiles(
-                    ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
+                var types = GetAssemblyTypes(ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
+                _builder.GenerateAdditionalFiles(ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
             });
 
         /// <summary>
@@ -171,27 +167,22 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Configuration, OutputTmpDir);
+                var types = GetAssemblyTypes(ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
+                _builder.GeneratePackageContentsFile(ProjectForMsiBuild, Configuration, types, OutputTmpDir);
             });
 
         private void CreateOutDirectory()
         {
             var outDir = Solution.Directory / "out";
             if (!Directory.Exists(outDir))
-            {
-                Directory.CreateDirectory(outDir);
-            }
+                Directory.CreateDirectory(outDir!);
         }
 
         private void BuildMsiInstaller(
             Project project,
             string configuration)
         {
-            _wix.BuildMsi(
-                project,
-                configuration,
-                OutputTmpDir,
-                OutputTmpDirBin);
+            _builder.BuildMsi(project, configuration, OutputTmpDir, OutputTmpDirBin);
             DeleteDirectory(OutputTmpDir);
         }
 
@@ -200,14 +191,14 @@
             string configuration)
         {
             var iss = TemporaryDirectory / "package.iss";
-            var options = _wix.GetBuildMsiOptions(project, OutputTmpDir, configuration);
+            var options = _builder.GetBuildMsiOptions(project, OutputTmpDir, configuration);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder.Create(
-                options,
-                (AbsolutePath)OutputTmpDir,
-                (AbsolutePath)OutputTmpDirBin,
-                setupFileName)
+                    options,
+                    (AbsolutePath)OutputTmpDir,
+                    (AbsolutePath)OutputTmpDirBin,
+                    setupFileName)
                 .AddIcons()
                 .AddFonts()
                 .AddUninstallScript()
@@ -228,12 +219,7 @@
             if (Configuration != Configuration.Release)
                 return;
 
-            filePath.SignFile(
-                (AbsolutePath)Cert,
-                PrivateKey,
-                Csp,
-                Algorithm,
-                ServerUrl);
+            filePath.SignFile((AbsolutePath)Cert, PrivateKey, Csp, Algorithm, ServerUrl);
         }
 
         /// <summary>
@@ -249,8 +235,8 @@
             string outputDir,
             string configuration)
         {
-            var options = _wix.GetBuildMsiOptions(project, outputDir, configuration);
-            return _types ??= project.GetAssemblyTypes(outputBinDir, options);
+            return _types ??=
+                project.GetAssemblyTypes(outputBinDir, _builder.GetBuildMsiOptions(project, outputDir, configuration));
         }
     }
 }

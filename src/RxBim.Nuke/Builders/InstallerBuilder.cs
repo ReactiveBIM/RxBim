@@ -10,9 +10,9 @@
     using MsiBuilder;
 
     /// <summary>
-    /// Wix extension
+    /// Builder for installer.
     /// </summary>
-    public class WixBuilder<T>
+    public class InstallerBuilder<T>
         where T : PackageContentsGenerator, new()
     {
         private Options _options;
@@ -50,9 +50,8 @@
             string outputDir,
             string configuration)
         {
-            var installDir = GetInstallDir(project, configuration);
-            return _options ??= project.GetSetupOptions(
-                installDir, outputDir, configuration);
+            return _options ??=
+                project.GetSetupOptions(GetInstallDir(project, configuration), outputDir, configuration);
         }
 
         /// <summary>
@@ -60,12 +59,12 @@
         /// </summary>
         /// <param name="rootProjectName">Root project name</param>
         /// <param name="allProject">All projects</param>
-        /// <param name="addInTypes">Assembly types</param>
+        /// <param name="additionalAssembliesTypes">Additional assemblies types.</param>
         /// <param name="outputDir">Output directory</param>
         public virtual void GenerateAdditionalFiles(
             string rootProjectName,
             IEnumerable<Project> allProject,
-            IEnumerable<AssemblyType> addInTypes,
+            IEnumerable<AssemblyType> additionalAssembliesTypes,
             string outputDir)
         {
         }
@@ -75,17 +74,19 @@
         /// </summary>
         /// <param name="project">Selected project</param>
         /// <param name="configuration">Selected configuration</param>
+        /// <param name="allAssembliesTypes">All assemblies types.</param>
         /// <param name="outputDir">Output directory</param>
         public void GeneratePackageContentsFile(
             Project project,
             string configuration,
+            IEnumerable<AssemblyType> allAssembliesTypes,
             string outputDir)
         {
             if (!NeedGeneratePackageContents(configuration))
                 return;
 
             var packageContentsGenerator = new T();
-            packageContentsGenerator.Generate(project, outputDir);
+            packageContentsGenerator.Generate(project, outputDir, allAssembliesTypes);
         }
 
         /// <summary>
