@@ -15,11 +15,11 @@
         public override void GenerateAdditionalFiles(
             string rootProjectName,
             IEnumerable<Project> allProject,
-            IEnumerable<AssemblyType> additionalAssembliesTypes,
+            IEnumerable<AssemblyType> allAssembliesTypes,
             string outputDir)
         {
             var addInGenerator = new AddInGenerator();
-            var addInTypesPerProjects = additionalAssembliesTypes
+            var addInTypesPerProjects = allAssembliesTypes
                 .Select(x => new ProjectWithAssemblyType(
                     allProject.FirstOrDefault(proj => proj.Name == x.AssemblyName), x))
                 .ToList();
