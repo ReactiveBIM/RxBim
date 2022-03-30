@@ -3,13 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using Castle.DynamicProxy;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
     using Transactions;
     using Transactions.Abstractions;
-    using Transactions.Attributes;
     using Transactions.Extensions;
 
     /// <summary>
@@ -106,7 +104,7 @@
 
         private void ContainerOnExpressionBuilding(object sender, ExpressionBuildingEventArgs e)
         {
-            e.KnownImplementationType.CheckType();
+            e.KnownImplementationType.CheckIfTypeCanBeTransactional();
         }
 
         private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)

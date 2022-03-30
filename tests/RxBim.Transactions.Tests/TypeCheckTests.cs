@@ -12,7 +12,7 @@ namespace RxBim.Transactions.Tests
         [Fact]
         public void NonVirtualMethodsShouldThrow()
         {
-            Action act = () => typeof(NonVirtual).CheckType();
+            Action act = () => typeof(NonVirtual).CheckIfTypeCanBeTransactional();
             act.Should().Throw<RegistrationException>().WithMessage(
                 "Method `NonVirtualMethod` of type RxBim.Transactions.Tests.TestClasses.NonVirtual can't be transactional. " +
                 "Transactional methods should be virtual or" +
@@ -22,14 +22,14 @@ namespace RxBim.Transactions.Tests
         [Fact]
         public void VirtualMethodsShouldNoThrow()
         {
-            Action act = () => typeof(Virtual).CheckType();
+            Action act = () => typeof(Virtual).CheckIfTypeCanBeTransactional();
             act.Should().NotThrow();
         }
 
         [Fact]
         public void NonVirtualMethodsShouldThrow2()
         {
-            Action act = () => typeof(A).CheckType();
+            Action act = () => typeof(A).CheckIfTypeCanBeTransactional();
             act.Should().Throw<RegistrationException>().WithMessage(
                 "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.A can't be transactional. " +
                 "Transactional methods should be virtual or" +
@@ -39,7 +39,7 @@ namespace RxBim.Transactions.Tests
         [Fact]
         public void NonVirtualMethodsShouldThrow3()
         {
-            Action act = () => typeof(A2).CheckType();
+            Action act = () => typeof(A2).CheckIfTypeCanBeTransactional();
             act.Should().Throw<RegistrationException>().WithMessage(
                 "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.A2 can't be transactional. " +
                 "Transactional methods should be virtual or" +
@@ -49,21 +49,21 @@ namespace RxBim.Transactions.Tests
         [Fact]
         public void InterfaceMethodsShouldNotThrow()
         {
-            Action act = () => typeof(Ab).CheckType();
+            Action act = () => typeof(Ab).CheckIfTypeCanBeTransactional();
             act.Should().NotThrow();
         }
 
         [Fact]
         public void InterfaceAndNonTransactionalMethodsShouldNotThrow()
         {
-            Action act = () => typeof(Ab2).CheckType();
+            Action act = () => typeof(Ab2).CheckIfTypeCanBeTransactional();
             act.Should().NotThrow();
         }
 
         [Fact]
         public void NonVirtualMethodsShouldThrow4()
         {
-            Action act = () => typeof(Ab3).CheckType();
+            Action act = () => typeof(Ab3).CheckIfTypeCanBeTransactional();
             act.Should().Throw<RegistrationException>().WithMessage(
                 "Method `BadMethod` of type RxBim.Transactions.Tests.TestClasses.Ab3 can't be transactional. " +
                 "Transactional methods should be virtual or" +

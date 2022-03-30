@@ -29,7 +29,7 @@
         /// Checks that type can be wrapped by transaction proxy
         /// </summary>
         /// <param name="type">type</param>
-        public static void CheckType(this Type type)
+        public static void CheckIfTypeCanBeTransactional(this Type type)
         {
             var methods = type.GetMethods().Where(x => x.GetAttribute<TransactionalAttribute>() != null).ToList();
             if (methods.Any())
@@ -61,24 +61,11 @@
             Expression baseExpression,
             params Expression[] interceptors)
         {
-            Expression result;
+            var methodName = implementationType.IsInterface
+                ? nameof(ProxyGenerator.CreateInterfaceProxyWithTarget)
+                : nameof(ProxyGenerator.CreateClassProxyWithTarget);
 
-            if (!implementationType.IsInterface)
-            {
-                result = CreateProxyExpression(implementationType,
-                    baseExpression,
-                    nameof(ProxyGenerator.CreateClassProxyWithTarget),
-                    interceptors);
-            }
-            else
-            {
-                result = CreateProxyExpression(implementationType,
-                    baseExpression,
-                    nameof(ProxyGenerator.CreateInterfaceProxyWithTarget),
-                    interceptors);
-            }
-
-            return result;
+            return CreateProxyExpression(implementationType, baseExpression, methodName, interceptors);
         }
 
         private static Expression CreateProxyExpression(
@@ -87,7 +74,6 @@
             string proxyMethodName,
             Expression[] interceptors)
         {
-            Expression result;
             var type = typeof(ProxyGenerator);
             var proxyGeneratorNewExpression = Expression.New(type);
 
@@ -95,6 +81,11 @@
                 .FirstOrDefault(x => x.Name == proxyMethodName &&
                                      x.GetParameters().Length == 3 &&
                                      x.GetParameters().Skip(1).First().ParameterType == typeof(object));
+
+            if (createProxyMethod == null)
+            {
+                throw new MissingMethodException($"Method {proxyMethodName} not found!");
+            }
 
             var newArrayExpression = Expression.NewArrayInit(typeof(IInterceptor), interceptors);
             var implementationTypeExpression = Expression.Constant(implementationType);
@@ -104,8 +95,7 @@
                     implementationTypeExpression,
                     baseExpression,
                     newArrayExpression);
-            result = Expression.Convert(createProxyExpression, implementationType);
-            return result;
+            return Expression.Convert(createProxyExpression, implementationType);
         }
 
         private static bool ImplementationsOfRequestedTypeHasTransactionalAttribute(Type type)
