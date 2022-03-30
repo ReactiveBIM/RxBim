@@ -88,7 +88,7 @@
         }
 
         /// <inheritdoc />
-        public void SetupContainer()
+        public void SetupContainerForProxyGeneration()
         {
             _container.ExpressionBuilding += ContainerOnExpressionBuilding;
             _container.ExpressionBuilt += ContainerOnExpressionBuilt;

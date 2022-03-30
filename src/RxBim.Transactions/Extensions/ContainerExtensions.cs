@@ -18,7 +18,7 @@
         {
             if (container is ITransactionProxyProvider proxyProvider)
             {
-                proxyProvider.SetupContainer();
+                proxyProvider.SetupContainerForProxyGeneration();
             }
             else
             {

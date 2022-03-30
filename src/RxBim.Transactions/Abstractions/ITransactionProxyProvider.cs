@@ -8,6 +8,6 @@
         /// <summary>
         /// Setups container to provide proxies
         /// </summary>
-        void SetupContainer();
+        void SetupContainerForProxyGeneration();
     }
 }
