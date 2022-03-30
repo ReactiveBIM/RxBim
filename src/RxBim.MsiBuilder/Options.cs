@@ -52,17 +52,11 @@ namespace RxBim.MsiBuilder
         [Option('f', "fileName", Required = true, HelpText = "Set msi file name.")]
         public string OutFileName { get; set; }
 
-        [Option('a',
-            "addAllApps",
-            Required = false,
-            HelpText = "Set to true if you need to add all applications from the output to the plugin.")]
-        public bool AddAllApps { get; set; }
+        [Option('a', "addAllAppToManifest", Required = false, HelpText = "Set need add all Application from output to manifest.")]
+        public bool AddAllAppToManifest { get; set; }
 
-        [Option('t',
-            "additionalApps",
-            Required = false,
-            HelpText = "Set additional Applications that are added to the plugin.")]
-        public IEnumerable<string> AdditionalApps { get; set; }
+        [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
+        public IEnumerable<string> ProjectsAddingToManifest { get; set; }
 
         [Option('x', "msiFilePrefix", Required = false, HelpText = "Set msi file prefix.")]
         public string MsiFilePrefix { get; set; }

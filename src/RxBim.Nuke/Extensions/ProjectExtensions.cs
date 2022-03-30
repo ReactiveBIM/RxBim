@@ -81,8 +81,8 @@
                 ProductProjectName = outputFileName,
                 SourceDir = Path.Combine(sourceDir, "bin"),
                 OutFileName = outputFileName,
-                AddAllApps = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllApps))),
-                AdditionalApps = project.GetProperty(nameof(Options.AdditionalApps))
+                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
+                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
                     ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
                 SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
                 UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon))
@@ -183,20 +183,20 @@
             var types = GetAssemblyTypes(file, new[] { RxBimCommand, RxBimApplication });
 
             var additionalFiles = new List<string>();
-            if (options.AddAllApps)
+            if (options.AddAllAppToManifest)
             {
                 additionalFiles = Directory.GetFiles(output, "*.dll").ToList();
                 additionalFiles.Remove(file);
             }
-            else if (options.AdditionalApps != null && options.AdditionalApps.Any())
+            else if (options.ProjectsAddingToManifest != null && options.ProjectsAddingToManifest.Any())
             {
-                additionalFiles = options.AdditionalApps
+                additionalFiles = options.ProjectsAddingToManifest
                     .Select(p => Path.Combine(output, $"{p.Trim()}.dll"))
                     .ToList();
                 if (additionalFiles.Any(f => !File.Exists(f)))
                 {
                     throw new FileNotFoundException(
-                        $"Assembly not found from property {nameof(Options.AdditionalApps)}");
+                        $"Assembly not found from property {nameof(Options.ProjectsAddingToManifest)}");
                 }
             }
 
