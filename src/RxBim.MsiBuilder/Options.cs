@@ -74,7 +74,7 @@ namespace RxBim.MsiBuilder
                     .GetProperties()
                     .Select(p => (
                         val: ToString(p.GetValue(this)),
-                        shortName: ((OptionAttribute)p.GetCustomAttribute(typeof(OptionAttribute))!).ShortName))
+                        shortName: ((OptionAttribute)p.GetCustomAttribute(typeof(OptionAttribute)))?.ShortName))
                     .Where(tuple => !string.IsNullOrEmpty(tuple.val))
                     .Select(tuple => $"-{tuple.shortName} {tuple.val}"));
         }
