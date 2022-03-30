@@ -43,8 +43,7 @@
                     {
                         throw new RegistrationException(
                             $"Method `{method.Name}` of type {type.FullName} can't be transactional. " +
-                            "Transactional methods should be virtual or" +
-                            " implemented from any interface.");
+                            "Transactional methods should be virtual or implemented from any interface.");
                     }
                 }
             }
