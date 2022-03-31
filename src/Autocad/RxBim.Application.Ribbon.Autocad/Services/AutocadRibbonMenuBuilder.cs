@@ -8,9 +8,9 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
+    using ConfigurationBuilders;
     using GalaSoft.MvvmLight.CommandWpf;
-    using RxBim.Application.Ribbon.ConfigurationBuilders;
-    using Button = Application.Ribbon.Button;
+    using Button = Button;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD.
@@ -20,7 +20,7 @@
         private readonly Func<ThemeType> _getCurrentTheme;
         private readonly Action _prebuildAction;
         private readonly Action<RibbonToolTip> _toolTipAction;
-        private readonly List<(RibbonButton RibbonButton, Button Button)> _createdButtons = new();
+        private readonly List<(RibbonButton Button, Button Config)> _createdButtons = new();
 
         /// <inheritdoc />
         public AutocadRibbonMenuBuilder(
@@ -41,7 +41,7 @@
         public void ApplyCurrentTheme()
         {
             var theme = _getCurrentTheme();
-            _createdButtons.ForEach(x => SetRibbonItemImages(x.RibbonButton, x.Button, theme));
+            _createdButtons.ForEach(x => SetRibbonItemImages(x.Button, x.Config, theme));
         }
 
         /// <inheritdoc />
@@ -66,12 +66,16 @@
                 x.Title != null &&
                 x.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
-            if (acRibbonTab is null)
+            if (acRibbonTab is not null)
+                return acRibbonTab;
+
+            acRibbonTab = new RibbonTab
             {
-                acRibbonTab = new RibbonTab
-                    { Title = title, Id = $"TAB_{title.GetHashCode():0}" };
-                ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
-            }
+                Title = title,
+                Id = $"TAB_{title.GetHashCode():0}"
+            };
+
+            ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
 
             return acRibbonTab;
         }
