@@ -12,7 +12,8 @@
         private readonly IOnlineHelpService _onlineHelpService;
         private readonly IRibbonEventsService _ribbonEventsService;
         private readonly IThemeService _themeService;
-        private AutocadRibbonMenuBuilder? _builder;
+        private readonly IPanelService _panelService;
+        private readonly IButtonService _buttonService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadRibbonMenuBuilderFactory"/> class.
@@ -20,33 +21,39 @@
         /// <param name="onlineHelpService">Online help service</param>
         /// <param name="ribbonEventsService">Ribbon service</param>
         /// <param name="themeService">Theme service</param>
+        /// <param name="panelService">Panel service.</param>
+        /// <param name="buttonService">Button service.</param>
         public AutocadRibbonMenuBuilderFactory(
             IOnlineHelpService onlineHelpService,
             IRibbonEventsService ribbonEventsService,
-            IThemeService themeService)
+            IThemeService themeService,
+            IPanelService panelService,
+            IButtonService buttonService)
         {
             _onlineHelpService = onlineHelpService;
             _ribbonEventsService = ribbonEventsService;
             _themeService = themeService;
+            _panelService = panelService;
+            _buttonService = buttonService;
         }
+
+        /// <inheritdoc />
+        public IRibbonMenuBuilder? CurrentBuilder { get; private set; }
 
         /// <inheritdoc />
         public IRibbonMenuBuilder CreateMenuBuilder(Assembly menuAssembly)
         {
-            if (_builder is null)
-            {
-                _onlineHelpService.Run();
-                _ribbonEventsService.Run();
-                _themeService.Run();
-                _builder = new AutocadRibbonMenuBuilder(menuAssembly,
-                    _themeService.GetCurrentTheme,
-                    _onlineHelpService.ClearToolTipsCache,
-                    _onlineHelpService.AddToolTip);
-                _ribbonEventsService.NeedRebuild += (_, _) => _builder.BuildRibbonMenu();
-                _themeService.ThemeChanged += (_, _) => _builder.ApplyCurrentTheme();
-            }
+            if (CurrentBuilder is not null)
+                return CurrentBuilder;
 
-            return _builder;
+            _onlineHelpService.Run();
+            _ribbonEventsService.Run();
+            _themeService.Run();
+
+            CurrentBuilder =
+                new AutocadRibbonMenuBuilder(menuAssembly, _onlineHelpService, _panelService, _buttonService);
+
+            return CurrentBuilder;
         }
     }
 }

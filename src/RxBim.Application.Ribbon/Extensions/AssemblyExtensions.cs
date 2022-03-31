@@ -8,7 +8,7 @@
     /// <summary>
     /// Extensions for <see cref="Assembly"/>
     /// </summary>
-    internal static class AssemblyExtensions
+    public static class AssemblyExtensions
     {
         /// <summary>
         /// Returns class type

@@ -1,67 +1,49 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Controls;
-    using Autodesk.AutoCAD.ApplicationServices.Core;
-    using Autodesk.Private.Windows;
+    using Abstractions;
     using Autodesk.Windows;
     using Extensions;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Models;
-    using Models.Configurations;
     using Ribbon.Abstractions;
+    using Ribbon.Models.Configurations;
     using Ribbon.Services;
     using Ribbon.Services.ConfigurationBuilders;
-    using Button = Models.Configurations.Button;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD
     /// </summary>
     public class AutocadRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
-        private readonly Func<ThemeType> _getCurrentTheme;
-        private readonly Action _prebuildAction;
-        private readonly Action<RibbonToolTip> _toolTipAction;
-        private readonly List<(RibbonButton Button, Button Config)> _createdButtons = new();
+        private readonly IOnlineHelpService _onlineHelpService;
+        private readonly IPanelService _panelService;
+        private readonly IButtonService _buttonService;
 
         /// <inheritdoc />
         public AutocadRibbonMenuBuilder(
             Assembly menuAssembly,
-            Func<ThemeType> getCurrentTheme,
-            Action prebuildAction,
-            Action<RibbonToolTip> toolTipAction)
+            IOnlineHelpService onlineHelpService,
+            IPanelService panelService,
+            IButtonService buttonService)
             : base(menuAssembly)
         {
-            _getCurrentTheme = getCurrentTheme;
-            _prebuildAction = prebuildAction;
-            _toolTipAction = toolTipAction;
-        }
-
-        /// <summary>
-        /// Apply current theme for all menu buttons
-        /// </summary>
-        public void ApplyCurrentTheme()
-        {
-            var theme = _getCurrentTheme();
-            _createdButtons.ForEach(x => SetRibbonItemImages(x.Button, x.Config, theme));
+            _panelService = panelService;
+            _buttonService = buttonService;
+            _onlineHelpService = onlineHelpService;
         }
 
         /// <inheritdoc />
         protected override void PreBuildActions()
         {
             base.PreBuildActions();
-            _createdButtons.Clear();
-            _prebuildAction();
+            _buttonService.ClearButtonCache();
+            _onlineHelpService.ClearToolTipsCache();
         }
 
         /// <inheritdoc />
-        protected override bool CheckRibbonCondition()
-        {
-            return ComponentManager.Ribbon != null;
-        }
+        protected override bool CheckRibbonCondition() => ComponentManager.Ribbon != null;
 
         /// <inheritdoc />
         protected override RibbonTab GetOrCreateTab(string tabName)
@@ -86,70 +68,38 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName)
-        {
-            var acRibbonPanel = acRibbonTab.Panels.FirstOrDefault(x =>
-                x.Source.Name != null &&
-                x.Source.Name.Equals(panelName, StringComparison.OrdinalIgnoreCase));
-            if (acRibbonPanel is null)
-            {
-                acRibbonPanel = new RibbonPanel
-                {
-                    Source = new RibbonPanelSource
-                    {
-                        Name = panelName,
-                        Title = panelName,
-                        Id = $"{acRibbonTab.Id}_PANEL_{panelName.GetHashCode():0}"
-                    },
-                };
-
-                acRibbonTab.Panels.Add(acRibbonPanel);
-            }
-
-            if (acRibbonPanel.GetCurrentRowOrNull() is null)
-                acRibbonPanel.AddNewRow();
-
-            return acRibbonPanel;
-        }
+        protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName) =>
+            _panelService.GetOrCreatePanel(acRibbonTab, panelName);
 
         /// <inheritdoc />
         protected override void CreateAboutButton(RibbonTab tab, RibbonPanel panel, AboutButton aboutButtonConfig)
         {
             var orientation = aboutButtonConfig.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButtonConfig, RibbonItemSize.Large, orientation));
+            _panelService.AddItem(panel,
+                CreateAboutButtonInternal(aboutButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButtonConfig)
         {
             var orientation = cmdButtonConfig.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButtonConfig, RibbonItemSize.Large, orientation));
+            _panelService.AddItem(panel,
+                _buttonService.CreateCommandButton(cmdButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButtonConfig)
         {
             var orientation = pullDownButtonConfig.GetSingleLargeButtonOrientation();
-            panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButtonConfig,
-                RibbonItemSize.Large,
-                orientation));
+            _panelService.AddItem(panel,
+                CreatePullDownButtonInternal(pullDownButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
-        protected override void AddSeparator(RibbonPanel panel)
-        {
-            panel.AddToCurrentRow(new RibbonSeparator());
-        }
+        protected override void AddSeparator(RibbonPanel panel) => _panelService.AddSeparator(panel);
 
         /// <inheritdoc />
-        protected override void AddSlideOut(RibbonPanel panel)
-        {
-            if (panel.HasSlideOut())
-                return;
-
-            panel.Source.Items.Add(new RibbonPanelBreak());
-            panel.AddNewRow();
-        }
+        protected override void AddSlideOut(RibbonPanel panel) => _panelService.AddSlideOut(panel);
 
         /// <inheritdoc />
         protected override void CreateStackedItems(RibbonPanel panel, StackedItems stackedItems)
@@ -160,7 +110,7 @@
                 ? RibbonItemSize.Standard
                 : RibbonItemSize.Large;
 
-            panel.AddToCurrentRow(stackedItemsRow);
+            _panelService.AddItem(panel, stackedItemsRow);
 
             for (var i = 0; i < stackSize; i++)
             {
@@ -173,7 +123,9 @@
                 var buttonItem = buttonConfig switch
                 {
                     AboutButton aboutButton => CreateAboutButtonInternal(aboutButton, size, Orientation.Horizontal),
-                    CommandButton cmdButton => CreateCommandButtonInternal(cmdButton, size, Orientation.Horizontal),
+                    CommandButton cmdButton => _buttonService.CreateCommandButton(cmdButton,
+                        size,
+                        Orientation.Horizontal),
                     PullDownButton pullDownButton => CreatePullDownButtonInternal(pullDownButton,
                         size,
                         Orientation.Horizontal),
@@ -184,92 +136,9 @@
             }
         }
 
-        private T CreateNewButton<T>(
-            Button buttonConfig,
-            RibbonItemSize size,
-            Orientation orientation,
-            bool forceTextSettings = false)
-            where T : RibbonButton, new()
+        private RibbonItem CreateAboutButtonInternal(AboutButton config, RibbonItemSize large, Orientation orientation)
         {
-            var ribbonButton = CreateNewButtonBase<T>(buttonConfig, size, orientation, forceTextSettings);
-            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip,
-                buttonConfig.HelpUrl,
-                buttonConfig.Description,
-                _toolTipAction);
-            return ribbonButton;
-        }
-
-        private T CreateNewButtonBase<T>(
-            Button buttonConfig,
-            RibbonItemSize size,
-            Orientation orientation,
-            bool forceTextSettings = false)
-            where T : RibbonButton, new()
-        {
-            var ribbonButton = new T();
-            ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
-            SetRibbonItemImages(ribbonButton, buttonConfig, _getCurrentTheme());
-            _createdButtons.Add((ribbonButton, buttonConfig));
-            return ribbonButton;
-        }
-
-        private void SetRibbonItemImages(RibbonItem button, Button buttonConfig, ThemeType themeType)
-        {
-            if (themeType is ThemeType.Light)
-            {
-                button.Image = GetIconImage(buttonConfig.SmallImageLight ?? buttonConfig.SmallImage);
-                button.LargeImage = GetIconImage(buttonConfig.LargeImageLight ?? buttonConfig.LargeImage);
-            }
-            else
-            {
-                button.Image = GetIconImage(buttonConfig.SmallImage);
-                button.LargeImage = GetIconImage(buttonConfig.LargeImage);
-            }
-        }
-
-        private RibbonButton CreateAboutButtonInternal(
-            AboutButton aboutButtonConfig,
-            RibbonItemSize size,
-            Orientation orientation)
-        {
-            var button = CreateNewButton<RibbonButton>(aboutButtonConfig, size, orientation);
-            button.CommandHandler = new RelayCommand(() =>
-                {
-                    if (!TryShowAboutWindow(aboutButtonConfig.Content))
-                        Application.ShowAlertDialog(aboutButtonConfig.Content.ToString());
-                },
-                true);
-            return button;
-        }
-
-        private RibbonButton CreateCommandButtonInternal(
-            CommandButton buttonConfig,
-            RibbonItemSize size,
-            Orientation orientation)
-        {
-            var button = CreateNewButtonBase<RibbonButton>(buttonConfig, size, orientation);
-            if (!string.IsNullOrWhiteSpace(buttonConfig.CommandType))
-            {
-                var commandType = GetCommandType(buttonConfig.CommandType!);
-                var tooltip = GetTooltipContent(buttonConfig, commandType);
-                button.SetTooltipForButton(tooltip, buttonConfig.HelpUrl, buttonConfig.Description, _toolTipAction);
-                var commandName = commandType.GetCommandName();
-                button.CommandHandler = new RelayCommand(() =>
-                    {
-                        Application.DocumentManager.MdiActiveDocument?
-                            .SendStringToExecute($"{commandName} ", false, false, true);
-                    },
-                    true);
-            }
-            else
-            {
-                button.SetTooltipForButton(buttonConfig.ToolTip,
-                    buttonConfig.HelpUrl,
-                    buttonConfig.Description,
-                    _toolTipAction);
-            }
-
-            return button;
+            return _buttonService.CreateAboutButton(config, large, orientation);
         }
 
         private RibbonButton CreatePullDownButtonInternal(
@@ -277,21 +146,12 @@
             RibbonItemSize size,
             Orientation orientation)
         {
-            var forceTextSettings =
-                pullDownButtonConfig.CommandButtonsList.Any(x => !string.IsNullOrWhiteSpace(x.Text));
-            var splitButton =
-                CreateNewButton<RibbonSplitButton>(pullDownButtonConfig, size, orientation, forceTextSettings);
-
-            splitButton.ListStyle = RibbonSplitButtonListStyle.List;
-            splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
-            splitButton.ListImageSize =
-                size == RibbonItemSize.Standard ? RibbonImageSize.Standard : RibbonImageSize.Large;
-            splitButton.IsSplit = false;
-            splitButton.IsSynchronizedWithCurrentItem = false;
+            var splitButton = _buttonService.CreatePullDownButton(pullDownButtonConfig, size, orientation);
 
             foreach (var commandButtonConfig in pullDownButtonConfig.CommandButtonsList)
             {
-                splitButton.Items.Add(CreateCommandButtonInternal(commandButtonConfig, size, orientation));
+                splitButton.Items.Add(
+                    _buttonService.CreateCommandButton(commandButtonConfig, size, orientation));
             }
 
             return splitButton;

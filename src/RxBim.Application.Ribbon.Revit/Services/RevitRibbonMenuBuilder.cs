@@ -12,12 +12,12 @@
     using GalaSoft.MvvmLight.CommandWpf;
     using Models.Configurations;
     using Ribbon.Services;
+    using Shared.Abstractions;
     using UIFramework;
     using Button = Models.Configurations.Button;
     using RibbonButton = Autodesk.Windows.RibbonButton;
     using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
-    using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for Revit
@@ -25,12 +25,17 @@
     public class RevitRibbonMenuBuilder : RibbonMenuBuilderBase<string, RibbonPanel>
     {
         private readonly UIControlledApplication _application;
+        private readonly IAboutShowService _aboutShowService;
 
         /// <inheritdoc />
-        public RevitRibbonMenuBuilder(UIControlledApplication application, Assembly menuAssembly)
+        public RevitRibbonMenuBuilder(
+            UIControlledApplication application,
+            Assembly menuAssembly,
+            IAboutShowService aboutShowService)
             : base(menuAssembly)
         {
             _application = application;
+            _aboutShowService = aboutShowService;
         }
 
         /// <inheritdoc />
@@ -83,12 +88,7 @@
                 ToolTip = aboutButtonConfig.ToolTip,
                 Size = RibbonItemSize.Large,
                 Orientation = Orientation.Vertical,
-                CommandHandler = new RelayCommand(() =>
-                    {
-                        if (!TryShowAboutWindow(aboutButtonConfig.Content))
-                            TaskDialog.Show(aboutButtonConfig.Name, aboutButtonConfig.Content.ToString());
-                    },
-                    true)
+                CommandHandler = new RelayCommand(() => _aboutShowService.ShowAboutBox(aboutButtonConfig.Content), true)
             };
 
             ComponentManager.Ribbon?

@@ -3,7 +3,7 @@
     using System;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
-    using Models;
+    using Ribbon.Models;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <inheritdoc cref="IThemeService" />
@@ -11,8 +11,16 @@
     {
         private const string ThemeVariableName = "COLORTHEME";
 
-        /// <inheritdoc />
-        public event EventHandler? ThemeChanged;
+        private readonly IButtonService _buttonService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThemeService"/> class.
+        /// </summary>
+        /// <param name="buttonService"><see cref="IButtonService"/>.</param>
+        public ThemeService(IButtonService buttonService)
+        {
+            _buttonService = buttonService;
+        }
 
         /// <inheritdoc />
         public void Run()
@@ -36,9 +44,7 @@
         private void ApplicationOnSystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
             if (e.Name.Equals(ThemeVariableName, StringComparison.OrdinalIgnoreCase))
-            {
-                ThemeChanged?.Invoke(this, EventArgs.Empty);
-            }
+                _buttonService.ApplyCurrentTheme();
         }
     }
 }

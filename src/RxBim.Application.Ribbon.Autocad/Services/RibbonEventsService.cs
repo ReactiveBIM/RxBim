@@ -4,6 +4,7 @@
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Windows;
+    using Ribbon.Abstractions;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
@@ -11,8 +12,16 @@
     /// </summary>
     public class RibbonEventsService : IRibbonEventsService, IDisposable
     {
-        /// <inheritdoc />
-        public event EventHandler? NeedRebuild;
+        private readonly IRibbonMenuBuilderFactory _builderFactory;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RibbonEventsService"/> class.
+        /// </summary>
+        /// <param name="builderFactory"><see cref="IRibbonMenuBuilderFactory"/>.</param>
+        public RibbonEventsService(IRibbonMenuBuilderFactory builderFactory)
+        {
+            _builderFactory = builderFactory;
+        }
 
         /// <inheritdoc />
         public void Run()
@@ -61,7 +70,7 @@
 
         private void OnIdle(object sender, EventArgs e)
         {
-            NeedRebuild?.Invoke(this, EventArgs.Empty);
+            _builderFactory.CurrentBuilder?.BuildRibbonMenu();
             Application.Idle -= OnIdle;
         }
     }

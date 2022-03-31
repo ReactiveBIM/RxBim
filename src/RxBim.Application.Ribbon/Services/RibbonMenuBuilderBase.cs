@@ -7,8 +7,6 @@
     using Extensions;
     using Models;
     using Models.Configurations;
-    using Shared;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
@@ -28,20 +26,14 @@
         private Assembly MenuAssembly { get; }
 
         /// <summary>
-        /// Service for displaying the "About" window
-        /// </summary>
-        private IAboutShowService? AboutShowService { get; set; }
-
-        /// <summary>
         /// Ribbon configuration
         /// </summary>
         private Ribbon? RibbonConfiguration { get; set; }
 
         /// <inheritdoc />
-        public void BuildRibbonMenu(Ribbon? ribbonConfig = null, IAboutShowService? aboutShowService = null)
+        public void BuildRibbonMenu(Ribbon? ribbonConfig = null)
         {
             RibbonConfiguration ??= ribbonConfig;
-            AboutShowService ??= aboutShowService;
 
             if (RibbonConfiguration is null || !CheckRibbonCondition())
                 return;
@@ -52,25 +44,38 @@
                 CreateTab(tabConfig);
         }
 
+        /// <inheritdoc />
+        public Type GetCommandType(string commandTypeName)
+        {
+            return MenuAssembly.GetTypeFromName(commandTypeName);
+        }
+
+        /// <inheritdoc />
+        public string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
+        {
+            var toolTip = cmdButtonConfig.ToolTip;
+            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
+                return toolTip;
+            if (toolTip.Length > 0)
+                toolTip += Environment.NewLine;
+            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
+            return toolTip;
+        }
+
+        /// <inheritdoc />
+        public BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
+        {
+            if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
+                return null;
+            var uri = MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!);
+            return uri != null ? new BitmapImage(uri) : null;
+        }
+
         /// <summary>
         /// Executed before the start of building the menu
         /// </summary>
         protected virtual void PreBuildActions()
         {
-        }
-
-        /// <summary>
-        /// Attempts to display the About window
-        /// </summary>
-        /// <param name="content">Content</param>
-        /// <returns>True if successful, otherwise false</returns>
-        protected bool TryShowAboutWindow(AboutBoxContent content)
-        {
-            if (AboutShowService is null)
-                return false;
-
-            AboutShowService.ShowAboutBox(content);
-            return true;
         }
 
         /// <summary>
@@ -133,45 +138,6 @@
         /// <param name="panel">Panel</param>
         /// <param name="stackedItems">Stacked</param>
         protected abstract void CreateStackedItems(TPanel panel, StackedItems stackedItems);
-
-        /// <summary>
-        /// Returns command class type
-        /// </summary>
-        /// <param name="commandTypeName">Command class type name</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">Type name is invalid</exception>
-        protected Type GetCommandType(string commandTypeName)
-        {
-            return MenuAssembly.GetTypeFromName(commandTypeName);
-        }
-
-        /// <summary>
-        /// Returns an image of the button's icon
-        /// </summary>
-        /// <param name="fullOrRelativeImagePath">Image path</param>
-        protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
-        {
-            if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
-                return null;
-            var uri = MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!);
-            return uri != null ? new BitmapImage(uri) : null;
-        }
-
-        /// <summary>
-        /// Returns tooltip content for command button
-        /// </summary>
-        /// <param name="cmdButtonConfig">Command button configuration</param>
-        /// <param name="commandType">Type of command class</param>
-        protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
-        {
-            var toolTip = cmdButtonConfig.ToolTip;
-            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
-                return toolTip;
-            if (toolTip.Length > 0)
-                toolTip += Environment.NewLine;
-            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
-            return toolTip;
-        }
 
         private void CreateTab(Tab tabConfig)
         {

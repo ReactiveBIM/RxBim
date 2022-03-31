@@ -4,7 +4,7 @@
     using System.Windows.Controls;
     using Autodesk.Windows;
     using Ribbon.Abstractions.ConfigurationBuilders;
-    using Button = Models.Configurations.Button;
+    using Button = Ribbon.Models.Configurations.Button;
 
     /// <summary>
     /// Extensions for <see cref="IButtonBuilder"/>

@@ -8,6 +8,11 @@
     public interface IRibbonMenuBuilderFactory
     {
         /// <summary>
+        /// Returns current ribbon menu builder.
+        /// </summary>
+        IRibbonMenuBuilder? CurrentBuilder { get; }
+
+        /// <summary>
         /// Creates ribbon menu builder
         /// </summary>
         /// <param name="menuAssembly">Menu defining assembly</param>
