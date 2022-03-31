@@ -25,7 +25,7 @@
         private readonly Func<ThemeType> _getCurrentTheme;
         private readonly Action _prebuildAction;
         private readonly Action<RibbonToolTip> _toolTipAction;
-        private readonly List<(RibbonButton, Button)> _createdButtons = new();
+        private readonly List<(RibbonButton Button, Button Config)> _createdButtons = new();
 
         /// <inheritdoc />
         public AutocadRibbonMenuBuilder(
@@ -46,7 +46,7 @@
         public void ApplyCurrentTheme()
         {
             var theme = _getCurrentTheme();
-            _createdButtons.ForEach(x => SetRibbonItemImages(x.Item1, x.Item2, theme));
+            _createdButtons.ForEach(x => SetRibbonItemImages(x.Button, x.Config, theme));
         }
 
         /// <inheritdoc />
@@ -71,12 +71,16 @@
                 x.Title != null &&
                 x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
 
-            if (acRibbonTab is null)
+            if (acRibbonTab is not null)
+                return acRibbonTab;
+
+            acRibbonTab = new RibbonTab
             {
-                acRibbonTab = new RibbonTab
-                    { Title = tabName, Id = $"TAB_{tabName.GetHashCode():0}" };
-                ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
-            }
+                Title = tabName,
+                Id = $"TAB_{tabName.GetHashCode():0}"
+            };
+
+            ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
 
             return acRibbonTab;
         }
