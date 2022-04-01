@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     using System;
+    using System.Reflection;
     using System.Windows.Media.Imaging;
     using Models.Configurations;
 
@@ -9,6 +10,11 @@
     /// </summary>
     public interface IRibbonMenuBuilder
     {
+        /// <summary>
+        /// Menu defining assembly
+        /// </summary>
+        public Assembly MenuAssembly { set; }
+
         /// <summary>
         /// Constructs CAD platform-specific ribbon
         /// </summary>

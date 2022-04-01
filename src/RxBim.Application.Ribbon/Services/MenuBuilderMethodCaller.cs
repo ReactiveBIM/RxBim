@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
-    using Abstractions;
     using Di;
     using Models.Configurations;
     using Shared;
@@ -28,9 +27,9 @@
             {
                 try
                 {
-                    var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
+                    var ribbonMenuBuildAction = container.GetService<Action<Ribbon>>();
                     var ribbonConfiguration = container.GetService<Ribbon>();
-                    ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration);
+                    ribbonMenuBuildAction(ribbonConfiguration);
                 }
                 catch (Exception e)
                 {

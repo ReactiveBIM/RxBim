@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Windows.Controls;
     using Abstractions;
     using Autodesk.Private.Windows;
@@ -28,11 +27,7 @@
         private readonly IAboutShowService _aboutShowService;
 
         /// <inheritdoc />
-        public RevitRibbonMenuBuilder(
-            Assembly menuAssembly,
-            UIControlledApplication application,
-            IAboutShowService aboutShowService)
-            : base(menuAssembly)
+        public RevitRibbonMenuBuilder(UIControlledApplication application, IAboutShowService aboutShowService)
         {
             _application = application;
             _aboutShowService = aboutShowService;

@@ -25,13 +25,13 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths
         /// </param>
-        public static void AddMenu<T>(
+        public static void AddMenu<TBuilder>(
             this IContainer container,
             Action<IRibbonBuilder> action,
             Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+            where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<T>(assembly);
+            container.AddBuilder<TBuilder>(assembly);
             container.AddSingleton(() =>
             {
                 var builder = new RibbonBuilder();
@@ -55,21 +55,22 @@
             this IContainer container,
             IConfiguration? config,
             Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+            where T : class, IRibbonMenuBuilder
         {
             container.AddBuilder<T>(assembly);
             container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
 
-        private static void AddBuilder<T>(this IContainer container, Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+        private static void AddBuilder<TBuilder>(this IContainer container, Assembly assembly)
+            where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddSingleton<IRibbonMenuBuilderFactory, T>();
-            container.AddSingleton(() =>
+            container.AddSingleton<IRibbonMenuBuilder, TBuilder>();
+            container.AddSingleton<Action<Ribbon>>(() =>
             {
-                var builderFactory = container.GetService<IRibbonMenuBuilderFactory>();
-                return builderFactory.CreateMenuBuilder(assembly);
+                var menuBuilder = container.GetService<IRibbonMenuBuilder>();
+                menuBuilder.MenuAssembly = assembly;
+                return menuBuilder.BuildRibbonMenu;
             });
         }
 

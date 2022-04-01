@@ -7,6 +7,7 @@
     using Ribbon.Autocad.Extensions;
     using Ribbon.Models;
     using Shared;
+    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -14,9 +15,10 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
+            container.AddSingleton<IAboutShowService, AboutShowService>();
             container.AddAutocadMenu(ribbon =>
                 ribbon
-                    .SetAddVersionToCommandTooltip(true)
+                    .EnableAddVersionToCommandTooltip()
                     .SetCommandTooltipVersionHeader("Version: ")
                     .AddTab("RxBim_Tab_FromAction")
                     .AddAboutButton(

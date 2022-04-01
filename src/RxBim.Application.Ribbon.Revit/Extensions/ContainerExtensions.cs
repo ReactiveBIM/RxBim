@@ -25,7 +25,7 @@
             Assembly menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonMenuBuilderFactory>(action, menuAssembly);
+            container.AddMenu<RevitRibbonMenuBuilder>(action, menuAssembly);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@
             Assembly menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonMenuBuilderFactory>(cfg, menuAssembly);
+            container.AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
     }
 }

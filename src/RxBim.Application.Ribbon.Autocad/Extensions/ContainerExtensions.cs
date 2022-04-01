@@ -27,7 +27,7 @@
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(action, menuAssembly);
+            container.AddMenu<AutocadRibbonMenuBuilder>(action, menuAssembly);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(cfg, menuAssembly);
+            container.AddMenu<AutocadRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
         private static void AddInternalObjects(this IContainer container)
@@ -53,6 +53,7 @@
             container.AddSingleton<IColorThemeService, ColorThemeService>();
             container.AddSingleton<IPanelService, PanelService>();
             container.AddSingleton<IButtonService, ButtonService>();
+            container.AddSingleton<IRibbonComponentStorageService, RibbonComponentStorageService>();
         }
     }
 }

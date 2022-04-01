@@ -8,18 +8,10 @@
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <inheritdoc cref="IColorThemeService" />
-    public class ColorThemeService : IColorThemeService, IDisposable
+    internal class ColorThemeService : IColorThemeService, IDisposable
     {
-        private readonly IButtonService _buttonService;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorThemeService"/> class.
-        /// </summary>
-        /// <param name="buttonService"><see cref="IButtonService"/>.</param>
-        public ColorThemeService(IButtonService buttonService)
-        {
-            _buttonService = buttonService;
-        }
+        /// <inheritdoc/>
+        public event EventHandler? ThemeChanged;
 
         /// <inheritdoc />
         public void Run()
@@ -43,7 +35,7 @@
         private void ApplicationOnSystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
             if (e.Name.Equals(ColorThemeVariableName, StringComparison.OrdinalIgnoreCase))
-                _buttonService.ApplyCurrentTheme();
+                ThemeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

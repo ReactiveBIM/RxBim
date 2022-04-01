@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Abstractions
 {
+    using System;
     using Models;
 
     /// <summary>
@@ -7,6 +8,11 @@
     /// </summary>
     public interface IColorThemeService
     {
+        /// <summary>
+        /// Current theme changed event
+        /// </summary>
+        event EventHandler ThemeChanged;
+
         /// <summary>
         /// Runs the service
         /// </summary>
