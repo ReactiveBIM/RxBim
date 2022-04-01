@@ -11,7 +11,7 @@
     {
         private readonly IOnlineHelpService _onlineHelpService;
         private readonly IRibbonEventsService _ribbonEventsService;
-        private readonly IThemeService _themeService;
+        private readonly IColorThemeService _colorThemeService;
         private readonly IPanelService _panelService;
         private readonly IButtonService _buttonService;
 
@@ -20,19 +20,19 @@
         /// </summary>
         /// <param name="onlineHelpService">Online help service</param>
         /// <param name="ribbonEventsService">Ribbon service</param>
-        /// <param name="themeService">Theme service</param>
+        /// <param name="colorThemeService">Theme service</param>
         /// <param name="panelService">Panel service.</param>
         /// <param name="buttonService">Button service.</param>
         public AutocadRibbonMenuBuilderFactory(
             IOnlineHelpService onlineHelpService,
             IRibbonEventsService ribbonEventsService,
-            IThemeService themeService,
+            IColorThemeService colorThemeService,
             IPanelService panelService,
             IButtonService buttonService)
         {
             _onlineHelpService = onlineHelpService;
             _ribbonEventsService = ribbonEventsService;
-            _themeService = themeService;
+            _colorThemeService = colorThemeService;
             _panelService = panelService;
             _buttonService = buttonService;
         }
@@ -48,7 +48,7 @@
 
             _onlineHelpService.Run();
             _ribbonEventsService.Run();
-            _themeService.Run();
+            _colorThemeService.Run();
 
             CurrentBuilder =
                 new AutocadRibbonMenuBuilder(menuAssembly, _onlineHelpService, _panelService, _buttonService);

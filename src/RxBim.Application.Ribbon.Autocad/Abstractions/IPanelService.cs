@@ -27,7 +27,8 @@
         void AddItem(RibbonPanel panel, RibbonItem item);
 
         /// <summary>
-        /// Returns a ribbon panel with the specified name on the tab. If the panel does not exist, it will be created.
+        /// Returns a ribbon panel with the specified name on the tab.
+        /// If the panel does not exist, it will be created.
         /// </summary>
         /// <param name="acRibbonTab">Ribbon tab.</param>
         /// <param name="panelName">Panel name.</param>

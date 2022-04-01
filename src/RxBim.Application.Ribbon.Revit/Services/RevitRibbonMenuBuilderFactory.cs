@@ -30,7 +30,7 @@
         /// <inheritdoc />
         public IRibbonMenuBuilder CreateMenuBuilder(Assembly menuAssembly)
         {
-            return CurrentBuilder ??= new RevitRibbonMenuBuilder(_application, menuAssembly, _aboutShowService);
+            return CurrentBuilder ??= new RevitRibbonMenuBuilder(menuAssembly, _application, _aboutShowService);
         }
     }
 }

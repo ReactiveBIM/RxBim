@@ -14,6 +14,11 @@ namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
         ITabBuilder AddTab(string tabTitle);
 
         /// <summary>
+        /// Sets true value for <see cref="Models.Configurations.Ribbon.AddVersionToCommandTooltip"/>
+        /// </summary>
+        IRibbonBuilder EnableAddVersionToCommandTooltip();
+
+        /// <summary>
         /// Sets value for <see cref="Models.Configurations.Ribbon.AddVersionToCommandTooltip"/>
         /// </summary>
         /// <param name="value">Value</param>

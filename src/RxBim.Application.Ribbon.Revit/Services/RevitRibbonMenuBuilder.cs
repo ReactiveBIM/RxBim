@@ -29,8 +29,8 @@
 
         /// <inheritdoc />
         public RevitRibbonMenuBuilder(
-            UIControlledApplication application,
             Assembly menuAssembly,
+            UIControlledApplication application,
             IAboutShowService aboutShowService)
             : base(menuAssembly)
         {
@@ -47,13 +47,10 @@
         /// <inheritdoc />
         protected override string GetOrCreateTab(string tabName)
         {
-            var existsTab =
-                RevitRibbonControl.RibbonControl.Tabs.FirstOrDefault(t =>
-                    t.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
+            var existsTab = RevitRibbonControl.RibbonControl.Tabs.FirstOrDefault(t =>
+                t.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
             if (existsTab != null)
-            {
                 return existsTab.Title;
-            }
 
             _application.CreateRibbonTab(tabName);
             return tabName;
@@ -91,12 +88,10 @@
                 CommandHandler = new RelayCommand(() => _aboutShowService.ShowAboutBox(aboutButtonConfig.Content), true)
             };
 
-            ComponentManager.Ribbon?
-                .Tabs.FirstOrDefault(x => x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase))
-                ?
-                .Panels.FirstOrDefault(x => x.Source.Title.Equals(panel.Name))
-                ?
-                .Source.Items.Add(button);
+            ComponentManager.Ribbon?.Tabs
+                .FirstOrDefault(x => x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase))
+                ?.Panels.FirstOrDefault(x => x.Source.Title.Equals(panel.Name))
+                ?.Source.Items.Add(button);
         }
 
         /// <inheritdoc />
@@ -197,25 +192,21 @@
                 buttonData.ToolTip = tooltip;
         }
 
-        private PushButtonData CreateCommandButtonData(CommandButton cmdButtonConfig)
+        private PushButtonData CreateCommandButtonData(CommandButton config)
         {
-            CheckButtonName(cmdButtonConfig);
-            if (string.IsNullOrWhiteSpace(cmdButtonConfig.CommandType))
-                throw new ArgumentException($"Command type not found! Button: {cmdButtonConfig.Name}");
-            var cmdType = GetCommandType(cmdButtonConfig.CommandType!);
+            CheckButtonName(config);
+            if (string.IsNullOrWhiteSpace(config.CommandType))
+                throw new ArgumentException($"Command type not found! Button: {config.Name}");
+            var cmdType = GetCommandType(config.CommandType!);
             var className = cmdType.FullName;
             var assemblyLocation = cmdType.Assembly.Location;
             var pushButtonData =
-                new PushButtonData(
-                    cmdButtonConfig.Name,
-                    cmdButtonConfig.Text ?? cmdButtonConfig.Name,
-                    assemblyLocation,
-                    className)
+                new PushButtonData(config.Name, config.Text ?? config.Name, assemblyLocation, className)
                 {
                     AvailabilityClassName = className
                 };
-            SetButtonProperties(pushButtonData, cmdButtonConfig);
-            SetTooltip(pushButtonData, GetTooltipContent(cmdButtonConfig, cmdType));
+            SetButtonProperties(pushButtonData, config);
+            SetTooltip(pushButtonData, GetTooltipContent(config, cmdType));
             return pushButtonData;
         }
 
@@ -233,7 +224,7 @@
         private void CheckButtonName(Button buttonConfig)
         {
             if (string.IsNullOrWhiteSpace(buttonConfig.Name))
-                throw new ArgumentException($"Button name not found!");
+                throw new ArgumentException("Button name not found!");
         }
     }
 }

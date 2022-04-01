@@ -2,7 +2,7 @@
 {
     using System.Windows.Controls;
     using Autodesk.Windows;
-    using Ribbon.Models.Configurations;
+    using Models.Configurations;
 
     /// <summary>
     /// Buttons service.

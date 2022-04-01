@@ -9,17 +9,17 @@
     using Autodesk.Windows;
     using Extensions;
     using GalaSoft.MvvmLight.Command;
+    using Models;
+    using Models.Configurations;
     using Ribbon.Abstractions;
-    using Ribbon.Models;
-    using Ribbon.Models.Configurations;
     using Shared.Abstractions;
-    using Button = Ribbon.Models.Configurations.Button;
+    using Button = Models.Configurations.Button;
 
     /// <inheritdoc />
     public class ButtonService : IButtonService
     {
         private readonly IOnlineHelpService _onlineHelpService;
-        private readonly IThemeService _themeService;
+        private readonly IColorThemeService _colorThemeService;
         private readonly IRibbonMenuBuilderFactory _builderFactory;
         private readonly IAboutShowService _aboutShowService;
         private readonly List<(RibbonButton Button, Button Config)> _createdButtons = new();
@@ -28,17 +28,17 @@
         /// Initializes a new instance of the <see cref="ButtonService"/> class.
         /// </summary>
         /// <param name="onlineHelpService"><see cref="IOnlineHelpService"/>.</param>
-        /// <param name="themeService"><see cref="IThemeService"/>.</param>
+        /// <param name="colorThemeService"><see cref="IColorThemeService"/>.</param>
         /// <param name="builderFactory"><see cref="IRibbonMenuBuilderFactory"/>.</param>
         /// <param name="aboutShowService"><see cref="IAboutShowService"/>.</param>
         public ButtonService(
             IOnlineHelpService onlineHelpService,
-            IThemeService themeService,
+            IColorThemeService colorThemeService,
             IRibbonMenuBuilderFactory builderFactory,
             IAboutShowService aboutShowService)
         {
             _onlineHelpService = onlineHelpService;
-            _themeService = themeService;
+            _colorThemeService = colorThemeService;
             _builderFactory = builderFactory;
             _aboutShowService = aboutShowService;
         }
@@ -67,10 +67,10 @@
             {
                 var commandType = builder.GetCommandType(config.CommandType!);
                 var tooltip = builder.GetTooltipContent(config, commandType);
-                button.SetTooltipForButton(tooltip,
+                SetTooltipForButton(button,
+                    tooltip,
                     config.HelpUrl,
-                    config.Description,
-                    _onlineHelpService.AddToolTip);
+                    config.Description);
                 var commandName = commandType.GetCommandName();
                 button.CommandHandler = new RelayCommand(() =>
                     {
@@ -81,10 +81,10 @@
             }
             else
             {
-                button.SetTooltipForButton(config.ToolTip,
+                SetTooltipForButton(button,
+                    config.ToolTip,
                     config.HelpUrl,
-                    config.Description,
-                    _onlineHelpService.AddToolTip);
+                    config.Description);
             }
 
             return button;
@@ -107,6 +107,12 @@
                 size == RibbonItemSize.Standard ? RibbonImageSize.Standard : RibbonImageSize.Large;
             splitButton.IsSplit = false;
             splitButton.IsSynchronizedWithCurrentItem = false;
+
+            foreach (var commandButtonConfig in config.CommandButtonsList)
+            {
+                splitButton.Items.Add(CreateCommandButton(commandButtonConfig, size, orientation));
+            }
+
             return splitButton;
         }
 
@@ -119,7 +125,7 @@
         /// <inheritdoc />
         public void ApplyCurrentTheme()
         {
-            var theme = _themeService.GetCurrentTheme();
+            var theme = _colorThemeService.GetCurrentTheme();
             _createdButtons.ForEach(x => SetRibbonItemImages(x.Button, x.Config, theme));
         }
 
@@ -131,10 +137,10 @@
             where T : RibbonButton, new()
         {
             var ribbonButton = CreateNewButtonBase<T>(buttonConfig, size, orientation, forceTextSettings);
-            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip,
+            SetTooltipForButton(ribbonButton,
+                buttonConfig.ToolTip,
                 buttonConfig.HelpUrl,
-                buttonConfig.Description,
-                _onlineHelpService.AddToolTip);
+                buttonConfig.Description);
             return ribbonButton;
         }
 
@@ -147,7 +153,7 @@
         {
             var ribbonButton = new T();
             ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
-            SetRibbonItemImages(ribbonButton, buttonConfig, _themeService.GetCurrentTheme());
+            SetRibbonItemImages(ribbonButton, buttonConfig, _colorThemeService.GetCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
         }
@@ -169,6 +175,42 @@
                 button.Image = builder.GetIconImage(buttonConfig.SmallImage);
                 button.LargeImage = builder.GetIconImage(buttonConfig.LargeImage);
             }
+        }
+
+        private void SetTooltipForButton(
+            RibbonItem ribbonButton,
+            string? tooltipText,
+            string? helpUrl,
+            string? description)
+        {
+            var hasToolTip = !string.IsNullOrWhiteSpace(tooltipText);
+            var hasHelpUrl = !string.IsNullOrWhiteSpace(helpUrl);
+
+            if (!hasToolTip && !hasHelpUrl)
+                return;
+
+            var toolTip = new RibbonToolTip
+                { Title = string.IsNullOrWhiteSpace(ribbonButton.Text) ? ribbonButton.Name : ribbonButton.Text };
+
+            if (!string.IsNullOrWhiteSpace(description))
+                toolTip.ExpandedContent = description;
+
+            if (hasToolTip)
+                toolTip.Content = tooltipText;
+
+            if (hasHelpUrl)
+            {
+                toolTip.HelpTopic = helpUrl;
+                toolTip.IsHelpEnabled = true;
+            }
+            else
+            {
+                toolTip.IsHelpEnabled = false;
+            }
+
+            _onlineHelpService.AddToolTip(toolTip);
+
+            ribbonButton.ToolTip = toolTip;
         }
     }
 }

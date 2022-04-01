@@ -19,6 +19,13 @@
         }
 
         /// <inheritdoc />
+        public IRibbonBuilder EnableAddVersionToCommandTooltip()
+        {
+            Ribbon.AddVersionToCommandTooltip = true;
+            return this;
+        }
+
+        /// <inheritdoc />
         public IRibbonBuilder SetAddVersionToCommandTooltip(bool value)
         {
             Ribbon.AddVersionToCommandTooltip = value;

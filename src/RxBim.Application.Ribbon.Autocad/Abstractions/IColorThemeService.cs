@@ -1,11 +1,11 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Abstractions
 {
-    using Ribbon.Models;
+    using Models;
 
     /// <summary>
     /// Theme service
     /// </summary>
-    public interface IThemeService
+    public interface IColorThemeService
     {
         /// <summary>
         /// Runs the service
