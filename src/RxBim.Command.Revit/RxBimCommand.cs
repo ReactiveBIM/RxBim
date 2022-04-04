@@ -10,7 +10,7 @@
     using Result = Autodesk.Revit.UI.Result;
 
     /// <summary>
-    /// Команда Revit
+    /// Revit command
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]

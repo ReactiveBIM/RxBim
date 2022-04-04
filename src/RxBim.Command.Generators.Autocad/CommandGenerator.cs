@@ -12,7 +12,7 @@
     using static Constants;
 
     /// <summary>
-    /// Генератор кода для командного класса
+    /// Code generator for Autocad command class
     /// </summary>
     [Generator]
     public class CommandGenerator : ISourceGenerator
@@ -23,7 +23,6 @@
         public void Initialize(GeneratorInitializationContext context)
         {
 // #if DEBUG
-//             // Для отладки генератора
 //             Debugger.Launch();
 // #endif
         }

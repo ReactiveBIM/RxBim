@@ -4,7 +4,7 @@
     using Autodesk.AutoCAD.Runtime;
 
     /// <summary>
-    /// Атрибут для настройки команды
+    /// Autocad command attribute
     /// </summary>
     public class RxBimCommandClassAttribute : Attribute
     {
@@ -29,12 +29,12 @@
         }
 
         /// <summary>
-        /// Имя команды. Если не задано - используется название класса.
+        /// Command name. By default uses command class name
         /// </summary>
         public string CommandName { get; }
 
         /// <summary>
-        /// Флаги команды
+        /// Command flags
         /// </summary>
         public CommandFlags Flags { get; }
     }

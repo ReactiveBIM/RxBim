@@ -6,7 +6,7 @@
     using Serilog.Events;
 
     /// <summary>
-    /// Наполняет логи данными об AutoCAD
+    /// Enricher for logs. Extends logs data.
     /// </summary>
     public class AutocadEnricher : ILogEventEnricher
     {

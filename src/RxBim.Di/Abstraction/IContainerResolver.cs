@@ -1,13 +1,14 @@
 ﻿namespace RxBim.Di
 {
     /// <summary>
-    /// Container resolver
+    /// A DI container resolver abstraction.
     /// </summary>
     public interface IContainerResolver
     {
         /// <summary>
-        /// Resolve container 
+        /// Resolves a container.
         /// </summary>
+        /// <returns>The DI container</returns>
         IContainer Resolve();
     }
 }

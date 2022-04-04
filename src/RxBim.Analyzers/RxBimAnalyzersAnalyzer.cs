@@ -6,7 +6,7 @@ namespace RxBim.Analyzers
     using SymbolActions;
 
     /// <summary>
-    /// Анализатор плагина
+    /// Code analyzer for RxBim applications or commands
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RxBimAnalyzersAnalyzer : DiagnosticAnalyzer

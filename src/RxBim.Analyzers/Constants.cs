@@ -6,12 +6,12 @@
     public class Constants
     {
         /// <summary>
-        /// Идентификатор диагностики
+        /// Diagnostic identifier
         /// </summary>
         internal const string DiagnosticId = "RxBimAnalyzers";
 
         /// <summary>
-        /// Имя категории
+        /// Category name
         /// </summary>
         internal const string Category = "Naming";
 

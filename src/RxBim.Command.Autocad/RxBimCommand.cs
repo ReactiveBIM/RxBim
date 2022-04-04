@@ -5,12 +5,12 @@
     using Shared;
 
     /// <summary>
-    /// Команда Autocad
+    /// Autocad command
     /// </summary>
     public abstract class RxBimCommand
     {
         /// <summary>
-        /// Настройка и выполнение команды
+        /// Executes a command
         /// </summary>
         public void Execute()
         {

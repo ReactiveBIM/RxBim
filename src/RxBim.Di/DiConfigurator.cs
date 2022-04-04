@@ -7,20 +7,20 @@
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// DiWrapper
+    /// Base DI configurator.
     /// </summary>
     public abstract class DiConfigurator<TConfiguration> : IDiConfigurator<TConfiguration>
         where TConfiguration : IPluginConfiguration
     {
         /// <summary>
-        /// DI контейнер
+        /// DI Container.
         /// </summary>
         public IContainer Container { get; private set; }
 
         /// <summary>
-        /// Configure
+        /// Configures dependencies in the <see cref="Container"/>.
         /// </summary>
-        /// <param name="assembly">сборка для поиска зависимостей</param>
+        /// <param name="assembly">An assembly for dependency scanning.</param>
         public virtual void Configure(Assembly assembly)
         {
             Container = CreateContainer(assembly);
@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Конфигурирование основных зависимостей Revit
+        /// Configures base dependencies.
         /// </summary>
         protected abstract void ConfigureBaseDependencies();
 

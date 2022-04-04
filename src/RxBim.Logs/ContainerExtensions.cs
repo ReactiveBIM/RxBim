@@ -9,16 +9,16 @@
     using Serilog.Events;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// A DI container extensions.
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет логгер в контейнер
+        /// Adds logs in a <paramref name="container"/>.
         /// </summary>
-        /// <param name="container">контейнер</param>
-        /// <param name="cfg">Конфигурация</param>
-        /// <param name="addEnricher">Добавление источника дополнительных данных логов</param>
+        /// <param name="container">A DI container.</param>
+        /// <param name="cfg">A configuration.</param>
+        /// <param name="addEnricher">An action for additional logs configuration.</param>
         public static void AddLogs(
             this IContainer container,
             IConfiguration cfg = null,

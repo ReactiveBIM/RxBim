@@ -7,7 +7,7 @@
     using System.Reflection;
 
     /// <summary>
-    /// Резолвер сборок
+    /// The resolver of dependent assemblies.
     /// </summary>
     public class AssemblyResolver : IDisposable
     {

@@ -5,7 +5,7 @@
     using Serilog.Events;
 
     /// <summary>
-    /// Наполняет логи данными о Revit
+    /// Enricher for Revit logs. Extends logs data.
     /// </summary>
     public class RevitEnricher : ILogEventEnricher
     {

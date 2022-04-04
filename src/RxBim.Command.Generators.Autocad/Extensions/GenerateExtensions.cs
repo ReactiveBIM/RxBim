@@ -12,23 +12,23 @@
     using static Constants;
 
     /// <summary>
-    /// Расширения для генерации
+    /// Extensions
     /// </summary>
     public static class GenerateExtensions
     {
         /// <summary>
-        /// Извлекает имя команды
+        /// Gets command name from attribute tokens
         /// </summary>
-        /// <param name="nodes">Токены описания атрибута</param>
+        /// <param name="nodes">Attribute tokens</param>
         public static string ReadCommandName(this IEnumerable<SyntaxToken> nodes)
         {
             return nodes?.FirstOrDefault(x => x.Kind() == SyntaxKind.StringLiteralToken).ValueText ?? Empty;
         }
 
         /// <summary>
-        /// Извлекает командные флаги в строитель строки
+        /// Gets command flag from syntax tokens.
         /// </summary>
-        /// <param name="nodes">Токены описания атрибута</param>
+        /// <param name="nodes">Syntax tokens</param>
         public static string ReadCommandFlags(this IReadOnlyList<SyntaxToken> nodes)
         {
             if (nodes == null)
@@ -73,9 +73,9 @@
             return builder.ToString();
         }
 
-        /// <summary>Выполнить скрипт из файла ресурсов</summary>
-        /// /// <param name="assembly">Сборка для поиска ресурса</param>
-        /// <param name="resourceName">Имя файла ресурса</param>
+        /// <summary>Reads source text from assembly resources</summary>
+        /// /// <param name="assembly">source assembly</param>
+        /// <param name="resourceName">Resource name</param>
         public static string ReadTextFromResource(this Assembly assembly, string resourceName)
         {
             var name = assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains(resourceName));

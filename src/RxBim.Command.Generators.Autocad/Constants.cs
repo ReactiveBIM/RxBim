@@ -12,32 +12,32 @@
             "RxBim.Command.Autocad.RxBimCommandClassAttribute";
 
         /// <summary>
-        /// Название базового класса команды
+        /// Base command class name
         /// </summary>
         public const string BaseCommandClassName = "RxBimCommand";
 
         /// <summary>
-        /// Название типа для командных флагов
+        /// Command flags type name
         /// </summary>
         public const string CommandFlags = nameof(CommandFlags);
 
         /// <summary>
-        /// Значение командного флага по умолчанию
+        /// Default command flags value
         /// </summary>
         public const string DefaultCommandFlag = CommandFlags + ".Modal";
 
         /// <summary>
-        /// Разделитель флагов
+        /// Command flags separator
         /// </summary>
         public const string FlagsSeparator = " | ";
 
         /// <summary>
-        /// Файл с кодом для генерации класса
+        /// Command class source name
         /// </summary>
         public const string CommandClassSource = "CommandClass.source";
 
         /// <summary>
-        /// Добавка в название для сгенерированного
+        /// Suffix for generated class
         /// </summary>
         public const string Generated = nameof(Generated);
     }

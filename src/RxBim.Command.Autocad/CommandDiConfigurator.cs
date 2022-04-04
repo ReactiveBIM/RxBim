@@ -5,16 +5,16 @@
     using Shared;
 
     /// <summary>
-    /// Конфигуратор зависимостей команды
+    /// Command DI configurator
     /// </summary>
     internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
         private readonly object _commandObject;
 
         /// <summary>
-        /// Создает экземпляр класса <see cref="CommandDiConfigurator"/>
+        /// Initialize a new instance of <see cref="CommandDiConfigurator"/>
         /// </summary>
-        /// <param name="commandObject">Объект команды</param>
+        /// <param name="commandObject">Command object</param>
         public CommandDiConfigurator(object commandObject)
         {
             _commandObject = commandObject;
@@ -24,7 +24,6 @@
         protected override void ConfigureBaseDependencies()
         {
             Container
-                 //// Регистрация документа, базы данных и редактора для текущего чертежа
                 .AddInstance(Application.DocumentManager.MdiActiveDocument)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Database)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Editor)

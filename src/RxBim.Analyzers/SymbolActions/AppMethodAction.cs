@@ -4,7 +4,7 @@
     using Microsoft.CodeAnalysis.Diagnostics;
 
     /// <summary>
-    /// Инспекция возвращаемого значения методов приложения. 
+    /// Inspection checks returnable value of RxApplication methods. 
     /// </summary>
     public class AppMethodAction
     {
@@ -22,7 +22,7 @@
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
         /// <summary>
-        /// Правило
+        /// Rule
         /// </summary>
         public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
@@ -34,18 +34,18 @@
             description: Description);
 
         /// <summary>
-        /// Проверка метода Start
+        /// Checks Start method
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">context</param>
         public void AnalyzeAppStartMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, Constants.Start);
         }
 
         /// <summary>
-        /// Проверка метода Shutdown
+        /// Checks Shutdown method
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">context</param>
         public void AnalyzeAppShutdownMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, Constants.Shutdown);

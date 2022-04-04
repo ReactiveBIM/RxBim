@@ -1,32 +1,32 @@
 ﻿namespace RxBim.Command.Generators.Autocad
 {
     /// <summary>
-    /// Переменные для использования в исходных кодах классов
+    /// Command class source placeholders
     /// </summary>
     public static class Variables
     {
         /// <summary>
-        /// Пространство имён
+        /// Namespace
         /// </summary>
         public const string Namespace = "$NAMESPACE$";
 
         /// <summary>
-        /// Название класса
+        /// Class name
         /// </summary>
         public const string Class = "$CLASS$";
 
         /// <summary>
-        /// Флаги команд
+        /// Command flags
         /// </summary>
         public const string Flags = "$FLAGS$";
 
         /// <summary>
-        /// Добавка в название для сгенерированного
+        /// Suffix for generated class
         /// </summary>
         public const string Generated = "$GENERATED$";
 
         /// <summary>
-        /// Имя команды
+        /// Command name
         /// </summary>
         public const string CommandName = "$COMMAND$";
     }

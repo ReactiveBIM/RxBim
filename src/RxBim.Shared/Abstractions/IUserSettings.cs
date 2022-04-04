@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Shared.Abstractions
 {
     /// <summary>
-    /// Сервис работы с пользовательскими настройками
+    /// Service for working with user settings.
     /// </summary>
     public interface IUserSettings
     {
         /// <summary>
+        /// Adds or updates data in user settings. 
         /// Добавляет или обновляет данные в файле настроек. В качестве имени создаваемого узла в xml файле используется
         /// имя типа сохраняемого объекта, если не задан параметр nodeName
         /// </summary>
