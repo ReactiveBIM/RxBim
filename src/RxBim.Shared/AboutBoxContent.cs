@@ -7,6 +7,7 @@
     /// <summary>
     /// Содержимое окна о программе
     /// </summary>
+    [Obsolete("Will be deleted at the next release!")]
     public class AboutBoxContent
     {
         private Version _version = new();

@@ -27,6 +27,7 @@
             ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);
             AddConfigurations(assembly);
+            AddServiceLocator();
         }
 
         /// <summary>
@@ -90,6 +91,11 @@
         {
             var configurationBuilder = GetBaseConfigurationBuilder(assembly);
             AddUserConfigurations(configurationBuilder);
+        }
+
+        private void AddServiceLocator()
+        {
+            Container.AddInstance<IServiceLocator>(new ServiceLocator(Container));
         }
 
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
