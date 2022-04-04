@@ -25,13 +25,15 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths
         /// </param>
-        public static void AddMenu<TBuilder>(
+        public static void AddMenu<TBuilder, TFactory>(
             this IContainer container,
             Action<IRibbonBuilder> action,
             Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
+            where TFactory : class, IAddElementsStrategiesFactory
         {
             container.AddBuilder<TBuilder>(assembly);
+            container.AddElementsStrategiesFactory<TFactory>();
             container.AddSingleton(() =>
             {
                 var builder = new RibbonBuilder();
@@ -51,13 +53,15 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths
         /// </param>
-        public static void AddMenu<T>(
+        public static void AddMenu<TBuilder, TFactory>(
             this IContainer container,
             IConfiguration? config,
             Assembly assembly)
-            where T : class, IRibbonMenuBuilder
+            where TBuilder : class, IRibbonMenuBuilder
+            where TFactory : class, IAddElementsStrategiesFactory
         {
-            container.AddBuilder<T>(assembly);
+            container.AddBuilder<TBuilder>(assembly);
+            container.AddElementsStrategiesFactory<TFactory>();
             container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
@@ -69,9 +73,15 @@
             container.AddSingleton<Action<Ribbon>>(() =>
             {
                 var menuBuilder = container.GetService<IRibbonMenuBuilder>();
-                menuBuilder.MenuAssembly = assembly;
+                menuBuilder.Initialize(assembly);
                 return menuBuilder.BuildRibbonMenu;
             });
+        }
+
+        private static void AddElementsStrategiesFactory<TFactory>(this IContainer container)
+            where TFactory : class, IAddElementsStrategiesFactory
+        {
+            container.AddSingleton<IAddElementsStrategiesFactory, TFactory>();
         }
 
         private static void DecorateContainer(this IContainer container)

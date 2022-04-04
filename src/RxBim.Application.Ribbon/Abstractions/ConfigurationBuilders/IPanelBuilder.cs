@@ -1,13 +1,18 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
 {
     using System;
-    using Shared;
+    using Models.Configurations;
 
     /// <summary>
-    /// Ribbon panel
+    /// Ribbon panel builder.
     /// </summary>
     public interface IPanelBuilder : IRibbonItemsContainerBuilder
     {
+        /// <summary>
+        /// Building panel
+        /// </summary>
+        Panel BuildingPanel { get; }
+
         /// <summary>
         /// Create push button on the panel
         /// </summary>
@@ -45,17 +50,6 @@
         /// Creates and adds a switch for the sliding part of the panel
         /// </summary>
         IPanelBuilder AddSlideOut();
-
-        /// <summary>
-        /// Adds button for displaying About window
-        /// </summary>
-        /// <param name="name">Button name</param>
-        /// <param name="content">About button content</param>
-        /// <param name="action">Additional actions for the button</param>
-        IPanelBuilder AddAboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IButtonBuilder>? action = null);
 
         /// <summary>
         /// Returns tab builder object

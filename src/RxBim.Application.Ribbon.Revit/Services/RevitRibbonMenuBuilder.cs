@@ -10,6 +10,7 @@
     using Autodesk.Windows;
     using GalaSoft.MvvmLight.CommandWpf;
     using Models.Configurations;
+    using Ribbon.Extensions;
     using Ribbon.Services;
     using Shared.Abstractions;
     using UIFramework;
@@ -192,7 +193,7 @@
             CheckButtonName(config);
             if (string.IsNullOrWhiteSpace(config.CommandType))
                 throw new ArgumentException($"Command type not found! Button: {config.Name}");
-            var cmdType = GetCommandType(config.CommandType!);
+            var cmdType = MenuAssembly.GetTypeFromName(config.CommandType!);
             var className = cmdType.FullName;
             var assemblyLocation = cmdType.Assembly.Location;
             var pushButtonData =

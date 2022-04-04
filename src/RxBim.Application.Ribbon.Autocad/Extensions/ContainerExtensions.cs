@@ -51,6 +51,7 @@
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
             container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
             container.AddSingleton<IColorThemeService, ColorThemeService>();
+            container.AddSingleton<ITabService, TabService>();
             container.AddSingleton<IPanelService, PanelService>();
             container.AddSingleton<IButtonService, ButtonService>();
             container.AddSingleton<IRibbonComponentStorageService, RibbonComponentStorageService>();

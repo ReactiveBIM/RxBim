@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reflection;
-    using System.Windows.Media.Imaging;
     using Models.Configurations;
 
     /// <summary>
@@ -11,9 +10,9 @@
     public interface IRibbonMenuBuilder
     {
         /// <summary>
-        /// Menu defining assembly
+        /// The menu has been created.
         /// </summary>
-        public Assembly MenuAssembly { set; }
+        event EventHandler MenuCreated;
 
         /// <summary>
         /// Constructs CAD platform-specific ribbon
@@ -22,24 +21,9 @@
         void BuildRibbonMenu(Ribbon? ribbonConfig = null);
 
         /// <summary>
-        /// Returns command class type
+        /// Initializes the service.
         /// </summary>
-        /// <param name="commandTypeName">Command class type name</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">Type name is invalid</exception>
-        Type GetCommandType(string commandTypeName);
-
-        /// <summary>
-        /// Returns tooltip content for command button
-        /// </summary>
-        /// <param name="cmdButtonConfig">Command button configuration</param>
-        /// <param name="commandType">Type of command class</param>
-        string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType);
-
-        /// <summary>
-        /// Returns an image of the button's icon
-        /// </summary>
-        /// <param name="fullOrRelativeImagePath">Image path</param>
-        BitmapImage? GetIconImage(string? fullOrRelativeImagePath);
+        /// <param name="menuAssembly">Menu defining assembly.</param>
+        void Initialize(Assembly menuAssembly);
     }
 }

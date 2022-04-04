@@ -1,30 +1,27 @@
 namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
+    using Abstractions;
     using Abstractions.ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
     using Models;
     using Models.Configurations;
-    using Shared;
 
-    /// <summary>
-    /// Ribbon panel implementation
-    /// </summary>
+    /// <inheritdoc />
     public class PanelBuilder : IPanelBuilder
     {
-        private readonly IRibbonBuilder _ribbonBuilder;
         private readonly ITabBuilder _tabBuilder;
 
         /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
         /// <param name="name">Panel name</param>
-        /// <param name="ribbonBuilder">Ribbon builder</param>
         /// <param name="tabBuilder">Tab builder</param>
-        public PanelBuilder(string name, IRibbonBuilder ribbonBuilder, ITabBuilder tabBuilder)
+        public PanelBuilder(string name, ITabBuilder tabBuilder)
         {
-            _ribbonBuilder = ribbonBuilder;
             _tabBuilder = tabBuilder;
             BuildingPanel.Name = name;
         }
@@ -76,7 +73,10 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddSeparator()
         {
-            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.Separator });
+            BuildingPanel.Elements.Add(new PanelLayoutElement
+            {
+                LayoutElementType = PanelLayoutElementType.Separator
+            });
             return this;
         }
 
@@ -84,21 +84,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPanelBuilder AddSlideOut()
         {
             if (BuildingPanel.Elements.Any(
-                e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
+                    e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
             BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.SlideOut });
-            return this;
-        }
-
-        /// <inheritdoc />
-        public IPanelBuilder AddAboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IButtonBuilder>? action = null)
-        {
-            var builder = new AboutButtonBuilder(name, content);
-            action?.Invoke(builder);
-            BuildingPanel.Elements.Add(builder.BuildingButton);
             return this;
         }
 
@@ -111,14 +99,17 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IRibbonBuilder ReturnToRibbon()
         {
-            return _ribbonBuilder;
+            return _tabBuilder.RibbonBuilder;
         }
 
         /// <summary>
         /// Load from config
         /// </summary>
         /// <param name="panelSection">Config section</param>
-        internal void LoadFromConfig(IConfigurationSection panelSection)
+        /// <param name="fromConfigStrategies">Collection </param>
+        internal void LoadFromConfig(
+            IConfigurationSection panelSection,
+            IEnumerable<IElementFromConfigStrategy> fromConfigStrategies)
         {
             var elementsSection = panelSection.GetSection(nameof(Panel.Elements));
             if (!elementsSection.Exists())

@@ -1,17 +1,22 @@
 ﻿namespace RxBim.Application.Ribbon.Models
 {
     /// <summary>
-    /// Separator type
+    /// Panel layout element type.
     /// </summary>
     public enum PanelLayoutElementType
     {
         /// <summary>
-        /// Separator
+        /// Unknown.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        /// Separator.
         /// </summary>
         Separator,
 
         /// <summary>
-        /// Slide-out
+        /// Slide-out.
         /// </summary>
         SlideOut
     }
