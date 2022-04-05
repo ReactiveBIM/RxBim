@@ -6,7 +6,7 @@
     using Shared;
 
     /// <summary>
-    /// Autocad application DI configurator
+    /// Autocad application DI configurator.
     /// </summary>
     public class ApplicationDiConfigurator : DiConfigurator<IApplicationConfiguration>
     {
@@ -15,7 +15,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDiConfigurator"/> class.
         /// </summary>
-        /// <param name="applicationObject">application object</param>
+        /// <param name="applicationObject">application object.</param>
         public ApplicationDiConfigurator(object applicationObject)
         {
             _applicationObject = applicationObject;

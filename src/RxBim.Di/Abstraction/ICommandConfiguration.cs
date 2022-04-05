@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Di
 {
     /// <summary>
-    /// Command configuration
+    /// A command configuration.
     /// </summary>
     public interface ICommandConfiguration : IPluginConfiguration
     {

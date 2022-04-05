@@ -1,22 +1,22 @@
 ﻿namespace RxBim.Application.Ribbon.Models
 {
     /// <summary>
-    /// Type of interface color theme
+    /// Type of interface color theme.
     /// </summary>
     public enum ThemeType
     {
         /// <summary>
-        /// All themes
+        /// All themes.
         /// </summary>
         All = 0,
 
         /// <summary>
-        /// Dark theme
+        /// Dark theme.
         /// </summary>
         Dark = 1,
 
         /// <summary>
-        /// Light theme
+        /// Light theme.
         /// </summary>
         Light = 2
     }

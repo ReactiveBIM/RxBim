@@ -16,24 +16,24 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
-        /// <param name="menuAssembly">Menu defining assembly</param>
+        /// <param name="menuAssembly">Menu defining assembly.</param>
         protected RibbonMenuBuilderBase(Assembly menuAssembly)
         {
             MenuAssembly = menuAssembly;
         }
 
         /// <summary>
-        /// Menu defining assembly
+        /// Menu defining assembly.
         /// </summary>
         private Assembly MenuAssembly { get; }
 
         /// <summary>
-        /// Service for displaying the "About" window
+        /// Service for displaying the "About" window.
         /// </summary>
         private IAboutShowService? AboutShowService { get; set; }
 
         /// <summary>
-        /// Ribbon configuration
+        /// Ribbon configuration.
         /// </summary>
         private Ribbon? RibbonConfiguration { get; set; }
 
@@ -53,17 +53,17 @@
         }
 
         /// <summary>
-        /// Executed before the start of building the menu
+        /// Executed before the start of building the menu.
         /// </summary>
         protected virtual void PreBuildActions()
         {
         }
 
         /// <summary>
-        /// Attempts to display the About window
+        /// Attempts to display the About window.
         /// </summary>
-        /// <param name="content">Content</param>
-        /// <returns>True if successful, otherwise false</returns>
+        /// <param name="content">Content.</param>
+        /// <returns>True if successful, otherwise false.</returns>
         protected bool TryShowAboutWindow(AboutBoxContent content)
         {
             if (AboutShowService is null)
@@ -74,81 +74,81 @@
         }
 
         /// <summary>
-        /// Checks the ribbon and returns true if it is in good condition, otherwise returns false
+        /// Checks the ribbon and returns true if it is in good condition, otherwise returns false.
         /// </summary>
         protected abstract bool CheckRibbonCondition();
 
         /// <summary>
         /// Returns a ribbon tab with the specified name.
-        /// If the tab does not exist, it will be created
+        /// If the tab does not exist, it will be created.
         /// </summary>
-        /// <param name="tabName">Tab name</param>
+        /// <param name="tabName">Tab name.</param>
         protected abstract TTab GetOrCreateTab(string tabName);
 
         /// <summary>
         /// Returns a ribbon panel with the specified name on the tab.
-        /// If the panel does not exist, it will be created
+        /// If the panel does not exist, it will be created.
         /// </summary>
-        /// <param name="tab">Ribbon tab</param>
-        /// <param name="panelName">Panel name</param>
+        /// <param name="tab">Ribbon tab.</param>
+        /// <param name="panelName">Panel name.</param>
         protected abstract TPanel GetOrCreatePanel(TTab tab, string panelName);
 
         /// <summary>
-        /// Creates about button
+        /// Creates about button.
         /// </summary>
-        /// <param name="tab">Ribbon tab</param>
-        /// <param name="panel">Panel</param>
-        /// <param name="aboutButtonConfig">About button configuration</param>
+        /// <param name="tab">Ribbon tab.</param>
+        /// <param name="panel">Panel.</param>
+        /// <param name="aboutButtonConfig">About button configuration.</param>
         protected abstract void CreateAboutButton(TTab tab, TPanel panel, AboutButton aboutButtonConfig);
 
         /// <summary>
-        /// Creates command button
+        /// Creates command button.
         /// </summary>
-        /// <param name="panel">Panel</param>
-        /// <param name="cmdButtonConfig">Command button configuration</param>
+        /// <param name="panel">Panel.</param>
+        /// <param name="cmdButtonConfig">Command button configuration.</param>
         protected abstract void CreateCommandButton(TPanel panel, CommandButton cmdButtonConfig);
 
         /// <summary>
-        /// Creates pull-down button
+        /// Creates pull-down button.
         /// </summary>
-        /// <param name="panel">Panel</param>
-        /// <param name="pullDownButtonConfig">Pull-down button configuration</param>
+        /// <param name="panel">Panel.</param>
+        /// <param name="pullDownButtonConfig">Pull-down button configuration.</param>
         protected abstract void CreatePullDownButton(TPanel panel, PullDownButton pullDownButtonConfig);
 
         /// <summary>
-        /// Creates and adds separator
+        /// Creates and adds separator.
         /// </summary>
-        /// <param name="panel">Panel</param>
+        /// <param name="panel">Panel.</param>
         protected abstract void AddSeparator(TPanel panel);
 
         /// <summary>
-        /// Creates and adds slide-out
+        /// Creates and adds slide-out.
         /// </summary>
-        /// <param name="panel">Panel</param>
+        /// <param name="panel">Panel.</param>
         protected abstract void AddSlideOut(TPanel panel);
 
         /// <summary>
-        /// Creates stacked buttons
+        /// Creates stacked buttons.
         /// </summary>
-        /// <param name="panel">Panel</param>
-        /// <param name="stackedItems">Stacked</param>
+        /// <param name="panel">Panel.</param>
+        /// <param name="stackedItems">Stacked.</param>
         protected abstract void CreateStackedItems(TPanel panel, StackedItems stackedItems);
 
         /// <summary>
-        /// Returns command class type
+        /// Returns command class type.
         /// </summary>
-        /// <param name="commandTypeName">Command class type name</param>
+        /// <param name="commandTypeName">Command class type name.</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException">Type name is invalid</exception>
+        /// <exception cref="ArgumentException">Type name is invalid.</exception>
         protected Type GetCommandType(string commandTypeName)
         {
             return MenuAssembly.GetTypeFromName(commandTypeName);
         }
 
         /// <summary>
-        /// Returns an image of the button's icon
+        /// Returns an image of the button's icon.
         /// </summary>
-        /// <param name="fullOrRelativeImagePath">Image path</param>
+        /// <param name="fullOrRelativeImagePath">Image path.</param>
         protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
         {
             if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
@@ -158,10 +158,10 @@
         }
 
         /// <summary>
-        /// Returns tooltip content for command button
+        /// Returns tooltip content for command button.
         /// </summary>
-        /// <param name="cmdButtonConfig">Command button configuration</param>
-        /// <param name="commandType">Type of command class</param>
+        /// <param name="cmdButtonConfig">Command button configuration.</param>
+        /// <param name="commandType">Type of command class.</param>
         protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
         {
             var toolTip = cmdButtonConfig.ToolTip;

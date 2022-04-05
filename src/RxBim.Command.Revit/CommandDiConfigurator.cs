@@ -5,7 +5,7 @@
     using Shared;
 
     /// <summary>
-    /// Revit command DI container configurator
+    /// Revit command DI container configurator.
     /// </summary>
     internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
@@ -13,10 +13,10 @@
         private readonly ExternalCommandData _commandData;
 
         /// <summary>
-        /// Initialize a new instance of <see cref="CommandDiConfigurator"/>
+        /// Initialize a new instance of <see cref="CommandDiConfigurator"/>.
         /// </summary>
-        /// <param name="commandObject">Command object</param>
-        /// <param name="commandData">Revit command data</param>
+        /// <param name="commandObject">Command object.</param>
+        /// <param name="commandData">Revit command data.</param>
         public CommandDiConfigurator(object commandObject, ExternalCommandData commandData)
         {
             _commandObject = commandObject;

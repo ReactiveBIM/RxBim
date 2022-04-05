@@ -3,24 +3,24 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Результат выполнения команды
+    /// Specifies the result of a plugin.
     /// </summary>
     public class PluginResult
     {
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="message">message</param>
+        /// <param name="message">A message.</param>
         public PluginResult(string message)
         {
             Message = message;
         }
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="message">message</param>
-        /// <param name="elementIdIds">element ids</param>
+        /// <param name="message">A message.</param>
+        /// <param name="elementIdIds">An element ids.</param>
         public PluginResult(string message, List<int> elementIdIds)
         {
             Message = message;
@@ -33,32 +33,32 @@
         }
 
         /// <summary>
-        /// Succeced
+        /// Plugin execution succeeded.
         /// </summary>
         public static PluginResult Succeeded => new PluginResult(Result.Succeeded);
 
         /// <summary>
-        /// Failed
+        /// Plugin execution failed.
         /// </summary>
         public static PluginResult Failed => new PluginResult(Result.Failed);
 
         /// <summary>
-        /// Cancelled
+        /// Plugin execution cancelled.
         /// </summary>
         public static PluginResult Cancelled => new PluginResult(Result.Cancelled);
 
         /// <summary>
-        /// adf
+        /// A message.
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        /// adf
+        /// Element ids.
         /// </summary>
         public List<int> ElementIds { get; set; } = new List<int>();
 
         /// <summary>
-        /// sa
+        /// The result.
         /// </summary>
         public Result Result { get; set; }
     }

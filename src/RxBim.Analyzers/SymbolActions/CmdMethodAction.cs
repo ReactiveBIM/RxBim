@@ -9,7 +9,7 @@
     public class CmdMethodAction
     {
         /// <summary>
-        /// id
+        /// Id.
         /// </summary>
         public const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
 
@@ -22,7 +22,7 @@
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
         /// <summary>
-        /// Rule
+        /// Rule.
         /// </summary>
         public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
@@ -34,9 +34,9 @@
             description: Description);
 
         /// <summary>
-        /// Checks ExecuteCommand method
+        /// Checks ExecuteCommand method.
         /// </summary>
-        /// <param name="context">context</param>
+        /// <param name="context">The context.</param>
         public void Analyze(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;

@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Revit command exception
+    /// Revit command exception.
     /// </summary>
     public class CommandException : Exception
     {

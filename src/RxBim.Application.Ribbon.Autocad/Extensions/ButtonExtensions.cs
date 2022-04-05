@@ -7,17 +7,17 @@
     using Button = Models.Configurations.Button;
 
     /// <summary>
-    /// Extensions for <see cref="IButtonBuilder"/>
+    /// Extensions for <see cref="IButtonBuilder"/>.
     /// </summary>
     internal static class ButtonExtensions
     {
         /// <summary>
-        /// Sets tooltip for button
+        /// Sets tooltip for button.
         /// </summary>
-        /// <param name="ribbonButton">Ribbon button</param>
-        /// <param name="tooltipText">Tooltip text</param>
-        /// <param name="helpUrl">Help url string</param>
-        /// <param name="description">Description</param>
+        /// <param name="ribbonButton">Ribbon button.</param>
+        /// <param name="tooltipText">Tooltip text.</param>
+        /// <param name="helpUrl">Help url string.</param>
+        /// <param name="description">Description.</param>
         /// <param name="newToolTipAction">Action for a new tooltip.</param>
         public static void SetTooltipForButton(
             this RibbonButton ribbonButton,
@@ -57,14 +57,14 @@
         }
 
         /// <summary>
-        /// Sets the base properties for the ribbon button from the button configuration
+        /// Sets the base properties for the ribbon button from the button configuration.
         /// </summary>
-        /// <param name="ribbonButton">Ribbon button</param>
-        /// <param name="buttonConfig">Button configuration</param>
-        /// <param name="size">Button size</param>
-        /// <param name="orientation">Button orientation</param>
-        /// <param name="forceTextSettings">Force settings for text placement</param>
-        /// <exception cref="InvalidOperationException">If the button name is not specified</exception>
+        /// <param name="ribbonButton">Ribbon button.</param>
+        /// <param name="buttonConfig">Button configuration.</param>
+        /// <param name="size">Button size.</param>
+        /// <param name="orientation">Button orientation.</param>
+        /// <param name="forceTextSettings">Force settings for text placement.</param>
+        /// <exception cref="InvalidOperationException">If the button name is not specified.</exception>
         public static void SetButtonProperties(
             this RibbonButton ribbonButton,
             Button buttonConfig,
@@ -100,9 +100,9 @@
         }
 
         /// <summary>
-        /// Returns orientation for single large button
+        /// Returns orientation for single large button.
         /// </summary>
-        /// <param name="button">Button config</param>
+        /// <param name="button">Button config.</param>
         public static Orientation GetSingleLargeButtonOrientation(this Button button)
         {
             return !string.IsNullOrWhiteSpace(button.Text)

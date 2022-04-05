@@ -20,7 +20,7 @@
     using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
     /// <summary>
-    /// Implementation of <see cref="IRibbonMenuBuilder"/> for Revit
+    /// Implementation of <see cref="IRibbonMenuBuilder"/> for Revit.
     /// </summary>
     public class RevitRibbonMenuBuilder : RibbonMenuBuilderBase<string, RibbonPanel>
     {

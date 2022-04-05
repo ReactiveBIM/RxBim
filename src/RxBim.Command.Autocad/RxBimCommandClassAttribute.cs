@@ -4,14 +4,14 @@
     using Autodesk.AutoCAD.Runtime;
 
     /// <summary>
-    /// Autocad command attribute
+    /// Autocad command attribute.
     /// </summary>
     public class RxBimCommandClassAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RxBimCommandClassAttribute"/> class.
         /// </summary>
-        /// <param name="flags">Флаги команды</param>
+        /// <param name="flags">The command flags.</param>
         public RxBimCommandClassAttribute(CommandFlags flags)
             : this(string.Empty, flags)
         {
@@ -20,8 +20,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RxBimCommandClassAttribute"/> class.
         /// </summary>
-        /// <param name="commandName">Имя команды</param>
-        /// <param name="flags">Флаги команды</param>
+        /// <param name="commandName">The command name.</param>
+        /// <param name="flags">The command flags.</param>
         public RxBimCommandClassAttribute(string commandName, CommandFlags flags = CommandFlags.Modal)
         {
             CommandName = commandName;
@@ -29,12 +29,12 @@
         }
 
         /// <summary>
-        /// Command name. By default uses command class name
+        /// Command name. By default uses command class name.
         /// </summary>
         public string CommandName { get; }
 
         /// <summary>
-        /// Command flags
+        /// The command flags.
         /// </summary>
         public CommandFlags Flags { get; }
     }

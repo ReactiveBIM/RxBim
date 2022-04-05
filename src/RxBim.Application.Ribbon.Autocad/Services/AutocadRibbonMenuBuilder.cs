@@ -18,7 +18,7 @@
     using Button = Models.Configurations.Button;
 
     /// <summary>
-    /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD
+    /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD.
     /// </summary>
     public class AutocadRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
@@ -41,7 +41,7 @@
         }
 
         /// <summary>
-        /// Apply current theme for all menu buttons
+        /// Apply current theme for all menu buttons.
         /// </summary>
         public void ApplyCurrentTheme()
         {

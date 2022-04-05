@@ -6,15 +6,15 @@
     using Serilog;
 
     /// <summary>
-    /// DI container extensions
+    /// DI container extensions.
     /// </summary>
     public static class RevitContainerExtensions
     {
         /// <summary>
-        /// Adds logs into DI container
+        /// Adds logs into a DI container.
         /// </summary>
-        /// <param name="container">DI container</param>
-        /// <param name="cfg">configuration</param>
+        /// <param name="container">The DI container.</param>
+        /// <param name="cfg">The configuration.</param>
         public static void AddLogs(this IContainer container, IConfiguration cfg = null)
         {
             container.AddLogs(cfg, EnrichWithRevitData);

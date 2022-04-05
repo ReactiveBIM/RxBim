@@ -3,17 +3,17 @@
     using System;
 
     /// <summary>
-    /// Ribbon service
+    /// Ribbon service.
     /// </summary>
     public interface IRibbonEventsService
     {
         /// <summary>
-        /// Ribbon need to rebuild
+        /// Ribbon need to rebuild.
         /// </summary>
         event EventHandler NeedRebuild;
 
         /// <summary>
-        /// Runs the service
+        /// Runs the service.
         /// </summary>
         void Run();
     }

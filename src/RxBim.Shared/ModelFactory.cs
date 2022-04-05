@@ -1,10 +1,12 @@
-﻿namespace RxBim.Shared
+﻿#pragma warning disable
+namespace RxBim.Shared
 {
     using System;
     using Abstractions;
     using Di;
 
     /// <inheritdoc/>
+    [Obsolete("Will be deleted in the next release!")]
     public class ModelFactory : IModelFactory
     {
         private readonly IContainer _container;

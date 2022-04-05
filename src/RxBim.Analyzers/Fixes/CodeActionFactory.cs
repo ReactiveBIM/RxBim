@@ -5,7 +5,7 @@
     using System.Linq;
 
     /// <summary>
-    /// Factory for creating action for code fixes
+    /// Factory for creating action for code fixes.
     /// </summary>
     public class CodeActionFactory
     {
@@ -22,9 +22,9 @@
         }
 
         /// <summary>
-        /// Creates code fix action
+        /// Creates code fix action.
         /// </summary>
-        /// <param name="id">diagnostic identifier</param>
+        /// <param name="id">Diagnostic identifier.</param>
         public static IActionCreator GetCreator(string id)
         {
             return Actions.TryGetValue(id, out var actionCreator) ? actionCreator : throw new ArgumentException();

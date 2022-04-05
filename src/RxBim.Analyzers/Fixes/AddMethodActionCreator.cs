@@ -17,12 +17,12 @@
         public abstract string DiagnosticId { get; }
 
         /// <summary>
-        /// Title
+        /// Title.
         /// </summary>
         protected abstract string Title { get; }
 
         /// <summary>
-        /// Method name for generation
+        /// Method name for generation.
         /// </summary>
         protected abstract string MethodName { get; }
 

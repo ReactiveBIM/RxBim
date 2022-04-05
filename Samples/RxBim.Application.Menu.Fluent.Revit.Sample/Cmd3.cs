@@ -11,7 +11,7 @@
     public class Cmd3 : RxBimCommand
     {
         /// <summary>
-        /// cmd
+        /// cmd.
         /// </summary>
         public PluginResult ExecuteCommand()
         {

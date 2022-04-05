@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
 {
     /// <summary>
-    /// Element of ribbon panel
+    /// An Element of the ribbon panel.
     /// </summary>
     public interface IRibbonPanelElement
     {

@@ -7,14 +7,14 @@
     using SimpleInjector.Lifestyles;
 
     /// <summary>
-    /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
+    /// The implementation of the <see cref="IContainer"/> based on <see cref="SimpleInjector"/>.
     /// </summary>
     public class SimpleInjectorContainer : IContainer
     {
         private readonly Container _container;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         public SimpleInjectorContainer()
         {

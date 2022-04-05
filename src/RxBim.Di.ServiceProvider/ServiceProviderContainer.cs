@@ -14,7 +14,7 @@
         private readonly IServiceCollection _serviceCollection;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         public ServiceProviderContainer()
         {

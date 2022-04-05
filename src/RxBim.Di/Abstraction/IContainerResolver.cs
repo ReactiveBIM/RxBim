@@ -8,7 +8,7 @@
         /// <summary>
         /// Resolves a container.
         /// </summary>
-        /// <returns>The DI container</returns>
+        /// <returns>The DI container.</returns>
         IContainer Resolve();
     }
 }

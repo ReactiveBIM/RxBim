@@ -12,19 +12,19 @@
     using Shared.Abstractions;
 
     /// <summary>
-    /// DI Container Extensions for Ribbon Menu
+    /// DI Container Extensions for Ribbon Menu.
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Adds a plugin ribbon menu from an action
+        /// Adds a plugin ribbon menu from an action.
         /// </summary>
-        /// <param name="container">DI container</param>
-        /// <param name="action">Action to create a menu</param>
+        /// <param name="container">DI container.</param>
+        /// <param name="action">Action to create a menu.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
         /// Used to get the command type from the command type name
-        /// and to define the root directory for relative icon paths
+        /// and to define the root directory for relative icon paths.
         /// </param>
         public static void AddMenu<T>(
             this IContainer container,
@@ -43,14 +43,14 @@
         }
 
         /// <summary>
-        /// Adds a plugin ribbon menu from configuration
+        /// Adds a plugin ribbon menu from configuration.
         /// </summary>
-        /// <param name="container">DI container</param>
-        /// <param name="config">Plugin configuration</param>
+        /// <param name="container">DI container.</param>
+        /// <param name="config">Plugin configuration.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
         /// Used to get the command type from the command type name
-        /// and to define the root directory for relative icon paths
+        /// and to define the root directory for relative icon paths.
         /// </param>
         public static void AddMenu<T>(
             this IContainer container,
@@ -64,9 +64,9 @@
         }
 
         /// <summary>
-        /// Returns AboutShowService
+        /// Returns AboutShowService.
         /// </summary>
-        /// <param name="container">DI container</param>
+        /// <param name="container">DI container.</param>
         internal static IAboutShowService? TryGetAboutShowService(this IContainer container)
         {
             try

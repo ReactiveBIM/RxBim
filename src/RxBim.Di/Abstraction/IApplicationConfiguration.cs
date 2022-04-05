@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Di
 {
     /// <summary>
-    /// Application configuration
+    /// An application configuration.
     /// </summary>
     public interface IApplicationConfiguration : IPluginConfiguration
     {

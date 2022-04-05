@@ -5,16 +5,16 @@
     using Shared;
 
     /// <summary>
-    /// Command DI configurator
+    /// Command DI configurator.
     /// </summary>
     internal class CommandDiConfigurator : DiConfigurator<ICommandConfiguration>
     {
         private readonly object _commandObject;
 
         /// <summary>
-        /// Initialize a new instance of <see cref="CommandDiConfigurator"/>
+        /// Initialize a new instance of the <see cref="CommandDiConfigurator"/>.
         /// </summary>
-        /// <param name="commandObject">Command object</param>
+        /// <param name="commandObject">The command object.</param>
         public CommandDiConfigurator(object commandObject)
         {
             _commandObject = commandObject;

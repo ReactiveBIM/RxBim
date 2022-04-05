@@ -1,8 +1,12 @@
-﻿namespace RxBim.Shared.Abstractions
+﻿#pragma warning disable
+namespace RxBim.Shared.Abstractions
 {
+    using System;
+
     /// <summary>
     /// Service for working with user settings.
     /// </summary>
+    [Obsolete("Will be deleted in the next release!")]
     public interface IUserSettings
     {
         /// <summary>

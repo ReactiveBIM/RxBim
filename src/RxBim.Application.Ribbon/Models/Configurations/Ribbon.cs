@@ -8,7 +8,7 @@
     public class Ribbon
     {
         /// <summary>
-        /// Ribbon tabs
+        /// Ribbon tabs.
         /// </summary>
         public List<Tab> Tabs { get; set; } = new();
 

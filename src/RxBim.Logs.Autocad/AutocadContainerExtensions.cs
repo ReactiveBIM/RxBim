@@ -5,15 +5,15 @@
     using Serilog;
 
     /// <summary>
-    /// DI conatainer extensions 
+    /// The DI container extensions. 
     /// </summary>
     public static class AutocadContainerExtensions
     {
         /// <summary>
-        /// Adds logger into DI container
+        /// Adds logger into a container.
         /// </summary>
-        /// <param name="container">DI container</param>
-        /// <param name="cfg">configuration</param>
+        /// <param name="container">The DI container.</param>
+        /// <param name="cfg">The configuration.</param>
         public static void AddLogs(this IContainer container, IConfiguration cfg = null)
         {
             container.AddLogs(cfg, EnrichWithAutocadData);

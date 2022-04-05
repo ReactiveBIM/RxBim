@@ -8,7 +8,7 @@
     public class RibbonBuilder : IRibbonBuilder
     {
         /// <summary>
-        /// Building ribbon
+        /// Building ribbon.
         /// </summary>
         public Ribbon Ribbon { get; } = new();
 
@@ -33,9 +33,9 @@
         }
 
         /// <summary>
-        /// Load ribbon menu from configuration
+        /// Load ribbon menu from configuration.
         /// </summary>
-        /// <param name="config">Configuration</param>
+        /// <param name="config">Configuration.</param>
         internal void LoadFromConfig(IConfiguration config)
         {
             SetProperties(config.GetSection(nameof(Ribbon)));

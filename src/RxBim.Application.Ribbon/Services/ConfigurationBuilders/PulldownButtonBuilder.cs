@@ -5,7 +5,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Models.Configurations;
 
     /// <summary>
-    /// PulldownButtonBuilder
+    /// PulldownButtonBuilder.
     /// </summary>
     public class PulldownButtonBuilder : ButtonBuilder<PullDownButton>, IPulldownButtonBuilder
     {

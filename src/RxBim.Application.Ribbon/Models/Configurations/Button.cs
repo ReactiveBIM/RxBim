@@ -3,52 +3,52 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Configuration for a button
+    /// The Configuration for a button.
     /// </summary>
     public abstract class Button : IRibbonPanelElement
     {
         /// <summary>
-        /// Button name
+        /// The button name.
         /// </summary>
         public string? Name { get; set; }
 
         /// <summary>
-        /// Button label text
+        /// The button label text.
         /// </summary>
         public string? Text { get; set; }
 
         /// <summary>
-        /// URI string for default large button image
+        /// URI string for default large button image.
         /// </summary>
         public string? LargeImage { get; set; }
 
         /// <summary>
-        /// URI string for default small button image
+        /// URI string for default small button image.
         /// </summary>
         public string? SmallImage { get; set; }
 
         /// <summary>
-        /// URI string for large button image for light theme
+        /// URI string for large button image for light theme.
         /// </summary>
         public string? LargeImageLight { get; set; }
 
         /// <summary>
-        /// URI string for small button image for light theme
+        /// URI string for small button image for light theme.
         /// </summary>
         public string? SmallImageLight { get; set; }
 
         /// <summary>
-        /// Button description
+        /// The button description.
         /// </summary>
         public string? Description { get; set; }
 
         /// <summary>
-        /// Button tooltip
+        /// The button tooltip.
         /// </summary>
         public string? ToolTip { get; set; }
 
         /// <summary>
-        /// Help url for button
+        /// Help url for the button.
         /// </summary>
         public string? HelpUrl { get; set; }
     }

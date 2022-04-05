@@ -14,9 +14,9 @@
         private readonly IEnumerable<Dll> _dlls;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="assembly">assembly</param>
+        /// <param name="assembly">assembly.</param>
         public AssemblyResolver(Assembly assembly)
         {
             var dir = Path.GetDirectoryName(assembly.Location);

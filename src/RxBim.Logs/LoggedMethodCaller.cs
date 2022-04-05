@@ -10,7 +10,7 @@
         private readonly ILogger _logger;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         /// <param name="decorated">Decorated method caller.</param>
         /// <param name="logger">A logger.</param>

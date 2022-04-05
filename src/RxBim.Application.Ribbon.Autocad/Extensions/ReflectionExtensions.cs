@@ -4,15 +4,15 @@
     using System.Reflection;
 
     /// <summary>
-    /// Extensions for reflection objects
+    /// Extensions for reflection objects.
     /// </summary>
     internal static class ReflectionExtensions
     {
         /// <summary>
-        /// Returns command name from command class type
+        /// Returns command name from command class type.
         /// </summary>
-        /// <param name="commandType">Command class type</param>
-        /// <exception cref="InvalidOperationException">If command class type is not valid</exception>
+        /// <param name="commandType">Command class type.</param>
+        /// <exception cref="InvalidOperationException">If command class type is not valid.</exception>
         public static string GetCommandName(this MemberInfo commandType)
         {
             const string cmdNameProperty = "CommandName";

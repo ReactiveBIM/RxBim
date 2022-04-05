@@ -9,12 +9,12 @@
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <content>
-    /// Common build targets
+    /// Common build targets.
     /// </content>
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Cleans bin/, obj/ in solution
+        /// Cleans bin/, obj/ directories in solution.
         /// </summary>
         public Target Clean => _ => _
             .Description("Clean bin/, obj/")
@@ -26,7 +26,7 @@
             });
 
         /// <summary>
-        /// Restores packages
+        /// Restores packages from a solution.
         /// </summary>
         public Target Restore => _ => _
             .Description("Restore packages")
@@ -38,7 +38,7 @@
             });
 
         /// <summary>
-        /// Compiles solution
+        /// Compiles a solution.
         /// </summary>
         public Target Compile => _ => _
             .Description("Compile solution")
@@ -51,7 +51,7 @@
             });
 
         /// <summary>
-        /// Runs tests
+        /// Runs tests from a solution.
         /// </summary>
         public Target Test => _ => _
             .Description("Run tests")

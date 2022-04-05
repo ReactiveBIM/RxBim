@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Nuke.Revit.TestHelpers
 {
     /// <summary>
-    /// Result template
+    /// Result template.
     /// </summary>
     public class Result
     {

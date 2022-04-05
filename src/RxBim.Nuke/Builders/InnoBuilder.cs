@@ -13,7 +13,7 @@
     using MsiBuilder;
 
     /// <summary>
-    /// Inno Setup builder
+    /// The Inno Setup builder.
     /// </summary>
     public class InnoBuilder : IssBuilder
     {
@@ -56,12 +56,12 @@
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="InnoBuilder"/>
+        /// Creates an instance of <see cref="InnoBuilder"/>.
         /// </summary>
-        /// <param name="options">Setup options</param>
-        /// <param name="outputProjDir">Output compile project directory</param>
-        /// <param name="outputProjBinDir">Output "bin" directory of compile project</param>
-        /// <param name="setupFileName">Setup file name</param>
+        /// <param name="options">Setup options.</param>
+        /// <param name="outputProjDir">Output compile project directory.</param>
+        /// <param name="outputProjBinDir">Output "bin" directory of compile project.</param>
+        /// <param name="setupFileName">Setup file name.</param>
         public static InnoBuilder Create(
             Options options,
             AbsolutePath outputProjDir,
@@ -70,7 +70,7 @@
             => new(options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
-        /// Adds setup and uninstall icons from <see cref="Options"/>
+        /// Adds setup and uninstall icons from <see cref="Options"/>.
         /// </summary>
         public InnoBuilder AddIcons()
         {
@@ -83,7 +83,7 @@
         }
 
         /// <summary>
-        /// Adds uninstall script
+        /// Adds uninstall script.
         /// </summary>
         public InnoBuilder AddUninstallScript()
         {
@@ -92,7 +92,7 @@
         }
 
         /// <summary>
-        /// Adds fonts files
+        /// Adds fonts files.
         /// </summary>
         public InnoBuilder AddFonts()
         {
@@ -120,9 +120,9 @@
         }
 
         /// <summary>
-        /// Reads Font file as stream, because PrivateFontCollection.Dispose() does not work
+        /// Reads Font file as stream, because PrivateFontCollection.Dispose() does not work.
         /// </summary>
-        /// <param name="stream">Font file stream</param>
+        /// <param name="stream">Font file stream.</param>
         private static FontFamily LoadFontFamily(Stream stream)
         {
             var buffer = new byte[stream.Length];

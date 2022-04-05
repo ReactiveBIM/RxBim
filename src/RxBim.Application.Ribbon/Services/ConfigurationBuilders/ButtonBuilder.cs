@@ -5,22 +5,22 @@
     using Models.Configurations;
 
     /// <summary>
-    /// Base implementation of a button builder
+    /// Base implementation of a button builder.
     /// </summary>
     public abstract class ButtonBuilder<TButton> : IButtonBuilder
         where TButton : Button, new()
     {
         /// <summary>
-        /// Initializes a new instance of the button builder
+        /// Initializes a new instance of the button builder.
         /// </summary>
-        /// <param name="name">Button name</param>
+        /// <param name="name">Button name.</param>
         protected ButtonBuilder(string name)
         {
             BuildingButton.Name = name;
         }
 
         /// <summary>
-        /// Building ribbon control
+        /// Building ribbon control.
         /// </summary>
         public TButton BuildingButton { get; } = new();
 

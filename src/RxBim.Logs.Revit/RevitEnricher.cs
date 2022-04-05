@@ -12,9 +12,9 @@
         private readonly UIApplication _application;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="application">revit ui application</param>
+        /// <param name="application">Revit ui application.</param>
         public RevitEnricher(UIApplication application)
         {
             _application = application;

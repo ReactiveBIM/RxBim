@@ -1,47 +1,47 @@
 ﻿namespace RxBim.Analyzers
 {
     /// <summary>
-    /// Constants
+    /// Constants.
     /// </summary>
     public class Constants
     {
         /// <summary>
-        /// Diagnostic identifier
+        /// Diagnostic identifier.
         /// </summary>
         internal const string DiagnosticId = "RxBimAnalyzers";
 
         /// <summary>
-        /// Category name
+        /// Category name.
         /// </summary>
         internal const string Category = "Naming";
 
         /// <summary>
-        /// PluginResult
+        /// PluginResult.
         /// </summary>
         internal const string PluginResult = nameof(PluginResult);
 
         /// <summary>
-        /// Start
+        /// Start.
         /// </summary>
         internal const string Start = nameof(Start);
 
         /// <summary>
-        /// Shutdown
+        /// Shutdown.
         /// </summary>
         internal const string Shutdown = nameof(Shutdown);
 
         /// <summary>
-        /// RxBimApplication
+        /// RxBimApplication.
         /// </summary>
         internal const string RxBimApplication = nameof(RxBimApplication);
 
         /// <summary>
-        /// RxBimCommand
+        /// RxBimCommand.
         /// </summary>
         internal const string RxBimCommand = nameof(RxBimCommand);
 
         /// <summary>
-        /// ExecuteCommand
+        /// ExecuteCommand.
         /// </summary>
         internal const string ExecuteCommand = nameof(ExecuteCommand);
     }

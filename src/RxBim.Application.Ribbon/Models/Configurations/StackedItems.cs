@@ -4,12 +4,12 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Vertical stack of buttons on the ribbon
+    /// Vertical stack of buttons on the ribbon.
     /// </summary>
     public class StackedItems : IRibbonPanelElement
     {
         /// <summary>
-        /// Stacked buttons
+        /// Stacked buttons.
         /// </summary>
         public List<Button> StackedButtons { get; set; } = new();
     }

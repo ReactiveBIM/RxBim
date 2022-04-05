@@ -6,15 +6,16 @@
     using Models;
 
     /// <summary>
-    /// Расширение для <see cref="AddIn"/>
+    /// Extension methods for <see cref="AddIn"/>.
     /// </summary>
     [PublicAPI]
     internal static class AddInExtensions
     {
         /// <summary>
-        /// Преобразовывает <see cref="AddIn"/> в <see cref="XElement"/>
+        /// Maps an <see cref="AddIn"/> to the <see cref="XElement"/>.
         /// </summary>
-        /// <param name="addIn">addin</param>
+        /// <param name="addIn">An addin.</param>
+        /// <returns>The <see cref="XElement"/> mapped from <paramref name="addIn"/>.</returns>
         public static XElement ToXElement(this AddIn addIn)
         {
             return new XElement(nameof(AddIn),
@@ -28,9 +29,10 @@
         }
 
         /// <summary>
-        /// Преобразовывает <see cref="RevitAddIns"/> в <see cref="ToXDocument"/>
+        /// Maps a <see cref="RevitAddIns"/> to the <see cref="XDocument"/>.
         /// </summary>
-        /// <param name="revitAddIns">RevitAddIns</param>
+        /// <param name="revitAddIns">RevitAddIns.</param>
+        /// <returns>The <see cref="XDocument"/> mapped from <paramref name="revitAddIns"/>.</returns>
         public static XDocument ToXDocument(this RevitAddIns revitAddIns)
         {
             return new XDocument(new XElement(nameof(RevitAddIns),

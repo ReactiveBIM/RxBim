@@ -3,18 +3,18 @@
     using RxBim.Nuke.Models;
 
     /// <summary>
-    /// Addin
+    /// Specifies an addin file data.
     /// </summary>
     public class AddIn
     {
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="name">name</param>
-        /// <param name="assembly">assembly</param>
-        /// <param name="addInId">addinid</param>
-        /// <param name="fullClassName">fullclassname</param>
-        /// <param name="type">type</param>
+        /// <param name="name">The name.</param>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="addInId">The addin identifier.</param>
+        /// <param name="fullClassName">Full class name.</param>
+        /// <param name="type">The plugin type.</param>
         public AddIn(string name, string assembly, string addInId, string fullClassName, PluginType type)
         {
             Name = name;
@@ -25,37 +25,37 @@
         }
 
         /// <summary>
-        /// Name
+        /// Name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Assembly
+        /// Assembly.
         /// </summary>
         public string Assembly { get; set; }
 
         /// <summary>
-        /// AddInId
+        /// AddInId.
         /// </summary>
         public string AddInId { get; set; }
 
         /// <summary>
-        /// FullClassName
+        /// FullClassName.
         /// </summary>
         public string FullClassName { get; set; }
 
         /// <summary>
-        /// Type
+        /// Type.
         /// </summary>
         public PluginType Type { get; set; }
 
         /// <summary>
-        /// VendorId
+        /// Vendor id.
         /// </summary>
         public string VendorId { get; set; } = "PIK";
 
         /// <summary>
-        /// VendorDescription
+        /// Vendor description.
         /// </summary>
         public string VendorDescription { get; set; } = "PIK, http://pik.ru";
     }

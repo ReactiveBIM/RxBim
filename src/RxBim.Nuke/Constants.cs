@@ -6,12 +6,12 @@
     public static class Constants
     {
         /// <summary>
-        /// RxBimCommand
+        /// Name of RxBim command class.
         /// </summary>
         public const string RxBimCommand = "RxBimCommand";
 
         /// <summary>
-        /// RxBimApplication
+        /// Name of RxBim application class.
         /// </summary>
         public const string RxBimApplication = "RxBimApplication";
     }

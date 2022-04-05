@@ -4,14 +4,14 @@
     using Di;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// The DI container extensions.
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет общие вспомогательные сервисы
+        /// Adds shared tools in a <paramref name="container"/>.
         /// </summary>
-        /// <param name="container">DI контейнер</param>
+        /// <param name="container">The DI container.</param>
         public static void AddSharedTools(this IContainer container)
         {
             container.AddSingleton<IUserSettings, UserSettings>();

@@ -3,26 +3,26 @@ namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
     using Models.Configurations;
 
     /// <summary>
-    /// Ribbon builder
+    /// The bibbon builder.
     /// </summary>
     public interface IRibbonBuilder
     {
         /// <summary>
-        /// Creates tab and adds to the ribbon
+        /// Creates tab and adds to the ribbon.
         /// </summary>
-        /// <param name="tabTitle">Tab title</param>
+        /// <param name="tabTitle">Tab title.</param>
         ITabBuilder AddTab(string tabTitle);
 
         /// <summary>
-        /// Sets value for <see cref="Models.Configurations.Ribbon.AddVersionToCommandTooltip"/>
+        /// Sets a value for <see cref="Models.Configurations.Ribbon.AddVersionToCommandTooltip"/>.
         /// </summary>
-        /// <param name="value">Value</param>
+        /// <param name="value">The value.</param>
         IRibbonBuilder SetAddVersionToCommandTooltip(bool value);
 
         /// <summary>
-        /// Sets value for <see cref="Ribbon.CommandTooltipVersionHeader"/>
+        /// Sets a value for <see cref="Ribbon.CommandTooltipVersionHeader"/>.
         /// </summary>
-        /// <param name="header">Value</param>
+        /// <param name="header">The value.</param>
         IRibbonBuilder SetCommandTooltipVersionHeader(string header);
     }
 }

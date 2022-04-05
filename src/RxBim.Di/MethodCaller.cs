@@ -12,7 +12,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodCaller{T}"/> class.
         /// </summary>
-        /// <param name="sourceObject">The source object for the method</param>
+        /// <param name="sourceObject">The source object for the method.</param>
         public MethodCaller(object sourceObject)
         {
             _sourceObject = sourceObject;

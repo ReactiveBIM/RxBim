@@ -12,7 +12,7 @@
     using static Constants;
 
     /// <summary>
-    /// Code generator for Autocad command class
+    /// Code generator for Autocad command class.
     /// </summary>
     [Generator]
     public class CommandGenerator : ISourceGenerator

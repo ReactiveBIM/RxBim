@@ -9,7 +9,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Shared;
 
     /// <summary>
-    /// Ribbon panel implementation
+    /// Ribbon panel implementation.
     /// </summary>
     public class PanelBuilder : IPanelBuilder
     {
@@ -19,9 +19,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
-        /// <param name="name">Panel name</param>
-        /// <param name="ribbonBuilder">Ribbon builder</param>
-        /// <param name="tabBuilder">Tab builder</param>
+        /// <param name="name">Panel name.</param>
+        /// <param name="ribbonBuilder">Ribbon builder.</param>
+        /// <param name="tabBuilder">Tab builder.</param>
         public PanelBuilder(string name, IRibbonBuilder ribbonBuilder, ITabBuilder tabBuilder)
         {
             _ribbonBuilder = ribbonBuilder;
@@ -30,15 +30,15 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Building panel
+        /// Building panel.
         /// </summary>
         public Panel BuildingPanel { get; } = new();
 
         /// <summary>
-        /// Create new stacked items at the panel
+        /// Create new stacked items at the panel.
         /// </summary>
-        /// <param name="action">Action where you must add items to the stacked panel</param>
-        /// <returns>Panel where stacked items were created</returns>
+        /// <param name="action">Action where you must add items to the stacked panel.</param>
+        /// <returns>Panel where stacked items were created.</returns>
         public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> action)
         {
             if (action == null)
@@ -115,9 +115,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Load from config
+        /// Load from config.
         /// </summary>
-        /// <param name="panelSection">Config section</param>
+        /// <param name="panelSection">Config section.</param>
         internal void LoadFromConfig(IConfigurationSection panelSection)
         {
             var elementsSection = panelSection.GetSection(nameof(Panel.Elements));

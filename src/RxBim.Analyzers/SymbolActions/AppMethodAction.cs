@@ -9,7 +9,7 @@
     public class AppMethodAction
     {
         /// <summary>
-        /// id
+        /// The id.
         /// </summary>
         public const string DiagnosticId = Constants.DiagnosticId + "AppMethodReturType";
 
@@ -22,7 +22,7 @@
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
         /// <summary>
-        /// Rule
+        /// The rule.
         /// </summary>
         public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
@@ -34,18 +34,18 @@
             description: Description);
 
         /// <summary>
-        /// Checks Start method
+        /// Checks Start method.
         /// </summary>
-        /// <param name="context">context</param>
+        /// <param name="context">The context.</param>
         public void AnalyzeAppStartMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, Constants.Start);
         }
 
         /// <summary>
-        /// Checks Shutdown method
+        /// Checks Shutdown method.
         /// </summary>
-        /// <param name="context">context</param>
+        /// <param name="context">The context.</param>
         public void AnalyzeAppShutdownMethods(SymbolAnalysisContext context)
         {
             AnalyzeMethod(context, Constants.Shutdown);

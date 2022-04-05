@@ -9,12 +9,12 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     public class StackedItemsBuilder : IStackedItemsBuilder
     {
         /// <summary>
-        /// Max size of a stack
+        /// Max size of a stack.
         /// </summary>
         public const int MaxStackSize = 3;
 
         /// <summary>
-        /// Builds StackedItems
+        /// Builds StackedItems.
         /// </summary>
         public StackedItems StackedItems { get; } = new();
 
@@ -39,9 +39,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Load buttons from config
+        /// Load buttons from config.
         /// </summary>
-        /// <param name="stackedButtons">Buttons config section</param>
+        /// <param name="stackedButtons">Buttons config section.</param>
         internal void LoadButtonsFromConfig(IConfigurationSection stackedButtons)
         {
             foreach (var buttonSection in stackedButtons.GetChildren())

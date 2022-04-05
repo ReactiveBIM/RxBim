@@ -5,12 +5,12 @@
     using Shared;
 
     /// <summary>
-    /// app
+    /// External Revit Application.
     /// </summary>
     public class App : RxBimApplication
     {
         /// <summary>
-        /// Start application
+        /// Starts the application.
         /// </summary>
         public PluginResult Start()
         {
@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// Shutdown application
+        /// Shutdowns the application.
         /// </summary>
         public PluginResult Shutdown()
         {

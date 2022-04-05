@@ -6,16 +6,16 @@
     using System.Reflection;
 
     /// <summary>
-    /// Reflection extensions
+    /// Reflection extensions.
     /// </summary>
     internal static class ReflectionExtensions
     {
         /// <summary>
-        /// Returns method parameters from a DI container
+        /// Returns method parameters from a DI container.
         /// </summary>
-        /// <param name="methodInfo">Method info</param>
-        /// <param name="container">DI container</param>
-        /// <returns></returns>
+        /// <param name="methodInfo">A method info.</param>
+        /// <param name="container">A DI container.</param>
+        /// <returns>The list of dependency objects of the requested object.</returns>
         public static List<object> GetMethodParameters(this MethodBase methodInfo, IContainer container)
         {
             return methodInfo.GetParameters()
@@ -24,13 +24,13 @@
         }
 
         /// <summary>
-        /// Returns information about a method from an object type
+        /// Returns information about a method from an object type.
         /// </summary>
-        /// <param name="type">The source object type for the method</param>
-        /// <param name="methodName">Method name</param>
-        /// <typeparam name="T">The return type of the method</typeparam>
+        /// <param name="type">The source object type for the method.</param>
+        /// <param name="methodName">Method name.</param>
+        /// <typeparam name="T">The return type of the method.</typeparam>
         /// <exception cref="MethodCallerException">
-        /// Throws when the method is not found or the return value of the method is not <typeparamref name="T"/>
+        /// Throws when the method is not found or the return value of the method is not <typeparamref name="T"/>.
         /// </exception>
         public static MethodInfo FindInvokeMethod<T>(this Type type, string methodName)
         {
@@ -51,12 +51,12 @@
         }
 
         /// <summary>
-        /// Returns the result of a method call
+        /// Returns the result of a method call.
         /// </summary>
-        /// <param name="methodInfo">Method info</param>
-        /// <param name="sourceObject">Source object</param>
-        /// <param name="parameters">Method parameters</param>
-        /// <typeparam name="T">The return type of the method</typeparam>
+        /// <param name="methodInfo">The method info.</param>
+        /// <param name="sourceObject">The source object.</param>
+        /// <param name="parameters">The method parameters.</param>
+        /// <typeparam name="T">The return type of the method.</typeparam>
         public static T Invoke<T>(
             this MethodBase methodInfo,
             object sourceObject,

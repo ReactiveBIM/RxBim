@@ -9,12 +9,12 @@
     using global::Nuke.Common.Tools.Git;
 
     /// <content>
-    /// GIT build targets
+    /// GIT build targets.
     /// </content>
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         /// <summary>
-        /// Checks release branch version name
+        /// Checks release branch version name.
         /// </summary>
         public Target CheckCurrentBranch => _ => _
             .Executes(() =>
@@ -28,7 +28,7 @@
             });
 
         /// <summary>
-        /// Checks project version and release branch version name
+        /// Checks project version and release branch version name.
         /// </summary>
         public Target CheckStageVersion => _ => _
             .DependsOn(CheckCurrentBranch)
@@ -44,7 +44,7 @@
             });
 
         /// <summary>
-        /// Checks master branch version name
+        /// Checks master branch version name.
         /// </summary>
         public Target CheckProductionVersion => _ => _
             .Executes(() =>
@@ -97,7 +97,7 @@
             });
 
         /// <summary>
-        /// Tags project for testing
+        /// Tags project for testing.
         /// </summary>
         public Target TagProject => _ => _
             .Requires(() => Project)

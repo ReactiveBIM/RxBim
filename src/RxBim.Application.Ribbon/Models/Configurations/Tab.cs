@@ -3,17 +3,17 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Ribbon tab configuration
+    /// Ribbon tab configuration.
     /// </summary>
     public class Tab
     {
         /// <summary>
-        /// Tab name
+        /// Tab name.
         /// </summary>
         public string? Name { get; set; }
 
         /// <summary>
-        /// Panels on the tab
+        /// Panels on the tab.
         /// </summary>
         public List<Panel> Panels { get; set; } = new();
     }
