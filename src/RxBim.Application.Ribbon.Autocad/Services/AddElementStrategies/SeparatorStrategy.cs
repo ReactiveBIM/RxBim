@@ -1,16 +1,16 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services.AddElementStrategies
 {
-    using System;
     using Abstractions;
     using Autodesk.Windows;
+    using Models;
+    using Models.Configurations;
     using Ribbon.Abstractions;
     using Ribbon.Abstractions.ConfigurationBuilders;
-    using Ribbon.Services.AddElementStrategies;
 
     /// <summary>
     /// Implementation of <see cref="IAddElementStrategy"/> for separator.
     /// </summary>
-    public class SeparatorStrategy : SeparatorStrategyBase
+    public class SeparatorStrategy : ElementStrategyBase<PanelLayoutElement>
     {
         private readonly IPanelService _panelService;
 
@@ -21,18 +21,22 @@
         }
 
         /// <inheritdoc />
-        public override void CreateAndAddElement(object panel, IRibbonPanelElement config)
+        public override bool IsApplicable(IRibbonPanelElement config)
         {
-            if (panel is not RibbonPanel ribbonPanel)
-                return;
+            return base.IsApplicable(config) &&
+                   ((PanelLayoutElement)config).LayoutElementType == PanelLayoutElementType.Separator;
+        }
 
+        /// <inheritdoc />
+        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PanelLayoutElement elementConfig)
+        {
             _panelService.AddSeparator(ribbonPanel);
         }
 
         /// <inheritdoc />
-        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        protected override RibbonItem CreateElementForStack(PanelLayoutElement elementConfig, RibbonItemSize size)
         {
-            throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
+            return CantBeStackedStub(elementConfig);
         }
     }
 }

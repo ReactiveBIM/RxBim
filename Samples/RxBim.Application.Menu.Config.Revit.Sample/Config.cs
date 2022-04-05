@@ -10,7 +10,6 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddSingleton<IAboutShowService, AboutShowService>();
             container.AddRevitMenu();
         }
     }

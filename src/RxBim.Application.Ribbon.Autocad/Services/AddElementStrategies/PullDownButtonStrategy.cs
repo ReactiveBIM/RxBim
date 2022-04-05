@@ -1,19 +1,16 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services.AddElementStrategies
 {
-    using System;
     using System.Windows.Controls;
     using Abstractions;
     using Autodesk.Windows;
     using Extensions;
     using Models.Configurations;
     using Ribbon.Abstractions;
-    using Ribbon.Abstractions.ConfigurationBuilders;
-    using Ribbon.Services.AddElementStrategies;
 
     /// <summary>
     /// Implementation of <see cref="IAddElementStrategy"/> for pull-down button.
     /// </summary>
-    public class PullDownButtonStrategy : PullDownButtonStrategyBase
+    public class PullDownButtonStrategy : ElementStrategyBase<PullDownButton>
     {
         private readonly IPanelService _panelService;
         private readonly IButtonService _buttonService;
@@ -26,21 +23,16 @@
         }
 
         /// <inheritdoc />
-        public override void CreateAndAddElement(object panel, IRibbonPanelElement config)
+        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not PullDownButton pullDownButtonConfig)
-                return;
             var orientation = pullDownButtonConfig.GetSingleLargeButtonOrientation();
             _panelService.AddItem(ribbonPanel,
                 _buttonService.CreatePullDownButton(pullDownButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
-        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        protected override RibbonItem CreateElementForStack(PullDownButton pullDownButtonConfig, RibbonItemSize size)
         {
-            if (config is not PullDownButton pullDownButtonConfig)
-                throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
-            var size = small ? RibbonItemSize.Standard : RibbonItemSize.Large;
             return _buttonService.CreatePullDownButton(pullDownButtonConfig, size, Orientation.Horizontal);
         }
     }

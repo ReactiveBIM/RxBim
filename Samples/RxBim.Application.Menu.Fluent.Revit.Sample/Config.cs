@@ -12,28 +12,10 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddSingleton<IAboutShowService, AboutShowService>();
             container.AddRevitMenu(ribbon => ribbon
                 .EnableAddVersionToCommandTooltip()
                 .SetCommandTooltipVersionHeader("Version: ")
                 .AddTab("RxBim_Tab_FromAction")
-                .AddAboutButton(
-                    "About",
-                    new AboutBoxContent(
-                        "RxBim4Revit",
-                        "1.0",
-                        "RxBim product module for API demo and validation",
-                        GetType().Assembly.GetName().Version,
-                        "ReactiveBIM",
-                        new Dictionary<string, string>
-                        {
-                            { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                        }),
-                    button => button
-                        .SetText("About\nbutton")
-                        .SetToolTip("About information")
-                        .SetDescription("Button for displaying the About window")
-                        .SetLargeImage(@"img\about_32.png"))
                 .AddPanel("RxBim_Panel_1")
                 .AddCommandButton(
                     "Command1_Large_WithText",

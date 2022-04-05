@@ -1,13 +1,10 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Autocad.Sample
 {
-    using System.Collections.Generic;
     using Commands;
     using Di;
     using Ribbon.Abstractions.ConfigurationBuilders;
     using Ribbon.Autocad.Extensions;
     using Ribbon.Models;
-    using Shared;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -15,30 +12,11 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddSingleton<IAboutShowService, AboutShowService>();
             container.AddAutocadMenu(ribbon =>
                 ribbon
                     .EnableAddVersionToCommandTooltip()
                     .SetCommandTooltipVersionHeader("Version: ")
                     .AddTab("RxBim_Tab_FromAction")
-                    .AddAboutButton(
-                        "About",
-                        new AboutBoxContent(
-                            "RxBim4AutoCAD",
-                            "1.0",
-                            "RxBim product module for API demo and validation",
-                            GetType().Assembly.GetName().Version,
-                            "ReactiveBIM",
-                            new Dictionary<string, string>
-                            {
-                                { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                            }),
-                        button => button
-                            .SetText("About\nbutton")
-                            .SetToolTip("About information")
-                            .SetDescription("Button for displaying the About window")
-                            .SetLargeImage(@"img\about_32.png", ThemeType.Dark)
-                            .SetLargeImage(@"img\about_32_light.png", ThemeType.Light))
                     .AddPanel("RxBim_Panel_1")
                     .AddCommandButton(
                         "Command1_Large_WithText",
