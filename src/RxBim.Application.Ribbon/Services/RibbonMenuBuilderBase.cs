@@ -96,7 +96,7 @@
             {
                 var strategy = addElementStrategies.FirstOrDefault(x => x.IsApplicable(element));
                 if (strategy != null)
-                    strategy.CreateElement(tab!, panel!, element);
+                    strategy.CreateAndAddElement(panel!, element);
                 else
                     throw new InvalidOperationException($"Unknown panel item type: {element.GetType().Name}");
             }

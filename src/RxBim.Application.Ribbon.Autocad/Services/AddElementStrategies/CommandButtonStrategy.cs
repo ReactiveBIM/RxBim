@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services.AddElementStrategies
 {
+    using System;
+    using System.Windows.Controls;
     using Abstractions;
     using Autodesk.Windows;
     using Extensions;
@@ -24,13 +26,22 @@
         }
 
         /// <inheritdoc />
-        public override void CreateElement(object tab, object panel, IRibbonPanelElement config)
+        public override void CreateAndAddElement(object panel, IRibbonPanelElement config)
         {
             if (panel is not RibbonPanel ribbonPanel || config is not CommandButton cmdButtonConfig)
                 return;
             var orientation = cmdButtonConfig.GetSingleLargeButtonOrientation();
             _panelService.AddItem(ribbonPanel,
                 _buttonService.CreateCommandButton(cmdButtonConfig, RibbonItemSize.Large, orientation));
+        }
+
+        /// <inheritdoc />
+        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        {
+            if (config is not CommandButton cmdButtonConfig)
+                throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
+            var size = small ? RibbonItemSize.Standard : RibbonItemSize.Large;
+            return _buttonService.CreateCommandButton(cmdButtonConfig, size, Orientation.Horizontal);
         }
     }
 }

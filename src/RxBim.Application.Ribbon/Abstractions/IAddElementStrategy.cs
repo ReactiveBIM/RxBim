@@ -14,14 +14,17 @@
         bool IsApplicable(IRibbonPanelElement config);
 
         /// <summary>
-        /// Creates an element.
+        /// Creates and adds to ribbon an element.
         /// </summary>
-        /// <param name="tab">Ribbon tab.</param>
         /// <param name="panel">Ribbon panel.</param>
         /// <param name="config">Ribbon item configuration.</param>
-        void CreateElement(
-            object tab,
-            object panel,
-            IRibbonPanelElement config);
+        void CreateAndAddElement(object panel, IRibbonPanelElement config);
+
+        /// <summary>
+        /// Creates and returns an element for a stack.
+        /// </summary>
+        /// <param name="config">Ribbon item configuration.</param>
+        /// <param name="small">Element is small.</param>
+        object CreateElementForStack(IRibbonPanelElement config, bool small = false);
     }
 }

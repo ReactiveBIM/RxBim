@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services.AddElementStrategies
 {
+    using System;
     using Abstractions;
     using Autodesk.Windows;
     using Ribbon.Abstractions;
@@ -20,12 +21,18 @@
         }
 
         /// <inheritdoc />
-        public override void CreateElement(object tab, object panel, IRibbonPanelElement config)
+        public override void CreateAndAddElement(object panel, IRibbonPanelElement config)
         {
             if (panel is not RibbonPanel ribbonPanel)
                 return;
 
             _panelService.AddSlideOut(ribbonPanel);
+        }
+
+        /// <inheritdoc />
+        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        {
+            throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
         }
     }
 }

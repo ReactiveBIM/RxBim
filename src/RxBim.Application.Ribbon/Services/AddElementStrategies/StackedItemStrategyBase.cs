@@ -16,9 +16,9 @@
         }
 
         /// <inheritdoc />
-        public abstract void CreateElement(
-            object tab,
-            object panel,
-            IRibbonPanelElement config);
+        public abstract void CreateAndAddElement(object panel, IRibbonPanelElement config);
+
+        /// <inheritdoc />
+        public abstract object CreateElementForStack(IRibbonPanelElement config, bool small);
     }
 }

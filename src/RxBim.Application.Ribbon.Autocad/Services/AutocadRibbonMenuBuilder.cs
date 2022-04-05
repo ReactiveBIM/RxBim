@@ -1,17 +1,10 @@
 ﻿namespace RxBim.Application.Ribbon.Autocad.Services
 {
-    using System;
-    using System.Linq;
-    using System.Windows.Controls;
     using Abstractions;
-    using Autodesk.Private.Windows;
     using Autodesk.Windows;
-    using Extensions;
     using Models;
-    using Models.Configurations;
     using Ribbon.Abstractions;
     using Ribbon.Services;
-    using Ribbon.Services.ConfigurationBuilders;
     using Shared.Abstractions;
 
     /// <summary>
@@ -81,37 +74,5 @@
         /// <inheritdoc />
         protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName) =>
             _panelService.GetOrCreatePanel(acRibbonTab, panelName);
-
-        /// <inheritdoc />
-        protected override void CreateStackedItems(RibbonPanel panel, StackedItems stackedItems)
-        {
-            var stackSize = stackedItems.StackedButtons.Count;
-            var stackedItemsRow = new RibbonRowPanel();
-            var size = stackSize == StackedItemsBuilder.MaxStackSize
-                ? RibbonItemSize.Standard
-                : RibbonItemSize.Large;
-
-            _panelService.AddItem(panel, stackedItemsRow);
-
-            for (var i = 0; i < stackSize; i++)
-            {
-                if (i > 0)
-                    stackedItemsRow.Items.Add(new RibbonRowBreak());
-
-                var buttonConfig = stackedItems.StackedButtons[i];
-                var buttonItem = buttonConfig switch
-                {
-                    AboutButton aboutButton =>
-                        _buttonService.CreateAboutButton(aboutButton, size, Orientation.Horizontal, GetIconImage),
-                    CommandButton cmdButton =>
-                        _buttonService.CreateCommandButtonInternal(cmdButton, size, Orientation.Horizontal),
-                    PullDownButton pullDownButton =>
-                        _buttonService.CreatePullDownButtonInternal(pullDownButton, size, Orientation.Horizontal),
-                    _ => throw new ArgumentOutOfRangeException($"Unknown button type: {buttonConfig.GetType().Name}")
-                };
-
-                stackedItemsRow.Items.Add(buttonItem);
-            }
-        }
     }
 }
