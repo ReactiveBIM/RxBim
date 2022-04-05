@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     using System;
-    using System.Reflection;
     using Models.Configurations;
 
     /// <summary>
@@ -19,11 +18,5 @@
         /// </summary>
         /// <param name="ribbonConfig">Ribbon configuration</param>
         void BuildRibbonMenu(Ribbon? ribbonConfig = null);
-
-        /// <summary>
-        /// Initializes the service.
-        /// </summary>
-        /// <param name="menuAssembly">Menu defining assembly.</param>
-        void Initialize(Assembly menuAssembly);
     }
 }

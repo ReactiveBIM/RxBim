@@ -55,5 +55,11 @@
         /// Returns tab builder object
         /// </summary>
         ITabBuilder ReturnToTab();
+
+        /// <summary>
+        /// Adds a element to the panel.
+        /// </summary>
+        /// <param name="element">Element.</param>
+        IPanelBuilder AddElement(IRibbonPanelElement element);
     }
 }

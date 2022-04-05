@@ -17,7 +17,6 @@
 
         /// <inheritdoc />
         public abstract void CreateElement(
-            IRibbonMenuBuilder menuBuilder,
             object tab,
             object panel,
             IRibbonPanelElement config);

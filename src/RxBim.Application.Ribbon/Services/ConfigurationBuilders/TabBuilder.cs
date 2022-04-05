@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
 {
+    using System.Collections.Generic;
+    using Abstractions;
     using Abstractions.ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
     using Models.Configurations;
@@ -40,7 +42,10 @@
         /// Load from config
         /// </summary>
         /// <param name="tabSection">Tab config section</param>
-        internal void LoadFromConfig(IConfigurationSection tabSection)
+        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        internal void LoadFromConfig(
+            IConfigurationSection tabSection,
+            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
         {
             var panelsSection = tabSection.GetSection(nameof(Tab.Panels));
             if (!panelsSection.Exists())
@@ -51,7 +56,7 @@
                 if (!panelsSection.Exists())
                     continue;
                 var panelBuilder = AddPanelInternal(panelSection.GetSection(nameof(Panel.Name)).Value);
-                panelBuilder.LoadFromConfig(panelSection);
+                panelBuilder.LoadFromConfig(panelSection, fromConfigStrategies);
             }
         }
 
