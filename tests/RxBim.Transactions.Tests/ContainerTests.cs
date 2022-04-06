@@ -21,7 +21,7 @@
         public void ServiceProvideShouldThrowAtSetup()
         {
             var serviceProviderContainer = new ServiceProviderContainer();
-            Action act = () => serviceProviderContainer.TrySetupProxy();
+            Action act = () => serviceProviderContainer.SetupProxy();
 
             act.Should().Throw<RegistrationException>();
         }
@@ -30,7 +30,7 @@
         public void SimpleInjectorShouldNotThrowAtSetup()
         {
             var simpleInjectorContainer = new SimpleInjectorContainer();
-            Action act = () => simpleInjectorContainer.TrySetupProxy();
+            Action act = () => simpleInjectorContainer.SetupProxy();
 
             act.Should().NotThrow();
         }
@@ -39,7 +39,7 @@
         public void ContainerShouldReturnProxyFromClass()
         {
             var container = new SimpleInjectorContainer();
-            container.TrySetupProxy()
+            container.SetupProxy()
                 .AddTransient<ITransactionFactory, TestTransactionFactory>()
                 .AddTransient<Virtual>();
 
@@ -52,7 +52,7 @@
         public void ContainerShouldReturnProxyFromInterface()
         {
             var container = new SimpleInjectorContainer();
-            container.TrySetupProxy()
+            container.SetupProxy()
                 .AddTransient<ITransactionFactory, TestTransactionFactory>()
                 .AddTransient<IA, Ab2>()
                 .AddTransient<IB, Ab2>();
@@ -68,7 +68,7 @@
         public void TransactionShouldBeCommited()
         {
             var container = new SimpleInjectorContainer();
-            container.TrySetupProxy()
+            container.SetupProxy()
                 .AddTransient<ITransactionFactory, TestTransactionFactory>()
                 .AddTransient<Virtual>();
 
@@ -86,7 +86,7 @@
         public void TransactionShouldBeRollback()
         {
             var container = new SimpleInjectorContainer();
-            container.TrySetupProxy()
+            container.SetupProxy()
                 .AddTransient<ITransactionFactory, TestTransactionFactory>()
                 .AddTransient<IA, Ab>();
 

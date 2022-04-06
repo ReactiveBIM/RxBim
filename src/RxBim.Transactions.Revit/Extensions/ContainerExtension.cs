@@ -16,7 +16,7 @@
         public static IContainer AddTransactions(this IContainer container)
         {
             return container
-                .TrySetupProxy()
+                .SetupProxy()
                 .AddTransient<ITransactionFactory, RevitTransactionFactory>();
         }
     }

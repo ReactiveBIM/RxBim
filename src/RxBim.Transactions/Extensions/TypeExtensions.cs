@@ -16,7 +16,7 @@
     public static class TypeExtensions
     {
         /// <summary>
-        /// Checks if any type method has <see cref="TransactionalAttribute"/>.
+        /// Checks if any of type methods has <see cref="TransactionalAttribute"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>
         public static bool IsTransactional(this Type type)
@@ -26,10 +26,10 @@
         }
 
         /// <summary>
-        /// Checks if type can be wrapped in a transaction proxy.
+        /// Ensure the type can be wrapped in a transaction proxy.
         /// </summary>
         /// <param name="type">The type to check.</param>
-        public static void CheckIfTypeCanBeTransactional(this Type type)
+        public static void EnsureTypeCanBeTransactional(this Type type)
         {
             var methods = type.GetMethods().Where(x => x.GetAttribute<TransactionalAttribute>() != null).ToList();
             if (methods.Any())

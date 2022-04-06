@@ -104,7 +104,7 @@
 
         private void ContainerOnExpressionBuilding(object sender, ExpressionBuildingEventArgs e)
         {
-            e.KnownImplementationType.CheckIfTypeCanBeTransactional();
+            e.KnownImplementationType.EnsureTypeCanBeTransactional();
         }
 
         private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)
