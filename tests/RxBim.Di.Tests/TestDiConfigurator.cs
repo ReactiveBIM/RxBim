@@ -8,7 +8,6 @@
         protected override void ConfigureBaseDependencies()
         {
             Container.AddTransient<IBaseService, BaseService>();
-            Container.AddSharedTools();
         }
     }
 }
