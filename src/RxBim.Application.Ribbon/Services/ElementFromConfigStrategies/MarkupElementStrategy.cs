@@ -28,9 +28,15 @@
         }
 
         /// <inheritdoc />
-        public void CreateFromConfigAndAdd(IConfigurationSection elementSection, IPanelBuilder panelBuilder)
+        public void CreateAndAddToPanelConfig(IConfigurationSection elementSection, IPanelBuilder panelBuilder)
         {
             AddElement(panelBuilder);
+        }
+
+        /// <inheritdoc />
+        public IRibbonPanelElement CreateForStack(IConfigurationSection elementSection)
+        {
+            throw new System.InvalidOperationException("Can't be stacked!");
         }
 
         /// <summary>

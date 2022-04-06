@@ -64,7 +64,7 @@
         {
             var button = CreateNewButton<RibbonButton>(config, size, orientation, false, false);
 
-            if (!string.IsNullOrWhiteSpace(config.CommandType) && _menuData.MenuAssembly != null)
+            if (!string.IsNullOrWhiteSpace(config.CommandType))
             {
                 var commandType = _menuData.MenuAssembly.GetTypeFromName(config.CommandType!);
                 var tooltip = _menuData.GetTooltipContent(config, commandType);

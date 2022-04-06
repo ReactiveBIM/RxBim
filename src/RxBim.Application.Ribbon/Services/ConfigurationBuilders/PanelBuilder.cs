@@ -124,7 +124,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
             foreach (var elementSection in elementsSection.GetChildren())
             {
                 var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(elementSection));
-                strategy?.CreateFromConfigAndAdd(elementSection, this);
+                strategy?.CreateAndAddToPanelConfig(elementSection, this);
             }
         }
     }

@@ -15,10 +15,16 @@
         bool IsApplicable(IConfigurationSection elementSection);
 
         /// <summary>
-        /// Creates an element and adds to a elements collection.
+        /// Creates an element and adds to a panel.
         /// </summary>
         /// <param name="elementSection">Element configuration section.</param>
         /// <param name="panelBuilder">Panel builder.</param>
-        void CreateFromConfigAndAdd(IConfigurationSection elementSection, IPanelBuilder panelBuilder);
+        void CreateAndAddToPanelConfig(IConfigurationSection elementSection, IPanelBuilder panelBuilder);
+
+        /// <summary>
+        /// Creates an element.
+        /// </summary>
+        /// <param name="elementSection">Element configuration section.</param>
+        IRibbonPanelElement CreateForStack(IConfigurationSection elementSection);
     }
 }

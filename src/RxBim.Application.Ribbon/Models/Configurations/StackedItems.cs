@@ -11,6 +11,6 @@
         /// <summary>
         /// Stacked buttons
         /// </summary>
-        public List<Button> StackedButtons { get; set; } = new();
+        public List<IRibbonPanelElement> StackedElements { get; set; } = new();
     }
 }

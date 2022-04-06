@@ -2,7 +2,6 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
 {
     using System;
     using Abstractions.ConfigurationBuilders;
-    using Microsoft.Extensions.Configuration;
     using Models.Configurations;
 
     /// <inheritdoc />
@@ -27,7 +26,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             action?.Invoke(buttonBuilder);
 
-            return AddButton(buttonBuilder.BuildingButton);
+            return AddElement(buttonBuilder.BuildingButton);
         }
 
         /// <inheritdoc />
@@ -35,44 +34,16 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         {
             var builder = new PulldownButtonBuilder(name);
             action.Invoke(builder);
-            return AddButton(builder.BuildingButton);
+            return AddElement(builder.BuildingButton);
         }
 
-        /// <summary>
-        /// Load buttons from config
-        /// </summary>
-        /// <param name="stackedButtons">Buttons config section</param>
-        internal void LoadButtonsFromConfig(IConfigurationSection stackedButtons)
+        /// <inheritdoc />
+        public IStackedItemsBuilder AddElement(IRibbonPanelElement element)
         {
-            foreach (var buttonSection in stackedButtons.GetChildren())
-            {
-                if (!buttonSection.Exists())
-                    continue;
-
-                if (buttonSection.GetSection(nameof(CommandButton.CommandType)).Exists())
-                {
-                    AddButton<CommandButton>(buttonSection);
-                }
-                else if (buttonSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists())
-                {
-                    AddButton<PullDownButton>(buttonSection);
-                }
-            }
-        }
-
-        private StackedItemsBuilder AddButton(Button button)
-        {
-            if (StackedItems.StackedButtons.Count == MaxStackSize)
-                throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
-            StackedItems.StackedButtons.Add(button);
+            if (StackedItems.StackedElements.Count == MaxStackSize)
+                throw new InvalidOperationException($"Can't create more than {MaxStackSize} items in the StackedItem!");
+            StackedItems.StackedElements.Add(element);
             return this;
-        }
-
-        private void AddButton<T>(IConfiguration buttonSection)
-            where T : Button
-        {
-            var button = buttonSection.Get<T>();
-            AddButton(button);
         }
     }
 }

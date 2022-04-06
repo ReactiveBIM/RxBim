@@ -2,11 +2,13 @@
 {
     using System;
     using System.Reflection;
+    using Abstractions;
     using Abstractions.ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Ribbon.Extensions;
     using Services;
+    using Shared;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>
@@ -25,6 +27,7 @@
             Assembly menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
+            container.RegisterTypes<IAddElementStrategy>();
             container.AddMenu<RevitRibbonMenuBuilder>(action, menuAssembly);
         }
 
@@ -40,6 +43,7 @@
             Assembly menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
+            container.RegisterTypes<IAddElementStrategy>();
             container.AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
     }

@@ -8,19 +8,19 @@
     /// <summary>
     /// Basic implementation of <see cref="IAddElementStrategy"/> for AutoCAD menu item.
     /// </summary>
-    public abstract class ElementStrategyBase<T> : IAddElementStrategy
-        where T : IRibbonPanelElement
+    public abstract class ElementStrategyBase<TElement> : IAddElementStrategy
+        where TElement : IRibbonPanelElement
     {
         /// <inheritdoc />
         public virtual bool IsApplicable(IRibbonPanelElement config)
         {
-            return config is T;
+            return config is TElement;
         }
 
         /// <inheritdoc />
         public void CreateAndAddElement(object panel, IRibbonPanelElement config)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not T elementConfig)
+            if (panel is not RibbonPanel ribbonPanel || config is not TElement elementConfig)
                 return;
 
             CreateAndAddElement(ribbonPanel, elementConfig);
@@ -29,7 +29,7 @@
         /// <inheritdoc />
         public object CreateElementForStack(IRibbonPanelElement config, bool small = false)
         {
-            if (config is not T elementConfig)
+            if (config is not TElement elementConfig)
                 throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
             var size = small ? RibbonItemSize.Standard : RibbonItemSize.Large;
 
@@ -41,20 +41,20 @@
         /// </summary>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="elementConfig">Ribbon item configuration.</param>
-        protected abstract void CreateAndAddElement(RibbonPanel ribbonPanel, T elementConfig);
+        protected abstract void CreateAndAddElement(RibbonPanel ribbonPanel, TElement elementConfig);
 
         /// <summary>
         /// Creates and returns an element for a stack.
         /// </summary>
         /// <param name="elementConfig">Ribbon item configuration.</param>
         /// <param name="size">Item size.</param>
-        protected abstract RibbonItem CreateElementForStack(T elementConfig, RibbonItemSize size);
+        protected abstract RibbonItem CreateElementForStack(TElement elementConfig, RibbonItemSize size);
 
         /// <summary>
         /// Stub for CreateElementForStack, if element can't be stacked.
         /// </summary>
         /// <param name="elementConfig">Ribbon item configuration.</param>
-        protected RibbonItem CantBeStackedStub(T elementConfig)
+        protected RibbonItem CantBeStackedStub(TElement elementConfig)
         {
             throw new InvalidOperationException($"Can't be stacked: {elementConfig.GetType().FullName}");
         }

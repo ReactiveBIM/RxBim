@@ -31,8 +31,8 @@
             IColorThemeService colorThemeService,
             ITabService tabService,
             MenuData menuData,
-            IDiCollectionService<IAddElementStrategy> addElementsDiCollectionService)
-            : base(menuData, addElementsDiCollectionService)
+            IDiCollectionService<IAddElementStrategy> strategiesService)
+            : base(menuData, strategiesService)
         {
             _panelService = panelService;
             _buttonService = buttonService;

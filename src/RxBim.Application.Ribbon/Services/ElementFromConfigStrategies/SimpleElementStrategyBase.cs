@@ -14,12 +14,17 @@
         public abstract bool IsApplicable(IConfigurationSection elementSection);
 
         /// <inheritdoc />
-        public void CreateFromConfigAndAdd(
+        public void CreateAndAddToPanelConfig(
             IConfigurationSection elementSection,
             IPanelBuilder panelBuilder)
         {
-            var element = elementSection.Get<T>();
-            panelBuilder.AddElement(element);
+            panelBuilder.AddElement(CreateForStack(elementSection));
+        }
+
+        /// <inheritdoc />
+        public IRibbonPanelElement CreateForStack(IConfigurationSection elementSection)
+        {
+            return elementSection.Get<T>();
         }
     }
 }

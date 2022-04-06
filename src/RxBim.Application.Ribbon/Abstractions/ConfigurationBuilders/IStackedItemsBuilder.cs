@@ -28,5 +28,11 @@
         /// <param name="action">Additional action with whe button</param>
         /// <returns><see cref="IStackedItemsBuilder"/> object where button were created</returns>
         IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action);
+
+        /// <summary>
+        /// Adds a element in the stack.
+        /// </summary>
+        /// <param name="element">Element.</param>
+        IStackedItemsBuilder AddElement(IRibbonPanelElement element);
     }
 }

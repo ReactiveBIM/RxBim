@@ -26,7 +26,7 @@
         /// <inheritdoc />
         protected override void CreateAndAddElement(RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
-            var stackSize = stackedItems.StackedButtons.Count;
+            var stackSize = stackedItems.StackedElements.Count;
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
@@ -39,7 +39,7 @@
                 if (i > 0)
                     stackedItemsRow.Items.Add(new RibbonRowBreak());
 
-                var buttonConfig = stackedItems.StackedButtons[i];
+                var buttonConfig = stackedItems.StackedElements[i];
 
                 var addElementStrategy = strategies.FirstOrDefault(x => x.IsApplicable(buttonConfig));
                 if (addElementStrategy is null)
