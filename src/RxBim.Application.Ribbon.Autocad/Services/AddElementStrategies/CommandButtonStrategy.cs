@@ -23,7 +23,10 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
+        protected override void CreateAndAddElement(
+            RibbonTab ribbonTab,
+            RibbonPanel ribbonPanel,
+            CommandButton cmdButtonConfig)
         {
             var orientation = cmdButtonConfig.GetSingleLargeButtonOrientation();
             _panelService.AddItem(ribbonPanel,

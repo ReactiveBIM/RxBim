@@ -18,12 +18,13 @@
         }
 
         /// <inheritdoc />
-        public void CreateAndAddElement(object panel, IRibbonPanelElement config)
+        public void CreateAndAddElement(object tab, object panel, IRibbonPanelElement config)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not TElement elementConfig)
+            if (tab is not RibbonTab ribbonTab || panel is not RibbonPanel ribbonPanel ||
+                config is not TElement elementConfig)
                 return;
 
-            CreateAndAddElement(ribbonPanel, elementConfig);
+            CreateAndAddElement(ribbonTab, ribbonPanel, elementConfig);
         }
 
         /// <inheritdoc />
@@ -39,9 +40,13 @@
         /// <summary>
         /// Creates and adds to ribbon an element.
         /// </summary>
+        /// <param name="ribbonTab">Ribbon tab.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="elementConfig">Ribbon item configuration.</param>
-        protected abstract void CreateAndAddElement(RibbonPanel ribbonPanel, TElement elementConfig);
+        protected abstract void CreateAndAddElement(
+            RibbonTab ribbonTab,
+            RibbonPanel ribbonPanel,
+            TElement elementConfig);
 
         /// <summary>
         /// Creates and returns an element for a stack.

@@ -25,7 +25,10 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PanelLayoutElement elementConfig)
+        protected override void CreateAndAddElement(
+            string tabName,
+            RibbonPanel ribbonPanel,
+            PanelLayoutElement elementConfig)
         {
             ribbonPanel.AddSeparator();
         }

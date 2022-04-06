@@ -25,7 +25,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void CreateAndAddElement(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
             var strategies = _strategiesService.GetItems().ToList();
 

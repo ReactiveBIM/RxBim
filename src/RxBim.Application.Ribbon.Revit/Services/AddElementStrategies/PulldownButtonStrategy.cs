@@ -18,7 +18,10 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void CreateAndAddElement(
+            string tabName,
+            RibbonPanel ribbonPanel,
+            PullDownButton pullDownButtonConfig)
         {
             var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);

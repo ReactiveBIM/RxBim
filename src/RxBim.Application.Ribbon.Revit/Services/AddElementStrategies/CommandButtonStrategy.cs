@@ -17,7 +17,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel panel, CommandButton cmdButtonConfig)
+        protected override void CreateAndAddElement(string tabName, RibbonPanel panel, CommandButton cmdButtonConfig)
         {
             var pushButtonData = CreateCommandButtonData(cmdButtonConfig);
             panel.AddItem(pushButtonData);

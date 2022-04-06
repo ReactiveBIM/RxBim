@@ -24,7 +24,10 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void CreateAndAddElement(
+            RibbonTab ribbonTab,
+            RibbonPanel ribbonPanel,
+            StackedItems stackedItems)
         {
             var stackSize = stackedItems.StackedElements.Count;
             var stackedItemsRow = new RibbonRowPanel();

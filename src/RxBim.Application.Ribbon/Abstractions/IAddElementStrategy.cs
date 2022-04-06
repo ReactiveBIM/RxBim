@@ -16,9 +16,10 @@
         /// <summary>
         /// Creates and adds to ribbon an element.
         /// </summary>
+        /// <param name="tab">Ribbon tab.</param>
         /// <param name="panel">Ribbon panel.</param>
         /// <param name="config">Ribbon item configuration.</param>
-        void CreateAndAddElement(object panel, IRibbonPanelElement config);
+        void CreateAndAddElement(object tab, object panel, IRibbonPanelElement config);
 
         /// <summary>
         /// Creates and returns an element for a stack.
