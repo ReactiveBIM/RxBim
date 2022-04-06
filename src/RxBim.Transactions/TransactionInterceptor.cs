@@ -13,7 +13,7 @@
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="factory">transaction factory</param>
+        /// <param name="factory">A transaction factory.</param>
         public TransactionInterceptor(ITransactionFactory factory)
         {
             _factory = factory;

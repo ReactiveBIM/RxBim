@@ -1,14 +1,14 @@
 ﻿namespace RxBim.Transactions.Abstractions
 {
     /// <summary>
-    /// Transaction factory
+    /// Defines an interface for transaction factories.
     /// </summary>
     public interface ITransactionFactory
     {
         /// <summary>
-        /// Create the new instance of <see cref="ITransaction"/>
+        /// Creates a new instance of <see cref="ITransaction"/>.
         /// </summary>
-        /// <param name="transactionName">transaction name</param>
+        /// <param name="transactionName">The transaction name.</param>
         ITransaction Create(string transactionName = null);
     }
 }

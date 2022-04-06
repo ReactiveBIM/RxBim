@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Transactions.Abstractions
 {
     /// <summary>
-    /// Indicates that a type can provide transaction proxies 
+    /// Defines an interface for containers providing transaction proxies.
     /// </summary>
     public interface ITransactionProxyProvider
     {
         /// <summary>
-        /// Setups container to provide proxies
+        /// Sets up the container to provide proxies.
         /// </summary>
         void SetupContainerForProxyGeneration();
     }

@@ -115,8 +115,7 @@
             {
                 var instanceProducer = e.Lifestyle.CreateProducer<IInterceptor, TransactionInterceptor>(_container);
                 var interceptorExpression = instanceProducer.BuildExpression();
-                e.Expression =
-                    type.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
+                e.Expression = type.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
             }
         }
     }

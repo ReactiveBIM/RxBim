@@ -3,23 +3,23 @@
     using System;
 
     /// <summary>
-    /// Transaction interface
+    /// Defines an interface for transactions.
     /// </summary>
     public interface ITransaction : IDisposable
     {
         /// <summary>
-        /// Starts transaction
+        /// Starts a new transaction.
         /// </summary>
-        /// <param name="transactionName">transaction name</param>
+        /// <param name="transactionName">The transaction name.</param>
         void Start(string transactionName = null);
 
         /// <summary>
-        /// Commits transaction
+        /// Commits the transaction.
         /// </summary>
         void Commit();
 
         /// <summary>
-        /// Rollbacks transaction
+        /// Rollbacks the transaction.
         /// </summary>
         void Rollback();
     }

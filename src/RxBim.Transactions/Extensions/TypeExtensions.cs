@@ -11,14 +11,14 @@
     using Di.Exceptions;
 
     /// <summary>
-    /// Type extensions
+    /// Contains methods related with transactions.
     /// </summary>
     public static class TypeExtensions
     {
         /// <summary>
-        /// Checks if any type methods has <see cref="TransactionalAttribute"/> 
+        /// Checks if any type method has <see cref="TransactionalAttribute"/>.
         /// </summary>
-        /// <param name="type">type</param>
+        /// <param name="type">The type to check.</param>
         public static bool IsTransactional(this Type type)
         {
             return ImplementationsOfRequestedTypeHasTransactionalAttribute(type) ||
@@ -26,9 +26,9 @@
         }
 
         /// <summary>
-        /// Checks that type can be wrapped by transaction proxy
+        /// Checks if type can be wrapped in a transaction proxy.
         /// </summary>
-        /// <param name="type">type</param>
+        /// <param name="type">The type to check.</param>
         public static void CheckIfTypeCanBeTransactional(this Type type)
         {
             var methods = type.GetMethods().Where(x => x.GetAttribute<TransactionalAttribute>() != null).ToList();
@@ -50,11 +50,11 @@
         }
 
         /// <summary>
-        /// Modifies expression. Wraps base expression into proxy generation
+        /// Modifies an expression. Wraps base expression into proxy generation.
         /// </summary>
-        /// <param name="implementationType">implementation type</param>
-        /// <param name="baseExpression">base expression</param>
-        /// <param name="interceptors">expression for creating interceptors</param>
+        /// <param name="implementationType">An implementation type.</param>
+        /// <param name="baseExpression">The expression to modify.</param>
+        /// <param name="interceptors">The expression for creating interceptors.</param>
         public static Expression ModifyInstanceCreationExpression(
             this Type implementationType,
             Expression baseExpression,
