@@ -13,13 +13,13 @@
     /// </summary>
     public class StackedItemsStrategy : ElementStrategyBase<StackedItems>
     {
-        private readonly IStrategiesFactory<IAddElementStrategy> _strategyFactory;
+        private readonly IDiCollectionService<IAddElementStrategy> _diCollectionService;
         private readonly IPanelService _panelService;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IStrategiesFactory<IAddElementStrategy> strategyFactory, IPanelService panelService)
+        public StackedItemsStrategy(IDiCollectionService<IAddElementStrategy> diCollectionService, IPanelService panelService)
         {
-            _strategyFactory = strategyFactory;
+            _diCollectionService = diCollectionService;
             _panelService = panelService;
         }
 
@@ -30,7 +30,7 @@
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
-            var strategies = _strategyFactory.GetStrategies().ToList();
+            var strategies = _diCollectionService.GetItems().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 
