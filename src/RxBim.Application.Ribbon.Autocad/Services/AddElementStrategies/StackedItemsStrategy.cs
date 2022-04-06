@@ -13,11 +13,11 @@
     /// </summary>
     public class StackedItemsStrategy : ElementStrategyBase<StackedItems>
     {
-        private readonly IStrategyFactory<IAddElementStrategy> _strategyFactory;
+        private readonly IStrategiesFactory<IAddElementStrategy> _strategyFactory;
         private readonly IPanelService _panelService;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IStrategyFactory<IAddElementStrategy> strategyFactory, IPanelService panelService)
+        public StackedItemsStrategy(IStrategiesFactory<IAddElementStrategy> strategyFactory, IPanelService panelService)
         {
             _strategyFactory = strategyFactory;
             _panelService = panelService;

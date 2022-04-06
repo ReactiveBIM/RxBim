@@ -11,14 +11,14 @@
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
         private readonly MenuData _menuData;
-        private readonly IStrategyFactory<IAddElementStrategy> _addElementsStrategiesFactory;
+        private readonly IStrategiesFactory<IAddElementStrategy> _addElementsStrategiesFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
         /// <param name="addElementsStrategiesFactory">Factory for collection of <see cref="IAddElementStrategy"/>.</param>
-        protected RibbonMenuBuilderBase(MenuData menuData, IStrategyFactory<IAddElementStrategy> addElementsStrategiesFactory)
+        protected RibbonMenuBuilderBase(MenuData menuData, IStrategiesFactory<IAddElementStrategy> addElementsStrategiesFactory)
         {
             _menuData = menuData;
             _addElementsStrategiesFactory = addElementsStrategiesFactory;

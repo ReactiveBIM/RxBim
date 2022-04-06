@@ -11,8 +11,6 @@
     using Models.Configurations;
     using Services;
     using Services.ConfigurationBuilders;
-    using Shared;
-    using Shared.Abstractions;
 
     /// <summary>
     /// DI Container Extensions for Ribbon Menu
@@ -66,12 +64,44 @@
             container.DecorateContainer();
         }
 
+        /// <summary>
+        /// Adds strategy implementations to container.
+        /// </summary>
+        /// <param name="container">DI container.</param>
+        /// <param name="assembly">Assembly with strategy implementations.</param>
+        /// <typeparam name="T">Strategy interface type.</typeparam>
+        public static IContainer RegisterStrategies<T>(this IContainer container, Assembly? assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            var interfaceType = typeof(T);
+            var types = assembly.GetTypes()
+                .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
+                .Except(container.GetCurrentRegistrations().Select(x => x.ServiceType))
+                .ToList();
+
+            foreach (var type in types)
+            {
+                container.AddTransient(type);
+            }
+
+            return container;
+        }
+
+        private static IContainer AddStrategies<T>(this IContainer container)
+        {
+            return container
+                .RegisterStrategies<T>()
+                .AddSingleton<IStrategiesFactory<T>>(() => new StrategiesFactory<T>(container));
+        }
+
         private static void AddBuilder<TBuilder>(this IContainer container, Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddSingleton(() => new MenuData { MenuAssembly = assembly });
-            container.AddStrategies<IElementFromConfigStrategy>();
-            container.AddSingleton<IRibbonMenuBuilder, TBuilder>();
+            container
+                .AddSingleton(() => new MenuData { MenuAssembly = assembly })
+                .AddStrategies<IElementFromConfigStrategy>()
+                .AddStrategies<IAddElementStrategy>()
+                .AddSingleton<IRibbonMenuBuilder, TBuilder>();
         }
 
         private static void DecorateContainer(this IContainer container)
@@ -82,7 +112,7 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var strategyFactory = container.GetService<IStrategyFactory<IElementFromConfigStrategy>>();
+            var strategyFactory = container.GetService<IStrategiesFactory<IElementFromConfigStrategy>>();
             var strategies = strategyFactory.GetStrategies().ToList();
 
             var builder = new RibbonBuilder();

@@ -31,7 +31,7 @@
             IColorThemeService colorThemeService,
             ITabService tabService,
             MenuData menuData,
-            IStrategyFactory<IAddElementStrategy> addElementsStrategiesFactory)
+            IStrategiesFactory<IAddElementStrategy> addElementsStrategiesFactory)
             : base(menuData, addElementsStrategiesFactory)
         {
             _panelService = panelService;

@@ -1,13 +1,12 @@
-﻿namespace RxBim.Shared
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using Abstractions;
     using Di;
 
     /// <inheritdoc />
-    public class StrategiesFactory<T> : IStrategyFactory<T>
+    internal class StrategiesFactory<T> : IStrategiesFactory<T>
     {
         private readonly IContainer _container;
 
@@ -21,25 +20,11 @@
         }
 
         /// <inheritdoc />
-        public void AddStrategies(Assembly assembly)
-        {
-            var types = assembly.GetTypes()
-                .Where(x => x.IsAssignableFrom(typeof(T)) && !x.IsAbstract && !x.IsInterface)
-                .Except(_container.GetCurrentRegistrations().Select(x => x.ServiceType))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                _container.AddTransient(type);
-            }
-        }
-
-        /// <inheritdoc />
         public IEnumerable<T> GetStrategies()
         {
-            var strategyInterfaceType = typeof(T);
+            var interfaceType = typeof(T);
             return _container.GetCurrentRegistrations()
-                .Where(x => x.ServiceType.IsAssignableFrom(strategyInterfaceType))
+                .Where(x => interfaceType.IsAssignableFrom(x.ServiceType))
                 .Select(x => _container.GetService(x.ServiceType))
                 .Cast<T>();
         }

@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Reflection;
+    using Abstractions;
     using Di;
 
     /// <summary>
@@ -10,32 +11,13 @@
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Adds strategy implementations to container.
+        /// Добавляет общие вспомогательные сервисы
         /// </summary>
-        /// <param name="container">DI container.</param>
-        /// <param name="assembly">Assembly with strategy implementations.</param>
-        /// <typeparam name="T">Strategy abstract type.</typeparam>
-        public static IContainer AddStrategies<T>(this IContainer container, Assembly assembly = null)
+        /// <param name="container">DI контейнер</param>
+        public static void AddSharedTools(this IContainer container)
         {
-            var registered = container.GetCurrentRegistrations().Any(x => x.ServiceType == typeof(IStrategyFactory<T>));
-            assembly ??= Assembly.GetCallingAssembly();
-
-            if (!registered)
-            {
-                container.AddSingleton<IStrategyFactory<T>>(() =>
-                {
-                    var factory = new StrategiesFactory<T>(container);
-                    factory.AddStrategies(assembly);
-                    return factory;
-                });
-            }
-            else
-            {
-                var strategyFactory = container.GetService<IStrategyFactory<T>>();
-                strategyFactory.AddStrategies(assembly);
-            }
-
-            return container;
+            container.AddSingleton<IUserSettings, UserSettings>();
+            container.AddSingleton<IModelFactory>(() => new ModelFactory(container));
         }
     }
 }
