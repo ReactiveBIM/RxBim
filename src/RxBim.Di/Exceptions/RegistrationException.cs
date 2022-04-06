@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Represents errors during dependency registration
+    /// Represents errors during dependency registration.
     /// </summary>
     public class RegistrationException : Exception
     {

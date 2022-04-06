@@ -3,7 +3,9 @@
     using Abstractions;
     using Autodesk.Revit.DB;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents a transaction in Revit.
+    /// </summary>
     internal class RevitTransaction : ITransaction
     {
         private readonly Transaction _revitTransaction;

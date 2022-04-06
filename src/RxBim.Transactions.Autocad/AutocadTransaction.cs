@@ -3,7 +3,9 @@
     using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents a transaction in Autocad.
+    /// </summary>
     public class AutocadTransaction : ITransaction
     {
         private readonly Transaction _transaction;
@@ -11,7 +13,7 @@
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="transaction">Autocad transaction</param>
+        /// <param name="transaction">An Autocad transaction</param>
         public AutocadTransaction(Transaction transaction)
         {
             _transaction = transaction;

@@ -3,7 +3,9 @@
     using Abstractions;
     using Autodesk.Revit.DB;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Defines a transaction factory for Revit.
+    /// </summary>
     public class RevitTransactionFactory : ITransactionFactory
     {
         private readonly Document _document;
@@ -11,7 +13,7 @@
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="document">Revit document</param>
+        /// <param name="document">A Revit document.</param>
         public RevitTransactionFactory(Document document)
         {
             _document = document;

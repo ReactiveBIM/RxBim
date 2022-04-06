@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim DI Library</Description>
         <PackageId>RxBim.Di.SimpleInjector</PackageId>
     </PropertyGroup>

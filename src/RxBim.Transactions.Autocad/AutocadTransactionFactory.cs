@@ -3,7 +3,9 @@
     using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Defines a transaction factory for Autocad.
+    /// </summary>
     public class AutocadTransactionFactory : ITransactionFactory
     {
         private readonly TransactionManager _transactionManager;

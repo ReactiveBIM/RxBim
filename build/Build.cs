@@ -62,7 +62,7 @@ partial class Build : NukeBuild,
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
 
-    [Parameter] public bool Debug = false;
+    [Parameter] public bool AttachDebugger = false;
 
     /// <summary>
     /// Example target. Runs local only....
@@ -79,7 +79,7 @@ partial class Build : NukeBuild,
             var outputDirectory = solution.Directory / "testoutput";
             DotNetBuild(settings => settings
                 .SetProjectFile(project)
-                .SetConfiguration("Debug")
+                .SetConfiguration(Configuration.Debug)
                 .SetOutputDirectory(outputDirectory));
 
             var assemblyName = testProjectName + ".dll";
@@ -91,7 +91,7 @@ partial class Build : NukeBuild,
                 .SetDir(outputDirectory)
                 .SetProcessWorkingDirectory(outputDirectory)
                 .EnableContinuous()
-                .SetDebug(Debug)
+                .SetDebug(AttachDebugger)
                 .SetAssembly(assemblyPath));
 
             var resultPath = solution.Directory / "result.html";
