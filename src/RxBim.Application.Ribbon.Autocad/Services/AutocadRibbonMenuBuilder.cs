@@ -2,10 +2,10 @@
 {
     using Abstractions;
     using Autodesk.Windows;
+    using Di;
     using Models;
     using Ribbon.Abstractions;
     using Ribbon.Services;
-    using Shared.Abstractions;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD
@@ -31,8 +31,8 @@
             IColorThemeService colorThemeService,
             ITabService tabService,
             MenuData menuData,
-            IDiCollectionService<IAddElementStrategy> strategiesService)
-            : base(menuData, strategiesService)
+            IServiceLocator serviceLocator)
+            : base(menuData, serviceLocator)
         {
             _panelService = panelService;
             _buttonService = buttonService;

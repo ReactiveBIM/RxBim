@@ -4,9 +4,9 @@
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
+    using Di;
     using Models;
     using Ribbon.Services;
-    using Shared.Abstractions;
     using UIFramework;
 
     /// <summary>
@@ -20,8 +20,8 @@
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IDiCollectionService<IAddElementStrategy> strategiesService)
-            : base(menuData, strategiesService)
+            IServiceLocator serviceLocator)
+            : base(menuData, serviceLocator)
         {
             _application = application;
         }

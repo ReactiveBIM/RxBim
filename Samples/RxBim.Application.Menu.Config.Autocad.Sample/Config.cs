@@ -2,7 +2,6 @@
 {
     using Di;
     using Ribbon.Autocad.Extensions;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration

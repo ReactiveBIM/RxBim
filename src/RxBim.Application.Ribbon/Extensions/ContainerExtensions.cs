@@ -11,8 +11,6 @@
     using Models.Configurations;
     using Services;
     using Services.ConfigurationBuilders;
-    using Shared;
-    using Shared.Abstractions;
 
     /// <summary>
     /// DI Container Extensions for Ribbon Menu
@@ -66,20 +64,13 @@
             container.DecorateContainer();
         }
 
-        private static IContainer AddStrategies<T>(this IContainer container)
-        {
-            return container
-                .RegisterTypes<T>()
-                .AddDiCollectionService<T>();
-        }
-
         private static void AddBuilder<TBuilder>(this IContainer container, Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
             container
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
-                .AddStrategies<IElementFromConfigStrategy>()
-                .AddStrategies<IAddElementStrategy>()
+                .RegisterTypes<IElementFromConfigStrategy>()
+                .RegisterTypes<IAddElementStrategy>()
                 .AddSingleton<IRibbonMenuBuilder, TBuilder>();
         }
 
@@ -91,8 +82,8 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var strategyFactory = container.GetService<IDiCollectionService<IElementFromConfigStrategy>>();
-            var strategies = strategyFactory.GetItems().ToList();
+            var serviceLocator = container.GetService<IServiceLocator>();
+            var strategies = serviceLocator.GetServicesAssignableTo<IElementFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);

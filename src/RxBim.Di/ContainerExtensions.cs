@@ -1,6 +1,8 @@
 ﻿namespace RxBim.Di
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
 
@@ -52,8 +54,7 @@
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddTransient<TService, TImplementation>(
-            this IContainer container)
+        public static IContainer AddTransient<TService, TImplementation>(this IContainer container)
             where TService : class
             where TImplementation : class, TService
         {
@@ -68,8 +69,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddTransient<TService>(
-            this IContainer container)
+        public static IContainer AddTransient<TService>(this IContainer container)
             where TService : class
         {
             container.AddTransient(typeof(TService), typeof(TService));
@@ -136,8 +136,7 @@
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddScoped<TService, TImplementation>(
-            this IContainer container)
+        public static IContainer AddScoped<TService, TImplementation>(this IContainer container)
             where TService : class
             where TImplementation : class, TService
         {
@@ -152,8 +151,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddScoped<TService>(
-            this IContainer container)
+        public static IContainer AddScoped<TService>(this IContainer container)
             where TService : class
         {
             container.AddScoped(typeof(TService), typeof(TService));
@@ -220,8 +218,7 @@
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddSingleton<TService, TImplementation>(
-            this IContainer container)
+        public static IContainer AddSingleton<TService, TImplementation>(this IContainer container)
             where TService : class
             where TImplementation : class, TService
         {
@@ -236,8 +233,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
-        public static IContainer AddSingleton<TService>(
-            this IContainer container)
+        public static IContainer AddSingleton<TService>(this IContainer container)
             where TService : class
         {
             container.Add(typeof(TService), typeof(TService), Lifetime.Singleton);
@@ -306,8 +302,7 @@
         /// <returns>A reference to the <see cref="IContainer"/> instance after the operation has completed.</returns>
         /// <typeparam name="TService">The type of the service to decorate.</typeparam>
         /// <typeparam name="TDecorator">The type of the decorator.</typeparam>
-        public static IContainer Decorate<TService, TDecorator>(
-            this IContainer container)
+        public static IContainer Decorate<TService, TDecorator>(this IContainer container)
             where TService : class
             where TDecorator : class, TService
         {
@@ -334,8 +329,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <typeparam name="TService">The type of the requested service.</typeparam>
         /// <returns>The requested service instance.</returns>
-        public static TService GetService<TService>(
-            this IContainer container)
+        public static TService GetService<TService>(this IContainer container)
         {
             return (TService)container.GetService(typeof(TService));
         }
@@ -357,11 +351,31 @@
         /// <typeparam name="TService">The type of the requested service.</typeparam>
         /// <returns>The requested service instance.</returns>
         /// <exception cref="System.InvalidOperationException">There is no service of type <typeparamref name="TService"/>.</exception>
-        public static TService GetRequiredService<TService>(
-            this IContainer container)
+        public static TService GetRequiredService<TService>(this IContainer container)
             where TService : class
         {
             return container.GetService<TService>() ?? throw new InvalidOperationException(nameof(container));
+        }
+
+        /// <summary>
+        /// Adds type implementations to the container.
+        /// </summary>
+        /// <param name="container">DI container.</param>
+        /// <param name="assembly">An assembly with type implementations.</param>
+        /// <typeparam name="T">Base type.</typeparam>
+        public static IContainer RegisterTypes<T>(this IContainer container, Assembly assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            var interfaceType = typeof(T);
+            var types = assembly.GetTypes()
+                .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
+                .Except(container.GetCurrentRegistrations().Select(x => x.ServiceType))
+                .ToList();
+
+            foreach (var type in types)
+                container.AddTransient(type);
+
+            return container;
         }
     }
 }

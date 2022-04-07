@@ -1,10 +1,7 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Revit.Sample
 {
-    using System.Collections.Generic;
     using Di;
     using Ribbon.Revit.Extensions;
-    using Shared;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration

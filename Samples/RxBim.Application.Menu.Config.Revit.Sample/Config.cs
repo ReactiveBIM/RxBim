@@ -2,7 +2,6 @@
 {
     using Di;
     using Ribbon.Revit.Extensions;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
