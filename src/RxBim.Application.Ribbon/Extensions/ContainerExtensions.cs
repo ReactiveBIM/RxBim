@@ -67,10 +67,11 @@
         private static void AddBuilder<TBuilder>(this IContainer container, Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
+            var thisAssembly = Assembly.GetExecutingAssembly();
             container
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
-                .RegisterTypes<IElementFromConfigStrategy>()
-                .RegisterTypes<IAddElementStrategy>()
+                .RegisterTypes<IElementFromConfigStrategy>(Lifetime.Singleton, thisAssembly)
+                .RegisterTypes<IAddElementStrategy>(Lifetime.Singleton, thisAssembly)
                 .AddSingleton<IRibbonMenuBuilder, TBuilder>();
         }
 

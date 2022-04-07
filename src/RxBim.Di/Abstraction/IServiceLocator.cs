@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Di
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     /// <summary>
