@@ -361,9 +361,13 @@
         /// Adds type implementations to the container.
         /// </summary>
         /// <param name="container">DI container.</param>
+        /// <param name="lifetime">The service lifetime.</param>
         /// <param name="assembly">An assembly with type implementations.</param>
         /// <typeparam name="T">Base type.</typeparam>
-        public static IContainer RegisterTypes<T>(this IContainer container, Assembly assembly = null)
+        public static IContainer RegisterTypes<T>(
+            this IContainer container,
+            Lifetime lifetime = Lifetime.Transient,
+            Assembly assembly = null)
         {
             assembly ??= Assembly.GetCallingAssembly();
             var interfaceType = typeof(T);
@@ -373,7 +377,7 @@
                 .ToList();
 
             foreach (var type in types)
-                container.AddTransient(type);
+                container.Add(type, type, lifetime);
 
             return container;
         }
