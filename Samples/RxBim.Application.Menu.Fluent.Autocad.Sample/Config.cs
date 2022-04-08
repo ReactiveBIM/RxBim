@@ -18,9 +18,8 @@
                     .SetCommandTooltipVersionHeader("Version: ")
                     .AddTab("RxBim_Tab_FromAction")
                     .AddPanel("RxBim_Panel_1")
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd1>(
                         "Command1_Large_WithText",
-                        typeof(Cmd1),
                         button => button
                             .SetToolTip("Tooltip: I'm run command #1. Push me!")
                             .SetDescription("Description: This is command #1")
@@ -30,9 +29,8 @@
                             .SetLargeImage(@"img\num1_32_light.png", ThemeType.Light)
                             .SetHelpUrl("https://github.com/ReactiveBIM/RxBim")
                             .SetText("Command\n#1"))
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd2>(
                         "Command2_Large_WithText",
-                        typeof(Cmd2),
                         button => button
                             .SetToolTip("Tooltip: I'm run command #2. Push me!")
                             .SetDescription("Description: This is command #2")
@@ -42,9 +40,8 @@
                             .SetLargeImage(@"img\num2_32_light.png", ThemeType.Light)
                             .SetHelpUrl("https://www.google.com/")
                             .SetText("Command\n#2"))
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd3>(
                         "Command3_Large_WithText",
-                        typeof(Cmd3),
                         button => button
                             .SetToolTip("Tooltip: I'm run command #3. Push me!")
                             .SetDescription("Description: This is command #3")
@@ -58,86 +55,60 @@
                     .AddPullDownButton(
                         "Pulldown1",
                         pulldown => pulldown
-                            .AddCommandButton(
+                            .AddCommandButton<Cmd1>(
                                 "Command #1",
-                                typeof(Cmd1),
                                 button => SetupCommand1Button(button).SetText("Command\n#1"))
-                            .AddCommandButton(
+                            .AddCommandButton<Cmd2>(
                                 "Command #2",
-                                typeof(Cmd2),
                                 button => SetupCommand2Button(button).SetText("Command\n#2"))
-                            .AddCommandButton(
+                            .AddCommandButton<Cmd3>(
                                 "Command #3",
-                                typeof(Cmd3),
                                 button => SetupCommand3Button(button).SetText("Command\n#3"))
                             .SetLargeImage(@"img\command_32.png", ThemeType.Dark)
                             .SetLargeImage(@"img\command_32_light.png", ThemeType.Light)
                             .SetText("Pulldown #1"))
                     .AddSlideOut()
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd1>(
                         "Command1_Large_SlideOut",
-                        typeof(Cmd1),
                         button => SetupCommand1Button(button).SetText("Command\n#1"))
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd2>(
                         "Command2_Large_SlideOut",
-                        typeof(Cmd2),
                         button => SetupCommand2Button(button).SetText("Command\n#2"))
-                    .AddCommandButton(
+                    .AddCommandButton<Cmd3>(
                         "Command3_Large_SlideOut",
-                        typeof(Cmd3),
                         button => SetupCommand3Button(button).SetText("Command\n#3"))
                     .ReturnToTab()
                     .AddPanel("RxBim_Panel_2")
                     .AddStackedItems(items => items
-                        .AddCommandButton(
+                        .AddCommandButton<Cmd1>(
                             "Command1_Small_WithText",
-                            typeof(Cmd1),
                             button => SetupCommand1Button(button).SetText("Command #1"))
-                        .AddCommandButton(
+                        .AddCommandButton<Cmd2>(
                             "Command2_Small_WithText",
-                            typeof(Cmd2),
                             button => SetupCommand2Button(button).SetText("Command #2"))
-                        .AddCommandButton(
+                        .AddCommandButton<Cmd3>(
                             "Command3_Small_WithText",
-                            typeof(Cmd3),
                             button => SetupCommand3Button(button).SetText("Command #3")))
                     .AddSeparator()
                     .AddStackedItems(items => items
-                        .AddCommandButton(
+                        .AddCommandButton<Cmd1>(
                             "Command1_Large_WithText",
-                            typeof(Cmd1),
                             button => SetupCommand1Button(button).SetText("Command #1"))
-                        .AddCommandButton(
+                        .AddCommandButton<Cmd2>(
                             "Command2_Large_WithText",
-                            typeof(Cmd2),
                             button => SetupCommand2Button(button).SetText("Command #2")))
                     .AddSeparator()
                     .AddStackedItems(items => items
                         .AddPullDownButton(
                             "Pulldown2",
                             pulldown => pulldown
-                                .AddCommandButton(
-                                    "Command #1",
-                                    typeof(Cmd1),
-                                    button => SetupCommand1Button(button))
-                                .AddCommandButton(
-                                    "Command #2",
-                                    typeof(Cmd2),
-                                    button => SetupCommand2Button(button))
-                                .AddCommandButton(
-                                    "Command #3",
-                                    typeof(Cmd3),
-                                    button => SetupCommand3Button(button))
+                                .AddCommandButton<Cmd1>("Command #1", button => SetupCommand1Button(button))
+                                .AddCommandButton<Cmd2>("Command #2", button => SetupCommand2Button(button))
+                                .AddCommandButton<Cmd3>("Command #3", button => SetupCommand3Button(button))
                                 .SetSmallImage(@"img\command_16.png", ThemeType.Dark)
                                 .SetSmallImage(@"img\command_16_light.png", ThemeType.Light))
-                        .AddCommandButton(
-                            "Command1_Small",
-                            typeof(Cmd1),
-                            button => SetupCommand1Button(button))
-                        .AddCommandButton(
-                            "Command2_Small",
-                            typeof(Cmd2),
-                            button => SetupCommand2Button(button))));
+                        .AddCommandButton<Cmd1>("Command1_Small", button => SetupCommand1Button(button))
+                        .AddCommandButton<Cmd2>("Command2_Small", button => SetupCommand2Button(button))));
         }
 
         private static IButtonBuilder SetupCommand1Button(IButtonBuilder button)

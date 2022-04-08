@@ -30,6 +30,12 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <inheritdoc />
+        public IStackedItemsBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null)
+        {
+            return AddCommandButton(name, typeof(T), action);
+        }
+
+        /// <inheritdoc />
         public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action)
         {
             var builder = new PulldownButtonBuilder(name);

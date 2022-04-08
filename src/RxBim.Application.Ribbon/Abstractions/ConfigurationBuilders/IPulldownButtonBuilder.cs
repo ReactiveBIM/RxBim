@@ -19,5 +19,15 @@
             string name,
             Type commandType,
             Action<IButtonBuilder>? action = null);
+
+        /// <summary>
+        /// Create push button and add to the pulldown buttons
+        /// </summary>
+        /// <param name="name">Internal name of the button</param>
+        /// <param name="action">Additional action with whe button</param>
+        /// <typeparam name="T">
+        /// Type of a class which implements command. This command will be execute when user push the button.
+        /// </typeparam>
+        IPulldownButtonBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null);
     }
 }

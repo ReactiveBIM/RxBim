@@ -21,10 +21,17 @@
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
-        IPanelBuilder AddCommandButton(
-            string name,
-            Type commandType,
-            Action<IButtonBuilder>? action = null);
+        IPanelBuilder AddCommandButton(string name, Type commandType, Action<IButtonBuilder>? action = null);
+
+        /// <summary>
+        /// Create push button on the panel.
+        /// </summary>
+        /// <param name="name">Internal name of the button.</param>
+        /// <param name="action">Additional action with whe button.</param>
+        /// <typeparam name="T">
+        /// Type of a class which implements command. This command will be execute when user push the button.
+        /// </typeparam>
+        IPanelBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null);
 
         /// <summary>
         /// Create new Stacked items at the panel

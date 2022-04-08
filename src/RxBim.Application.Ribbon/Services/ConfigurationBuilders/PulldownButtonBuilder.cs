@@ -26,5 +26,11 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
             BuildingButton.CommandButtonsList.Add(buttonBuilder.BuildingButton);
             return this;
         }
+
+        /// <inheritdoc/>
+        public IPulldownButtonBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null)
+        {
+            return AddCommandButton(name, typeof(T), action);
+        }
     }
 }

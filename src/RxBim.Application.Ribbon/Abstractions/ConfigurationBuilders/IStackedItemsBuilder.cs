@@ -16,10 +16,18 @@
         /// </param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns><see cref="IStackedItemsBuilder"/> object where button were created</returns>
-        IStackedItemsBuilder AddCommandButton(
-            string name,
-            Type commandType,
-            Action<IButtonBuilder>? action = null);
+        IStackedItemsBuilder AddCommandButton(string name, Type commandType, Action<IButtonBuilder>? action = null);
+
+        /// <summary>
+        /// Creates a button on the stack.
+        /// </summary>
+        /// <param name="name">Internal name of the button.</param>
+        /// <param name="action">Additional action with whe button.</param>
+        /// <typeparam name="T">
+        /// Type of a class which implements command. This command will be execute when user push the button.
+        /// </typeparam>
+        /// <returns><see cref="IStackedItemsBuilder"/> object where button were created.</returns>
+        IStackedItemsBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null);
 
         /// <summary>
         /// Create pull down button on the stack

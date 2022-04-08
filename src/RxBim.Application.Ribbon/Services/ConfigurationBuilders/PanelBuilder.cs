@@ -30,6 +30,21 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// </summary>
         public Panel BuildingPanel { get; } = new();
 
+        /// <inheritdoc />
+        public IPanelBuilder AddCommandButton(string name, Type commandType, Action<IButtonBuilder>? action = null)
+        {
+            var buttonBuilder = new CommandButtonBuilder(name, commandType);
+            action?.Invoke(buttonBuilder);
+            BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IPanelBuilder AddCommandButton<T>(string name, Action<IButtonBuilder>? action = null)
+        {
+            return AddCommandButton(name, typeof(T), action);
+        }
+
         /// <summary>
         /// Create new stacked items at the panel
         /// </summary>
@@ -47,21 +62,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddCommandButton(
-            string name,
-            Type commandType,
-            Action<IButtonBuilder>? action = null)
-        {
-            var buttonBuilder = new CommandButtonBuilder(name, commandType);
-            action?.Invoke(buttonBuilder);
-            BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public IPanelBuilder AddPullDownButton(
-            string name,
-            Action<IPulldownButtonBuilder> action)
+        public IPanelBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action)
         {
             var builder = new PulldownButtonBuilder(name);
             action.Invoke(builder);
