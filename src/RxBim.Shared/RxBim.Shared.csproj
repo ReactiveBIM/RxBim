@@ -13,10 +13,6 @@
       <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Abstractions" />
-    </ItemGroup>
-
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
          <Description>RxBim shared Library</Description>
