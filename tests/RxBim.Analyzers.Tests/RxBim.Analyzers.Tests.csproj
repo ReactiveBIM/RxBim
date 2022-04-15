@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>   
+    <TargetFramework>net6.0</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>   
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RxBim.Analyzers\RxBim.Analyzers.csproj" />
+    <ProjectReference Include="..\..\src\Core\RxBim.Analyzers\RxBim.Analyzers.csproj" />
   </ItemGroup>
 
 </Project>

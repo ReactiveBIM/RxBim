@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
@@ -10,6 +11,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
+using Serilog;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -17,18 +19,36 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { DevelopBranch, FeatureBranches },
-    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
-    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
+    OnPushBranches = new[]
+    {
+        DevelopBranch, FeatureBranches
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Test), nameof(IPublish.Publish)
+    },
+    ImportSecrets = new[]
+    {
+        "NUGET_API_KEY", "ALL_PACKAGES"
+    })]
 /*[GitHubActions("PullRequest",
     GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
     InvokedTargets = new[] { nameof(Test) })]*/
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { MasterBranch, "release/**" },
-    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
-    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
+    OnPushBranches = new[]
+    {
+        MasterBranch, "release/**"
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Test), nameof(IPublish.Publish)
+    },
+    ImportSecrets = new[]
+    {
+        "NUGET_API_KEY", "ALL_PACKAGES"
+    })]
 partial class Build : NukeBuild,
     IPublish
 {
@@ -98,6 +118,23 @@ partial class Build : NukeBuild,
 
             await new ResultConverter()
                 .Convert(results, resultPath);
+        });
+
+    Target SetupEnvironment => _ => _
+        .Executes(() =>
+        {
+            Log.Information(AppVersion.Revit2022.ToProjectProps());
+
+            From<IHazSolution>().Solution.AllProjects
+                .Where(x => x.Name.Contains("Revit"))
+                .ForEach(p => File.WriteAllText(p.Directory / "RxBim.Build.Props", AppVersion.Revit2019.ToProjectProps(), Encoding.UTF8));
+        });
+
+    Target WipeEnvironment => _ => _
+        .Executes(() =>
+        {
+            From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
+                .ForEach(FileSystemTasks.DeleteFile);
         });
 
     private T From<T>()

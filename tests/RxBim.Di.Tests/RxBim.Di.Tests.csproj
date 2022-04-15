@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <NoWarn>CS1591</NoWarn>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,10 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Logs\RxBim.Logs.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Shared\RxBim.Shared.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Logs\RxBim.Logs.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
 </Project>
