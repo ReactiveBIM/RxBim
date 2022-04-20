@@ -36,11 +36,11 @@ namespace RxBim.Logs.Settings.Configuration
         }
 
         /// <summary>
-        /// Looks up a switch in the declared LoggingLevelSwitches
+        /// Looks up a switch in the declared LoggingLevelSwitches.
         /// </summary>
-        /// <param name="switchName">the name of a switch to look up</param>
-        /// <returns>the LoggingLevelSwitch registered with the name</returns>
-        /// <exception cref="InvalidOperationException">if no switch has been registered with <paramref name="switchName"/></exception>
+        /// <param name="switchName">the name of a switch to look up.</param>
+        /// <returns>the LoggingLevelSwitch registered with the name.</returns>
+        /// <exception cref="InvalidOperationException">if no switch has been registered with <paramref name="switchName"/>.</exception>
         public LoggingLevelSwitch LookUpSwitchByName(string switchName)
         {
             if (_declaredLevelSwitches.TryGetValue(switchName, out var levelSwitch))

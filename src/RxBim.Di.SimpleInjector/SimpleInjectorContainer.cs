@@ -3,18 +3,22 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Castle.DynamicProxy;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
+    using Transactions;
+    using Transactions.Abstractions;
+    using Transactions.Extensions;
 
     /// <summary>
-    /// The implementation of <see cref="IContainer"/> based on <see cref="SimpleInjector"/>
+    /// The implementation of the <see cref="IContainer"/> based on <see cref="SimpleInjector"/>.
     /// </summary>
-    public class SimpleInjectorContainer : IContainer
+    public class SimpleInjectorContainer : IContainer, ITransactionProxyProvider
     {
         private readonly Container _container;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         public SimpleInjectorContainer()
         {
@@ -38,7 +42,7 @@
         }
 
         /// <inheritdoc />
-        public IContainer AddSingleton(Type serviceType,  object implementationInstance)
+        public IContainer AddSingleton(Type serviceType, object implementationInstance)
         {
             _container.Register(serviceType, () => implementationInstance, Lifestyle.Singleton);
             return this;
@@ -83,6 +87,13 @@
             _container.Dispose();
         }
 
+        /// <inheritdoc />
+        public void SetupContainerForProxyGeneration()
+        {
+            _container.ExpressionBuilding += ContainerOnExpressionBuilding;
+            _container.ExpressionBuilt += ContainerOnExpressionBuilt;
+        }
+
         private Lifestyle GetLifestyle(Lifetime lifetime) => lifetime switch
         {
             Lifetime.Transient => Lifestyle.Transient,
@@ -90,5 +101,22 @@
             Lifetime.Singleton => Lifestyle.Singleton,
             _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
         };
+
+        private void ContainerOnExpressionBuilding(object sender, ExpressionBuildingEventArgs e)
+        {
+            e.KnownImplementationType.EnsureTypeCanBeTransactional();
+        }
+
+        private void ContainerOnExpressionBuilt(object sender, ExpressionBuiltEventArgs e)
+        {
+            var type = e.RegisteredServiceType;
+
+            if (type.IsTransactional())
+            {
+                var instanceProducer = e.Lifestyle.CreateProducer<IInterceptor, TransactionInterceptor>(_container);
+                var interceptorExpression = instanceProducer.BuildExpression();
+                e.Expression = type.ModifyInstanceCreationExpression(e.Expression, interceptorExpression);
+            }
+        }
     }
 }

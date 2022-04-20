@@ -20,17 +20,17 @@
     using static Helpers.AssemblyScanner;
 
     /// <summary>
-    /// Project extensions
+    /// Project extensions.
     /// </summary>
     public static class ProjectExtensions
     {
         /// <summary>
-        /// Gets setup options
+        /// Gets setup options.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="installDir">Install directory</param>
-        /// <param name="sourceDir">Source build directory</param>
-        /// <param name="configuration">Configuration</param>
+        /// <param name="project">Project.</param>
+        /// <param name="installDir">Install directory.</param>
+        /// <param name="sourceDir">Source build directory.</param>
+        /// <param name="configuration">Configuration.</param>
         public static Options GetSetupOptions(
             this Project project,
             string installDir,
@@ -91,11 +91,11 @@
         }
 
         /// <summary>
-        /// Builds Msi
+        /// Builds Msi.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="toolPath">Build MSI tool path</param>
-        /// <param name="options">Options</param>
+        /// <param name="project">Project.</param>
+        /// <param name="toolPath">Build MSI tool path.</param>
+        /// <param name="options">Options.</param>
         public static void BuildMsiWithTool(
             this Project project,
             string toolPath,
@@ -115,10 +115,10 @@
         }
 
         /// <summary>
-        /// DotNet builds project and returns build path
+        /// DotNet builds project and returns build path.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="config">Configuration</param>
+        /// <param name="project">Project.</param>
+        /// <param name="config">Configuration.</param>
         public static AbsolutePath BuildProject(this Project project, string config)
         {
             DotNetBuild(settings => settings
@@ -130,10 +130,10 @@
         }
 
         /// <summary>
-        /// Adds properties to project
+        /// Adds properties to a project.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="properties">Properties via <see cref="XElement"/> collection</param>
+        /// <param name="project">The project.</param>
+        /// <param name="properties">Properties via <see cref="XElement"/> collection.</param>
         public static void AddPropertiesToProject(this Project project, IReadOnlyCollection<XElement> properties)
         {
             if (properties.Any())
@@ -151,9 +151,9 @@
         }
 
         /// <summary>
-        /// Generates project properties for installation
+        /// Generates a project properties for installation.
         /// </summary>
-        /// <param name="project">Project</param>
+        /// <param name="project">The project.</param>
         public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
         {
             if (project.GetProperty(nameof(Options.PackageGuid)) == null)
@@ -168,11 +168,11 @@
         }
 
         /// <summary>
-        /// Gets <see cref="AssemblyType"/> collection from project
+        /// Gets the <see cref="AssemblyType"/> collection from a project.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="output">Output path</param>
-        /// <param name="options">Options</param>
+        /// <param name="project">The project.</param>
+        /// <param name="output">Output path.</param>
+        /// <param name="options">Options.</param>
         public static List<AssemblyType> GetAssemblyTypes(
             this Project project,
             string output,
@@ -185,7 +185,7 @@
             var additionalFiles = new List<string>();
             if (options.AddAllAppToManifest)
             {
-                // Добавляем все сборки с Application из out папки
+                // Adds all dependency assemblies from the output path
                 additionalFiles = Directory.GetFiles(output, "*.dll")
                     .Except(new[] { file })
                     .ToList();
@@ -193,7 +193,7 @@
             else if (options.ProjectsAddingToManifest != null
                      && options.ProjectsAddingToManifest.Any())
             {
-                // Добавляет дополнительно Application только из заданных в опции сборок
+                // Adds additional applications from the specified options
                 additionalFiles = options.ProjectsAddingToManifest
                     .Select(p => Path.Combine(output, $"{p.Trim()}.dll"))
                     .ToList();
@@ -213,9 +213,9 @@
         }
 
         /// <summary>
-        /// Gets target project directory
+        /// Gets the target project directory path.
         /// </summary>
-        /// <param name="project">Project</param>
+        /// <param name="project">The project.</param>
         public static AbsolutePath GetTargetDir(this Project project)
         {
             var targetFx = project.GetTargetFramework(out var multiple);
@@ -231,19 +231,19 @@
         }
 
         /// <summary>
-        /// Gets project assembly path
+        /// Gets a project assembly path.
         /// </summary>
-        /// <param name="project">Project</param>
+        /// <param name="project">The project.</param>
         public static AbsolutePath GetTargetPath(this Project project)
         {
             return project.GetTargetDir() / $"{project.GetProperty("AssemblyName")}.dll";
         }
 
         /// <summary>
-        /// Maps <see cref="Project"/> to <see cref="ApplicationPackage"/>
+        /// Maps the <see cref="Project"/> to the <see cref="ApplicationPackage"/>.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="components">Components</param>
+        /// <param name="project">The project.</param>
+        /// <param name="components">Components.</param>
         public static ApplicationPackage ToApplicationPackage(this Project project, List<Components> components)
         {
             return new ApplicationPackage
@@ -259,9 +259,9 @@
         }
 
         /// <summary>
-        /// Commits changes to GIT
+        /// Commits changes to GIT.
         /// </summary>
-        /// <param name="project">Project</param>
+        /// <param name="project">The project.</param>
         private static void CommitChanges(this Project project)
         {
             var commit = ConsoleUtility.PromptForChoice("Commit changes?", ("Yes", "Yes"), ("No", "No"));
@@ -281,10 +281,10 @@
         }
 
         /// <summary>
-        /// Gets target framework name
+        /// Gets target framework name.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="multiple">True if set properties TargetFrameworks</param>
+        /// <param name="project">The project.</param>
+        /// <param name="multiple">True if specified TargetFrameworks property.</param>
         private static string GetTargetFramework(this Project project, out bool multiple)
         {
             var fxNameSingle = project.GetProperty("TargetFramework");

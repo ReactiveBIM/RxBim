@@ -6,21 +6,20 @@
     using Microsoft.CodeAnalysis.Text;
 
     /// <summary>
-    /// Создает действия для исправления
+    /// Action for code fix.
     /// </summary>
     public interface IActionCreator
     {
         /// <summary>
-        /// идентификатор диагностики
+        /// Diagnostic identifier.
         /// </summary>
         public string DiagnosticId { get; }
 
         /// <summary>
-        /// Создает действие
+        /// Creates action.
         /// </summary>
-        /// <param name="context">контекст</param>
-        /// <param name="diagnosticSpan">span</param>
-        /// <returns></returns>
+        /// <param name="context">The context.</param>
+        /// <param name="diagnosticSpan">A span.</param>
         public Task<CodeAction> Create(CodeFixContext context, TextSpan diagnosticSpan);
     }
 }

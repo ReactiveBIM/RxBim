@@ -5,14 +5,14 @@
     using System.Reflection;
 
     /// <summary>
-    /// Extensions for embedded resources
+    /// Extensions for embedded resources.
     /// </summary>
     public static class EmbeddedResourceExtensions
     {
         /// <summary>
-        /// Reads embedded resource as string
+        /// Reads embedded resource as string.
         /// </summary>
-        /// <param name="name">Embedded resource name</param>
+        /// <param name="name">Embedded resource name.</param>
         public static string ReadResource(string name)
         {
             // Determine path

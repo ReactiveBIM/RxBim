@@ -8,7 +8,7 @@
     using Result = Autodesk.Revit.UI.Result;
 
     /// <summary>
-    /// Revit application
+    /// Revit application.
     /// </summary>
     public abstract class RxBimApplication : IExternalApplication
     {

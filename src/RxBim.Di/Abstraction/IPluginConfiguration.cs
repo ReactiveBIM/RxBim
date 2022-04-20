@@ -1,14 +1,14 @@
 ﻿namespace RxBim.Di
 {
     /// <summary>
-    /// Конфигурация плагина
+    /// A plugin configuration abstraction.
     /// </summary>
     public interface IPluginConfiguration
     {
         /// <summary>
-        /// Дополнительные конфигурации контейнера
+        /// Configures DI <param name="container">container</param>.
         /// </summary>
-        /// <param name="container">Контейнер</param>
+        /// <param name="container">A container.</param>
         void Configure(IContainer container);
     }
 }

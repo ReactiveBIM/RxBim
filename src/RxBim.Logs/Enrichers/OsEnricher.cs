@@ -5,7 +5,7 @@
     using Serilog.Events;
 
     /// <summary>
-    /// Наполняет логи данными о ОС
+    /// Logs enricher. Extends logs with operating system information.
     /// </summary>
     public class OsEnricher : ILogEventEnricher
     {

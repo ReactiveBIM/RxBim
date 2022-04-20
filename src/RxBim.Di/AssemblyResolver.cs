@@ -7,16 +7,16 @@
     using System.Reflection;
 
     /// <summary>
-    /// Резолвер сборок
+    /// The resolver of dependent assemblies.
     /// </summary>
     public class AssemblyResolver : IDisposable
     {
         private readonly IEnumerable<Dll> _dlls;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="assembly">assembly</param>
+        /// <param name="assembly">assembly.</param>
         public AssemblyResolver(Assembly assembly)
         {
             var dir = Path.GetDirectoryName(assembly.Location);

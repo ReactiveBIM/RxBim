@@ -19,16 +19,16 @@
         : RxBimBuild<RevitWixBuilder, RevitPackageContentsGenerator, RevitProjectPropertiesGenerator>
     {
         /// <summary>
-        /// Revit Version
+        /// Revit Version.
         /// </summary>
         [Parameter]
         public string RevitVersion { get; set; } = "2019";
 
         /// <summary>
-        /// Копирует Addin файл в папку Revit
+        /// Copies an addin file to the manifests directory.
         /// </summary>
         public Target CopyDebugAddin => _ => _
-            .Description("Копирует Addin файл в папку Revit")
+            .Description("Copies an addin file to the manifests directory.")
             .Requires(() => Project)
             .Requires(() => RevitVersion)
             .DependsOn(Compile)
@@ -36,7 +36,7 @@
             {
                 if (Project == nameof(Solution))
                 {
-                    throw new ArgumentException("Выберите проект!!!");
+                    throw new ArgumentException("Select a project!!!");
                 }
 
                 var project = Solution.AllProjects.FirstOrDefault(x => x.Name == Project);
@@ -67,10 +67,10 @@
             });
 
         /// <summary>
-        /// Очищает выходную папку
+        /// Cleans the output directory.
         /// </summary>
         public Target CleanOutput => _ => _
-            .Description("Очищает выходную папку")
+            .Description("Cleans the output directory.")
             .Requires(() => Project)
             .Executes(() =>
             {
@@ -85,10 +85,10 @@
             });
 
         /// <summary>
-        /// Копирует файл в выходную папку
+        /// Copies a plugin files to the Revit addins directory.
         /// </summary>
         public Target CopyOutput => _ => _
-            .Description("Копирует файл в выходную папку")
+            .Description("Copies a plugin files to the Revit addins directory.")
             .Requires(() => Project)
             .DependsOn(CleanOutput, CopyDebugAddin)
             .Executes(() =>

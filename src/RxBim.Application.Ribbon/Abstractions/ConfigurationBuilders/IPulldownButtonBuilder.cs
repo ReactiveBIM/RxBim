@@ -3,21 +3,20 @@
     using System;
 
     /// <summary>
-    /// PulldownButton
+    /// Defines a builder for PulldownButton.
     /// </summary>
     public interface IPulldownButtonBuilder : IButtonBuilder
     {
         /// <summary>
-        /// Create push button and add to the pulldown buttons
+        /// Adds a new button the pulldown button.
         /// </summary>
-        /// <param name="name">Internal name of the button</param>
-        /// <param name="commandType">
-        /// Class which implements command. This command will be execute when user push the button
-        /// </param>
-        /// <param name="action">Additional action with whe button</param>
+        /// <param name="name">The button internal name.</param>
+        /// <param name="commandType"> A class which implements command.
+        /// This command will be execute when user push the button. </param>
+        /// <param name="builder">The button builder.</param>
         IPulldownButtonBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null);
+            Action<IButtonBuilder>? builder = null);
     }
 }

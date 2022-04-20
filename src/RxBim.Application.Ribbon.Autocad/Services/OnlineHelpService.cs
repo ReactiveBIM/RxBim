@@ -9,10 +9,10 @@
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
-    /// Online help processing service
+    /// Online help processing service.
     /// </summary>
     /// <remarks>
-    /// https://forums.autodesk.com/t5/net/getting-ribbon-help-to-call-html/m-p/4943910
+    /// https://forums.autodesk.com/t5/net/getting-ribbon-help-to-call-html/m-p/4943910.
     /// </remarks>
     public class OnlineHelpService : IDisposable, IOnlineHelpService
     {
@@ -21,28 +21,28 @@
         private string? _helpTopic;
 
         /// <summary>
-        /// Messages
+        /// Messages.
         /// </summary>
         private enum Messages
         {
             /// <summary>
-            /// AutoCAD help call message
+            /// AutoCAD help call message.
             /// </summary>
             AcadHelp = 0x4D,
 
             /// <summary>
-            /// Key down message
+            /// Key down message.
             /// </summary>
             KeyDown = 0x100,
         }
 
         /// <summary>
-        /// Keys
+        /// Keys.
         /// </summary>
         private enum Keys
         {
             /// <summary>
-            /// F1 key
+            /// F1 key.
             /// </summary>
             F1 = 0x70,
         }

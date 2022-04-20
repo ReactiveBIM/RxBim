@@ -6,12 +6,12 @@
     using static Constants;
 
     /// <summary>
-    /// Инспекция проверяющая наличие метода <see cref="ExecuteCommand"/>
+    /// Inspection checks <see cref="ExecuteCommand"/> method of RxBimCommand.
     /// </summary>
     public class CmdAction
     {
         /// <summary>
-        /// шв
+        /// Id.
         /// </summary>
         public const string DiagnosticId = Constants.DiagnosticId + "Command";
 
@@ -24,7 +24,7 @@
             Description = $"Command type should contain \"{ExecuteCommand}\" method.";
 
         /// <summary>
-        /// Правило
+        /// Rule.
         /// </summary>
         public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
@@ -36,9 +36,9 @@
             description: Description);
 
         /// <summary>
-        /// Проверка
+        /// Checks for availability of ExecuteCommand method.
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">The context.</param>
         public void Analyze(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;

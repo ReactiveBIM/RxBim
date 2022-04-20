@@ -21,7 +21,7 @@ namespace RxBim.Example.IntegrationTests.Setup
         {
             using var t = new Transaction(_document);
             t.Start("Test");
-            element.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_COMMENTS)?.Set("trulala");
+            element.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_COMMENTS)?.Set("blah-blah-blah");
             t.Commit();
         }
 

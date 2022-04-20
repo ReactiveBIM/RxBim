@@ -24,9 +24,9 @@
     /// <summary>
     /// Contains tools for MSI packages creating.
     /// </summary>
-    /// <typeparam name="TWix">WIX-builder</typeparam>
-    /// <typeparam name="TPackGen">PackageContents file generator</typeparam>
-    /// <typeparam name="TPropGen">Project properties generator</typeparam>
+    /// <typeparam name="TWix">WIX-builder.</typeparam>
+    /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
+    /// <typeparam name="TPropGen">Project properties generator.</typeparam>
     [PublicAPI]
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeBuild
         where TWix : WixBuilder<TPackGen>, new()
@@ -34,7 +34,7 @@
         where TPropGen : ProjectPropertiesGenerator, new()
     {
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         protected RxBimBuild()
         {
@@ -88,7 +88,7 @@
             });
 
         /// <summary>
-        /// Builds MSI from tag Testing{ProjectName}
+        /// Builds MSI from tag Testing{ProjectName}.
         /// </summary>
         public Target BuildFromTag => _ => _
             .Executes(() =>
@@ -109,7 +109,7 @@
             });
 
         /// <summary>
-        /// Generates project properties (PackageGuid, UpgradeCode and other)
+        /// Generates project properties (PackageGuid, UpgradeCode and other).
         /// </summary>
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
@@ -237,12 +237,12 @@
         }
 
         /// <summary>
-        /// Gets assembly types
+        /// Gets assembly types.
         /// </summary>
-        /// <param name="project">Selected Project</param>
-        /// <param name="outputBinDir">Output assembly directory</param>
-        /// <param name="outputDir">Output directory</param>
-        /// <param name="configuration">Selected configuration</param>
+        /// <param name="project">Selected Project.</param>
+        /// <param name="outputBinDir">Output assembly directory.</param>
+        /// <param name="outputDir">Output directory.</param>
+        /// <param name="configuration">Selected configuration.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,

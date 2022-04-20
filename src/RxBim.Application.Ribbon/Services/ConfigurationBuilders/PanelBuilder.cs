@@ -9,7 +9,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Shared;
 
     /// <summary>
-    /// Ribbon panel implementation
+    /// Represents a ribbon panel builder.
     /// </summary>
     public class PanelBuilder : IPanelBuilder
     {
@@ -19,9 +19,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
-        /// <param name="name">Panel name</param>
-        /// <param name="ribbonBuilder">Ribbon builder</param>
-        /// <param name="tabBuilder">Tab builder</param>
+        /// <param name="name">Panel name.</param>
+        /// <param name="ribbonBuilder">Ribbon builder.</param>
+        /// <param name="tabBuilder">Tab builder.</param>
         public PanelBuilder(string name, IRibbonBuilder ribbonBuilder, ITabBuilder tabBuilder)
         {
             _ribbonBuilder = ribbonBuilder;
@@ -30,22 +30,21 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Building panel
+        /// Building panel.
         /// </summary>
         public Panel BuildingPanel { get; } = new();
 
         /// <summary>
-        /// Create new stacked items at the panel
+        /// Adds a new stacked items to the panel.
         /// </summary>
-        /// <param name="action">Action where you must add items to the stacked panel</param>
-        /// <returns>Panel where stacked items were created</returns>
-        public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> action)
+        /// <param name="builder">The stacked items builder.</param>
+        public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> builder)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder));
 
             var stackedItems = new StackedItemsBuilder();
-            action.Invoke(stackedItems);
+            builder.Invoke(stackedItems);
             BuildingPanel.Elements.Add(stackedItems.StackedItems);
             return this;
         }
@@ -54,10 +53,10 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPanelBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null)
+            Action<IButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
-            action?.Invoke(buttonBuilder);
+            builder?.Invoke(buttonBuilder);
             BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
             return this;
         }
@@ -65,11 +64,11 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder AddPullDownButton(
             string name,
-            Action<IPulldownButtonBuilder> action)
+            Action<IPulldownButtonBuilder> builder)
         {
-            var builder = new PulldownButtonBuilder(name);
-            action.Invoke(builder);
-            BuildingPanel.Elements.Add(builder.BuildingButton);
+            var pulldownButton = new PulldownButtonBuilder(name);
+            builder.Invoke(pulldownButton);
+            BuildingPanel.Elements.Add(pulldownButton.BuildingButton);
             return this;
         }
 
@@ -94,11 +93,11 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IPanelBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? action = null)
+            Action<IButtonBuilder>? builder = null)
         {
-            var builder = new AboutButtonBuilder(name, content);
-            action?.Invoke(builder);
-            BuildingPanel.Elements.Add(builder.BuildingButton);
+            var aboutButton = new AboutButtonBuilder(name, content);
+            builder?.Invoke(aboutButton);
+            BuildingPanel.Elements.Add(aboutButton.BuildingButton);
             return this;
         }
 
@@ -115,12 +114,12 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Load from config
+        /// Load from config.
         /// </summary>
-        /// <param name="panelSection">Config section</param>
-        internal void LoadFromConfig(IConfigurationSection panelSection)
+        /// <param name="section">Config section.</param>
+        internal void LoadFromConfig(IConfigurationSection section)
         {
-            var elementsSection = panelSection.GetSection(nameof(Panel.Elements));
+            var elementsSection = section.GetSection(nameof(Panel.Elements));
             if (!elementsSection.Exists())
                 return;
 

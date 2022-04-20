@@ -3,12 +3,12 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Модель addin файла Revit
+    /// Specifies Revit addin file.
     /// </summary>
     public class RevitAddIns
     {
         /// <summary>
-        /// Addin
+        /// List of addins.
         /// </summary>
         public List<AddIn> AddIn { get; set; }
     }

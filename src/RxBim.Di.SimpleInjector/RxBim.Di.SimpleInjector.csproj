@@ -12,10 +12,10 @@
     
     <ItemGroup>
       <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+      <ProjectReference Include="..\RxBim.Transactions\RxBim.Transactions.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim DI Library</Description>
         <PackageId>RxBim.Di.SimpleInjector</PackageId>
     </PropertyGroup>

@@ -4,17 +4,17 @@ namespace RxBim.Nuke.Revit.TestHelpers
     using System.Linq;
 
     /// <summary>
-    /// Integration tests result
+    /// Integration tests result.
     /// </summary>
     public class TestResultData
     {
         /// <summary>
-        /// Test fixtures
+        /// Test fixtures.
         /// </summary>
         public List<TestFixtureData> Fixtures { get; set; } = new List<TestFixtureData>();
 
         /// <summary>
-        /// Name of test assembly
+        /// Name of test assembly.
         /// </summary>
         public string AssemblyName { get; set; }
 

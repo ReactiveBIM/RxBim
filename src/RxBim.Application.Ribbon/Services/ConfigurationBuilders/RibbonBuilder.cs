@@ -4,38 +4,40 @@
     using Microsoft.Extensions.Configuration;
     using Models.Configurations;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents a ribbon builder.
+    /// </summary>
     public class RibbonBuilder : IRibbonBuilder
     {
         /// <summary>
-        /// Building ribbon
+        /// Building ribbon.
         /// </summary>
         public Ribbon Ribbon { get; } = new();
 
         /// <inheritdoc />
-        public ITabBuilder AddTab(string tabTitle)
+        public ITabBuilder AddTab(string title)
         {
-            return AddTabInternal(tabTitle);
+            return AddTabInternal(title);
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetAddVersionToCommandTooltip(bool value)
+        public IRibbonBuilder SetAddVersionToCommandTooltip(bool enable)
         {
-            Ribbon.AddVersionToCommandTooltip = value;
+            Ribbon.AddVersionToCommandTooltip = enable;
             return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetCommandTooltipVersionHeader(string header)
+        public IRibbonBuilder SetCommandTooltipVersionHeader(string prefix)
         {
-            Ribbon.CommandTooltipVersionHeader = header;
+            Ribbon.CommandTooltipVersionHeader = prefix;
             return this;
         }
 
         /// <summary>
-        /// Load ribbon menu from configuration
+        /// Loads a ribbon menu from configuration.
         /// </summary>
-        /// <param name="config">Configuration</param>
+        /// <param name="config">Configuration.</param>
         internal void LoadFromConfig(IConfiguration config)
         {
             SetProperties(config.GetSection(nameof(Ribbon)));

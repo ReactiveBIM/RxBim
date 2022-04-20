@@ -22,7 +22,7 @@
         /// <inheritdoc />
         public void Terminate()
         {
-            // В этот момент уже практически поздно что-то делать. Интерфейс уже недоступен, сообщение не вывести, например
+            // ignore
         }
 
         private void ApplicationOnIdle(object sender, EventArgs e)

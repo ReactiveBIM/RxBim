@@ -5,13 +5,13 @@
     using Shared;
 
     /// <summary>
-    /// Command class
+    /// Command class.
     /// </summary>
     [RxBimCommandClass("HelloCmd2Example")]
     public class Cmd2 : RxBimCommand
     {
         /// <summary>
-        /// Command execution method
+        /// Command execution method.
         /// </summary>
         public PluginResult ExecuteCommand()
         {

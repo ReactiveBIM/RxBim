@@ -4,22 +4,22 @@ namespace RxBim.Nuke.Revit.TestHelpers
     using System.Linq;
 
     /// <summary>
-    /// Test fixture result
+    /// Test fixture result.
     /// </summary>
     public class TestFixtureData
     {
         /// <summary>
-        /// Test cases
+        /// Test cases.
         /// </summary>
         public List<TestCaseData> Cases { get; set; } = new List<TestCaseData>();
 
         /// <summary>
-        /// Name
+        /// Name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Is fixture success
+        /// Is fixture success.
         /// </summary>
         public bool Success => Cases.All(x => x.Success);
 

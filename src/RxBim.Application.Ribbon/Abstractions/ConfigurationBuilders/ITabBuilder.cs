@@ -4,27 +4,27 @@
     using Shared;
 
     /// <summary>
-    /// Ribbon tab
+    /// Defines a ribbon tab.
     /// </summary>
     public interface ITabBuilder : IRibbonItemsContainerBuilder
     {
         /// <summary>
-        /// Creates and returns a panel on this tab
+        /// Adds a new panel to the tab.
         /// </summary>
-        /// <param name="panelTitle">Panel name</param>
+        /// <param name="panelTitle">Panel name.</param>
         IPanelBuilder AddPanel(string panelTitle);
 
         /// <summary>
-        /// Creates "About" button on the own panel
+        /// Adds a new "About" button panel to the tab.
         /// </summary>
-        /// <param name="name">Button name</param>
-        /// <param name="content">About window content</param>
-        /// <param name="action">"About" button additional actions</param>
-        /// <param name="panelName">Panel name</param>
+        /// <param name="name">The button name.</param>
+        /// <param name="content">The About window content.</param>
+        /// <param name="builder">The "About" button builder.</param>
+        /// <param name="panelName">The panel name.</param>
         ITabBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? action = null,
+            Action<IButtonBuilder>? builder = null,
             string? panelName = null);
     }
 }

@@ -90,7 +90,7 @@ namespace RxBim.Logs
         /// extension method that takes the full configuration object.
         /// </summary>
         /// <param name="settingConfiguration">Logger setting configuration.</param>
-        /// <param name="configSection">The Serilog configuration section</param>
+        /// <param name="configSection">The Serilog configuration section.</param>
         /// <param name="dependencyContext">The dependency context from which sink/enricher packages can be located. If not supplied, the platform
         /// default will be used.</param>
         /// <returns>An object allowing configuration to continue.</returns>
@@ -167,7 +167,7 @@ namespace RxBim.Logs
         /// extension method that takes the full configuration object.
         /// </summary>
         /// <param name="settingConfiguration">Logger setting configuration.</param>
-        /// <param name="configSection">The Serilog configuration section</param>
+        /// <param name="configSection">The Serilog configuration section.</param>
         /// <param name="configurationAssemblySource">Defines how the package identifies assemblies to scan for sinks and other Types.</param>
         /// <returns>An object allowing configuration to continue.</returns>
         [Obsolete("Use ReadFrom.Configuration(IConfiguration configuration, string sectionName, ConfigurationAssemblySource configurationAssemblySource) instead.")]

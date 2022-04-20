@@ -12,7 +12,7 @@
     using SharpCompress.Common;
 
     /// <summary>
-    /// Wix extensions
+    /// Helper class for setup Wix tools.
     /// </summary>
     public static class WixHelper
     {
@@ -21,7 +21,7 @@
         private const string WixBin = nameof(WixBin);
 
         /// <summary>
-        /// Installs WixSharp
+        /// Installs WixSharp.
         /// </summary>
         public static void SetupWixTools()
         {
@@ -61,7 +61,7 @@
         }
 
         /// <summary>
-        /// Downloads WixSharp
+        /// Downloads WixSharp.
         /// </summary>
         private static string DownloadWixSharp()
         {
