@@ -316,7 +316,7 @@
         }
 
         /// <summary>
-        /// Adds a configuration via factory method <param name="action">action</param>.
+        /// Adds a configuration via factory method <paramref name="action"/>
         /// </summary>
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <param name="action">The function for creating a configuration.</param>

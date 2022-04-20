@@ -18,7 +18,6 @@
             {
                 testDiConfigurator.Container.GetService<IBaseService>();
                 testDiConfigurator.Container.GetService<IPluginService>();
-                testDiConfigurator.Container.GetService<IUserSettings>();
             };
             act.Should().NotThrow();
         }
