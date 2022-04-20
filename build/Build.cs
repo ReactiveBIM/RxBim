@@ -59,8 +59,10 @@ partial class Build : NukeBuild,
             DotNetTest(settings => settings
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
                 .SetConfiguration(From<IHazConfiguration>().Configuration)
-                .SetFilter("FullyQualifiedName!~IntegrationTests"));
+                .SetFilter("FullyQualifiedName!~Integration"));
         });
+
+    [Parameter] public bool AttachDebugger = false;
 
     /// <summary>
     /// Example target. Runs local only....
@@ -70,14 +72,14 @@ partial class Build : NukeBuild,
         {
             var solution = From<IHazSolution>().Solution;
 
-            var testProjectName = "RxBim.Example.IntegrationTests";
+            var testProjectName = "RxBim.Transactions.IntegrationsTests";
             var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
                           throw new ArgumentException("project not found");
 
             var outputDirectory = solution.Directory / "testoutput";
             DotNetBuild(settings => settings
                 .SetProjectFile(project)
-                .SetConfiguration("Debug")
+                .SetConfiguration(Configuration.Debug)
                 .SetOutputDirectory(outputDirectory));
 
             var assemblyName = testProjectName + ".dll";
@@ -89,6 +91,7 @@ partial class Build : NukeBuild,
                 .SetDir(outputDirectory)
                 .SetProcessWorkingDirectory(outputDirectory)
                 .EnableContinuous()
+                .SetDebug(AttachDebugger)
                 .SetAssembly(assemblyPath));
 
             var resultPath = solution.Directory / "result.html";
