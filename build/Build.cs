@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
 using Serilog;
+using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -55,6 +57,7 @@ partial class Build : NukeBuild,
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
     const string FeatureBranches = "feature/**";
+    const string Revit = "Revit";
 
     public Build()
     {
@@ -68,7 +71,7 @@ partial class Build : NukeBuild,
         {
             GlobDirectories(From<IHazSolution>().Solution.Directory, "**/bin", "**/obj")
                 .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
-                .ForEach(FileSystemTasks.DeleteDirectory);
+                .ForEach(DeleteDirectory);
         });
 
     public Target Test => _ => _
@@ -120,24 +123,39 @@ partial class Build : NukeBuild,
                 .Convert(results, resultPath);
         });
 
-    Target SetupEnvironment => _ => _
+    [Parameter(ValueProviderMember = nameof(values))]
+    string AppVersion { get; set; }
+
+    IEnumerable<string> values => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
+
+    Target SetupEnv => _ => _
+        .Requires(() => AppVersion)
         .Executes(() =>
         {
-            Log.Information(AppVersion.Revit2022.ToProjectProps());
-
-            From<IHazSolution>().Solution.AllProjects
-                .Where(x => x.Name.Contains("Revit"))
-                .ForEach(p => File.WriteAllText(p.Directory / "RxBim.Build.Props", AppVersion.Revit2019.ToProjectProps(), Encoding.UTF8));
+            var appVersion = Enumeration.GetAll<AppVersion>()
+                .SingleOrError(x => x.ToString() == AppVersion, "Selected application not found");
+            SetupEnvironment(appVersion);
         });
 
-    Target WipeEnvironment => _ => _
+    Target WipeEnv => _ => _
         .Executes(() =>
         {
             From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
-                .ForEach(FileSystemTasks.DeleteFile);
+                .ForEach(DeleteFile);
         });
 
     private T From<T>()
         where T : INukeBuild
         => (T)(object)this;
+
+    private void SetupEnvironment(AppVersion appVersion)
+    {
+        From<IHazSolution>().Solution.AllProjects
+            .Where(x => x.Directory.ToString().Contains(appVersion.Name))
+            .ForEach(p =>
+            {
+                File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);
+                Log.Information("Project {project} set up for {app} {version}", p.Name, appVersion.FullName, appVersion.Version);
+            });
+    }
 }

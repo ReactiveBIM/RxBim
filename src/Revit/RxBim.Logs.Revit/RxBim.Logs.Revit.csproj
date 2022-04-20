@@ -1,25 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net47</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1701</NoWarn>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-        <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU</Platforms>
-    </PropertyGroup>
-
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\RxBim.Logs\RxBim.Logs.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="BimLab.Revit.Api.2019" Version="1.0.1" ExcludeAssets="runtime" />
+        <ProjectReference Include="..\..\Core\RxBim.Logs\RxBim.Logs.csproj"/>
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
-         <Description>RxBim logs Library for Revit</Description>
+        <Description>RxBim logs Library for Revit</Description>
         <PackageId>RxBim.Logs.Revit</PackageId>
     </PropertyGroup>
 

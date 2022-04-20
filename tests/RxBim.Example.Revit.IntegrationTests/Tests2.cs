@@ -1,4 +1,4 @@
-namespace RxBim.Example.IntegrationTests
+namespace RxBim.Example.Revit.IntegrationTests
 {
     using System.Linq;
     using System.Reflection;
@@ -11,7 +11,7 @@ namespace RxBim.Example.IntegrationTests
     using Setup;
 
     [TestFixture]
-    public class Tests1
+    public class Tests2
     {
         private IContainer _container;
 
@@ -57,6 +57,15 @@ namespace RxBim.Example.IntegrationTests
         public void AlwaysSuccess()
         {
             Assert.Pass();
+        }
+        
+        [Test]
+        [TestModel("./model.rvt")]
+        public void AlwaysFail()
+        {
+            var testService = _container.GetService<ITestService>();
+
+            testService.Throw();
         }
     }
 }

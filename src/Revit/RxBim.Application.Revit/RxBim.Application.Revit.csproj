@@ -1,26 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-<!--        <TargetFramework>net47</TargetFramework>-->
-        <LangVersion>8</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1701</NoWarn>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-        <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU</Platforms>
-    </PropertyGroup>
-
-    <ItemGroup Condition="!Exists('.\RxBim.Build.Props')">
-        <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime" />
-    </ItemGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(AppVersion).$(ApiVersion)</Version>
-         <Description>RxBim Application api Library</Description>
+        <Description>RxBim Application api Library</Description>
         <PackageId>RxBim.Application.Revit</PackageId>
     </PropertyGroup>
 

@@ -6,7 +6,6 @@
         <NoWarn>NU1701;NU1702</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

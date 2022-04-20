@@ -10,6 +10,19 @@
           "type": "boolean",
           "description": "All projects"
         },
+        "AppVersion": {
+          "type": "string",
+          "enum": [
+            "Autodesk Autocad 2019",
+            "Autodesk Autocad 2020",
+            "Autodesk Autocad 2021",
+            "Autodesk Revit 2019",
+            "Autodesk Revit 2020",
+            "Autodesk Revit 2021",
+            "Autodesk Revit 2022",
+            "Autodesk Revit 2023"
+          ]
+        },
         "Configuration": {
           "type": "string",
           "enum": [
@@ -103,9 +116,9 @@
               "Publish",
               "Release",
               "Restore",
-              "SetupEnvironment",
+              "SetupEnv",
               "Test",
-              "WipeEnvironment"
+              "WipeEnv"
             ]
           }
         },
@@ -128,9 +141,9 @@
               "Publish",
               "Release",
               "Restore",
-              "SetupEnvironment",
+              "SetupEnv",
               "Test",
-              "WipeEnvironment"
+              "WipeEnv"
             ]
           }
         },

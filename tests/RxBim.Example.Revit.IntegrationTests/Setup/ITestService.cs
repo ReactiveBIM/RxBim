@@ -1,4 +1,4 @@
-namespace RxBim.Example.IntegrationTests.Setup
+namespace RxBim.Example.Revit.IntegrationTests.Setup
 {
     /// <summary>
     /// Test service

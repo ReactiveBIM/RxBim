@@ -1,10 +1,10 @@
 ﻿<Project>
+    
     <PropertyGroup>
-        <AppVersion>2019</AppVersion>
         <ApiVersion>1.0.6</ApiVersion>
-        <TargetFramework>net47</TargetFramework>
     </PropertyGroup>
 
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
     <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
 
 </Project>

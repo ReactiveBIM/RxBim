@@ -80,11 +80,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fx.Testing", "Fx.Testing", "{44780372-4217-4AFD-86CB-A777B1B3CD38}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.Testing.Revit", "src\Revit\RxBim.Di.Testing.Revit\RxBim.Di.Testing.Revit.csproj", "{5BFFC5A3-1A29-4520-A658-59C92F44E9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Example.IntegrationTests", "tests\RxBim.Example.IntegrationTests\RxBim.Example.IntegrationTests.csproj", "{E57349F4-1638-40FA-849D-DAA0311015FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Example.Revit.IntegrationTests", "tests\RxBim.Example.Revit.IntegrationTests\RxBim.Example.Revit.IntegrationTests.csproj", "{E57349F4-1638-40FA-849D-DAA0311015FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8B7AB5B5-D806-45E8-B574-F497EB20E3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{77448DA8-C5E2-4C26-B5C1-AB8DED61C86B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Revit\Directory.Build.Props = src\Revit\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{D2AB0208-628E-47A0-8203-D25DEB089E4F}"
 EndProject
