@@ -14,27 +14,27 @@
         /// <param name="name">Internal name of the button.</param>
         /// <param name="commandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button.</param>
-        /// <param name="action">Additional action with whe button.</param>
+        /// <param name="builder">The button builder.</param>
         /// <returns>Panel where button were created.</returns>
         IPanelBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null);
+            Action<IButtonBuilder>? builder = null);
 
         /// <summary>
         /// Adds a new Stacked items on the panel.
         /// </summary>
-        /// <param name="action">Action where you must add items to the stacked panel.</param>
+        /// <param name="builder">The stacke items builder.</param>
         /// <returns>Panel where stacked items were created.</returns>
-        IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> action);
+        IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> builder);
 
         /// <summary>
         /// Adds a new pull down button on the panel.
         /// </summary>
         /// <param name="name">Internal name of the button.</param>
-        /// <param name="action">Additional action with whe button.</param>
+        /// <param name="builder">A pull-down button builder.</param>
         /// <returns>Panel where button were created.</returns>
-        IPanelBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action);
+        IPanelBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder);
 
         /// <summary>
         /// Adds a new separator to the panel.
@@ -51,11 +51,11 @@
         /// </summary>
         /// <param name="name">Button name.</param>
         /// <param name="content">About button content.</param>
-        /// <param name="action">Additional actions for the button.</param>
+        /// <param name="builder">The button builder.</param>
         IPanelBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? action = null);
+            Action<IButtonBuilder>? builder = null);
 
         /// <summary>
         /// Finishes the ribbon building.

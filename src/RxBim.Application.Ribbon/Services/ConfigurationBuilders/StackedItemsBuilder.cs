@@ -24,20 +24,20 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IStackedItemsBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null)
+            Action<IButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
-            action?.Invoke(buttonBuilder);
+            builder?.Invoke(buttonBuilder);
 
             return AddButton(buttonBuilder.BuildingButton);
         }
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action)
+        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder)
         {
-            var builder = new PulldownButtonBuilder(name);
-            action.Invoke(builder);
-            return AddButton(builder.BuildingButton);
+            var pulldownButton = new PulldownButtonBuilder(name);
+            builder.Invoke(pulldownButton);
+            return AddButton(pulldownButton.BuildingButton);
         }
 
         /// <summary>

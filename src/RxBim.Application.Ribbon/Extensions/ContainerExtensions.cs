@@ -20,7 +20,7 @@
         /// Adds a plugin ribbon menu from an action.
         /// </summary>
         /// <param name="container">DI container.</param>
-        /// <param name="action">Action to create a menu.</param>
+        /// <param name="builder">The ribbon menu builder.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
         /// Used to get the command type from the command type name
@@ -28,16 +28,16 @@
         /// </param>
         public static void AddMenu<T>(
             this IContainer container,
-            Action<IRibbonBuilder> action,
+            Action<IRibbonBuilder> builder,
             Assembly assembly)
             where T : class, IRibbonMenuBuilderFactory
         {
             container.AddBuilder<T>(assembly);
             container.AddSingleton(() =>
             {
-                var builder = new RibbonBuilder();
-                action(builder);
-                return builder.Ribbon;
+                var ribbon = new RibbonBuilder();
+                builder(ribbon);
+                return ribbon.Ribbon;
             });
             container.DecorateContainer();
         }

@@ -13,10 +13,10 @@
         /// <param name="name">The button internal name.</param>
         /// <param name="commandType"> A class which implements command.
         /// This command will be execute when user push the button. </param>
-        /// <param name="action">An additional action.</param>
+        /// <param name="builder">The button builder.</param>
         IPulldownButtonBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null);
+            Action<IButtonBuilder>? builder = null);
     }
 }

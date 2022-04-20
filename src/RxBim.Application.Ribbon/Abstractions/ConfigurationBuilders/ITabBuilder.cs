@@ -19,12 +19,12 @@
         /// </summary>
         /// <param name="name">The button name.</param>
         /// <param name="content">The About window content.</param>
-        /// <param name="action">"About" button additional actions.</param>
+        /// <param name="builder">The "About" button builder.</param>
         /// <param name="panelName">The panel name.</param>
         ITabBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? action = null,
+            Action<IButtonBuilder>? builder = null,
             string? panelName = null);
     }
 }

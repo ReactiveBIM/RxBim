@@ -45,12 +45,12 @@
         public ITabBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? action = null,
+            Action<IButtonBuilder>? builder = null,
             string? panelName = null)
         {
-            var builder = new PanelBuilder(panelName ?? name, _ribbonBuilder, this);
-            builder.AddAboutButton(name, content, action);
-            BuildingTab.Panels.Add(builder.BuildingPanel);
+            var panel = new PanelBuilder(panelName ?? name, _ribbonBuilder, this);
+            panel.AddAboutButton(name, content, builder);
+            BuildingTab.Panels.Add(panel.BuildingPanel);
             return this;
         }
 

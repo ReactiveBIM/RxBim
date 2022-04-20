@@ -17,15 +17,15 @@
         /// Adds ribbon menu from action.
         /// </summary>
         /// <param name="container">DI container.</param>
-        /// <param name="action">Menu building action.</param>
+        /// <param name="builder">The ribbon builder.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddRevitMenu(
             this IContainer container,
-            Action<IRibbonBuilder> action,
+            Action<IRibbonBuilder> builder,
             Assembly menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonMenuBuilderFactory>(action, menuAssembly);
+            container.AddMenu<RevitRibbonMenuBuilderFactory>(builder, menuAssembly);
         }
 
         /// <summary>
