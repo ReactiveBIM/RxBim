@@ -8,7 +8,7 @@
     public interface IDiConfigurator<T>
     {
         /// <summary>
-        /// Configures a container using <param name="assembly"></param>.
+        /// Configures a container using <paramref name="assembly"/>.
         /// </summary>
         /// <param name="assembly">An assembly.</param>
         void Configure(Assembly assembly);

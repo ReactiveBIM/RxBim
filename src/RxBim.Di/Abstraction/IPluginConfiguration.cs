@@ -6,7 +6,7 @@
     public interface IPluginConfiguration
     {
         /// <summary>
-        /// Configures DI <param name="container">container</param>.
+        /// Configures DI <paramref name="container"/>
         /// </summary>
         /// <param name="container">A container.</param>
         void Configure(IContainer container);
