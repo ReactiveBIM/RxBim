@@ -15,7 +15,7 @@
         IPanelBuilder AddPanel(string panelTitle);
 
         /// <summary>
-        /// Adds a new "About" button panel the tab.
+        /// Adds a new "About" button panel to the tab.
         /// </summary>
         /// <param name="name">The button name.</param>
         /// <param name="content">The About window content.</param>

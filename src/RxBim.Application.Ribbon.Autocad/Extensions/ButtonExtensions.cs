@@ -19,7 +19,7 @@
         /// <param name="helpUrl">Help url string.</param>
         /// <param name="description">Description.</param>
         /// <param name="newToolTipAction">Action for a new tooltip.</param>
-        public static void SetTooltipForButton(
+        public static void SetTooltip(
             this RibbonButton ribbonButton,
             string? tooltipText,
             string? helpUrl,
@@ -33,7 +33,11 @@
                 return;
 
             var toolTip = new RibbonToolTip
-                { Title = string.IsNullOrWhiteSpace(ribbonButton.Text) ? ribbonButton.Name : ribbonButton.Text };
+            {
+                Title = string.IsNullOrWhiteSpace(ribbonButton.Text)
+                    ? ribbonButton.Name
+                    : ribbonButton.Text
+            };
 
             if (!string.IsNullOrWhiteSpace(description))
                 toolTip.ExpandedContent = description;
@@ -65,7 +69,7 @@
         /// <param name="orientation">Button orientation.</param>
         /// <param name="forceTextSettings">Force settings for text placement.</param>
         /// <exception cref="InvalidOperationException">If the button name is not specified.</exception>
-        public static void SetButtonProperties(
+        public static void SetProperties(
             this RibbonButton ribbonButton,
             Button buttonConfig,
             RibbonItemSize size,
@@ -103,7 +107,7 @@
         /// Returns orientation for single large button.
         /// </summary>
         /// <param name="button">Button config.</param>
-        public static Orientation GetSingleLargeButtonOrientation(this Button button)
+        public static Orientation GetOrientation(this Button button)
         {
             return !string.IsNullOrWhiteSpace(button.Text)
                 ? Orientation.Vertical

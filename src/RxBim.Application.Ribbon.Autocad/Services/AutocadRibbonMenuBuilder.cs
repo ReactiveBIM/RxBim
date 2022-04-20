@@ -111,21 +111,21 @@
         /// <inheritdoc />
         protected override void CreateAboutButton(RibbonTab tab, RibbonPanel panel, AboutButton aboutButtonConfig)
         {
-            var orientation = aboutButtonConfig.GetSingleLargeButtonOrientation();
+            var orientation = aboutButtonConfig.GetOrientation();
             panel.AddToCurrentRow(CreateAboutButtonInternal(aboutButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButtonConfig)
         {
-            var orientation = cmdButtonConfig.GetSingleLargeButtonOrientation();
+            var orientation = cmdButtonConfig.GetOrientation();
             panel.AddToCurrentRow(CreateCommandButtonInternal(cmdButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
         protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButtonConfig)
         {
-            var orientation = pullDownButtonConfig.GetSingleLargeButtonOrientation();
+            var orientation = pullDownButtonConfig.GetOrientation();
             panel.AddToCurrentRow(CreatePullDownButtonInternal(pullDownButtonConfig,
                 RibbonItemSize.Large,
                 orientation));
@@ -188,7 +188,7 @@
             where T : RibbonButton, new()
         {
             var ribbonButton = CreateNewButtonBase<T>(buttonConfig, size, orientation, forceTextSettings);
-            ribbonButton.SetTooltipForButton(buttonConfig.ToolTip,
+            ribbonButton.SetTooltip(buttonConfig.ToolTip,
                 buttonConfig.HelpUrl,
                 buttonConfig.Description,
                 _toolTipAction);
@@ -203,7 +203,7 @@
             where T : RibbonButton, new()
         {
             var ribbonButton = new T();
-            ribbonButton.SetButtonProperties(buttonConfig, size, orientation, forceTextSettings);
+            ribbonButton.SetProperties(buttonConfig, size, orientation, forceTextSettings);
             SetRibbonItemImages(ribbonButton, buttonConfig, _getCurrentTheme());
             _createdButtons.Add((ribbonButton, buttonConfig));
             return ribbonButton;
@@ -248,7 +248,7 @@
             {
                 var commandType = GetCommandType(buttonConfig.CommandType!);
                 var tooltip = GetTooltipContent(buttonConfig, commandType);
-                button.SetTooltipForButton(tooltip, buttonConfig.HelpUrl, buttonConfig.Description, _toolTipAction);
+                button.SetTooltip(tooltip, buttonConfig.HelpUrl, buttonConfig.Description, _toolTipAction);
                 var commandName = commandType.GetCommandName();
                 button.CommandHandler = new RelayCommand(() =>
                     {
@@ -259,7 +259,7 @@
             }
             else
             {
-                button.SetTooltipForButton(buttonConfig.ToolTip,
+                button.SetTooltip(buttonConfig.ToolTip,
                     buttonConfig.HelpUrl,
                     buttonConfig.Description,
                     _toolTipAction);

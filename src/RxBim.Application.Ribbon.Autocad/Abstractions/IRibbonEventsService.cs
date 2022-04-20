@@ -8,12 +8,12 @@
     public interface IRibbonEventsService
     {
         /// <summary>
-        /// Ribbon need to rebuild.
+        /// Raises when the ribbon needs to rebuild.
         /// </summary>
         event EventHandler NeedRebuild;
 
         /// <summary>
-        /// Runs the service.
+        /// Starts the service.
         /// </summary>
         void Run();
     }
