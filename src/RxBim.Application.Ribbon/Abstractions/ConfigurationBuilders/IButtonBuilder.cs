@@ -3,44 +3,44 @@
     using Models;
 
     /// <summary>
-    /// Ribbon button configuration builder.
+    /// Defines a ribbon button configuration builder.
     /// </summary>
     public interface IButtonBuilder
     {
         /// <summary>
-        /// Sets a large image for the button.
+        /// Sets the large image.
         /// </summary>
-        /// <param name="imageRelativePath">Image relative path.</param>
-        /// <param name="theme">Color theme for image.</param>
+        /// <param name="imageRelativePath">A relative path to the image.</param>
+        /// <param name="theme">The button color theme.</param>
         IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme = ThemeType.All);
 
         /// <summary>
-        /// Sets a small image for the button.
+        /// Sets the large image.
         /// </summary>
         /// <param name="imageRelativePath">Image relative path.</param>
         /// <param name="theme">Color theme for image.</param>
         IButtonBuilder SetSmallImage(string imageRelativePath, ThemeType theme = ThemeType.All);
 
         /// <summary>
-        /// Set description for the button.
+        /// Set the description text.
         /// </summary>
         /// <param name="description">Description text.</param>
         IButtonBuilder SetDescription(string description);
 
         /// <summary>
-        /// Sets tooltip for the button.
+        /// Sets the tooltip text.
         /// </summary>
         /// <param name="toolTip">Tooltip text.</param>
         IButtonBuilder SetToolTip(string toolTip);
 
         /// <summary>
-        /// Sets button label text.
+        /// Sets the label text.
         /// </summary>
         /// <param name="text">Button label text.</param>
         IButtonBuilder SetText(string text);
 
         /// <summary>
-        /// Sets the help URL for the button.
+        /// Sets the help URL.
         /// </summary>
         /// <param name="url">URL address.</param>
         IButtonBuilder SetHelpUrl(string url);

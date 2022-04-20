@@ -4,15 +4,15 @@
     using Shared.Abstractions;
 
     /// <summary>
-    /// CAD platform-specific ribbon menu builder.
+    /// Defines a CAD platform-specific ribbon menu builder.
     /// </summary>
     public interface IRibbonMenuBuilder
     {
         /// <summary>
-        /// Constructs CAD platform-specific ribbon.
+        /// Constructs a CAD platform-specific ribbon.
         /// </summary>
-        /// <param name="ribbonConfig">Ribbon configuration.</param>
-        /// <param name="aboutShowService">Service for displaying the "About" window.</param>
+        /// <param name="ribbonConfig">The ribbon configuration.</param>
+        /// <param name="aboutShowService">The Service displaying an "About" window.</param>
         void BuildRibbonMenu(Ribbon? ribbonConfig, IAboutShowService? aboutShowService);
     }
 }

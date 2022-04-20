@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
 {
     /// <summary>
-    /// The ribbon builder.
+    /// Defines a ribbon builder.
     /// </summary>
     public interface IRibbonItemsContainerBuilder
     {
         /// <summary>
-        /// Returns the ribbon builder object.
+        /// Finishes the ribbon item building.
         /// </summary>
         IRibbonBuilder ReturnToRibbon();
     }
