@@ -11,8 +11,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AboutButtonBuilder"/> class.
         /// </summary>
-        /// <param name="name">Button name.</param>
-        /// <param name="content">About window content.</param>
+        /// <param name="name">The button name.</param>
+        /// <param name="content">The About window content.</param>
         public AboutButtonBuilder(string name, AboutBoxContent content)
             : base(name)
         {

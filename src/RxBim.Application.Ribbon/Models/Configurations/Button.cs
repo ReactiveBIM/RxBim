@@ -3,7 +3,7 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// The Configuration for a button.
+    /// Represents a button configuration.
     /// </summary>
     public abstract class Button : IRibbonPanelElement
     {
@@ -13,22 +13,22 @@
         public string? Name { get; set; }
 
         /// <summary>
-        /// The button label text.
+        /// The label text.
         /// </summary>
         public string? Text { get; set; }
 
         /// <summary>
-        /// URI string for default large button image.
+        /// The URI string for default large button image.
         /// </summary>
         public string? LargeImage { get; set; }
 
         /// <summary>
-        /// URI string for default small button image.
+        /// The URI string for default small button image.
         /// </summary>
         public string? SmallImage { get; set; }
 
         /// <summary>
-        /// URI string for large button image for light theme.
+        /// The URI string for large button image for light theme.
         /// </summary>
         public string? LargeImageLight { get; set; }
 
@@ -38,17 +38,17 @@
         public string? SmallImageLight { get; set; }
 
         /// <summary>
-        /// The button description.
+        /// The description text.
         /// </summary>
         public string? Description { get; set; }
 
         /// <summary>
-        /// The button tooltip.
+        /// The tooltip text.
         /// </summary>
         public string? ToolTip { get; set; }
 
         /// <summary>
-        /// Help url for the button.
+        /// The help url for the button.
         /// </summary>
         public string? HelpUrl { get; set; }
     }

@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Models
 {
     /// <summary>
-    /// Type of interface color theme.
+    /// User interface color theme.
     /// </summary>
     public enum ThemeType
     {

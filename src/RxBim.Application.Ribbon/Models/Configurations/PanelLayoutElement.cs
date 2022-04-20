@@ -3,12 +3,12 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Ribbon panel layout element.
+    /// Represents a ribbon panel layout element.
     /// </summary>
     public class PanelLayoutElement : IRibbonPanelElement
     {
         /// <summary>
-        /// Layout element type.
+        /// The layout element type.
         /// </summary>
         public PanelLayoutElementType LayoutElementType { get; set; }
     }

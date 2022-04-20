@@ -94,7 +94,7 @@
         protected abstract TPanel GetOrCreatePanel(TTab tab, string panelName);
 
         /// <summary>
-        /// Creates about button.
+        /// Creates a new about button.
         /// </summary>
         /// <param name="tab">Ribbon tab.</param>
         /// <param name="panel">Panel.</param>
@@ -102,27 +102,27 @@
         protected abstract void CreateAboutButton(TTab tab, TPanel panel, AboutButton aboutButtonConfig);
 
         /// <summary>
-        /// Creates command button.
+        /// Creates a new command button.
         /// </summary>
         /// <param name="panel">Panel.</param>
         /// <param name="cmdButtonConfig">Command button configuration.</param>
         protected abstract void CreateCommandButton(TPanel panel, CommandButton cmdButtonConfig);
 
         /// <summary>
-        /// Creates pull-down button.
+        /// Creates a new pull-down button.
         /// </summary>
         /// <param name="panel">Panel.</param>
         /// <param name="pullDownButtonConfig">Pull-down button configuration.</param>
         protected abstract void CreatePullDownButton(TPanel panel, PullDownButton pullDownButtonConfig);
 
         /// <summary>
-        /// Creates and adds separator.
+        /// Adds a new separator to a given panel.
         /// </summary>
-        /// <param name="panel">Panel.</param>
-        protected abstract void AddSeparator(TPanel panel);
+        /// <param name="panel">The given panel.</param>
+        protected abstract void AddSeparator(TPanel panel); // todo naming inconsistency: add- get- create-
 
         /// <summary>
-        /// Creates and adds slide-out.
+        /// Adds a new slide-out to a given panel.
         /// </summary>
         /// <param name="panel">Panel.</param>
         protected abstract void AddSlideOut(TPanel panel);

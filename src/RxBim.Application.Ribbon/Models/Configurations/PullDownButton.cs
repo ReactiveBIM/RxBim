@@ -3,12 +3,12 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Pull-down button.
+    /// Represents a pull-down button.
     /// </summary>
     public class PullDownButton : Button
     {
         /// <summary>
-        /// Buttons contained in the pull-down button.
+        /// The buttons contained in the pull-down button.
         /// </summary>
         public List<CommandButton> CommandButtonsList { get; set; } = new();
     }

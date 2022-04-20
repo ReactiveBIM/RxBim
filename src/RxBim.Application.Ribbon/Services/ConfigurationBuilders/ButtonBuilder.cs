@@ -13,7 +13,7 @@
         /// <summary>
         /// Initializes a new instance of the button builder.
         /// </summary>
-        /// <param name="name">Button name.</param>
+        /// <param name="name">The button name.</param>
         protected ButtonBuilder(string name)
         {
             BuildingButton.Name = name;
