@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Building ribbon control.
+        /// The button to create configuration.
         /// </summary>
         public TButton BuildingButton { get; } = new();
 

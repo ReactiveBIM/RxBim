@@ -5,7 +5,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Microsoft.Extensions.Configuration;
     using Models.Configurations;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents an items stack builder.
+    /// </summary>
     public class StackedItemsBuilder : IStackedItemsBuilder
     {
         /// <summary>
@@ -39,9 +41,9 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         }
 
         /// <summary>
-        /// Load buttons from config.
+        /// Loads buttons from configurations.
         /// </summary>
-        /// <param name="stackedButtons">Buttons config section.</param>
+        /// <param name="stackedButtons">A buttons config section.</param>
         internal void LoadButtonsFromConfig(IConfigurationSection stackedButtons)
         {
             foreach (var buttonSection in stackedButtons.GetChildren())

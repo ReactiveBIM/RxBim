@@ -9,7 +9,7 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Shared;
 
     /// <summary>
-    /// Ribbon panel implementation.
+    /// Represents a ribbon panel builder.
     /// </summary>
     public class PanelBuilder : IPanelBuilder
     {
@@ -117,10 +117,10 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         /// <summary>
         /// Load from config.
         /// </summary>
-        /// <param name="panelSection">Config section.</param>
-        internal void LoadFromConfig(IConfigurationSection panelSection)
+        /// <param name="section">Config section.</param>
+        internal void LoadFromConfig(IConfigurationSection section)
         {
-            var elementsSection = panelSection.GetSection(nameof(Panel.Elements));
+            var elementsSection = section.GetSection(nameof(Panel.Elements));
             if (!elementsSection.Exists())
                 return;
 

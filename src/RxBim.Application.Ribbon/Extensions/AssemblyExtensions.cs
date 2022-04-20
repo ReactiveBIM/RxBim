@@ -18,6 +18,7 @@
         /// <exception cref="ArgumentException">The Type name is invalid.</exception>
         public static Type GetTypeFromName(this Assembly assembly, string typeName)
         {
+            // todo use regex
             var strings = typeName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToArray();

@@ -12,7 +12,7 @@
     using Shared.Abstractions;
 
     /// <summary>
-    /// DI Container Extensions for Ribbon Menu.
+    /// Contqins DI Container Extensions for Ribbon Menu.
     /// </summary>
     public static class ContainerExtensions
     {

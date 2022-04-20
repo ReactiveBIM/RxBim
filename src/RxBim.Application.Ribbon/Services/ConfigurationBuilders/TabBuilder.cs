@@ -7,7 +7,7 @@
     using Shared;
 
     /// <summary>
-    /// TabBuilder.
+    /// Represents a tab buileder.
     /// </summary>
     public class TabBuilder : ITabBuilder
     {
@@ -25,7 +25,7 @@
         }
 
         /// <summary>
-        /// Building tab.
+        /// The tab to create configuration.
         /// </summary>
         public Tab BuildingTab { get; } = new();
 
@@ -55,12 +55,12 @@
         }
 
         /// <summary>
-        /// Load from config.
+        /// Loads a tab from configuration.
         /// </summary>
-        /// <param name="tabSection">Tab config section.</param>
-        internal void LoadFromConfig(IConfigurationSection tabSection)
+        /// <param name="section">Tab config section.</param>
+        internal void LoadFromConfig(IConfigurationSection section)
         {
-            var panelsSection = tabSection.GetSection(nameof(Tab.Panels));
+            var panelsSection = section.GetSection(nameof(Tab.Panels));
             if (!panelsSection.Exists())
                 return;
 

@@ -4,7 +4,9 @@
     using Microsoft.Extensions.Configuration;
     using Models.Configurations;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents a ribbon builder.
+    /// </summary>
     public class RibbonBuilder : IRibbonBuilder
     {
         /// <summary>
@@ -33,7 +35,7 @@
         }
 
         /// <summary>
-        /// Load ribbon menu from configuration.
+        /// Loads a ribbon menu from configuration.
         /// </summary>
         /// <param name="config">Configuration.</param>
         internal void LoadFromConfig(IConfiguration config)
