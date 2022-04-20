@@ -1,4 +1,5 @@
-﻿namespace RxBim.Shared
+﻿#pragma warning disable
+namespace RxBim.Shared
 {
     using System;
     using System.Collections.Generic;
@@ -7,6 +8,7 @@
     /// <summary>
     /// Содержимое окна о программе
     /// </summary>
+    [Obsolete("Will be deleted in the next release!")]
     public class AboutBoxContent
     {
         private Version _version = new();

@@ -6,17 +6,17 @@
     using static Constants;
 
     /// <summary>
-    /// Инспекция проверяющая наличие методов приложения <see cref="Start"/> и <see cref="Shutdown"/>
+    /// Inspection checks methods <see cref="Start"/> and <see cref="Shutdown"/> in RxBimApplication.
     /// </summary>
     public class AppAction
     {
         /// <summary>
-        /// id
+        /// The id.
         /// </summary>
         public const string StartDiagnosticId = DiagnosticId + "AppStart";
 
         /// <summary>
-        /// id
+        /// The id.
         /// </summary>
         public const string ShutdownDiagnosticId = DiagnosticId + "AppShutdown";
 
@@ -36,7 +36,7 @@
             $"App type should contain \"{Shutdown}\" method.";
 
         /// <summary>
-        /// Правило Start
+        /// Rule for checking Start method.
         /// </summary>
         public DiagnosticDescriptor AppStartMethodRule { get; } = new DiagnosticDescriptor(
             StartDiagnosticId,
@@ -48,7 +48,7 @@
             description: StartMethodDescription);
 
         /// <summary>
-        /// Правило Shutdown
+        /// Rule for checking Shutdown method.
         /// </summary>
         public DiagnosticDescriptor AppShutdownMethodRule { get; } = new DiagnosticDescriptor(
             ShutdownDiagnosticId,
@@ -60,9 +60,9 @@
             description: ShutdownMethodDescription);
 
         /// <summary>
-        /// Проверка наличия метода Start
+        /// Checks for availability of Start method.
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">The context.</param>
         public void AnalyzeApplicationStart(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
@@ -78,9 +78,9 @@
         }
 
         /// <summary>
-        /// Проверка наличия метода Shutdown
+        /// Checks for availability Shutdown method.
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">The context.</param>
         public void AnalyzeApplicationShutDown(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;

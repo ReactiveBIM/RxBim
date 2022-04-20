@@ -10,7 +10,7 @@
     using MsiBuilder;
 
     /// <summary>
-    /// Wix extension
+    /// The Wix package builder.
     /// </summary>
     public class WixBuilder<T>
         where T : PackageContentsGenerator, new()
@@ -18,12 +18,12 @@
         private Options _options;
 
         /// <summary>
-        /// Builds MSI
+        /// Builds MSI.
         /// </summary>
-        /// <param name="project">Selected project</param>
-        /// <param name="configuration">Selected configuration</param>
-        /// <param name="outputDir">Output directory</param>
-        /// <param name="outputBinDir">Output assemblies directory</param>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Selected configuration.</param>
+        /// <param name="outputDir">Output directory path.</param>
+        /// <param name="outputBinDir">Output assemblies directory path.</param>
         public void BuildMsi(
             Project project,
             string configuration,
@@ -40,11 +40,11 @@
         }
 
         /// <summary>
-        /// Gets build MSI options
+        /// Gets build MSI options.
         /// </summary>
-        /// <param name="project">Selected Project</param>
-        /// <param name="outputDir">Output directory</param>
-        /// <param name="configuration">Selected configuration</param>
+        /// <param name="project">Selected Project.</param>
+        /// <param name="outputDir">Output directory path.</param>
+        /// <param name="configuration">Selected configuration.</param>
         public Options GetBuildMsiOptions(
             Project project,
             string outputDir,
@@ -56,12 +56,12 @@
         }
 
         /// <summary>
-        /// Generates additional files
+        /// Generates additional files.
         /// </summary>
-        /// <param name="rootProjectName">Root project name</param>
-        /// <param name="allProject">All projects</param>
-        /// <param name="addInTypes">Assembly types</param>
-        /// <param name="outputDir">Output directory</param>
+        /// <param name="rootProjectName">Root project name.</param>
+        /// <param name="allProject">All projects.</param>
+        /// <param name="addInTypes">Assembly types.</param>
+        /// <param name="outputDir">Output directory path.</param>
         public virtual void GenerateAdditionalFiles(
             string rootProjectName,
             IEnumerable<Project> allProject,
@@ -71,11 +71,11 @@
         }
 
         /// <summary>
-        /// Generates package contents file
+        /// Generates package contents file.
         /// </summary>
-        /// <param name="project">Selected project</param>
-        /// <param name="configuration">Selected configuration</param>
-        /// <param name="outputDir">Output directory</param>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Selected configuration.</param>
+        /// <param name="outputDir">Output directory path.</param>
         public void GeneratePackageContentsFile(
             Project project,
             string configuration,
@@ -89,25 +89,25 @@
         }
 
         /// <summary>
-        /// Returns True, if need generate PackageContents
+        /// Returns True, if need generate PackageContents.
         /// </summary>
-        /// <param name="configuration">Selected configuration</param>
+        /// <param name="configuration">Selected configuration.</param>
         protected virtual bool NeedGeneratePackageContents(string configuration) => true;
 
         /// <summary>
-        /// Gets Debug configuration install directory
+        /// Gets Debug configuration install directory.
         /// </summary>
-        /// <param name="project">Selected project</param>
+        /// <param name="project">Selected project.</param>
         protected virtual string GetDebugInstallDir(Project project)
         {
             return GetReleaseInstallDir(project);
         }
 
         /// <summary>
-        /// Gets installation directory
+        /// Gets installation directory.
         /// </summary>
-        /// <param name="project">Selected Project</param>
-        /// <param name="configuration">Selected configuration</param>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Selected configuration.</param>
         private string GetInstallDir(
             Project project,
             string configuration)
@@ -121,9 +121,9 @@
         }
 
         /// <summary>
-        /// Gets Release configuration install directory
+        /// Gets Release configuration install directory path.
         /// </summary>
-        /// <param name="project">Selected project</param>
+        /// <param name="project">Selected project.</param>
         private string GetReleaseInstallDir(Project project)
         {
             return $"%AppDataFolder%/Autodesk/ApplicationPlugins/{project.Name}.bundle";

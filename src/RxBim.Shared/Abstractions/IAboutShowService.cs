@@ -1,14 +1,14 @@
 ﻿namespace RxBim.Shared.Abstractions
 {
     /// <summary>
-    /// Отображает окно о программе
+    /// Abstraction for showing about window.
     /// </summary>
     public interface IAboutShowService
     {
         /// <summary>
-        /// Показать окно о программе
+        /// Shows about window.
         /// </summary>
-        /// <param name="content">Содержимое окна</param>
+        /// <param name="content">A content.</param>
         void ShowAboutBox(AboutBoxContent content);
     }
 }

@@ -8,15 +8,15 @@
     using Shared;
 
     /// <summary>
-    /// Decorator creating the plugin ribbon
+    /// Decorator creating the plugin ribbon.
     /// </summary>
-    /// <typeparam name="T">The return type of the method</typeparam>
+    /// <typeparam name="T">The return type of the method.</typeparam>
     public class MenuBuilderMethodCaller<T> : MethodCallerDecorator<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuBuilderMethodCaller{T}"/> class.
         /// </summary>
-        /// <param name="decorated">Decorated object</param>
+        /// <param name="decorated">Decorated object.</param>
         public MenuBuilderMethodCaller(IMethodCaller<T> decorated)
             : base(decorated)
         {

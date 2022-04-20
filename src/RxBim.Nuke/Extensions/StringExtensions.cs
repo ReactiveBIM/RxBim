@@ -5,14 +5,14 @@
     using static Constants;
 
     /// <summary>
-    /// String extensions
+    /// The <see cref="string"/> extensions.
     /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// Gets type name of <see cref="PluginType"/>
+        /// Gets type name of a <see cref="PluginType"/>.
         /// </summary>
-        /// <param name="type">Type name</param>
+        /// <param name="type">The plugin type name.</param>
         public static PluginType ToPluginType(this string type)
         {
             return type switch

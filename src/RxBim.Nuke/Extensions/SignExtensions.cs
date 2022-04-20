@@ -7,19 +7,19 @@
     using global::Nuke.Common.Tools.SignTool;
 
     /// <summary>
-    /// Sign files extensions
+    /// Extension methods helps add digital sign to files.
     /// </summary>
     public static class SignExtensions
     {
         /// <summary>
-        /// Signs files
+        /// Signs files.
         /// </summary>
-        /// <param name="filesPath">Files path</param>
-        /// <param name="cert">Certificate path</param>
-        /// <param name="keyContainer">Private key</param>
-        /// <param name="csp">CSP containing</param>
-        /// <param name="digestAlgorithm">Digest algorithm</param>
-        /// <param name="timestampServerUrl">Timestamp server URL</param>
+        /// <param name="filesPath">Files path.</param>
+        /// <param name="cert">A certificate path.</param>
+        /// <param name="keyContainer">The private key of the certificate.</param>
+        /// <param name="csp">CSP containing.</param>
+        /// <param name="digestAlgorithm">Digest algorithm.</param>
+        /// <param name="timestampServerUrl">Timestamp server URL.</param>
         public static void SignFiles(
             this string[] filesPath,
             AbsolutePath cert,
@@ -63,14 +63,14 @@
         }
 
         /// <summary>
-        /// Signs file
+        /// Adds digital sign to a file.
         /// </summary>
-        /// <param name="filePath">File path</param>
-        /// <param name="cert">Certificate path</param>
-        /// <param name="keyContainer">Private key</param>
-        /// <param name="csp">CSP containing</param>
-        /// <param name="digestAlgorithm">Digest algorithm</param>
-        /// <param name="timestampServerUrl">Timestamp server URL</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="cert">The certificate path.</param>
+        /// <param name="keyContainer">The private key of the certificate.</param>
+        /// <param name="csp">CSP containing.</param>
+        /// <param name="digestAlgorithm">Digest algorithm.</param>
+        /// <param name="timestampServerUrl">Timestamp server URL.</param>
         public static void SignFile(
             this string filePath,
             AbsolutePath cert,

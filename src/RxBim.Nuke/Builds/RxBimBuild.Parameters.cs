@@ -23,43 +23,43 @@ namespace RxBim.Nuke.Builds
         private List<AssemblyType> _types;
 
         /// <summary>
-        /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)
+        /// Configuration to build - Default is 'Debug' (local) or 'Release' (server).
         /// </summary>
         [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
         public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
         /// <summary>
-        /// Certificate path
+        /// Certificate path.
         /// </summary>
         [Parameter("Certificate path")]
         public string Cert { get; set; }
 
         /// <summary>
-        /// Private key container
+        /// Private key container.
         /// </summary>
         [Parameter("Private key container")]
         public string PrivateKey { get; set; }
 
         /// <summary>
-        /// CSP containing for Private key
+        /// CSP containing for Private key.
         /// </summary>
         [Parameter("CSP containing for Private key")]
         public string Csp { get; set; }
 
         /// <summary>
-        /// Digest algorithm
+        /// Digest algorithm.
         /// </summary>
         [Parameter("Digest algorithm")]
         public string Algorithm { get; set; }
 
         /// <summary>
-        /// Timestamp server URL
+        /// Timestamp server URL.
         /// </summary>
         [Parameter("Timestamp server URL")]
         public string ServerUrl { get; set; }
 
         /// <summary>
-        /// Selected project
+        /// Selected project.
         /// </summary>
         [Parameter("Select project")]
         public virtual string Project
@@ -86,19 +86,19 @@ namespace RxBim.Nuke.Builds
         }
 
         /// <summary>
-        /// Solution
+        /// Solution.
         /// </summary>
         [Solution]
         public Solution Solution { get; set; }
 
         /// <summary>
-        /// Output temp directory
+        /// Output temp directory path.
         /// </summary>
         protected virtual string OutputTmpDir
             => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
 
         /// <summary>
-        /// Output "bin" temp directory
+        /// Output "bin" temp directory path.
         /// </summary>
         protected virtual string OutputTmpDirBin
             => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");

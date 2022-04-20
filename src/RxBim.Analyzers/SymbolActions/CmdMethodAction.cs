@@ -4,12 +4,12 @@
     using Microsoft.CodeAnalysis.Diagnostics;
 
     /// <summary>
-    /// Инспекция возвращаемого значения комманды.
+    /// Inspection checks returnable method of ExecuteCommand method of RxBim Command.
     /// </summary>
     public class CmdMethodAction
     {
         /// <summary>
-        /// id
+        /// Id.
         /// </summary>
         public const string DiagnosticId = Constants.DiagnosticId + "CommandReturnType";
 
@@ -22,7 +22,7 @@
             "\"ExecuteCommand\" method should return \"PluginResult\" type.";
 
         /// <summary>
-        /// Правило
+        /// Rule.
         /// </summary>
         public DiagnosticDescriptor Rule { get; } = new DiagnosticDescriptor(
             DiagnosticId,
@@ -34,9 +34,9 @@
             description: Description);
 
         /// <summary>
-        /// Проверка
+        /// Checks ExecuteCommand method.
         /// </summary>
-        /// <param name="context">контекст</param>
+        /// <param name="context">The context.</param>
         public void Analyze(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;

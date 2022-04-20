@@ -316,10 +316,10 @@
         }
 
         /// <summary>
-        /// Добавляет конфигурацию в контейнер
+        /// Adds a configuration via factory method <param name="action">action</param>.
         /// </summary>
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
-        /// <param name="action">функция настройки конфигурации</param>
+        /// <param name="action">The function for creating a configuration.</param>
         public static void AddConfiguration(
             this IContainer container,
             Func<ConfigurationBuilder, IConfiguration> action)

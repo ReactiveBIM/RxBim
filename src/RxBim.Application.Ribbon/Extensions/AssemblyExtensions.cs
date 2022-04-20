@@ -6,18 +6,19 @@
     using System.Reflection;
 
     /// <summary>
-    /// Extensions for <see cref="Assembly"/>
+    /// Extensions for the <see cref="Assembly"/> class.
     /// </summary>
     internal static class AssemblyExtensions
     {
         /// <summary>
-        /// Returns class type
+        /// Returns class type.
         /// </summary>
-        /// <param name="assembly">Assembly</param>
-        /// <param name="typeName">Class type name</param>
-        /// <exception cref="ArgumentException">Type name is invalid</exception>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="typeName">The class type name.</param>
+        /// <exception cref="ArgumentException">The Type name is invalid.</exception>
         public static Type GetTypeFromName(this Assembly assembly, string typeName)
         {
+            // todo use regex
             var strings = typeName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToArray();
@@ -37,10 +38,10 @@
         }
 
         /// <summary>
-        /// Returns URI for the support file
+        /// Returns URI for the support file.
         /// </summary>
-        /// <param name="assembly">Base assembly. Used to get the root directory</param>
-        /// <param name="fullOrRelativePath">Full or relative path to support file</param>
+        /// <param name="assembly">The base assembly. Used to get the root directory.</param>
+        /// <param name="fullOrRelativePath">Full or relative path to support file.</param>
         public static Uri? TryGetSupportFileUri(this Assembly assembly, string fullOrRelativePath)
         {
             string path = Path.IsPathRooted(fullOrRelativePath) && File.Exists(fullOrRelativePath)

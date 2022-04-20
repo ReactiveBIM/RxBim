@@ -8,7 +8,7 @@
     public class Registration
     {
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
         /// <param name="serviceType">A type of a registered service.</param>
         public Registration(Type serviceType)

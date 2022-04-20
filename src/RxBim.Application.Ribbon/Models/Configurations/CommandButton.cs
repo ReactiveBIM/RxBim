@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon.Models.Configurations
 {
     /// <summary>
-    /// Button to run a command
+    /// Represents a button that invokes a command.
     /// </summary>
     public class CommandButton : Button
     {
         /// <summary>
-        /// Command class type <see cref="System.Type.FullName"/>
+        /// A command to be invoked type name.
         /// </summary>
         public string? CommandType { get; set; }
     }

@@ -8,14 +8,14 @@
     using RxBim.Nuke.Generators;
 
     /// <summary>
-    /// Генерирует PackageContents.xml
+    /// Package contents manifest file generator.
     /// </summary>
     public class RevitPackageContentsGenerator : PackageContentsGenerator
     {
         /// <summary>
-        /// Возвращает компоненты для Revit
+        /// Generates components enumeration from a <see cref="Project"/>.
         /// </summary>
-        /// <param name="project">Проект</param>
+        /// <param name="project">The project.</param>
         protected override IEnumerable<Components> GetComponents(Project project)
         {
             var revitVersions = Enumerable.Range(2017, 4);

@@ -5,7 +5,7 @@
     using Ribbon.Abstractions;
 
     /// <summary>
-    /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for AutoCAD
+    /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for AutoCAD.
     /// </summary>
     public class AutocadRibbonMenuBuilderFactory : IRibbonMenuBuilderFactory
     {
@@ -17,9 +17,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadRibbonMenuBuilderFactory"/> class.
         /// </summary>
-        /// <param name="onlineHelpService">Online help service</param>
-        /// <param name="ribbonEventsService">Ribbon service</param>
-        /// <param name="themeService">Theme service</param>
+        /// <param name="onlineHelpService">Online help service.</param>
+        /// <param name="ribbonEventsService">Ribbon service.</param>
+        /// <param name="themeService">Theme service.</param>
         public AutocadRibbonMenuBuilderFactory(
             IOnlineHelpService onlineHelpService,
             IRibbonEventsService ribbonEventsService,

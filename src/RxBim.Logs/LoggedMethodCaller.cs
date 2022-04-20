@@ -10,10 +10,10 @@
         private readonly ILogger _logger;
 
         /// <summary>
-        /// ctor
+        /// ctor.
         /// </summary>
-        /// <param name="decorated">исзодный объект</param>
-        /// <param name="logger">логгер</param>
+        /// <param name="decorated">Decorated method caller.</param>
+        /// <param name="logger">A logger.</param>
         public LoggedMethodCaller(IMethodCaller<T> decorated, ILogger logger)
             : base(decorated)
         {
@@ -30,11 +30,12 @@
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"Ошибка выполнения метода {methodName} объекта {SourceObjectType.FullName}.");
+                _logger.Error(e,
+                    $"Error was thrown at execution of method {methodName} of object {SourceObjectType.FullName}.");
                 throw;
             }
 
-            _logger.Information($"Метод {methodName} объекта {SourceObjectType.FullName} выполнен.");
+            _logger.Information($"Method {methodName} of object {SourceObjectType.FullName} executed successfully.");
 
             return result;
         }

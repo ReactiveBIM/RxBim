@@ -3,30 +3,27 @@
     using System;
 
     /// <summary>
-    /// Stack of ribbon items
+    /// Defines a stack of ribbon items.
     /// </summary>
     public interface IStackedItemsBuilder
     {
         /// <summary>
-        /// Creates a button on the stack
+        /// Adds a new button to the stack.
         /// </summary>
-        /// <param name="name">Internal name of the button</param>
-        /// <param name="commandType">
-        /// Class which implements command. This command will be execute when user push the button
-        /// </param>
-        /// <param name="action">Additional action with whe button</param>
-        /// <returns><see cref="IStackedItemsBuilder"/> object where button were created</returns>
+        /// <param name="name">The button internal name.</param>
+        /// <param name="commandType"> A class which implements command.
+        /// This command will be execute when user push the button. </param>
+        /// <param name="builder">The button builder.</param>
         IStackedItemsBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null);
+            Action<IButtonBuilder>? builder = null);
 
         /// <summary>
-        /// Create pull down button on the stack
+        /// Adds a new pull down button to the stack.
         /// </summary>
-        /// <param name="name">Internal name of the button</param>
-        /// <param name="action">Additional action with whe button</param>
-        /// <returns><see cref="IStackedItemsBuilder"/> object where button were created</returns>
-        IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action);
+        /// <param name="name">The button internal name.</param>
+        /// <param name="builder">The pull-down button builder.</param>
+        IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder);
     }
 }

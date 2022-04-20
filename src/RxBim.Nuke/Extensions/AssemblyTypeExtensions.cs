@@ -8,20 +8,20 @@
     using static Helpers.AssemblyScanner;
 
     /// <summary>
-    /// <see cref="AssemblyType"/> extensions
+    /// The <see cref="AssemblyType"/> class extensions.
     /// </summary>
     public static class AssemblyTypeExtensions
     {
         /// <summary>
-        /// Signs assemblies
+        /// Signs assemblies.
         /// </summary>
-        /// <param name="assemblyTypes">Assembly types</param>
-        /// <param name="outputDirectory">Output directory</param>
-        /// <param name="cert">Certificate path</param>
-        /// <param name="keyContainer">Private key</param>
-        /// <param name="csp">CSP containing</param>
-        /// <param name="digestAlgorithm">Digest algorithm</param>
-        /// <param name="timestampServerUrl">Timestamp server URL</param>
+        /// <param name="assemblyTypes">Assembly types.</param>
+        /// <param name="outputDirectory">Output directory path.</param>
+        /// <param name="cert">Certificate path.</param>
+        /// <param name="keyContainer">Private key.</param>
+        /// <param name="csp">CSP containing.</param>
+        /// <param name="digestAlgorithm">Digest algorithm.</param>
+        /// <param name="timestampServerUrl">Timestamp server URL.</param>
         public static void SignAssemblies(
             this IEnumerable<AssemblyType> assemblyTypes,
             AbsolutePath outputDirectory,
@@ -45,9 +45,9 @@
         }
 
         /// <summary>
-        /// Is assembly type plugin
+        /// Is assembly type plugin.
         /// </summary>
-        /// <param name="type"><see cref="AssemblyType"/></param>
+        /// <param name="type">The <see cref="AssemblyType"/>.</param>
         public static bool IsPluginType(this AssemblyType type)
         {
             return type.BaseTypeName == RxBimCommand ||
@@ -55,9 +55,9 @@
         }
 
         /// <summary>
-        /// Gets <see cref="AssemblyType"/> from build path
+        /// Gets <see cref="AssemblyType"/> from build path.
         /// </summary>
-        /// <param name="binPath">Build path</param>
+        /// <param name="binPath">Build path.</param>
         public static List<AssemblyType> GetPluginTypes(this AbsolutePath binPath)
         {
             var assemblyTypes = Scan(binPath)

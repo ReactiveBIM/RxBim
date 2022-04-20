@@ -1,22 +1,22 @@
 ﻿namespace RxBim.Shared
 {
     /// <summary>
-    /// Результат
+    /// Specifies the result of an operation.
     /// </summary>
     public enum Result
     {
         /// <summary>
-        /// Успешно
+        /// An operation succeeded.
         /// </summary>
         Succeeded,
 
         /// <summary>
-        /// Отменено
+        /// An operation cancelled.
         /// </summary>
         Cancelled,
 
         /// <summary>
-        /// Неуспешно
+        /// An operation failed.
         /// </summary>
         Failed
     }

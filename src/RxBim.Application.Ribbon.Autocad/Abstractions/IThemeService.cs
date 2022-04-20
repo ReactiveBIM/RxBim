@@ -4,22 +4,22 @@
     using Models;
 
     /// <summary>
-    /// Theme service
+    /// Theme service.
     /// </summary>
     public interface IThemeService
     {
         /// <summary>
-        /// Current theme changed event
+        /// Raises when UI theme is changed.
         /// </summary>
         event EventHandler ThemeChanged;
 
         /// <summary>
-        /// Runs the service
+        /// Starts the service.
         /// </summary>
         void Run();
 
         /// <summary>
-        /// Returns current theme type
+        /// Returns current theme.
         /// </summary>
         ThemeType GetCurrentTheme();
     }

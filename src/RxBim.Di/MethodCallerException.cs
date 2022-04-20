@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Исключение вызова метода команды или приложения Revit
+    /// The exception of execution external application or command.
     /// </summary>
     public class MethodCallerException : Exception
     {

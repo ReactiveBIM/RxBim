@@ -11,15 +11,15 @@
     using RazorLight;
 
     /// <summary>
-    /// Converts RTF xml result into html
+    /// Converts RTF xml result into html.
     /// </summary>
     public class ResultConverter
     {
         /// <summary>
-        /// Converts RTF xml result into html
+        /// Converts RTF xml result into html.
         /// </summary>
-        /// <param name="resultSourcePath">RTF result file path</param>
-        /// <param name="resultPath">converted result path</param>
+        /// <param name="resultSourcePath">RTF result file path.</param>
+        /// <param name="resultPath">converted result path.</param>
         public async Task Convert(string resultSourcePath, string resultPath)
         {
             var doc = await LoadSource(resultSourcePath);

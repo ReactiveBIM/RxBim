@@ -1,22 +1,22 @@
 ﻿namespace RxBim.Shared
 {
     /// <summary>
-    /// Constants
+    /// Constants.
     /// </summary>
     public static class Constants
     {
         /// <summary>
-        /// Название метода, выполняемого при запуске команды
+        /// Method name of the executed command.
         /// </summary>
         public const string ExecuteMethodName = "ExecuteCommand";
 
         /// <summary>
-        /// Название метода, выполняемого при загрузке приложения
+        /// Method name of the started application.
         /// </summary>
         public const string StartMethodName = "Start";
 
         /// <summary>
-        /// Название метода, выполняемого при остановке приложения
+        /// Method name of the shutted down application.
         /// </summary>
         public const string ShutdownMethodName = "Shutdown";
     }
