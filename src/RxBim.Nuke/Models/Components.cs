@@ -3,42 +3,42 @@
     using System.Xml.Linq;
 
     /// <summary>
-    /// Components
+    /// Specifies components of a package manifest.
     /// </summary>
     public abstract class Components
     {
         /// <summary>
-        /// Description
+        /// Description.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Operation system
+        /// Operation system.
         /// </summary>
         public string OS { get; set; }
 
         /// <summary>
-        /// Platform
+        /// Platform.
         /// </summary>
         public string Platform { get; set; }
 
         /// <summary>
-        /// Min platform version
+        /// Minimum platform version.
         /// </summary>
         public string SeriesMin { get; set; }
 
         /// <summary>
-        /// Max platform version
+        /// Maximum platform version.
         /// </summary>
         public string SeriesMax { get; set; }
 
         /// <summary>
-        /// Module name
+        /// Module name.
         /// </summary>
         public string ModuleName { get; set; }
 
         /// <summary>
-        /// Maps <see cref="Components"/> to <see cref="XElement"/>
+        /// Maps <see cref="Components"/> to <see cref="XElement"/>.
         /// </summary>
         public XElement ToXElement()
         {
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Gets component entry
+        /// Gets component entry.
         /// </summary>
         protected abstract XElement GetComponentEntry();
 

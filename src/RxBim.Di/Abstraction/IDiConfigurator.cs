@@ -3,14 +3,14 @@
     using System.Reflection;
 
     /// <summary>
-    /// Конфигурато di контейнера
+    /// DI container configurator abstraction.
     /// </summary>
     public interface IDiConfigurator<T>
     {
         /// <summary>
-        /// Configure
+        /// Configures a container using <param name="assembly"></param>.
         /// </summary>
-        /// <param name="assembly">assembly</param>
+        /// <param name="assembly">An assembly.</param>
         void Configure(Assembly assembly);
     }
 }

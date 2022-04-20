@@ -8,15 +8,15 @@
     using Models;
 
     /// <summary>
-    /// Generator of PackageContents.xml
+    /// Generator of PackageContents.xml.
     /// </summary>
     public abstract class PackageContentsGenerator
     {
         /// <summary>
-        /// Generates PackageContents.xml
+        /// Generates PackageContents.xml file.
         /// </summary>
-        /// <param name="project">Project</param>
-        /// <param name="outputDirectory">Output path</param>
+        /// <param name="project">The project.</param>
+        /// <param name="outputDirectory">The output path.</param>
         public void Generate(Project project, string outputDirectory)
         {
             var outputFilePath = Path.Combine(outputDirectory, "PackageContents.xml");
@@ -27,9 +27,9 @@
         }
 
         /// <summary>
-        /// Gets <see cref="Components"/> collection
+        /// Gets <see cref="Components"/> collection.
         /// </summary>
-        /// <param name="project">Project</param>
+        /// <param name="project">The project.</param>
         protected abstract IEnumerable<Components> GetComponents(Project project);
     }
 }

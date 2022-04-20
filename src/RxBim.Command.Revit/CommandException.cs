@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Исключение выполнения команды Revit
+    /// Revit command exception.
     /// </summary>
     public class CommandException : Exception
     {

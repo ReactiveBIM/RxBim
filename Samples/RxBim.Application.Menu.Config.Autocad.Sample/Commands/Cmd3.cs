@@ -9,7 +9,7 @@
     public class Cmd3 : RxBimCommand
     {
         /// <summary>
-        /// Command execution
+        /// Command execution.
         /// </summary>
         public PluginResult ExecuteCommand()
         {

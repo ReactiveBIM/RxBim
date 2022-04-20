@@ -4,17 +4,17 @@
     using Abstractions.ConfigurationBuilders;
 
     /// <summary>
-    /// Ribbon panel configuration
+    /// Represents a ribbon panel configuration.
     /// </summary>
     public class Panel
     {
         /// <summary>
-        /// Panel name
+        /// The panel name.
         /// </summary>
         public string? Name { get; set; }
 
         /// <summary>
-        /// Elements on the panel
+        /// The panel element list.
         /// </summary>
         public List<IRibbonPanelElement> Elements { get; set; } = new();
     }

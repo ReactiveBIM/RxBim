@@ -8,7 +8,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodCallerDecorator{T}"/> class.
         /// </summary>
-        /// <param name="decorated">Decorated object</param>
+        /// <param name="decorated">Decorated object.</param>
         protected MethodCallerDecorator(IMethodCaller<T> decorated)
         {
             Decorated = decorated;
@@ -18,7 +18,7 @@
         public Type SourceObjectType => Decorated.SourceObjectType;
 
         /// <summary>
-        /// Decorated object
+        /// Decorated object.
         /// </summary>
         protected IMethodCaller<T> Decorated { get; }
 

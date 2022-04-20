@@ -2,14 +2,14 @@
 namespace RxBim.Shared
 {
     /// <summary>
-    /// Расширения для <see cref="PluginResult"/>
+    /// Extensions for <see cref="PluginResult"/>.
     /// </summary>
     public static class PluginResultExtensions
     {
         /// <summary>
-        /// Преобразует результат в результат Revit
+        /// Maps RxBim <see cref="PluginResult"/> to native Revit result.
         /// </summary>
-        /// <param name="commandResult">результат</param>
+        /// <param name="commandResult">RxBim plugin result.</param>
         public static Autodesk.Revit.UI.Result MapResultToRevitResult(this PluginResult commandResult)
         {
             return commandResult.Result switch

@@ -5,16 +5,18 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
     using Microsoft.Extensions.Configuration;
     using Models.Configurations;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents an items stack builder.
+    /// </summary>
     public class StackedItemsBuilder : IStackedItemsBuilder
     {
         /// <summary>
-        /// Max size of a stack
+        /// Max size of a stack.
         /// </summary>
         public const int MaxStackSize = 3;
 
         /// <summary>
-        /// Builds StackedItems
+        /// Builds StackedItems.
         /// </summary>
         public StackedItems StackedItems { get; } = new();
 
@@ -22,26 +24,26 @@ namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
         public IStackedItemsBuilder AddCommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? action = null)
+            Action<IButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
-            action?.Invoke(buttonBuilder);
+            builder?.Invoke(buttonBuilder);
 
             return AddButton(buttonBuilder.BuildingButton);
         }
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> action)
+        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder)
         {
-            var builder = new PulldownButtonBuilder(name);
-            action.Invoke(builder);
-            return AddButton(builder.BuildingButton);
+            var pulldownButton = new PulldownButtonBuilder(name);
+            builder.Invoke(pulldownButton);
+            return AddButton(pulldownButton.BuildingButton);
         }
 
         /// <summary>
-        /// Load buttons from config
+        /// Loads buttons from configurations.
         /// </summary>
-        /// <param name="stackedButtons">Buttons config section</param>
+        /// <param name="stackedButtons">A buttons config section.</param>
         internal void LoadButtonsFromConfig(IConfigurationSection stackedButtons)
         {
             foreach (var buttonSection in stackedButtons.GetChildren())

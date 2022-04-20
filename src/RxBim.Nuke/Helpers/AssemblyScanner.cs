@@ -7,14 +7,14 @@
     using Models;
 
     /// <summary>
-    /// Assembly scanner utils
+    /// An assembly scanner utilities.
     /// </summary>
     public static class AssemblyScanner
     {
         /// <summary>
-        /// Scans assembly
+        /// Scans an assembly.
         /// </summary>
-        /// <param name="file">Assembly file</param>
+        /// <param name="file">The assembly file path.</param>
         public static IEnumerable<AssemblyType> Scan(string file)
         {
             if (File.Exists(file))

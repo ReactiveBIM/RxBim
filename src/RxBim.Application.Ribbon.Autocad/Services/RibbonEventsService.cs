@@ -7,7 +7,7 @@
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
-    /// Ribbon events service
+    /// Ribbon events service.
     /// </summary>
     public class RibbonEventsService : IRibbonEventsService, IDisposable
     {

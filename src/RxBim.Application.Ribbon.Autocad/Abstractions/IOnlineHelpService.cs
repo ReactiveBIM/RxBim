@@ -19,7 +19,7 @@
         void AddToolTip(RibbonToolTip toolTip);
 
         /// <summary>
-        /// Clears a tooltip cache.
+        /// Clears the tooltip cache.
         /// </summary>
         void ClearToolTipsCache();
     }

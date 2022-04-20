@@ -12,16 +12,16 @@
     using static Constants;
 
     /// <summary>
-    /// Генератор манифест файлов для Revit
+    /// The Generator for Revit addin manifest files.
     /// </summary>
     public class AddInGenerator
     {
         /// <summary>
-        /// Генерирует addin файл
+        /// Generate a new addin file.
         /// </summary>
-        /// <param name="rootProjectName">Название основного проекта</param>
-        /// <param name="addInTypesPerProjects">Типы для регистрации в Revit</param>
-        /// <param name="outputDirectory">папка для сохранения addin файла</param>
+        /// <param name="rootProjectName">The root project name.</param>
+        /// <param name="addInTypesPerProjects">Addin types for registration in Revit.</param>
+        /// <param name="outputDirectory">The output directory path.</param>
         public void GenerateAddInFile(
             string rootProjectName,
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,

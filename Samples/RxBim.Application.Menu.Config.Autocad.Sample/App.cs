@@ -13,7 +13,7 @@ namespace RxBim.Application.Menu.Config.Autocad.Sample
     public class App : RxBimApplication
     {
         /// <summary>
-        /// Start application
+        /// Starts an application.
         /// </summary>
         public PluginResult Start()
         {
@@ -22,7 +22,7 @@ namespace RxBim.Application.Menu.Config.Autocad.Sample
         }
 
         /// <summary>
-        /// Shutdown application
+        /// Shutdowns an application.
         /// </summary>
         public PluginResult Shutdown()
         {

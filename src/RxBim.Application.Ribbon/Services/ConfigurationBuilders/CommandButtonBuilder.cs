@@ -4,15 +4,15 @@
     using Models.Configurations;
 
     /// <summary>
-    /// Command button builder
+    /// Represents a button builder.
     /// </summary>
     public class CommandButtonBuilder : ButtonBuilder<CommandButton>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.
         /// </summary>
-        /// <param name="name">Button name</param>
-        /// <param name="commandType">Command class type</param>
+        /// <param name="name">The button name.</param>
+        /// <param name="commandType">The command type.</param>
         public CommandButtonBuilder(string name, Type commandType)
             : base(name)
         {
@@ -21,7 +21,7 @@
         }
 
         /// <summary>
-        /// Command class type
+        /// The command type.
         /// </summary>
         public Type CommandType { get; }
     }

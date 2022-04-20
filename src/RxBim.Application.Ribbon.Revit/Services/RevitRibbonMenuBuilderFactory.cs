@@ -5,7 +5,7 @@
     using Autodesk.Revit.UI;
 
     /// <summary>
-    /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for Revit
+    /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for Revit.
     /// </summary>
     public class RevitRibbonMenuBuilderFactory : IRibbonMenuBuilderFactory
     {
@@ -14,7 +14,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitRibbonMenuBuilderFactory"/> class.
         /// </summary>
-        /// <param name="application">Revit application</param>
+        /// <param name="application">Revit application.</param>
         public RevitRibbonMenuBuilderFactory(UIControlledApplication application)
         {
             _application = application;

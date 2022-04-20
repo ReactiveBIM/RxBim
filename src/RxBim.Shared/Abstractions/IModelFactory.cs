@@ -3,21 +3,23 @@
     using System;
 
     /// <summary>
-    /// Фабрика моделей
+    /// Models factory abstraction.
     /// </summary>
     public interface IModelFactory
     {
         /// <summary>
-        /// Создает экземпляр указанного типа, зарегистрированного в контейнере
+        /// Creates a new instance of <typeparamref name="T"/>.
         /// </summary>
-        /// <typeparam name="T">Тип объекта</typeparam>
+        /// <typeparam name="T">The type of the requested instance.</typeparam>
+        /// <returns>A new instance of the requested instance.</returns>
         T GetInstance<T>()
             where T : class;
 
         /// <summary>
-        /// Создает экземпляр указанного типа, зарегистрированного в контейнере
+        /// Creates a new instance of <paramref name="type"/>.
         /// </summary>
-        /// <param name="type">Тип объекта</param>
+        /// <param name="type">The requested instance type.</param>
+        /// <returns>An instance object of the requested type.</returns>
         object GetInstance(Type type);
     }
 }

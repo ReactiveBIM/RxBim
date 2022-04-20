@@ -6,7 +6,7 @@
     using Shared;
 
     /// <summary>
-    /// Конфигуратор зависимостей приложения
+    /// Revit application DI container configurator.
     /// </summary>
     internal class ApplicationDiConfigurator : DiConfigurator<IApplicationConfiguration>
     {
@@ -15,11 +15,11 @@
         private readonly UIApplication _uiApp;
 
         /// <summary>
-        /// Создает экземпляр класса <see cref="ApplicationDiConfigurator"/>
+        /// Initialize a new instance of <see cref="ApplicationDiConfigurator"/>.
         /// </summary>
-        /// <param name="applicationObject">Объект приложения</param>
-        /// <param name="uiControlledApp">Пользовательский интерфейс Revit</param>
-        /// <param name="uiApp">Активная сессия пользовательского интерфейса Revit</param>
+        /// <param name="applicationObject">application object.</param>
+        /// <param name="uiControlledApp">Revit ui controlled application.</param>
+        /// <param name="uiApp">Revit ui application.</param>
         public ApplicationDiConfigurator(
             object applicationObject,
             UIControlledApplication uiControlledApp,

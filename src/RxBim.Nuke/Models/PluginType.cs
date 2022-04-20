@@ -1,17 +1,17 @@
 ﻿namespace RxBim.Nuke.Models
 {
     /// <summary>
-    /// Types of plugin
+    /// Types of a plugin.
     /// </summary>
     public enum PluginType
     {
         /// <summary>
-        /// Application
+        /// The Application.
         /// </summary>
         Application,
 
         /// <summary>
-        /// Command
+        /// The Command.
         /// </summary>
         Command
     }

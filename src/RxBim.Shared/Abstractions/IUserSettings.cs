@@ -1,11 +1,16 @@
-﻿namespace RxBim.Shared.Abstractions
+﻿#pragma warning disable
+namespace RxBim.Shared.Abstractions
 {
+    using System;
+
     /// <summary>
-    /// Сервис работы с пользовательскими настройками
+    /// Service for working with user settings.
     /// </summary>
+    [Obsolete("Will be deleted in the next release!")]
     public interface IUserSettings
     {
         /// <summary>
+        /// Adds or updates data in user settings. 
         /// Добавляет или обновляет данные в файле настроек. В качестве имени создаваемого узла в xml файле используется
         /// имя типа сохраняемого объекта, если не задан параметр nodeName
         /// </summary>

@@ -5,57 +5,57 @@
     using System.Xml.Linq;
 
     /// <summary>
-    /// Application package
+    /// Specifies an application package manifest.
     /// </summary>
     public class ApplicationPackage
     {
         /// <summary>
-        /// Schema version
+        /// Schema version.
         /// </summary>
         public string SchemaVersion { get; set; } = "1.0";
 
         /// <summary>
-        /// Package name
+        /// Package name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Description
+        /// Description.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Application version
+        /// Application version.
         /// </summary>
         public string AppVersion { get; set; }
 
         /// <summary>
-        /// Friendly version
+        /// Friendly version.
         /// </summary>
         public string FriendlyVersion { get; set; }
 
         /// <summary>
-        /// Product type
+        /// Product type.
         /// </summary>
         public string ProductType { get; set; } = "Application";
 
         /// <summary>
-        /// Product code
+        /// Product code.
         /// </summary>
         public string ProductCode { get; set; }
 
         /// <summary>
-        /// Upgrade code
+        /// Upgrade code.
         /// </summary>
         public string UpgradeCode { get; set; }
 
         /// <summary>
-        /// Components
+        /// Components.
         /// </summary>
         public List<Components> Components { get; set; }
 
         /// <summary>
-        /// Maps <see cref="ApplicationPackage"/> to <see cref="XElement"/>
+        /// Maps <see cref="ApplicationPackage"/> to <see cref="XElement"/>.
         /// </summary>
         public XElement ToXElement()
         {
