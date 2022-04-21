@@ -5,6 +5,6 @@ namespace RxBim.Logs.Settings.Configuration
 
     internal interface IConfigurationArgumentValue
     {
-        object ConvertTo(Type toType, ResolutionContext resolutionContext);
+        object? ConvertTo(Type toType, ResolutionContext resolutionContext);
     }
 }

@@ -51,7 +51,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
 
             return query.ToList().AsReadOnly();
 
-            static AssemblyName TryGetAssemblyNameFrom(string path)
+            static AssemblyName? TryGetAssemblyNameFrom(string path)
             {
                 try
                 {

@@ -26,7 +26,7 @@ namespace RxBim.Logs.Settings.Configuration
             _providedValue = providedValue ?? throw new ArgumentNullException(nameof(providedValue));
         }
 
-        public object ConvertTo(Type toType, ResolutionContext resolutionContext)
+        public object? ConvertTo(Type toType, ResolutionContext resolutionContext)
         {
             var argumentValue = Environment.ExpandEnvironmentVariables(_providedValue);
 
@@ -63,7 +63,7 @@ namespace RxBim.Logs.Settings.Configuration
                 // like "Namespace.TypeName::StaticProperty, AssemblyName"
                 if (TryParseStaticMemberAccessor(argumentValue, out var accessorTypeName, out var memberName))
                 {
-                    var accessorType = Type.GetType(accessorTypeName, throwOnError: true);
+                    var accessorType = Type.GetType(accessorTypeName!, throwOnError: true);
                     
                     // is there a public static property with that name ?
                     var publicStaticPropertyInfo = accessorType.GetTypeInfo().DeclaredProperties
@@ -115,7 +115,7 @@ namespace RxBim.Logs.Settings.Configuration
             return Convert.ChangeType(argumentValue, toType);
         }
 
-        internal static Type FindType(string typeName)
+        internal static Type? FindType(string typeName)
         {
             var type = Type.GetType(typeName);
             if (type == null)
@@ -129,7 +129,7 @@ namespace RxBim.Logs.Settings.Configuration
             return type;
         }
 
-        internal static bool TryParseStaticMemberAccessor(string input, out string accessorTypeName, out string memberName)
+        internal static bool TryParseStaticMemberAccessor(string? input, out string? accessorTypeName, out string? memberName)
         {
             if (input == null)
             {
