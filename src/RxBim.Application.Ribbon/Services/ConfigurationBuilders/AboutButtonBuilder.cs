@@ -1,7 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
-    using Models.Configurations;
-    using Shared;
+    using RxBim.Shared;
 
     /// <summary>
     /// About button builder.

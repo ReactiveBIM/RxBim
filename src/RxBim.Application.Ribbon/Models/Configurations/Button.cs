@@ -1,7 +1,5 @@
-﻿namespace RxBim.Application.Ribbon.Models.Configurations
+﻿namespace RxBim.Application.Ribbon
 {
-    using Abstractions.ConfigurationBuilders;
-
     /// <summary>
     /// Represents a button configuration.
     /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions
+﻿namespace RxBim.Application.Ribbon
 {
     using System.Reflection;
 

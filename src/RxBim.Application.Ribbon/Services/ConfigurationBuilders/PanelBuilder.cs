@@ -1,12 +1,9 @@
-namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
     using System.Linq;
-    using Abstractions.ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
-    using Models;
-    using Models.Configurations;
-    using Shared;
+    using RxBim.Shared;
 
     /// <summary>
     /// Represents a ribbon panel builder.

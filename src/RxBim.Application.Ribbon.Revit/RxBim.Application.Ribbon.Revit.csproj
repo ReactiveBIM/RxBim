@@ -5,6 +5,7 @@
         <PlatformTarget>x64</PlatformTarget>
         <NoWarn>NU1701</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

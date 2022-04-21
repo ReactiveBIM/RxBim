@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Di.Tests
 {
-    using Shared;
     using TestDependencies;
 
     public class TestDiConfigurator : DiConfigurator<IPluginConfiguration>

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Models.Configurations
+﻿namespace RxBim.Application.Ribbon
 {
     /// <summary>
     /// Represents a button that invokes a command.

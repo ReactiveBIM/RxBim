@@ -6,6 +6,7 @@
         <NoWarn>NU1701</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Nullable>enable</Nullable>
+        <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

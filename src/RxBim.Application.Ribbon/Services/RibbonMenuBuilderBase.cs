@@ -1,14 +1,10 @@
-﻿namespace RxBim.Application.Ribbon.Services
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
     using System.Windows.Media.Imaging;
-    using Abstractions;
-    using Extensions;
-    using Models;
-    using Models.Configurations;
-    using Shared;
-    using Shared.Abstractions;
+    using RxBim.Shared;
+    using RxBim.Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder

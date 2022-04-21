@@ -1,7 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
-    using Models.Configurations;
 
     /// <summary>
     /// Represents a button builder.

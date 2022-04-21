@@ -1,7 +1,7 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using Shared;
+    using RxBim.Shared;
 
     /// <summary>
     /// Defines a ribbon panel.

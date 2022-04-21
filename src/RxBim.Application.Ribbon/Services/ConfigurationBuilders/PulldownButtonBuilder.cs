@@ -1,8 +1,6 @@
-namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
-    using Abstractions.ConfigurationBuilders;
-    using Models.Configurations;
 
     /// <summary>
     /// Represents a pull-down builder.

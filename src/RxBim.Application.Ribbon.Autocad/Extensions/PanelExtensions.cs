@@ -1,9 +1,8 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Linq;
     using Autodesk.Windows;
-    using Ribbon.Abstractions.ConfigurationBuilders;
 
     /// <summary>
     /// Extensions for <see cref="IPanelBuilder"/>.

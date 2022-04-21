@@ -1,11 +1,9 @@
-﻿namespace RxBim.Application.Ribbon.Revit.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
-    using Abstractions.ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.Configuration;
-    using Ribbon.Extensions;
+    using RxBim.Di;
     using Services;
 
     /// <summary>

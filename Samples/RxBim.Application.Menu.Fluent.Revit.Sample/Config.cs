@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Di;
-    using Ribbon.Revit.Extensions;
+    using Ribbon;
     using Shared;
 
     /// <inheritdoc />

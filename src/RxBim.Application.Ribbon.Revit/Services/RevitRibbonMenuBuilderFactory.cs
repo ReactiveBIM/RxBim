@@ -1,7 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Revit.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System.Reflection;
-    using Abstractions;
     using Autodesk.Revit.UI;
 
     /// <summary>

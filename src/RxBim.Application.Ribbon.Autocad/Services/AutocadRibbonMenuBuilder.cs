@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
     using System.Collections.Generic;
@@ -8,14 +8,9 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
-    using Extensions;
     using GalaSoft.MvvmLight.CommandWpf;
-    using Models;
-    using Models.Configurations;
-    using Ribbon.Abstractions;
-    using Ribbon.Services;
-    using Ribbon.Services.ConfigurationBuilders;
-    using Button = Models.Configurations.Button;
+    using RxBim.Application.Ribbon.ConfigurationBuilders;
+    using Button = Application.Ribbon.Button;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD.

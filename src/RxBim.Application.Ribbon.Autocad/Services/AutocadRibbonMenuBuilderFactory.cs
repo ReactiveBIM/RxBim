@@ -1,8 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System.Reflection;
-    using Abstractions;
-    using Ribbon.Abstractions;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for AutoCAD.

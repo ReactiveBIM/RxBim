@@ -1,8 +1,7 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
     using System.Collections.Generic;
-    using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Internal.Windows;
     using Autodesk.Windows;

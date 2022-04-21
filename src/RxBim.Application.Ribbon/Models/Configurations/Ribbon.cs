@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Models.Configurations
+﻿namespace RxBim.Application.Ribbon
 {
     using System.Collections.Generic;
 

@@ -1,10 +1,8 @@
-﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
-    using Abstractions.ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
-    using Models.Configurations;
-    using Shared;
+    using RxBim.Shared;
 
     /// <summary>
     /// Represents a tab buileder.

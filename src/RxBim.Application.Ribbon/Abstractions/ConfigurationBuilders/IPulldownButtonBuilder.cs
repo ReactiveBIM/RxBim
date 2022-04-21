@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
 

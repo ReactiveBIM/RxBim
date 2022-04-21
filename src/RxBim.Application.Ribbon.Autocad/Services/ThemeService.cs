@@ -1,9 +1,7 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
-    using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
-    using Models;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <inheritdoc cref="IThemeService" />
