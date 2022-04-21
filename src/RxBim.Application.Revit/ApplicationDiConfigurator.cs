@@ -48,7 +48,7 @@
                 .AddInstance(_uiApp)
                 .AddInstance(_uiApp.Application)
                 .AddTransient(() => _uiApp.ActiveUIDocument)
-                .AddTransient(() => _uiApp.ActiveUIDocument?.Document)
+                .AddTransient(() => _uiApp.ActiveUIDocument?.Document!)
                 .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }

@@ -13,8 +13,8 @@
     public abstract class RxBimApplication : IExternalApplication
     {
         private bool _contextCreated;
-        private UIControlledApplication _application;
-        private ApplicationDiConfigurator _diConfigurator;
+        private UIControlledApplication _application = null!;
+        private ApplicationDiConfigurator _diConfigurator = null!;
 
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
