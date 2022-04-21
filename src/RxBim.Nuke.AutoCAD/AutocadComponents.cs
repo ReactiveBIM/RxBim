@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.AutoCAD
 {
     using System.Xml.Linq;
+    using Helpers;
     using Models;
 
     /// <inheritdoc />
@@ -11,7 +12,7 @@
         {
             return new XElement(
                 "ComponentEntry",
-                new XAttribute(nameof(ModuleName), ModuleName),
+                new XAttribute(nameof(ModuleName), ModuleName.Ensure()),
                 new XAttribute("AppType", ".Net"),
                 new XAttribute("LoadOnAutoCADStartup", "True"));
         }

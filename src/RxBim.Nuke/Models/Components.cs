@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.Models
 {
     using System.Xml.Linq;
+    using Helpers;
 
     /// <summary>
     /// Specifies components of a package manifest.
@@ -10,32 +11,32 @@
         /// <summary>
         /// Description.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; init; }
 
         /// <summary>
         /// Operation system.
         /// </summary>
-        public string OS { get; set; }
+        public string? OS { get; init; }
 
         /// <summary>
         /// Platform.
         /// </summary>
-        public string Platform { get; set; }
+        public string? Platform { get; init; }
 
         /// <summary>
         /// Minimum platform version.
         /// </summary>
-        public string SeriesMin { get; set; }
+        public string? SeriesMin { get; init; }
 
         /// <summary>
         /// Maximum platform version.
         /// </summary>
-        public string SeriesMax { get; set; }
+        public string? SeriesMax { get; init; }
 
         /// <summary>
         /// Module name.
         /// </summary>
-        public string ModuleName { get; set; }
+        public string? ModuleName { get; init; }
 
         /// <summary>
         /// Maps <see cref="Components"/> to <see cref="XElement"/>.
@@ -44,7 +45,7 @@
         {
             return new XElement(
                 nameof(Components),
-                new XAttribute(nameof(Description), Description),
+                new XAttribute(nameof(Description), Description.Ensure()),
                 GetRuntimeRequirements(),
                 GetComponentEntry());
         }
@@ -58,8 +59,8 @@
         {
             var element = new XElement(
                 "RuntimeRequirements",
-                new XAttribute(nameof(OS), OS),
-                new XAttribute(nameof(Platform), Platform));
+                new XAttribute(nameof(OS), OS.Ensure()),
+                new XAttribute(nameof(Platform), Platform.Ensure()));
 
             if (!string.IsNullOrWhiteSpace(SeriesMin))
             {

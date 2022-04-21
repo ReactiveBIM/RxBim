@@ -10,6 +10,6 @@
         /// <summary>
         /// List of addins.
         /// </summary>
-        public List<AddIn> AddIn { get; set; }
+        public List<AddIn>? AddIn { get; set; }
     }
 }

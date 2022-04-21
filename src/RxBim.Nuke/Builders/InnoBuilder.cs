@@ -9,6 +9,7 @@
     using Extensions;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
+    using Helpers;
     using InnoSetup.ScriptBuilder;
     using MsiBuilder;
 
@@ -28,13 +29,13 @@
             Options options,
             AbsolutePath outputProjDir,
             AbsolutePath outputProjBinDir,
-            string setupFileName = null)
+            string? setupFileName = null)
         {
             _options = options;
             _outputProjDir = outputProjDir;
             _outputProjBinDir = outputProjBinDir;
 
-            var installDir = options.InstallDir.Replace("%AppDataFolder%", "{userappdata}");
+            var installDir = options.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
             _projInstallDir = $@"{installDir}\{options.ProjectName}";
             var outputFileName = setupFileName ?? $"{options.OutFileName}_{options.Version}";
 
@@ -66,7 +67,7 @@
             Options options,
             AbsolutePath outputProjDir,
             AbsolutePath outputProjBinDir,
-            string setupFileName = null)
+            string? setupFileName = null)
             => new(options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
@@ -126,7 +127,7 @@
         private static FontFamily LoadFontFamily(Stream stream)
         {
             var buffer = new byte[stream.Length];
-            stream.Read(buffer, 0, buffer.Length);
+            _ = stream.Read(buffer, 0, buffer.Length);
             var data = Marshal.AllocCoTaskMem((int)stream.Length);
 
             try

@@ -29,7 +29,7 @@
             string timestampServerUrl)
         {
             cert = cert ??
-                   throw new ArgumentException("Didn't set certificate");
+                   throw new ArgumentException("Certificate is not set");
 
             keyContainer = keyContainer ??
                            throw new ArgumentException("Didn't set private key container");

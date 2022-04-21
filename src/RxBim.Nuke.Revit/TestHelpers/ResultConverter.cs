@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using System.Xml;
     using global::Nuke.Common;
-    using JetBrains.Annotations;
     using RazorLight;
 
     /// <summary>
@@ -43,7 +42,7 @@
             return testResultData;
         }
 
-        private TestResultData InitTestResultData([NotNull] XmlDocument doc)
+        private TestResultData InitTestResultData(XmlDocument doc)
         {
             var xmlAttributeCollection = doc.SelectSingleNode("/test-results")?.Attributes;
             if (xmlAttributeCollection != null)
@@ -60,7 +59,7 @@
             throw new ArgumentException($"Result document has wrong structure!");
         }
 
-        private IEnumerable<TestFixtureData> CreateFixturesData([NotNull] XmlDocument doc)
+        private IEnumerable<TestFixtureData> CreateFixturesData(XmlDocument doc)
         {
             var fixturesData = doc.DocumentElement?.SelectNodes("/test-results/test-suite/results/test-suite");
             if (fixturesData == null)

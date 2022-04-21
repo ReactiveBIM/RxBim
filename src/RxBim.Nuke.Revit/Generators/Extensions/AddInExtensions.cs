@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Xml.Linq;
+    using Helpers;
     using JetBrains.Annotations;
     using Models;
 
@@ -36,7 +37,7 @@
         public static XDocument ToXDocument(this RevitAddIns revitAddIns)
         {
             return new XDocument(new XElement(nameof(RevitAddIns),
-                revitAddIns.AddIn.Select(x => x.ToXElement())));
+                revitAddIns.AddIn.Ensure().Select(x => x.ToXElement())));
         }
     }
 }
