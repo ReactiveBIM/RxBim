@@ -1,12 +1,9 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
-    using Abstractions;
-    using Di;
     using Microsoft.Extensions.Configuration;
-    using Ribbon.Abstractions.ConfigurationBuilders;
-    using Ribbon.Extensions;
+    using RxBim.Di;
     using Services;
 
     /// <summary>

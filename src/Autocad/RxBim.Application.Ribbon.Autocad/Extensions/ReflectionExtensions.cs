@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;

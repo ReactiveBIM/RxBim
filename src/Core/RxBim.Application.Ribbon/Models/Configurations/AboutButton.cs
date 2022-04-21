@@ -1,6 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Models.Configurations
+﻿namespace RxBim.Application.Ribbon
 {
-    using Shared;
+    using RxBim.Shared;
 
     /// <summary>
     /// Button for displaying the About window.

@@ -1,11 +1,8 @@
-﻿namespace RxBim.Application.Ribbon.Services
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using Abstractions;
-    using Di;
-    using Extensions;
-    using Models.Configurations;
-    using Shared;
+    using RxBim.Di;
+    using RxBim.Shared;
 
     /// <summary>
     /// Decorator creating the plugin ribbon.

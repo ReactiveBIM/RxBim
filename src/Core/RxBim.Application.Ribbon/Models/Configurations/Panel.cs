@@ -1,7 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Models.Configurations
+﻿namespace RxBim.Application.Ribbon
 {
     using System.Collections.Generic;
-    using Abstractions.ConfigurationBuilders;
 
     /// <summary>
     /// Represents a ribbon panel configuration.

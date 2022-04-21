@@ -11,7 +11,7 @@
         /// <param name="assemblyName">The assembly name.</param>
         /// <param name="fullName">The assembly full name.</param>
         /// <param name="baseTypeName">The assembly base type name.</param>
-        public AssemblyType(string assemblyName, string fullName, string baseTypeName)
+        public AssemblyType(string assemblyName, string fullName, string? baseTypeName)
         {
             AssemblyName = assemblyName;
             FullName = fullName;
@@ -31,7 +31,7 @@
         /// <summary>
         /// The assembly base type name.
         /// </summary>
-        public string BaseTypeName { get; }
+        public string? BaseTypeName { get; }
 
         /// <inheritdoc />
         public override string ToString()

@@ -1,10 +1,8 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Windows.Controls;
     using Autodesk.Windows;
-    using Ribbon.Abstractions.ConfigurationBuilders;
-    using Button = Models.Configurations.Button;
 
     /// <summary>
     /// Extensions for <see cref="IButtonBuilder"/>.
@@ -71,7 +69,7 @@
         /// <exception cref="InvalidOperationException">If the button name is not specified.</exception>
         public static void SetProperties(
             this RibbonButton ribbonButton,
-            Button buttonConfig,
+            Application.Ribbon.Button buttonConfig,
             RibbonItemSize size,
             Orientation orientation,
             bool forceTextSettings)
@@ -107,7 +105,7 @@
         /// Returns orientation for single large button.
         /// </summary>
         /// <param name="button">Button config.</param>
-        public static Orientation GetOrientation(this Button button)
+        public static Orientation GetOrientation(this Application.Ribbon.Button button)
         {
             return !string.IsNullOrWhiteSpace(button.Text)
                 ? Orientation.Vertical

@@ -1,8 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Services.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
-    using Abstractions.ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
-    using Models.Configurations;
 
     /// <summary>
     /// Represents a ribbon builder.

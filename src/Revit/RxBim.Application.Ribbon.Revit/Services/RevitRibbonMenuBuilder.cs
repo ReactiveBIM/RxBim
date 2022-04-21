@@ -1,19 +1,16 @@
-﻿namespace RxBim.Application.Ribbon.Revit.Services
+﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Controls;
-    using Abstractions;
     using Autodesk.Private.Windows;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using GalaSoft.MvvmLight.CommandWpf;
-    using Models.Configurations;
-    using Ribbon.Services;
     using UIFramework;
-    using Button = Models.Configurations.Button;
+    using Button = Application.Ribbon.Button;
     using RibbonButton = Autodesk.Windows.RibbonButton;
     using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
@@ -189,7 +186,7 @@
             buttonData.LargeImage = GetIconImage(buttonConfig.LargeImage);
         }
 
-        private void SetTooltip(RibbonItemData buttonData, string tooltip)
+        private void SetTooltip(RibbonItemData buttonData, string? tooltip)
         {
             if (tooltip != null)
                 buttonData.ToolTip = tooltip;

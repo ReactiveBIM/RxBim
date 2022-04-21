@@ -1,7 +1,6 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions
+﻿namespace RxBim.Application.Ribbon
 {
-    using Models.Configurations;
-    using Shared.Abstractions;
+    using RxBim.Shared.Abstractions;
 
     /// <summary>
     /// Defines a CAD platform-specific ribbon menu builder.

@@ -15,7 +15,7 @@
     public class WixBuilder<T>
         where T : PackageContentsGenerator, new()
     {
-        private Options _options;
+        private Options? _options;
 
         /// <summary>
         /// Builds MSI.
@@ -63,7 +63,7 @@
         /// <param name="addInTypes">Assembly types.</param>
         /// <param name="outputDir">Output directory path.</param>
         public virtual void GenerateAdditionalFiles(
-            string rootProjectName,
+            string? rootProjectName,
             IEnumerable<Project> allProject,
             IEnumerable<AssemblyType> addInTypes,
             string outputDir)

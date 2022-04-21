@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <NoWarn>NU1701;NU1702</NoWarn>
+        <Nullable>enable</Nullable>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>

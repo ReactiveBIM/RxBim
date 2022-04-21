@@ -1,15 +1,11 @@
-﻿namespace RxBim.Application.Ribbon.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
-    using Abstractions;
-    using Abstractions.ConfigurationBuilders;
-    using Di;
+    using ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
-    using Models.Configurations;
-    using Services;
-    using Services.ConfigurationBuilders;
-    using Shared.Abstractions;
+    using RxBim.Di;
+    using RxBim.Shared.Abstractions;
 
     /// <summary>
     /// Contqins DI Container Extensions for Ribbon Menu.

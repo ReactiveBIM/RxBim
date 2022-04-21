@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Extensions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.IO;

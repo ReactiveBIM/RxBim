@@ -7,6 +7,7 @@
     using global::Nuke.Common;
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tools.Git;
+    using Helpers;
 
     /// <content>
     /// GIT build targets.
@@ -35,7 +36,7 @@
             .Executes(() =>
             {
                 var gitCurrentBranch = GitTasks.GitCurrentBranch();
-                var gitVersion = _releaseBranchRegex.Match(gitCurrentBranch).Groups["version"].Value;
+                var gitVersion = _releaseBranchRegex.Ensure().Match(gitCurrentBranch).Groups["version"].Value;
                 var projectVersion = ProjectForMsiBuild.GetProperty("Version");
                 if (gitVersion != projectVersion)
                 {

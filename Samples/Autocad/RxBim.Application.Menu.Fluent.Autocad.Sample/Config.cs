@@ -3,9 +3,7 @@
     using System.Collections.Generic;
     using Commands;
     using Di;
-    using Ribbon.Abstractions.ConfigurationBuilders;
-    using Ribbon.Autocad.Extensions;
-    using Ribbon.Models;
+    using Ribbon;
     using Shared;
 
     /// <inheritdoc />

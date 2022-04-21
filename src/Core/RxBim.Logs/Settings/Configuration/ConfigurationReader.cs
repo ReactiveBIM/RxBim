@@ -27,7 +27,7 @@ namespace RxBim.Logs.Settings.Configuration
         public ConfigurationReader(
             IConfigurationSection configSection,
             AssemblyFinder assemblyFinder,
-            IConfiguration configuration = null)
+            IConfiguration? configuration = null)
         {
             _section = configSection ?? throw new ArgumentNullException(nameof(configSection));
             _configurationAssemblies = LoadConfigurationAssemblies(_section, assemblyFinder);
@@ -36,7 +36,7 @@ namespace RxBim.Logs.Settings.Configuration
 
         // Used internally for processing nested configuration sections -- see GetMethodCalls below.
         internal ConfigurationReader(
-            IConfigurationSection configSection,
+            IConfigurationSection? configSection,
             IReadOnlyCollection<Assembly> configurationAssemblies,
             ResolutionContext resolutionContext)
         {
@@ -71,14 +71,14 @@ namespace RxBim.Logs.Settings.Configuration
         }
 
         internal static IConfigurationArgumentValue GetArgumentValue(
-            IConfigurationSection argumentSection,
+            IConfigurationSection? argumentSection,
             IReadOnlyCollection<Assembly> configurationAssemblies)
         {
             IConfigurationArgumentValue argumentValue;
 
             // Reject configurations where an element has both scalar and complex
             // values as a result of reading multiple configuration sources.
-            if (argumentSection.Value != null && argumentSection.GetChildren().Any())
+            if (argumentSection?.Value != null && argumentSection.GetChildren().Any())
             {
                 throw new InvalidOperationException(
                     $"The value for the argument '{argumentSection.Path}' is assigned different value " +
@@ -87,7 +87,7 @@ namespace RxBim.Logs.Settings.Configuration
                     "POCO, etc.) type for this argument value.");
             }
 
-            if (argumentSection.Value != null)
+            if (argumentSection?.Value != null)
             {
                 argumentValue = new StringArgumentValue(argumentSection.Value);
             }
@@ -99,7 +99,7 @@ namespace RxBim.Logs.Settings.Configuration
             return argumentValue;
         }
 
-        internal static MethodInfo SelectConfigurationMethod(
+        internal static MethodInfo? SelectConfigurationMethod(
             IEnumerable<MethodInfo> candidateMethods,
             string name,
             IEnumerable<string> suppliedArgumentNames)
@@ -500,7 +500,7 @@ namespace RxBim.Logs.Settings.Configuration
             }
         }
 
-        private object GetImplicitValueForNotSpecifiedKey(ParameterInfo parameter, MethodInfo methodToInvoke)
+        private object? GetImplicitValueForNotSpecifiedKey(ParameterInfo parameter, MethodInfo methodToInvoke)
         {
             if (!HasImplicitValueWhenNotSpecified(parameter))
             {

@@ -6,6 +6,7 @@
     using System.Linq;
     using Extensions;
     using global::Nuke.Common.ProjectModel;
+    using Helpers;
     using Models;
     using RxBim.Nuke.Extensions;
     using RxBim.Nuke.Models;
@@ -23,7 +24,7 @@
         /// <param name="addInTypesPerProjects">Addin types for registration in Revit.</param>
         /// <param name="outputDirectory">The output directory path.</param>
         public void GenerateAddInFile(
-            string rootProjectName,
+            string? rootProjectName,
             IReadOnlyList<ProjectWithAssemblyType> addInTypesPerProjects,
             string outputDirectory)
         {
@@ -41,7 +42,7 @@
         }
 
         private void GenerateAddIn(
-            string rootProjectName,
+            string? rootProjectName,
             IEnumerable<ProjectWithAssemblyType> addinTypesPerProjects,
             string output)
         {
@@ -58,7 +59,7 @@
                     $"{rootProjectName}/{project.Name}.dll",
                     guid.ToString(),
                     assemblyType.FullName,
-                    assemblyType.BaseTypeName.ToPluginType()));
+                    assemblyType.BaseTypeName.Ensure().ToPluginType()));
             }
 
             var revitAddIns = new RevitAddIns

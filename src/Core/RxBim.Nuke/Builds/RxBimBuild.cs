@@ -14,6 +14,7 @@
     using global::Nuke.Common.Tools.DotNet;
     using global::Nuke.Common.Tools.Git;
     using global::Nuke.Common.Tools.InnoSetup;
+    using Helpers;
     using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
@@ -140,10 +141,10 @@
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
                     (AbsolutePath)Cert,
-                    PrivateKey,
-                    Csp,
-                    Algorithm,
-                    ServerUrl);
+                    PrivateKey.Ensure(),
+                    Csp.Ensure(),
+                    Algorithm.Ensure(),
+                    ServerUrl.Ensure());
             });
 
         /// <summary>
@@ -230,10 +231,10 @@
 
             filePath.SignFile(
                 (AbsolutePath)Cert,
-                PrivateKey,
-                Csp,
-                Algorithm,
-                ServerUrl);
+                PrivateKey.Ensure(),
+                Csp.Ensure(),
+                Algorithm.Ensure(),
+                ServerUrl.Ensure());
         }
 
         /// <summary>

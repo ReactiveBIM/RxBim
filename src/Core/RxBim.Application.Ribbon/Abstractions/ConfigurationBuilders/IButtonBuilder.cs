@@ -1,7 +1,5 @@
-﻿namespace RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon
 {
-    using Models;
-
     /// <summary>
     /// Defines a ribbon button configuration builder.
     /// </summary>

@@ -21,8 +21,8 @@
         /// <param name="addEnricher">An action for additional logs configuration.</param>
         public static void AddLogs(
             this IContainer container,
-            IConfiguration cfg = null,
-            Action<IContainer, LoggerConfiguration> addEnricher = null)
+            IConfiguration? cfg = null,
+            Action<IContainer, LoggerConfiguration>? addEnricher = null)
         {
             RegisterLogger(container, cfg, addEnricher);
 
@@ -31,8 +31,8 @@
 
         private static void RegisterLogger(
             IContainer container,
-            IConfiguration cfg,
-            Action<IContainer, LoggerConfiguration> addEnricher)
+            IConfiguration? cfg,
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
             container.AddSingleton(
                 () =>
@@ -46,7 +46,7 @@
                 });
         }
 
-        private static void TryGetConfigurationFromContainer(IContainer container, ref IConfiguration cfg)
+        private static void TryGetConfigurationFromContainer(IContainer container, ref IConfiguration? cfg)
         {
             try
             {
@@ -59,9 +59,9 @@
         }
 
         private static ILogger CreateLogger(
-            IConfiguration cfg,
+            IConfiguration? cfg,
             IContainer container,
-            Action<IContainer, LoggerConfiguration> addEnricher)
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -84,7 +84,7 @@
         private static void AddLogEnrichers(
             IContainer container,
             LoggerConfiguration config,
-            Action<IContainer, LoggerConfiguration> addEnricher)
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
             config
                 .Enrich.FromLogContext()

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Models
+﻿namespace RxBim.Application.Ribbon
 {
     /// <summary>
     /// Type of a panel layout.

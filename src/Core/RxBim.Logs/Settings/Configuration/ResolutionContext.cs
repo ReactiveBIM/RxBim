@@ -11,18 +11,18 @@ namespace RxBim.Logs.Settings.Configuration
     /// </summary>
     internal sealed class ResolutionContext
     {
-        private readonly IDictionary<string, LoggingLevelSwitch> _declaredLevelSwitches;
-        private readonly IConfiguration _appConfiguration;
+        private readonly IDictionary<string?, LoggingLevelSwitch> _declaredLevelSwitches;
+        private readonly IConfiguration? _appConfiguration;
 
-        public ResolutionContext(IConfiguration appConfiguration = null)
+        public ResolutionContext(IConfiguration? appConfiguration = null)
         {
-            _declaredLevelSwitches = new Dictionary<string, LoggingLevelSwitch>();
+            _declaredLevelSwitches = new Dictionary<string?, LoggingLevelSwitch>();
             _appConfiguration = appConfiguration;
         }
 
         public bool HasAppConfiguration => _appConfiguration != null;
 
-        public IConfiguration AppConfiguration
+        public IConfiguration? AppConfiguration
         {
             get
             {
@@ -41,7 +41,7 @@ namespace RxBim.Logs.Settings.Configuration
         /// <param name="switchName">the name of a switch to look up.</param>
         /// <returns>the LoggingLevelSwitch registered with the name.</returns>
         /// <exception cref="InvalidOperationException">if no switch has been registered with <paramref name="switchName"/>.</exception>
-        public LoggingLevelSwitch LookUpSwitchByName(string switchName)
+        public LoggingLevelSwitch? LookUpSwitchByName(string? switchName)
         {
             if (_declaredLevelSwitches.TryGetValue(switchName, out var levelSwitch))
             {
@@ -51,7 +51,7 @@ namespace RxBim.Logs.Settings.Configuration
             throw new InvalidOperationException($"No LoggingLevelSwitch has been declared with name \"{switchName}\". You might be missing a section \"LevelSwitches\":{{\"{switchName}\":\"InitialLevel\"}}");
         }
 
-        public void AddLevelSwitch(string levelSwitchName, LoggingLevelSwitch levelSwitch)
+        public void AddLevelSwitch(string? levelSwitchName, LoggingLevelSwitch levelSwitch)
         {
             if (levelSwitchName == null)
                 throw new ArgumentNullException(nameof(levelSwitchName));

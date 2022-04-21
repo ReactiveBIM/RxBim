@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Autocad.Abstractions
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
 

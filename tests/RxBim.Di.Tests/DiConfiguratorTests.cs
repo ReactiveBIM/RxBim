@@ -2,7 +2,6 @@
 {
     using System;
     using FluentAssertions;
-    using Shared.Abstractions;
     using TestDependencies;
     using TestObjects;
     using Xunit;

@@ -19,7 +19,7 @@
         /// <inheritdoc />
         public Result Execute(
             ExternalCommandData commandData,
-            ref string message,
+            ref string? message,
             ElementSet elements)
         {
             var assembly = GetType().Assembly;
@@ -53,7 +53,7 @@
         }
 
         private void SetMessageAndElements(
-            ref string message,
+            ref string? message,
             ElementSet elements,
             PluginResult commandResult,
             CommandDiConfigurator di)
