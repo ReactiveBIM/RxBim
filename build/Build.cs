@@ -98,7 +98,7 @@ partial class Build : NukeBuild,
         {
             var solution = From<IHazSolution>().Solution;
 
-            var testProjectName = "RxBim.Transactions.IntegrationsTests";
+            var testProjectName = "RxBim.Transactions.Revit.IntegrationsTests";
             var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
                           throw new ArgumentException("project not found");
 
@@ -154,7 +154,7 @@ partial class Build : NukeBuild,
     private void SetupEnvironment(AppVersion appVersion)
     {
         From<IHazSolution>().Solution.AllProjects
-            .Where(x => x.Directory.ToString().Contains(appVersion.Name))
+            .Where(x => x.Directory.ToString().Contains(appVersion.Name) || x.Name.Contains(appVersion.Name))
             .ForEach(p =>
             {
                 File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);

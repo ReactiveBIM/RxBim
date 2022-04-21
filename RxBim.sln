@@ -95,7 +95,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Menu.Conf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Transactions.Tests", "tests\RxBim.Transactions.Tests\RxBim.Transactions.Tests.csproj", "{DE56F753-9B30-44B1-89C9-6E46B2968239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Transactions.IntegrationsTests", "tests\RxBim.Transactions.IntegrationsTests\RxBim.Transactions.IntegrationsTests.csproj", "{83730B15-D847-45BE-A848-774140C81F8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Transactions.Revit.IntegrationsTests", "tests\RxBim.Transactions.Revit.IntegrationsTests\RxBim.Transactions.Revit.IntegrationsTests.csproj", "{83730B15-D847-45BE-A848-774140C81F8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Transactions", "src\Core\RxBim.Transactions\RxBim.Transactions.csproj", "{017D1D62-E758-408C-84FD-49ABCCA5B2E9}"
 EndProject

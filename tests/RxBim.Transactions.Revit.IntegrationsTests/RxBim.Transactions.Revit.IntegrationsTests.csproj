@@ -15,8 +15,6 @@
         <PackageReference Include="RevitTestFramework" Version="1.19.22" />
     </ItemGroup>
 
-   
-
     <ItemGroup>
         <None Remove="model.rvt" />
         <Content Include="model.rvt">
@@ -24,12 +22,12 @@
         </Content>
     </ItemGroup>
 
-   
-
     <ItemGroup>
       <ProjectReference Include="..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
       <ProjectReference Include="..\..\src\Revit\RxBim.Di.Testing.Revit\RxBim.Di.Testing.Revit.csproj" />
       <ProjectReference Include="..\..\src\Revit\RxBim.Transactions.Revit\RxBim.Transactions.Revit.csproj" />
     </ItemGroup>
+
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
 
 </Project>

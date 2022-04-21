@@ -1,4 +1,4 @@
-﻿namespace RxBim.Transactions.IntegrationsTests.Setup
+﻿namespace RxBim.Transactions.Revit.IntegrationsTests.Setup
 {
     using Di;
     using Di.Testing.Revit;

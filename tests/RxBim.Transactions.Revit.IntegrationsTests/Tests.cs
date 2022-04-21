@@ -1,4 +1,4 @@
-namespace RxBim.Transactions.IntegrationsTests
+namespace RxBim.Transactions.Revit.IntegrationsTests
 {
     using System.Linq;
     using System.Reflection;
