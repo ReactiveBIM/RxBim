@@ -19,7 +19,7 @@
         /// <param name="assembly">assembly.</param>
         public AssemblyResolver(Assembly assembly)
         {
-            var dir = Path.GetDirectoryName(assembly.Location);
+            var dir = Path.GetDirectoryName(assembly.Location) ?? string.Empty;
             _dlls = GetDlls(dir, SearchOption.TopDirectoryOnly);
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainOnAssemblyResolve;
@@ -31,7 +31,7 @@
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
         }
 
-        private Assembly CurrentDomainOnAssemblyResolve(object o, ResolveEventArgs args)
+        private Assembly? CurrentDomainOnAssemblyResolve(object o, ResolveEventArgs args)
         {
             var dll = _dlls.FirstOrDefault(f => f.IsResolve(args.Name));
             if (dll != null)

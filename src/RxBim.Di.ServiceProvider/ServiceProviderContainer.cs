@@ -11,7 +11,7 @@
     public class ServiceProviderContainer : IContainer
     {
         private readonly Lazy<IServiceProvider> _serviceProvider;
-        private readonly IServiceCollection _serviceCollection;
+        private readonly IServiceCollection _serviceCollection = null!;
 
         /// <summary>
         /// ctor.
