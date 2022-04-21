@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public ITransaction Create(string transactionName = null)
+        public ITransaction Create(string? transactionName = null)
         {
             return new RevitTransaction(new Transaction(_document, transactionName));
         }

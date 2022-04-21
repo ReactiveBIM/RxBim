@@ -9,6 +9,6 @@
         /// Creates a new instance of <see cref="ITransaction"/>.
         /// </summary>
         /// <param name="transactionName">The transaction name.</param>
-        ITransaction Create(string transactionName = null);
+        ITransaction Create(string? transactionName = null);
     }
 }
