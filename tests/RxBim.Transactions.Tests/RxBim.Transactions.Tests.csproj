@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
-        <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
-        <ProjectReference Include="..\..\src\RxBim.Transactions\RxBim.Transactions.csproj" />
+        <ProjectReference Include="..\..\src\Core\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
+        <ProjectReference Include="..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+        <ProjectReference Include="..\..\src\Core\RxBim.Transactions\RxBim.Transactions.csproj" />
     </ItemGroup>
 
 </Project>

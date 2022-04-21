@@ -23,6 +23,9 @@
             "Autodesk Revit 2023"
           ]
         },
+        "AttachDebugger": {
+          "type": "boolean"
+        },
         "Configuration": {
           "type": "string",
           "enum": [
