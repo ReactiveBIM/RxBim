@@ -35,27 +35,27 @@
         /// <summary>
         /// Plugin execution succeeded.
         /// </summary>
-        public static PluginResult Succeeded => new PluginResult(Result.Succeeded);
+        public static PluginResult Succeeded => new(Result.Succeeded);
 
         /// <summary>
         /// Plugin execution failed.
         /// </summary>
-        public static PluginResult Failed => new PluginResult(Result.Failed);
+        public static PluginResult Failed => new(Result.Failed);
 
         /// <summary>
         /// Plugin execution cancelled.
         /// </summary>
-        public static PluginResult Cancelled => new PluginResult(Result.Cancelled);
+        public static PluginResult Cancelled => new(Result.Cancelled);
 
         /// <summary>
         /// A message.
         /// </summary>
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// Element ids.
         /// </summary>
-        public List<int> ElementIds { get; set; } = new List<int>();
+        public List<int> ElementIds { get; set; } = new();
 
         /// <summary>
         /// The result.
