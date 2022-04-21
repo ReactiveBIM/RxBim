@@ -8,7 +8,7 @@
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
     
-    <ItemGroup Condition="!Exists('.\RxBim.Build.Props')">
+    <ItemGroup Condition="!Exists('.\RxBim.Build.Props') And '$(ProjectName)' != 'RxBim.Nuke.Revit'">
         <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime"/>
     </ItemGroup>
 
