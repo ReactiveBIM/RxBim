@@ -2,6 +2,8 @@
 using System.Text;
 using System.Xml;
 
+namespace Versions;
+
 public static class AppVersionExtensions
 {
     public static string ToProjectProps(this AppVersion appVersion) => appVersion

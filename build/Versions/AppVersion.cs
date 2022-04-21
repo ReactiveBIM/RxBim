@@ -1,30 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-public record ItemAttribute(string Name, string Value);
-
-public record ProjectItem(string Name, string Value, bool IsItem, params ItemAttribute[] ItemAttributes);
-
-public record TargetFramework(string Value) : ProjectItem(nameof(TargetFramework), Value, false, null);
-
-public record ApplicationVersion(string Value) : ProjectItem(nameof(ApplicationVersion), Value, false, null);
-
-public record PackageReference(string Name, string Version)
-    : ProjectItem(nameof(PackageReference), string.Empty, true, new("Include", Name), new(nameof(Version), Version));
-
-public record RuntimePackageReference(string Name, string Version)
-    : ProjectItem(nameof(PackageReference), string.Empty, true, new("Include", Name), new(nameof(Version), Version), new("ExcludeAssets", "runtime"));
-
-public abstract record Enumeration
-{
-    public static IEnumerable<T> GetAll<T>() where T : Enumeration =>
-        typeof(T).GetFields(BindingFlags.Public |
-                            BindingFlags.Static |
-                            BindingFlags.DeclaredOnly)
-            .Select(f => f.GetValue(null))
-            .Cast<T>();
-}
+﻿namespace Versions;
 
 public record AppVersion(string Name, string FullName, params ProjectItem[] Properties)
     : Enumeration()
