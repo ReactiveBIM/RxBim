@@ -31,7 +31,7 @@
                 .AddInstance(_commandData.Application)
                 .AddInstance(_commandData.Application.Application)
                 .AddTransient(() => _commandData.Application.ActiveUIDocument)
-                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document)
+                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document!)
                 .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
