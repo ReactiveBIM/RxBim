@@ -16,11 +16,11 @@ namespace RxBim.Nuke.Builds
     public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
     {
         private readonly TWix _wix;
-        private string _project;
-        private Regex _releaseBranchRegex;
-        private string _outputTmpDir;
-        private string _outputTmpDirBin;
-        private List<AssemblyType> _types;
+        private string? _project;
+        private Regex? _releaseBranchRegex;
+        private string? _outputTmpDir;
+        private string? _outputTmpDirBin;
+        private List<AssemblyType>? _types;
 
         /// <summary>
         /// Configuration to build - Default is 'Debug' (local) or 'Release' (server).
@@ -32,37 +32,37 @@ namespace RxBim.Nuke.Builds
         /// Certificate path.
         /// </summary>
         [Parameter("Certificate path")]
-        public string Cert { get; set; }
+        public string? Cert { get; set; }
 
         /// <summary>
         /// Private key container.
         /// </summary>
         [Parameter("Private key container")]
-        public string PrivateKey { get; set; }
+        public string? PrivateKey { get; set; }
 
         /// <summary>
         /// CSP containing for Private key.
         /// </summary>
         [Parameter("CSP containing for Private key")]
-        public string Csp { get; set; }
+        public string? Csp { get; set; }
 
         /// <summary>
         /// Digest algorithm.
         /// </summary>
         [Parameter("Digest algorithm")]
-        public string Algorithm { get; set; }
+        public string? Algorithm { get; set; }
 
         /// <summary>
         /// Timestamp server URL.
         /// </summary>
         [Parameter("Timestamp server URL")]
-        public string ServerUrl { get; set; }
+        public string? ServerUrl { get; set; }
 
         /// <summary>
         /// Selected project.
         /// </summary>
         [Parameter("Select project")]
-        public virtual string Project
+        public virtual string? Project
         {
             get
             {
@@ -89,7 +89,7 @@ namespace RxBim.Nuke.Builds
         /// Solution.
         /// </summary>
         [Solution]
-        public Solution Solution { get; set; }
+        public Solution Solution { get; set; } = null!;
 
         /// <summary>
         /// Output temp directory path.
@@ -103,6 +103,6 @@ namespace RxBim.Nuke.Builds
         protected virtual string OutputTmpDirBin
             => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
 
-        private Project ProjectForMsiBuild => Solution.AllProjects.FirstOrDefault(x => x.Name == _project);
+        private Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == _project);
     }
 }

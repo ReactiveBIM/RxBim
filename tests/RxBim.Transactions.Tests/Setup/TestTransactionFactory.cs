@@ -4,7 +4,7 @@ namespace RxBim.Transactions.Tests.Setup
 
     public class TestTransactionFactory : ITransactionFactory
     {
-        public ITransaction Create(string transactionName = null)
+        public ITransaction Create(string? transactionName = null)
         {
             return new TestTransaction();
         }

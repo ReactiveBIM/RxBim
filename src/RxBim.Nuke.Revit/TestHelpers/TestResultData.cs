@@ -16,7 +16,7 @@ namespace RxBim.Nuke.Revit.TestHelpers
         /// <summary>
         /// Name of test assembly.
         /// </summary>
-        public string AssemblyName { get; set; }
+        public string? AssemblyName { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()

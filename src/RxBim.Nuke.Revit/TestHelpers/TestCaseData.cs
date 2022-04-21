@@ -8,7 +8,7 @@
         /// <summary>
         /// Name.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Is case success.
@@ -18,12 +18,12 @@
         /// <summary>
         /// Execution time.
         /// </summary>
-        public string ExecutionTime { get; set; }
+        public string? ExecutionTime { get; set; }
 
         /// <summary>
         /// Failure message.
         /// </summary>
-        public string Failure { get; set; }
+        public string? Failure { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()

@@ -38,10 +38,10 @@
             }
         }
 
-        private static string GetBaseTypeName(MetadataReader mr, TypeDefinition typeDefinition)
+        private static string? GetBaseTypeName(MetadataReader mr, TypeDefinition typeDefinition)
         {
             var baseTypeDefinition = typeDefinition.BaseType;
-            string baseTypeName = null;
+            string? baseTypeName = null;
             if (!baseTypeDefinition.IsNil)
             {
                 try
@@ -59,7 +59,7 @@
             return baseTypeName;
         }
 
-        private static string GetFullName(MetadataReader mr, TypeDefinition typeDefinition)
+        private static string? GetFullName(MetadataReader mr, TypeDefinition typeDefinition)
         {
             try
             {

@@ -45,9 +45,9 @@ namespace RxBim.Logs
         /// <returns>An object allowing configuration to continue.</returns>
         public static LoggerConfiguration Configuration(
             this LoggerSettingsConfiguration settingConfiguration,
-            IConfiguration configuration,
+            IConfiguration? configuration,
             string sectionName,
-            DependencyContext dependencyContext = null)
+            DependencyContext? dependencyContext = null)
         {
             if (settingConfiguration == null)
                 throw new ArgumentNullException(nameof(settingConfiguration));
@@ -81,8 +81,8 @@ namespace RxBim.Logs
         /// <returns>An object allowing configuration to continue.</returns>
         public static LoggerConfiguration Configuration(
             this LoggerSettingsConfiguration settingConfiguration,
-            IConfiguration configuration,
-            DependencyContext dependencyContext = null)
+            IConfiguration? configuration,
+            DependencyContext? dependencyContext = null)
             => Configuration(settingConfiguration, configuration, DefaultSectionName, dependencyContext);
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace RxBim.Logs
         public static LoggerConfiguration ConfigurationSection(
             this LoggerSettingsConfiguration settingConfiguration,
             IConfigurationSection configSection,
-            DependencyContext dependencyContext = null)
+            DependencyContext? dependencyContext = null)
         {
             if (settingConfiguration == null)
                 throw new ArgumentNullException(nameof(settingConfiguration));
@@ -129,7 +129,7 @@ namespace RxBim.Logs
         /// <returns>An object allowing configuration to continue.</returns>
         public static LoggerConfiguration Configuration(
             this LoggerSettingsConfiguration settingConfiguration,
-            IConfiguration configuration,
+            IConfiguration? configuration,
             string sectionName,
             ConfigurationAssemblySource configurationAssemblySource)
         {
@@ -158,7 +158,7 @@ namespace RxBim.Logs
         /// <returns>An object allowing configuration to continue.</returns>
         public static LoggerConfiguration Configuration(
             this LoggerSettingsConfiguration settingConfiguration,
-            IConfiguration configuration,
+            IConfiguration? configuration,
             ConfigurationAssemblySource configurationAssemblySource)
             => Configuration(settingConfiguration, configuration, DefaultSectionName, configurationAssemblySource);
 

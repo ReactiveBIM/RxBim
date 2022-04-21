@@ -186,7 +186,7 @@
             buttonData.LargeImage = GetIconImage(buttonConfig.LargeImage);
         }
 
-        private void SetTooltip(RibbonItemData buttonData, string tooltip)
+        private void SetTooltip(RibbonItemData buttonData, string? tooltip)
         {
             if (tooltip != null)
                 buttonData.ToolTip = tooltip;

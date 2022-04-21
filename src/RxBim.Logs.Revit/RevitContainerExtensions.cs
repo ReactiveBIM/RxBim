@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="container">The DI container.</param>
         /// <param name="cfg">The configuration.</param>
-        public static void AddLogs(this IContainer container, IConfiguration cfg = null)
+        public static void AddLogs(this IContainer container, IConfiguration? cfg = null)
         {
             container.AddLogs(cfg, EnrichWithRevitData);
         }

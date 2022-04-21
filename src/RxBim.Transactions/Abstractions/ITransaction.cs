@@ -11,7 +11,7 @@
         /// Starts a new transaction.
         /// </summary>
         /// <param name="transactionName">The transaction name.</param>
-        void Start(string transactionName = null);
+        void Start(string? transactionName = null);
 
         /// <summary>
         /// Commits the transaction.

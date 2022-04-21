@@ -26,7 +26,7 @@
         }
 
         /// <inheritdoc />
-        public void Start(string transactionName = null)
+        public void Start(string? transactionName = null)
         {
             // transaction is already started after creation
         }

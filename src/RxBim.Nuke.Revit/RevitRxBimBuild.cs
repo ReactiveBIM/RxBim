@@ -93,7 +93,7 @@
             .DependsOn(CleanOutput, CopyDebugAddin)
             .Executes(() =>
             {
-                var project = Solution.AllProjects.FirstOrDefault(x => x.Name == Project);
+                var project = Solution.AllProjects.First(x => x.Name == Project);
                 var outputPath = project.GetTargetDir();
                 var revitPath = GetRevitAddinsPath() / Project;
 

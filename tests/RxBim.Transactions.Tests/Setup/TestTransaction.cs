@@ -9,7 +9,7 @@ namespace RxBim.Transactions.Tests.Setup
             TestClass.Result += "Transaction disposed";
         }
 
-        public void Start(string transactionName = null)
+        public void Start(string? transactionName = null)
         {
             TestClass.Result += "Transaction started\n";
         }

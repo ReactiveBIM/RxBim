@@ -50,14 +50,14 @@ namespace RxBim.Logs.Settings.Configuration
             LoggerSinkConfiguration loggerSinkConfiguration,
             ILogEventSink sink,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch? levelSwitch = null)
             => loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
 
         private static LoggerConfiguration Logger(
             LoggerSinkConfiguration loggerSinkConfiguration,
             Action<LoggerConfiguration> configureLogger,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch? levelSwitch = null)
             => loggerSinkConfiguration.Logger(configureLogger, restrictedToMinimumLevel, levelSwitch);
 
         // .AuditTo...
@@ -66,14 +66,14 @@ namespace RxBim.Logs.Settings.Configuration
             LoggerAuditSinkConfiguration auditSinkConfiguration,
             ILogEventSink sink,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch? levelSwitch = null)
             => auditSinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
 
         private static LoggerConfiguration Logger(
             LoggerAuditSinkConfiguration auditSinkConfiguration,
             Action<LoggerConfiguration> configureLogger,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch? levelSwitch = null)
             => auditSinkConfiguration.Logger(configureLogger, restrictedToMinimumLevel, levelSwitch);
 
         // .Filter...
@@ -114,7 +114,7 @@ namespace RxBim.Logs.Settings.Configuration
             LoggerEnrichmentConfiguration loggerEnrichmentConfiguration,
             Action<LoggerEnrichmentConfiguration> configureEnricher,
             LogEventLevel enrichFromLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch? levelSwitch = null)
             => levelSwitch != null ? loggerEnrichmentConfiguration.AtLevel(levelSwitch, configureEnricher)
                                    : loggerEnrichmentConfiguration.AtLevel(enrichFromLevel, configureEnricher);
 

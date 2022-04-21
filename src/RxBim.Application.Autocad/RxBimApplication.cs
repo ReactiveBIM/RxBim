@@ -10,7 +10,7 @@
     /// <inheritdoc />
     public abstract class RxBimApplication : IExtensionApplication
     {
-        private ApplicationDiConfigurator _diConfigurator;
+        private ApplicationDiConfigurator? _diConfigurator;
 
         /// <inheritdoc />
         public void Initialize()

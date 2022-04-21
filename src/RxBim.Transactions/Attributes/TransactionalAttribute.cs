@@ -17,6 +17,6 @@
         /// The name of the transaction.
         /// </summary>
         [UsedImplicitly]
-        public string TransactionName { get; set; }
+        public string? TransactionName { get; set; }
     }
 }

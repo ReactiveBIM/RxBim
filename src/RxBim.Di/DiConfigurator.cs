@@ -15,7 +15,7 @@
         /// <summary>
         /// DI Container.
         /// </summary>
-        public IContainer Container { get; private set; }
+        public IContainer Container { get; private set; } = null!;
 
         /// <summary>
         /// Configures dependencies in the <see cref="Container"/>.

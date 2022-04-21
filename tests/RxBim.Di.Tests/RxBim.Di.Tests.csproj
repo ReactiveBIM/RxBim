@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
         <NoWarn>CS1591</NoWarn>
     </PropertyGroup>
 
@@ -18,6 +19,12 @@
       <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
       <ProjectReference Include="..\..\src\RxBim.Logs\RxBim.Logs.csproj" />
       <ProjectReference Include="..\..\src\RxBim.Shared\RxBim.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\src\RxBim.Nuke\Helpers\ArgumentHelper.cs">
+        <Link>ArgumentHelper.cs</Link>
+      </Compile>
     </ItemGroup>
 
 </Project>

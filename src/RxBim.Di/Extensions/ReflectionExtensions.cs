@@ -60,7 +60,7 @@
         public static T Invoke<T>(
             this MethodBase methodInfo,
             object sourceObject,
-            object[] parameters = null)
+            object[]? parameters = null)
         {
             return (T)methodInfo.Invoke(sourceObject, parameters);
         }

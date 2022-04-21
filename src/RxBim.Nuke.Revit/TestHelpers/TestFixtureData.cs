@@ -16,7 +16,7 @@ namespace RxBim.Nuke.Revit.TestHelpers
         /// <summary>
         /// Name.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Is fixture success.

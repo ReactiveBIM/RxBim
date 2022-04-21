@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <NoWarn>NU1702;SA1200</NoWarn>
+        <Nullable>enable</Nullable>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 

@@ -62,7 +62,7 @@
                     .SetProjectFile(GetProjectPath(Project)));
             });
 
-        private AbsolutePath GetProjectPath(string name)
+        private AbsolutePath GetProjectPath(string? name)
         {
             return Solution.AllProjects.FirstOrDefault(x => x.Name == name)?.Path ?? Solution.Path;
         }

@@ -3,6 +3,7 @@
     <PropertyGroup>
         <RootNamespace>RxBim.Di</RootNamespace>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
     </PropertyGroup>
 
