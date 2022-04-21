@@ -90,6 +90,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{77448DA8
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{D2AB0208-628E-47A0-8203-D25DEB089E4F}"
+	ProjectSection(SolutionItems) = preProject
+		src\Autocad\Directory.Build.Props = src\Autocad\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{D4D155D7-F26E-44F5-B9A7-BC677594A81B}"
 EndProject

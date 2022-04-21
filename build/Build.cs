@@ -8,6 +8,7 @@ using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
@@ -155,7 +156,7 @@ partial class Build : NukeBuild,
             .ForEach(p =>
             {
                 File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);
-                Log.Information("Project {project} set up for {app} {version}", p.Name, appVersion.FullName, appVersion.Version);
+                Log.Information("Project {project} set up for {app}", p.Name, appVersion.FullName);
             });
     }
 }

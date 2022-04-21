@@ -1,32 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1701</NoWarn>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-        <Nullable>enable</Nullable>
-        <Configurations>Debug;Release</Configurations>
-    </PropertyGroup>
-
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
-      <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="PresentationCore" />
-      <Reference Include="PresentationFramework" />
-      <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore"/>
+        <Reference Include="PresentationFramework"/>
+        <Reference Include="WindowsBase"/>
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
-         <Description>RxBim UI AutoCAD Library</Description>
+        <Description>RxBim UI AutoCAD Library</Description>
         <PackageId>RxBim.Application.Ribbon.Autocad</PackageId>
     </PropertyGroup>
 

@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -6,10 +6,11 @@
         <NoWarn>NU1701</NoWarn>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
-    
+
     <ItemGroup Condition="!Exists('.\RxBim.Build.Props')">
-        <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime"/>
+        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime"/>
     </ItemGroup>
 
     <PropertyGroup>

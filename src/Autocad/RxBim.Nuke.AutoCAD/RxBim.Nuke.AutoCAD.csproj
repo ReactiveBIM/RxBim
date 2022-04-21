@@ -9,12 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj"/>
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
-         <Description>RxBim nuke plugin for building MSI for AutoCAD</Description>
+        <Description>RxBim nuke plugin for building MSI for AutoCAD</Description>
         <PackageId>RxBim.Nuke.AutoCAD</PackageId>
     </PropertyGroup>
 

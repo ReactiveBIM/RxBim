@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using System.Xml;
 
 public static class AppVersionExtensions
@@ -28,33 +29,42 @@ public static class AppVersionExtensions
     {
         var propertyGroupElement = doc.CreateElement("PropertyGroup");
 
-        propertyGroupElement.AppendChild(doc.GenerateElement(nameof(appVersion.TargetFramework), appVersion.TargetFramework));
-        propertyGroupElement.AppendChild(doc.GenerateElement("AppVersion", appVersion.Version));
+        foreach (var prop in appVersion.Properties.Where(x => !x.IsItem))
+        {
+            propertyGroupElement.AppendChild(prop.ToXmlElement(doc));
+        }
 
         return propertyGroupElement;
-    }
-
-    static XmlElement GenerateElement(this XmlDocument doc, string name, string value)
-    {
-        var targetFrameworkElement = doc.CreateElement(name);
-        targetFrameworkElement.InnerText = value;
-        return targetFrameworkElement;
     }
 
     static XmlElement GenerateItemGroup(AppVersion appVersion, XmlDocument doc)
     {
         var items = doc.CreateElement("ItemGroup");
-        foreach (var reference in appVersion.PackageReferences)
+        foreach (var item in appVersion.Properties.Where(x => x.IsItem))
         {
-            var packageReferenceElement = doc.CreateElement("PackageReference");
-            packageReferenceElement.SetAttribute("Include", reference.Name);
-            packageReferenceElement.SetAttribute("Version", reference.Version);
-            packageReferenceElement.SetAttribute("ExcludeAssets", "runtime");
-
-            items.AppendChild(packageReferenceElement);
+            items.AppendChild(item.ToXmlElement(doc));
         }
 
         return items;
+    }
+
+    static XmlElement ToXmlElement(this ProjectItem item, XmlDocument doc)
+    {
+        var xmlElement = doc.CreateElement(item.Name);
+        if (item.ItemAttributes != null)
+        {
+            foreach (var attribute in item.ItemAttributes)
+            {
+                xmlElement.SetAttribute(attribute.Name, attribute.Value);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(item.Value))
+        {
+            xmlElement.InnerText = item.Value;
+        }
+
+        return xmlElement;
     }
 
     static string GetXmlString(this XmlDocument doc)
@@ -62,7 +72,7 @@ public static class AppVersionExtensions
         var sb = new StringBuilder();
         var settings = new XmlWriterSettings
         {
-            Indent = true, IndentChars = "  ", NewLineChars = "\r\n", NewLineHandling = NewLineHandling.Replace
+            Indent = true, IndentChars = "    ", NewLineChars = "\r\n", NewLineHandling = NewLineHandling.Replace
         };
 
         using (var writer = XmlWriter.Create(sb, settings))

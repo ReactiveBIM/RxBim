@@ -35,12 +35,12 @@
             AddCommands(attributeSymbol);
         }
 
-        private INamedTypeSymbol GetAttribute()
+        private INamedTypeSymbol? GetAttribute()
         {
-            return _context.Compilation.GetTypeByMetadataName(CommandClassAttributeTypeFullName);
+            return _context.Compilation.GetTypeByMetadataName(CommandClassAttributeTypeFullName)!;
         }
 
-        private void AddCommands(INamedTypeSymbol attributeSymbol)
+        private void AddCommands(INamedTypeSymbol? attributeSymbol)
         {
             var commands = GetCommands(attributeSymbol);
             foreach (var (ns, command, commandName, flags) in commands)
@@ -88,7 +88,7 @@
         }
 
         private List<(string Namespace, string Command, string CommandName, string CommandFlags)> GetCommands(
-            INamedTypeSymbol attributeSymbol)
+            INamedTypeSymbol? attributeSymbol)
         {
             return _context.Compilation.SyntaxTrees.SelectMany(tree => tree.GetRoot().DescendantNodes())
                 .OfType<ClassDeclarationSyntax>()
@@ -100,13 +100,13 @@
                     s =>
                     {
                         var tokens = GetAttributeTokens(s, attributeSymbol);
-                        return (((NamespaceDeclarationSyntax)s.Parent)?.Name.ToString(), s.Identifier.Text,
+                        return (((NamespaceDeclarationSyntax)s.Parent!)?.Name.ToString(), s.Identifier.Text,
                             tokens.ReadCommandName(), tokens.ReadCommandFlags());
                     })
-                .ToList();
+                .ToList()!;
         }
 
-        private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol attributeSymbol)
+        private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol? attributeSymbol)
         {
             if (attributeSymbol == null)
             {
@@ -126,7 +126,7 @@
                                 dt.Parent != null &&
                                 semanticModel.GetTypeInfo(dt.Parent).Type?.Name == attributeSymbol.Name))
                 ?.DescendantTokens()
-                .ToList();
+                .ToList()!;
         }
     }
 }
