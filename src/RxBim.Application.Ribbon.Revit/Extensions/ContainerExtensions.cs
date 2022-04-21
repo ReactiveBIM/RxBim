@@ -1,12 +1,12 @@
-﻿namespace RxBim.Application.Ribbon.Revit.Extensions
+﻿namespace RxBim.Application.Ribbon.Revit
 {
     using System;
     using System.Reflection;
-    using Abstractions.ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.Configuration;
-    using Ribbon.Extensions;
-    using Services;
+    using RxBim.Application.Ribbon.Abstractions.ConfigurationBuilders;
+    using RxBim.Application.Ribbon.Extensions;
+    using RxBim.Application.Ribbon.Revit.Services;
+    using RxBim.Di;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
@@ -22,7 +22,7 @@
         public static void AddRevitMenu(
             this IContainer container,
             Action<IRibbonBuilder> builder,
-            Assembly menuAssembly = null)
+            Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddMenu<RevitRibbonMenuBuilderFactory>(builder, menuAssembly);
@@ -36,8 +36,8 @@
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddRevitMenu(
             this IContainer container,
-            IConfiguration cfg = null,
-            Assembly menuAssembly = null)
+            IConfiguration? cfg = null,
+            Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container.AddMenu<RevitRibbonMenuBuilderFactory>(cfg, menuAssembly);

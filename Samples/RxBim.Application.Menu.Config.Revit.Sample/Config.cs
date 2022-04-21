@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Application.Menu.Config.Revit.Sample
 {
     using Di;
-    using Ribbon.Revit.Extensions;
+    using Ribbon.Revit;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
