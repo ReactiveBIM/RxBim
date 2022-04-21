@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <AppVersion>2019</AppVersion>
-        <Version>$(AppVersion).$(ApiVersion)</Version>
+        <ApplicationVersion>2019</ApplicationVersion>
+        <Version>$(ApplicationVersion).$(ApiVersion)</Version>
     </PropertyGroup>
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
