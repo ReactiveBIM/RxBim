@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj"/>
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj"/>
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj"/>
+        <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="img\*.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+</Project>

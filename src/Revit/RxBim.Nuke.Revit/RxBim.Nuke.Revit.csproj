@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <NoWarn>NU1701;NU1702;CS1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj"/>
+    </ItemGroup>
+
+    <!--    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">-->
+    <!--        <NukeSpecificationFiles Include="RevitTestFramework.json" />-->
+    <!--    </ItemGroup>-->
+
+    <ItemGroup>
+        <PackageReference Include="Nuke.Common" Version="5.2.1"/>
+        <PackageReference Include="RazorLight" Version="2.0.0-rc.4"/>
+        <PackageReference Include="RevitTestFramework" Version="1.19.22">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="TestHelpers\Result.cshtml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Directory.Build.Props"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim nuke plugin for automation of building for Revit</Description>
+        <PackageId>RxBim.Nuke.Revit</PackageId>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj"/>
+        <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim Application api Library for AutoCAD</Description>
+        <PackageId>RxBim.Application.Autocad</PackageId>
+    </PropertyGroup>
+
+</Project>

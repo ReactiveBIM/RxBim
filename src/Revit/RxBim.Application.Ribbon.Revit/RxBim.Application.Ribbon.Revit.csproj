@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Di\RxBim.Di.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim UI Revit Library</Description>
+        <PackageId>RxBim.Application.Ribbon.Revit</PackageId>
+    </PropertyGroup>
+
+</Project>

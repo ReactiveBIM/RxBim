@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\RxBim.Application.Revit\PluginResultExtensions.cs">
+            <Link>PluginResultExtensions.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim Command api Library</Description>
+        <PackageId>RxBim.Command.Revit</PackageId>
+    </PropertyGroup>
+
+</Project>
