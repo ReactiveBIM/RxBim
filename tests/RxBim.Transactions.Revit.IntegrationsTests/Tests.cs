@@ -13,7 +13,7 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
     [TestFixture]
     public class Tests
     {
-        private IContainer _container;
+        private IContainer _container = null!;
 
         [SetUp]
         public void Setup()

@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <NoWarn>CS1591</NoWarn>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>

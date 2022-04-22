@@ -1,15 +1,17 @@
 ﻿<Project>
     <PropertyGroup>
         <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <NoWarn>CS0618</NoWarn>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !$(ProjectName.EndsWith('Tests'))">
+    <PropertyGroup Condition="!$(ProjectName.Contains('Tests'))">
         <CodeAnalysisRuleSet>..\..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(ProjectName)' != '_build' And !$(ProjectName.Contains('Tests'))">
+    <ItemGroup Condition="!$(ProjectName.Contains('Tests'))">
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

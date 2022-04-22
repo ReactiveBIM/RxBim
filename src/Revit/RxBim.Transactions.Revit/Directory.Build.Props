@@ -1,8 +1,10 @@
 <Project>
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
-    
+
     <PropertyGroup>
-        <Version>1.0.0-dev001</Version>
+        <ApiVersion>1.0.0-dev001</ApiVersion>
     </PropertyGroup>
-    
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+
 </Project>

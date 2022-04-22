@@ -13,7 +13,7 @@ namespace RxBim.Example.Revit.IntegrationTests
     [TestFixture]
     public class Tests2
     {
-        private IContainer _container;
+        private IContainer _container = null!;
 
         [SetUp]
         public void Setup()

@@ -70,6 +70,7 @@ partial class Build : NukeBuild,
     public static int Main() => Execute<Build>(x => x.From<IPublish>().List);
 
     Target Clean => _ => _
+        .Before<IRestore>()
         .Executes(() =>
         {
             GlobDirectories(From<IHazSolution>().Solution.Directory, "**/bin", "**/obj")
@@ -132,6 +133,7 @@ partial class Build : NukeBuild,
     IEnumerable<string> values => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
 
     Target SetupEnv => _ => _
+        .Description("Sets the solution up to work with particular version of CAD/BIM.")
         .Requires(() => AppVersion)
         .Executes(() =>
         {
@@ -140,7 +142,8 @@ partial class Build : NukeBuild,
             SetupEnvironment(appVersion);
         });
 
-    Target WipeEnv => _ => _
+    Target ResetEnv => _ => _
+        .Description("Resets the sulition to its defaults.")
         .Executes(() =>
         {
             From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")

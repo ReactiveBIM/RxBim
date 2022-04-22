@@ -1,14 +1,15 @@
 ﻿<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+    
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>NU1701</NoWarn>
+        <LangVersion>latest</LangVersion>
         <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
     
-    <ItemGroup Condition="!Exists('.\RxBim.Build.Props') And '$(ProjectName)' != 'RxBim.Nuke.Revit'">
+    <ItemGroup Condition="!Exists('.\RxBim.Build.Props') And '$(NotRefenceApi)' != 'true'">
         <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime"/>
     </ItemGroup>
 
@@ -16,6 +17,5 @@
         <ApplicationVersion>2019</ApplicationVersion>
         <Version>$(ApplicationVersion).$(ApiVersion)</Version>
     </PropertyGroup>
-
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+    
 </Project>
