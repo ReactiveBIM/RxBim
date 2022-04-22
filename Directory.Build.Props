@@ -3,6 +3,7 @@
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <NoWarn>CS0618</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition="!$(ProjectName.Contains('Tests'))">

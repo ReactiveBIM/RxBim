@@ -34,9 +34,10 @@
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddPanel(string panelTitle)
+        public ITabBuilder AddPanel(string title, Action<IPanelBuilder> panel)
         {
-            return AddPanelInternal(panelTitle);
+            AddPanelInternal(title, panel);
+            return this;
         }
 
         /// <inheritdoc />
@@ -71,9 +72,10 @@
             }
         }
 
-        private PanelBuilder AddPanelInternal(string panelTitle)
+        private PanelBuilder AddPanelInternal(string panelTitle, Action<IPanelBuilder>? panel = null)
         {
             var builder = new PanelBuilder(panelTitle, _ribbonBuilder, this);
+            panel?.Invoke(builder);
             BuildingTab.Panels.Add(builder.BuildingPanel);
             return builder;
         }

@@ -78,8 +78,8 @@
         /// Returns a ribbon tab with the specified name.
         /// If the tab does not exist, it will be created.
         /// </summary>
-        /// <param name="tabName">Tab name.</param>
-        protected abstract TTab GetOrCreateTab(string tabName);
+        /// <param name="title">Tab name.</param>
+        protected abstract TTab GetOrCreateTab(string title);
 
         /// <summary>
         /// Returns a ribbon panel with the specified name on the tab.

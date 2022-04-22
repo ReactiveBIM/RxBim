@@ -99,12 +99,6 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public ITabBuilder ReturnToTab()
-        {
-            return _tabBuilder;
-        }
-
-        /// <inheritdoc />
         public IRibbonBuilder ReturnToRibbon()
         {
             return _ribbonBuilder;

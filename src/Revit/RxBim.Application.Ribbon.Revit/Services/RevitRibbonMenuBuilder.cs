@@ -37,18 +37,18 @@
         }
 
         /// <inheritdoc />
-        protected override string GetOrCreateTab(string tabName)
+        protected override string GetOrCreateTab(string title)
         {
             var existsTab = RevitRibbonControl.RibbonControl.Tabs
-                .FirstOrDefault(t => t.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
             if (existsTab != null)
             {
                 return existsTab.Title;
             }
 
-            _application.CreateRibbonTab(tabName);
-            return tabName;
+            _application.CreateRibbonTab(title);
+            return title;
         }
 
         /// <inheritdoc />

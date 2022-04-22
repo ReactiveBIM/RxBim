@@ -1,5 +1,7 @@
 namespace RxBim.Application.Ribbon
 {
+    using System;
+
     /// <summary>
     /// Defines a ribbon builder.
     /// </summary>
@@ -9,18 +11,19 @@ namespace RxBim.Application.Ribbon
         /// Adds a new tab to the ribbon.
         /// </summary>
         /// <param name="title">The tab title text.</param>
-        ITabBuilder AddTab(string title);
+        /// <param name="tab">The tab configurator.</param>
+        IRibbonBuilder AddTab(string title, Action<ITabBuilder> tab);
 
         /// <summary>
         /// Sets whether to add the version information to the tooltip text.
         /// </summary>
         /// <param name="enable">The value.</param>
-        IRibbonBuilder SetAddVersionToCommandTooltip(bool enable);
+        IRibbonBuilder SetDisplayVersion(bool enable);
 
         /// <summary>
         /// Sets the version prefix.
         /// </summary>
         /// <param name="prefix">The prefix text.</param>
-        IRibbonBuilder SetCommandTooltipVersionHeader(string prefix);
+        IRibbonBuilder SetVersionPrefix(string prefix);
     }
 }

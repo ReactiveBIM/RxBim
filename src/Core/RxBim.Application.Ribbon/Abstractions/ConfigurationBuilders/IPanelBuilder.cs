@@ -56,10 +56,5 @@
             string name,
             AboutBoxContent content,
             Action<IButtonBuilder>? builder = null);
-
-        /// <summary>
-        /// Finishes the ribbon building.
-        /// </summary>
-        ITabBuilder ReturnToTab();
     }
 }

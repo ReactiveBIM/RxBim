@@ -59,17 +59,17 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonTab GetOrCreateTab(string tabName)
+        protected override RibbonTab GetOrCreateTab(string title)
         {
             var acRibbonTab = ComponentManager.Ribbon.Tabs.FirstOrDefault(x =>
                 x.IsVisible &&
                 x.Title != null &&
-                x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
+                x.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
             if (acRibbonTab is null)
             {
                 acRibbonTab = new RibbonTab
-                    { Title = tabName, Id = $"TAB_{tabName.GetHashCode():0}" };
+                    { Title = title, Id = $"TAB_{title.GetHashCode():0}" };
                 ComponentManager.Ribbon.Tabs.Add(acRibbonTab);
             }
 

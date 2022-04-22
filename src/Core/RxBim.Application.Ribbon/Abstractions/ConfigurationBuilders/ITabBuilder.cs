@@ -11,8 +11,9 @@
         /// <summary>
         /// Adds a new panel to the tab.
         /// </summary>
-        /// <param name="panelTitle">Panel name.</param>
-        IPanelBuilder AddPanel(string panelTitle);
+        /// <param name="title">Panel name.</param>
+        /// <param name="panel">The panel configurator.</param>
+        ITabBuilder AddPanel(string title, Action<IPanelBuilder> panel);
 
         /// <summary>
         /// Adds a new "About" button panel to the tab.
