@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Command.Autocad
 {
-    using System;
     using Autodesk.AutoCAD.Runtime;
+    using Shared;
 
     /// <summary>
     /// Autocad command attribute.
     /// </summary>
-    public class RxBimCommandClassAttribute : Attribute
+    public class RxBimCommandClassAttribute : RxBimCommandAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RxBimCommandClassAttribute"/> class.
