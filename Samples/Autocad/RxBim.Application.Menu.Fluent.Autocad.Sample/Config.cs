@@ -4,7 +4,6 @@
     using Commands;
     using Di;
     using Ribbon;
-    using Shared;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -14,12 +13,12 @@
         {
             container.AddAutocadMenu(ribbon =>
                 ribbon
-                    .SetDisplayVersion(true)
-                    .SetVersionPrefix("Version: ")
-                    .AddTab(
+                    .DisplayVersion(true)
+                    .VersionPrefix("Version: ")
+                    .Tab(
                         title: "RxBim_Tab_FromAction",
                         tab => tab
-                            .AddAboutButton(
+                            .AboutButton(
                                 name: "About",
                                 new AboutBoxContent(
                                     title: "RxBim4AutoCAD",
@@ -32,130 +31,130 @@
                                         { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
                                     }),
                                 button => button
-                                    .SetText("About\nbutton")
-                                    .SetToolTip("About information")
-                                    .SetDescription("Button for displaying the About window")
-                                    .SetLargeImage(@"img\about_32.png", ThemeType.Dark)
-                                    .SetLargeImage(@"img\about_32_light.png", ThemeType.Light))
-                            .AddPanel(
+                                    .Text("About\nbutton")
+                                    .ToolTip("About information")
+                                    .Description("Button for displaying the About window")
+                                    .LargeImage(@"img\about_32.png", ThemeType.Dark)
+                                    .LargeImage(@"img\about_32_light.png", ThemeType.Light))
+                            .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel
-                                    .AddCommandButton(
+                                    .CommandButton(
                                         "Command1_Large_WithText",
                                         typeof(Cmd1),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                            .SetDescription("Description: This is command #1")
-                                            .SetSmallImage(@"img\num1_16.png", ThemeType.Dark)
-                                            .SetSmallImage(@"img\num1_16_light.png", ThemeType.Light)
-                                            .SetLargeImage(@"img\num1_32.png", ThemeType.Dark)
-                                            .SetLargeImage(@"img\num1_32_light.png", ThemeType.Light)
-                                            .SetHelpUrl("https://github.com/ReactiveBIM/RxBim")
-                                            .SetText("Command\n#1"))
-                                    .AddCommandButton(
+                                            .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                            .Description("Description: This is command #1")
+                                            .SmallImage(@"img\num1_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img\num1_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
+                                            .HelpUrl("https://github.com/ReactiveBIM/RxBim")
+                                            .Text("Command\n#1"))
+                                    .CommandButton(
                                         "Command2_Large_WithText",
                                         typeof(Cmd2),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                            .SetDescription("Description: This is command #2")
-                                            .SetSmallImage(@"img\num2_16.png", ThemeType.Dark)
-                                            .SetSmallImage(@"img\num2_16_light.png", ThemeType.Light)
-                                            .SetLargeImage(@"img\num2_32.png", ThemeType.Dark)
-                                            .SetLargeImage(@"img\num2_32_light.png", ThemeType.Light)
-                                            .SetHelpUrl("https://www.google.com/")
-                                            .SetText("Command\n#2"))
-                                    .AddCommandButton(
+                                            .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                            .Description("Description: This is command #2")
+                                            .SmallImage(@"img\num2_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img\num2_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img\num2_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img\num2_32_light.png", ThemeType.Light)
+                                            .HelpUrl("https://www.google.com/")
+                                            .Text("Command\n#2"))
+                                    .CommandButton(
                                         "Command3_Large_WithText",
                                         typeof(Cmd3),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                            .SetDescription("Description: This is command #3")
-                                            .SetSmallImage(@"img\num3_16.png", ThemeType.Dark)
-                                            .SetSmallImage(@"img\num3_16_light.png", ThemeType.Light)
-                                            .SetLargeImage(@"img\num3_32.png", ThemeType.Dark)
-                                            .SetLargeImage(@"img\num3_32_light.png", ThemeType.Light)
-                                            .SetHelpUrl("https://www.autodesk.com/")
-                                            .SetText("Command\n#3"))
-                                    .AddSeparator()
-                                    .AddPullDownButton(
+                                            .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                            .Description("Description: This is command #3")
+                                            .SmallImage(@"img\num3_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img\num3_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img\num3_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img\num3_32_light.png", ThemeType.Light)
+                                            .HelpUrl("https://www.autodesk.com/")
+                                            .Text("Command\n#3"))
+                                    .Separator()
+                                    .PullDownButton(
                                         "Pulldown1",
                                         pulldown => pulldown
-                                            .AddCommandButton(
+                                            .CommandButton(
                                                 "Command #1",
                                                 typeof(Cmd1),
-                                                button => SetupCommand1Button(button).SetText("Command\n#1"))
-                                            .AddCommandButton(
+                                                button => SetupCommand1Button(button).Text("Command\n#1"))
+                                            .CommandButton(
                                                 "Command #2",
                                                 typeof(Cmd2),
-                                                button => SetupCommand2Button(button).SetText("Command\n#2"))
-                                            .AddCommandButton(
+                                                button => SetupCommand2Button(button).Text("Command\n#2"))
+                                            .CommandButton(
                                                 "Command #3",
                                                 typeof(Cmd3),
-                                                button => SetupCommand3Button(button).SetText("Command\n#3"))
-                                            .SetLargeImage(@"img\command_32.png", ThemeType.Dark)
-                                            .SetLargeImage(@"img\command_32_light.png", ThemeType.Light)
-                                            .SetText("Pulldown #1"))
-                                    .AddSlideOut()
-                                    .AddCommandButton(
+                                                button => SetupCommand3Button(button).Text("Command\n#3"))
+                                            .LargeImage(@"img\command_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img\command_32_light.png", ThemeType.Light)
+                                            .Text("Pulldown #1"))
+                                    .SlideOut()
+                                    .CommandButton(
                                         "Command1_Large_SlideOut",
                                         typeof(Cmd1),
-                                        button => SetupCommand1Button(button).SetText("Command\n#1"))
-                                    .AddCommandButton(
+                                        button => SetupCommand1Button(button).Text("Command\n#1"))
+                                    .CommandButton(
                                         "Command2_Large_SlideOut",
                                         typeof(Cmd2),
-                                        button => SetupCommand2Button(button).SetText("Command\n#2"))
-                                    .AddCommandButton(
+                                        button => SetupCommand2Button(button).Text("Command\n#2"))
+                                    .CommandButton(
                                         "Command3_Large_SlideOut",
                                         typeof(Cmd3),
-                                        button => SetupCommand3Button(button).SetText("Command\n#3")))
-                            .AddPanel("RxBim_Panel_2", panel => panel
-                                .AddStackedItems(items => items
-                                    .AddCommandButton(
+                                        button => SetupCommand3Button(button).Text("Command\n#3")))
+                            .Panel("RxBim_Panel_2", panel => panel
+                                .StackedItems(items => items
+                                    .CommandButton(
                                         "Command1_Small_WithText",
                                         typeof(Cmd1),
-                                        button => SetupCommand1Button(button).SetText("Command #1"))
-                                    .AddCommandButton(
+                                        button => SetupCommand1Button(button).Text("Command #1"))
+                                    .CommandButton(
                                         "Command2_Small_WithText",
                                         typeof(Cmd2),
-                                        button => SetupCommand2Button(button).SetText("Command #2"))
-                                    .AddCommandButton(
+                                        button => SetupCommand2Button(button).Text("Command #2"))
+                                    .CommandButton(
                                         "Command3_Small_WithText",
                                         typeof(Cmd3),
-                                        button => SetupCommand3Button(button).SetText("Command #3")))
-                                .AddSeparator()
-                                .AddStackedItems(items => items
-                                    .AddCommandButton(
+                                        button => SetupCommand3Button(button).Text("Command #3")))
+                                .Separator()
+                                .StackedItems(items => items
+                                    .CommandButton(
                                         "Command1_Large_WithText",
                                         typeof(Cmd1),
-                                        button => SetupCommand1Button(button).SetText("Command #1"))
-                                    .AddCommandButton(
+                                        button => SetupCommand1Button(button).Text("Command #1"))
+                                    .CommandButton(
                                         "Command2_Large_WithText",
                                         typeof(Cmd2),
-                                        button => SetupCommand2Button(button).SetText("Command #2")))
-                                .AddSeparator()
-                                .AddStackedItems(items => items
-                                    .AddPullDownButton(
+                                        button => SetupCommand2Button(button).Text("Command #2")))
+                                .Separator()
+                                .StackedItems(items => items
+                                    .PullDownButton(
                                         "Pulldown2",
                                         pulldown => pulldown
-                                            .AddCommandButton(
+                                            .CommandButton(
                                                 "Command #1",
                                                 typeof(Cmd1),
                                                 button => SetupCommand1Button(button))
-                                            .AddCommandButton(
+                                            .CommandButton(
                                                 "Command #2",
                                                 typeof(Cmd2),
                                                 button => SetupCommand2Button(button))
-                                            .AddCommandButton(
+                                            .CommandButton(
                                                 "Command #3",
                                                 typeof(Cmd3),
                                                 button => SetupCommand3Button(button))
-                                            .SetSmallImage(@"img\command_16.png", ThemeType.Dark)
-                                            .SetSmallImage(@"img\command_16_light.png", ThemeType.Light))
-                                    .AddCommandButton(
+                                            .SmallImage(@"img\command_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img\command_16_light.png", ThemeType.Light))
+                                    .CommandButton(
                                         "Command1_Small",
                                         typeof(Cmd1),
                                         button => SetupCommand1Button(button))
-                                    .AddCommandButton(
+                                    .CommandButton(
                                         "Command2_Small",
                                         typeof(Cmd2),
                                         button => SetupCommand2Button(button))))));
@@ -164,37 +163,37 @@
         private static IButtonBuilder SetupCommand1Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                .SetDescription("Description: This is command #1")
-                .SetSmallImage(@"img\num1_16.png", ThemeType.Dark)
-                .SetSmallImage(@"img\num1_16_light.png", ThemeType.Light)
-                .SetLargeImage(@"img\num1_32.png", ThemeType.Dark)
-                .SetLargeImage(@"img\num1_32_light.png", ThemeType.Light)
-                .SetHelpUrl("https://github.com/ReactiveBIM/RxBim");
+                .ToolTip("Tooltip: I'm run command #1. Push me!")
+                .Description("Description: This is command #1")
+                .SmallImage(@"img\num1_16.png", ThemeType.Dark)
+                .SmallImage(@"img\num1_16_light.png", ThemeType.Light)
+                .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
+                .HelpUrl("https://github.com/ReactiveBIM/RxBim");
         }
 
         private static IButtonBuilder SetupCommand2Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                .SetDescription("Description: This is command #2")
-                .SetSmallImage(@"img\num2_16.png", ThemeType.Dark)
-                .SetSmallImage(@"img\num2_16_light.png", ThemeType.Light)
-                .SetLargeImage(@"img\num2_32.png", ThemeType.Dark)
-                .SetLargeImage(@"img\num2_32_light.png", ThemeType.Light)
-                .SetHelpUrl("https://www.google.com/");
+                .ToolTip("Tooltip: I'm run command #2. Push me!")
+                .Description("Description: This is command #2")
+                .SmallImage(@"img\num2_16.png", ThemeType.Dark)
+                .SmallImage(@"img\num2_16_light.png", ThemeType.Light)
+                .LargeImage(@"img\num2_32.png", ThemeType.Dark)
+                .LargeImage(@"img\num2_32_light.png", ThemeType.Light)
+                .HelpUrl("https://www.google.com/");
         }
 
         private static IButtonBuilder SetupCommand3Button(IButtonBuilder button)
         {
             return button
-                .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                .SetDescription("Description: This is command #3")
-                .SetSmallImage(@"img\num3_16.png", ThemeType.Dark)
-                .SetSmallImage(@"img\num3_16_light.png", ThemeType.Light)
-                .SetLargeImage(@"img\num3_32.png", ThemeType.Dark)
-                .SetLargeImage(@"img\num3_32_light.png", ThemeType.Light)
-                .SetHelpUrl("https://www.autodesk.com/");
+                .ToolTip("Tooltip: I'm run command #3. Push me!")
+                .Description("Description: This is command #3")
+                .SmallImage(@"img\num3_16.png", ThemeType.Dark)
+                .SmallImage(@"img\num3_16_light.png", ThemeType.Light)
+                .LargeImage(@"img\num3_32.png", ThemeType.Dark)
+                .LargeImage(@"img\num3_32_light.png", ThemeType.Light)
+                .HelpUrl("https://www.autodesk.com/");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc/>
-        public IPulldownButtonBuilder AddCommandButton(
+        public IPulldownButtonBuilder CommandButton(
             string name,
             Type commandType,
             Action<IButtonBuilder>? builder = null)

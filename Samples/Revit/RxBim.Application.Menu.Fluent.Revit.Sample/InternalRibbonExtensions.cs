@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Reflection;
     using Ribbon;
-    using Shared;
 
     /// <summary>
     /// Sample ribbon configurations.
@@ -14,11 +13,11 @@
         /// Bilds a new Tab using attributes.
         /// </summary>
         /// <param name="ribbon">A ribbon.</param>
-        public static IRibbonBuilder AddTabFromAttributes(this IRibbonBuilder ribbon)
+        public static IRibbonBuilder TabFromAttributes(this IRibbonBuilder ribbon)
         {
             return ribbon
-                .AddTab("RxBim_Tab_FromAttr", tab => tab
-                    .AddAboutButton(
+                .Tab("RxBim_Tab_FromAttr", tab => tab
+                    .AboutButton(
                         name: "About",
                         new AboutBoxContent(
                             title: "RxBim4Revit",
@@ -31,48 +30,48 @@
                                 { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
                             }),
                         button => button
-                            .SetText("About\nbutton")
-                            .SetToolTip("About information")
-                            .SetDescription("Button for displaying the About window")
-                            .SetLargeImage(@"img\about_32.png"))
-                    .AddPanel(
+                            .Text("About\nbutton")
+                            .ToolTip("About information")
+                            .Description("Button for displaying the About window")
+                            .LargeImage(@"img\about_32.png"))
+                    .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
-                            .AddCommandButton<Cmd1>("Command1_Large_WithText")
-                            .AddCommandButton<Cmd2>("Command2_Large_WithText")
-                            .AddCommandButton<Cmd3>("Command3_Large_WithText")
-                            .AddSeparator()
-                            .AddPullDownButton(
+                            .CommandButton<Cmd1>("Command1_Large_WithText")
+                            .CommandButton<Cmd2>("Command2_Large_WithText")
+                            .CommandButton<Cmd3>("Command3_Large_WithText")
+                            .Separator()
+                            .PullDownButton(
                                 "Pulldown1",
                                 pulldown => pulldown
-                                    .AddCommandButton<Cmd1>("Command1_Pulldown1")
-                                    .AddCommandButton<Cmd2>("Command2_Pulldown1")
-                                    .AddCommandButton<Cmd3>("Command3_Pulldown1")
-                                    .SetLargeImage(@"img\command_32.png")
-                                    .SetText("Pulldown\n#1"))
-                            .AddSlideOut()
-                            .AddCommandButton<Cmd1>("Command1_SlideOut")
-                            .AddCommandButton<Cmd2>("Command2_SlideOut")
-                            .AddCommandButton<Cmd3>("Command3_SlideOut"))
-                    .AddPanel(
+                                    .CommandButton<Cmd1>("Command1_Pulldown1")
+                                    .CommandButton<Cmd2>("Command2_Pulldown1")
+                                    .CommandButton<Cmd3>("Command3_Pulldown1")
+                                    .LargeImage(@"img\command_32.png")
+                                    .Text("Pulldown\n#1"))
+                            .SlideOut()
+                            .CommandButton<Cmd1>("Command1_SlideOut")
+                            .CommandButton<Cmd2>("Command2_SlideOut")
+                            .CommandButton<Cmd3>("Command3_SlideOut"))
+                    .Panel(
                         "RxBim_Panel_2",
                         panel => panel
-                            .AddStackedItems(items => items
-                                .AddCommandButton<Cmd1>("Command1_Stacked1")
-                                .AddCommandButton<Cmd2>("Command2_Stacked1")
-                                .AddCommandButton<Cmd3>("Command3_Stacked1"))
-                            .AddSeparator()
-                            .AddStackedItems(items => items
-                                .AddPullDownButton(
+                            .StackedItems(items => items
+                                .CommandButton<Cmd1>("Command1_Stacked1")
+                                .CommandButton<Cmd2>("Command2_Stacked1")
+                                .CommandButton<Cmd3>("Command3_Stacked1"))
+                            .Separator()
+                            .StackedItems(items => items
+                                .PullDownButton(
                                     "Pulldown2",
                                     pulldown => pulldown
-                                        .AddCommandButton<Cmd1>("Command1_Pulldown2")
-                                        .AddCommandButton<Cmd2>("Command2_Pulldown2")
-                                        .AddCommandButton<Cmd3>("Command3_Pulldown2")
-                                        .SetSmallImage(@"img\command_16.png")
-                                        .SetText("Pulldown #2"))
-                                .AddCommandButton<Cmd1>("Command1_Stacked2")
-                                .AddCommandButton<Cmd2>("Command2_Stacked2"))));
+                                        .CommandButton<Cmd1>("Command1_Pulldown2")
+                                        .CommandButton<Cmd2>("Command2_Pulldown2")
+                                        .CommandButton<Cmd3>("Command3_Pulldown2")
+                                        .SmallImage(@"img\command_16.png")
+                                        .Text("Pulldown #2"))
+                                .CommandButton<Cmd1>("Command1_Stacked2")
+                                .CommandButton<Cmd2>("Command2_Stacked2"))));
         }
 
         /// <summary>
@@ -80,11 +79,11 @@
         /// </summary>
         /// <param name="ribbon">A ribbon.</param>
         /// <returns></returns>
-        public static IRibbonBuilder AddTabFromBuilder(this IRibbonBuilder ribbon)
+        public static IRibbonBuilder TabFromBuilder(this IRibbonBuilder ribbon)
         {
             return ribbon
-                .AddTab("RxBim_Tab_FromAction", tab => tab
-                    .AddAboutButton(
+                .Tab("RxBim_Tab_FromAction", tab => tab
+                    .AboutButton(
                         name: "About",
                         new AboutBoxContent(
                             title: "RxBim4Revit",
@@ -97,183 +96,183 @@
                                 { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
                             }),
                         button => button
-                            .SetText("About\nbutton")
-                            .SetToolTip("About information")
-                            .SetDescription("Button for displaying the About window")
-                            .SetLargeImage(@"img\about_32.png"))
-                    .AddPanel(
+                            .Text("About\nbutton")
+                            .ToolTip("About information")
+                            .Description("Button for displaying the About window")
+                            .LargeImage(@"img\about_32.png"))
+                    .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
-                            .AddCommandButton(
+                            .CommandButton(
                                 name: "Command1_Large_WithText",
                                 typeof(Cmd1),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                    .SetText("Command\n#1")
-                                    .SetDescription("Description: This is command #1")
-                                    .SetLargeImage(@"img\num1_32.png")
-                                    .SetHelpUrl("https://github.com/ReactiveBIM/RxBim"))
-                            .AddCommandButton(
+                                    .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                    .Text("Command\n#1")
+                                    .Description("Description: This is command #1")
+                                    .LargeImage(@"img\num1_32.png")
+                                    .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                            .CommandButton(
                                 "Command2_Large_WithText",
                                 typeof(Cmd2),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                    .SetText("Command\n#2")
-                                    .SetDescription("Description: This is command #2")
-                                    .SetSmallImage(@"img\num2_16.png")
-                                    .SetLargeImage(@"img\num2_32.png")
-                                    .SetHelpUrl("https://www.google.com/"))
-                            .AddCommandButton(
+                                    .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                    .Text("Command\n#2")
+                                    .Description("Description: This is command #2")
+                                    .SmallImage(@"img\num2_16.png")
+                                    .LargeImage(@"img\num2_32.png")
+                                    .HelpUrl("https://www.google.com/"))
+                            .CommandButton(
                                 "Command3_Large_WithText",
                                 typeof(Cmd3),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                    .SetText("Command\n#3")
-                                    .SetDescription("Description: This is command #3")
-                                    .SetSmallImage(@"img\num3_16.png")
-                                    .SetLargeImage(@"img\num3_32.png")
-                                    .SetHelpUrl("https://www.autodesk.com/"))
-                            .AddSeparator()
-                            .AddPullDownButton(
+                                    .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                    .Text("Command\n#3")
+                                    .Description("Description: This is command #3")
+                                    .SmallImage(@"img\num3_16.png")
+                                    .LargeImage(@"img\num3_32.png")
+                                    .HelpUrl("https://www.autodesk.com/"))
+                            .Separator()
+                            .PullDownButton(
                                 "Pulldown1",
                                 pulldown => pulldown
-                                    .AddCommandButton(
+                                    .CommandButton(
                                         "Command1_Pulldown1",
                                         typeof(Cmd1),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                            .SetText("Command\n#1")
-                                            .SetDescription("Description: This is command #1")
-                                            .SetLargeImage(@"img\num1_32.png")
-                                            .SetHelpUrl("https://github.com/ReactiveBIM/RxBim"))
-                                    .AddCommandButton(
+                                            .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                            .Text("Command\n#1")
+                                            .Description("Description: This is command #1")
+                                            .LargeImage(@"img\num1_32.png")
+                                            .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                                    .CommandButton(
                                         "Command2_Pulldown1",
                                         typeof(Cmd2),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                            .SetText("Command\n#2")
-                                            .SetDescription("Description: This is command #2")
-                                            .SetLargeImage(@"img\num2_32.png")
-                                            .SetHelpUrl("https://www.google.com/"))
-                                    .AddCommandButton(
+                                            .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                            .Text("Command\n#2")
+                                            .Description("Description: This is command #2")
+                                            .LargeImage(@"img\num2_32.png")
+                                            .HelpUrl("https://www.google.com/"))
+                                    .CommandButton(
                                         "Command3_Pulldown1",
                                         typeof(Cmd3),
                                         button => button
-                                            .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                            .SetText("Command\n#3")
-                                            .SetDescription("Description: This is command #3")
-                                            .SetLargeImage(@"img\num3_32.png")
-                                            .SetHelpUrl("https://www.autodesk.com/"))
-                                    .SetLargeImage(@"img\command_32.png")
-                                    .SetText("Pulldown\n#1"))
-                            .AddSlideOut()
-                            .AddCommandButton(
+                                            .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                            .Text("Command\n#3")
+                                            .Description("Description: This is command #3")
+                                            .LargeImage(@"img\num3_32.png")
+                                            .HelpUrl("https://www.autodesk.com/"))
+                                    .LargeImage(@"img\command_32.png")
+                                    .Text("Pulldown\n#1"))
+                            .SlideOut()
+                            .CommandButton(
                                 "Command1_SlideOut",
                                 typeof(Cmd1),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                    .SetText("Command\n#1")
-                                    .SetDescription("Description: This is command #1")
-                                    .SetLargeImage(@"img\num1_32.png"))
-                            .AddCommandButton(
+                                    .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                    .Text("Command\n#1")
+                                    .Description("Description: This is command #1")
+                                    .LargeImage(@"img\num1_32.png"))
+                            .CommandButton(
                                 "Command2_SlideOut",
                                 typeof(Cmd2),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                    .SetText("Command\n#2")
-                                    .SetDescription("Description: This is command #2")
-                                    .SetLargeImage(@"img\num2_32.png"))
-                            .AddCommandButton(
+                                    .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                    .Text("Command\n#2")
+                                    .Description("Description: This is command #2")
+                                    .LargeImage(@"img\num2_32.png"))
+                            .CommandButton(
                                 "Command3_SlideOut",
                                 typeof(Cmd3),
                                 button => button
-                                    .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                    .SetText("Command\n#3")
-                                    .SetDescription("Description: This is command #3")
-                                    .SetLargeImage(@"img\num3_32.png")))
-                    .AddPanel(
+                                    .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                    .Text("Command\n#3")
+                                    .Description("Description: This is command #3")
+                                    .LargeImage(@"img\num3_32.png")))
+                    .Panel(
                         "RxBim_Panel_2",
                         panel => panel
-                            .AddStackedItems(items => items
-                                .AddCommandButton(
+                            .StackedItems(items => items
+                                .CommandButton(
                                     "Command1_Stacked1",
                                     typeof(Cmd1),
                                     button => button
-                                        .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                        .SetText("Command #1")
-                                        .SetDescription("Description: This is command #1")
-                                        .SetSmallImage(@"img\num1_16.png")
-                                        .SetHelpUrl("https://github.com/ReactiveBIM/RxBim"))
-                                .AddCommandButton(
+                                        .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                        .Text("Command #1")
+                                        .Description("Description: This is command #1")
+                                        .SmallImage(@"img\num1_16.png")
+                                        .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                                .CommandButton(
                                     "Command2_Stacked1",
                                     typeof(Cmd2),
                                     button => button
-                                        .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                        .SetText("Command #2")
-                                        .SetDescription("Description: This is command #2")
-                                        .SetSmallImage(@"img\num2_16.png")
-                                        .SetHelpUrl("https://www.google.com/"))
-                                .AddCommandButton(
+                                        .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                        .Text("Command #2")
+                                        .Description("Description: This is command #2")
+                                        .SmallImage(@"img\num2_16.png")
+                                        .HelpUrl("https://www.google.com/"))
+                                .CommandButton(
                                     "Command3_Stacked1",
                                     typeof(Cmd3),
                                     button => button
-                                        .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                        .SetText("Command #3")
-                                        .SetDescription("Description: This is command #3")
-                                        .SetSmallImage(@"img\num3_16.png")
-                                        .SetHelpUrl("https://www.autodesk.com/")))
-                            .AddSeparator()
-                            .AddStackedItems(items => items
-                                .AddPullDownButton(
+                                        .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                        .Text("Command #3")
+                                        .Description("Description: This is command #3")
+                                        .SmallImage(@"img\num3_16.png")
+                                        .HelpUrl("https://www.autodesk.com/")))
+                            .Separator()
+                            .StackedItems(items => items
+                                .PullDownButton(
                                     "Pulldown2",
                                     pulldown => pulldown
-                                        .AddCommandButton(
+                                        .CommandButton(
                                             "Command1_Pulldown2",
                                             typeof(Cmd1),
                                             button => button
-                                                .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                                .SetText("Command\n#1")
-                                                .SetDescription("Description: This is command #1")
-                                                .SetLargeImage(@"img\num1_32.png")
-                                                .SetHelpUrl("https://github.com/ReactiveBIM/RxBim"))
-                                        .AddCommandButton(
+                                                .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                                .Text("Command\n#1")
+                                                .Description("Description: This is command #1")
+                                                .LargeImage(@"img\num1_32.png")
+                                                .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                                        .CommandButton(
                                             "Command2_Pulldown2",
                                             typeof(Cmd2),
                                             button => button
-                                                .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                                .SetText("Command\n#2")
-                                                .SetDescription("Description: This is command #2")
-                                                .SetLargeImage(@"img\num2_32.png")
-                                                .SetHelpUrl("https://www.google.com/"))
-                                        .AddCommandButton(
+                                                .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                                .Text("Command\n#2")
+                                                .Description("Description: This is command #2")
+                                                .LargeImage(@"img\num2_32.png")
+                                                .HelpUrl("https://www.google.com/"))
+                                        .CommandButton(
                                             "Command3_Pulldown2",
                                             typeof(Cmd3),
                                             button => button
-                                                .SetToolTip("Tooltip: I'm run command #3. Push me!")
-                                                .SetText("Command\n#3")
-                                                .SetDescription("Description: This is command #3")
-                                                .SetLargeImage(@"img\num3_32.png")
-                                                .SetHelpUrl("https://www.autodesk.com/"))
-                                        .SetSmallImage(@"img\command_16.png")
-                                        .SetText("Pulldown #2"))
-                                .AddCommandButton(
+                                                .ToolTip("Tooltip: I'm run command #3. Push me!")
+                                                .Text("Command\n#3")
+                                                .Description("Description: This is command #3")
+                                                .LargeImage(@"img\num3_32.png")
+                                                .HelpUrl("https://www.autodesk.com/"))
+                                        .SmallImage(@"img\command_16.png")
+                                        .Text("Pulldown #2"))
+                                .CommandButton(
                                     "Command1_Stacked2",
                                     typeof(Cmd1),
                                     button => button
-                                        .SetToolTip("Tooltip: I'm run command #1. Push me!")
-                                        .SetText("Command #1")
-                                        .SetDescription("Description: This is command #1")
-                                        .SetSmallImage(@"img\num1_16.png")
-                                        .SetHelpUrl("https://github.com/ReactiveBIM/RxBim"))
-                                .AddCommandButton(
+                                        .ToolTip("Tooltip: I'm run command #1. Push me!")
+                                        .Text("Command #1")
+                                        .Description("Description: This is command #1")
+                                        .SmallImage(@"img\num1_16.png")
+                                        .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                                .CommandButton(
                                     "Command2_Stacked2",
                                     typeof(Cmd2),
                                     button => button
-                                        .SetToolTip("Tooltip: I'm run command #2. Push me!")
-                                        .SetText("Command #2")
-                                        .SetDescription("Description: This is command #2")
-                                        .SetSmallImage(@"img\num2_16.png")
-                                        .SetHelpUrl("https://www.google.com/")))));
+                                        .ToolTip("Tooltip: I'm run command #2. Push me!")
+                                        .Text("Command #2")
+                                        .Description("Description: This is command #2")
+                                        .SmallImage(@"img\num2_16.png")
+                                        .HelpUrl("https://www.google.com/")))));
         }
     }
 }

@@ -17,14 +17,14 @@
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
         /// This command will be execute when user push the button.</typeparam>
-        public static IPanelBuilder AddCommandButton<TCommand>(
+        public static IPanelBuilder CommandButton<TCommand>(
             this IPanelBuilder parent,
             string name,
             Action<IButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.AddCommandButton(
+            return parent.CommandButton(
                 name,
                 typeof(TCommand),
                 x =>
@@ -42,14 +42,14 @@
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
         /// This command will be execute when user push the button.</typeparam>
-        public static IPulldownButtonBuilder AddCommandButton<TCommand>(
+        public static IPulldownButtonBuilder CommandButton<TCommand>(
             this IPulldownButtonBuilder parent,
             string name,
             Action<IButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.AddCommandButton(
+            return parent.CommandButton(
                 name,
                 typeof(TCommand),
                 x =>
@@ -67,14 +67,14 @@
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
         /// This command will be execute when user push the button.</typeparam>
-        public static IStackedItemsBuilder AddCommandButton<TCommand>(
+        public static IStackedItemsBuilder CommandButton<TCommand>(
             this IStackedItemsBuilder parent,
             string name,
             Action<IButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.AddCommandButton(
+            return parent.CommandButton(
                 name,
                 typeof(TCommand),
                 x =>
@@ -90,14 +90,14 @@
                 return button;
 
             return button
-                .SetDescription(attr.Description!)
-                .SetText(attr.Text!)
-                .SetToolTip(attr.ToolTip!)
-                .SetHelpUrl(attr.HelpUrl!)
-                .SetSmallImage(attr.SmallImage!, ThemeType.Dark)
-                .SetLargeImage(attr.LargeImage!, ThemeType.Dark)
-                .SetSmallImage(attr.SmallImageLight!, ThemeType.Light)
-                .SetLargeImage(attr.LargeImageLight!, ThemeType.Light);
+                .Description(attr.Description!)
+                .Text(attr.Text!)
+                .ToolTip(attr.ToolTip!)
+                .HelpUrl(attr.HelpUrl!)
+                .SmallImage(attr.SmallImage!, ThemeType.Dark)
+                .LargeImage(attr.LargeImage!, ThemeType.Dark)
+                .SmallImage(attr.SmallImageLight!, ThemeType.Light)
+                .LargeImage(attr.LargeImageLight!, ThemeType.Light);
         }
     }
 }

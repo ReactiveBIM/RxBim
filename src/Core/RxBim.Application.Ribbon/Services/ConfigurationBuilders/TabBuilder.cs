@@ -34,14 +34,14 @@
         }
 
         /// <inheritdoc />
-        public ITabBuilder AddPanel(string title, Action<IPanelBuilder> panel)
+        public ITabBuilder Panel(string title, Action<IPanelBuilder> panel)
         {
             AddPanelInternal(title, panel);
             return this;
         }
 
         /// <inheritdoc />
-        public ITabBuilder AddAboutButton(
+        public ITabBuilder AboutButton(
             string name,
             AboutBoxContent content,
             Action<IButtonBuilder>? builder = null,
@@ -67,7 +67,7 @@
             {
                 if (!panelsSection.Exists())
                     continue;
-                var panelBuilder = AddPanelInternal(panelSection.GetSection(nameof(Panel.Name)).Value);
+                var panelBuilder = AddPanelInternal(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value);
                 panelBuilder.LoadFromConfig(panelSection);
             }
         }

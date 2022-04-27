@@ -16,7 +16,7 @@
         /// This command will be execute when user push the button.</param>
         /// <param name="builder">The button builder.</param>
         /// <returns>Panel where button were created.</returns>
-        IPanelBuilder AddCommandButton(
+        IPanelBuilder CommandButton(
             string name,
             Type commandType,
             Action<IButtonBuilder>? builder = null);
@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="builder">The stacke items builder.</param>
         /// <returns>Panel where stacked items were created.</returns>
-        IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> builder);
+        IPanelBuilder StackedItems(Action<IStackedItemsBuilder> builder);
 
         /// <summary>
         /// Adds a new pull down button on the panel.
@@ -34,17 +34,17 @@
         /// <param name="name">Internal name of the button.</param>
         /// <param name="builder">A pull-down button builder.</param>
         /// <returns>Panel where button were created.</returns>
-        IPanelBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder);
+        IPanelBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder);
 
         /// <summary>
         /// Adds a new separator to the panel.
         /// </summary>
-        IPanelBuilder AddSeparator();
+        IPanelBuilder Separator();
 
         /// <summary>
         /// Adds a new switch for the sliding part of the panel.
         /// </summary>
-        IPanelBuilder AddSlideOut();
+        IPanelBuilder SlideOut();
 
         /// <summary>
         /// Adds a new button for displaying the About window.

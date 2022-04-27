@@ -14,21 +14,21 @@
         public Ribbon Ribbon { get; } = new();
 
         /// <inheritdoc />
-        public IRibbonBuilder AddTab(string title, Action<ITabBuilder> tab)
+        public IRibbonBuilder Tab(string title, Action<ITabBuilder> tab)
         {
             AddTabInternal(title, tab);
             return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetDisplayVersion(bool enable)
+        public IRibbonBuilder DisplayVersion(bool enable)
         {
             Ribbon.AddVersionToCommandTooltip = enable;
             return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetVersionPrefix(string prefix)
+        public IRibbonBuilder VersionPrefix(string prefix)
         {
             Ribbon.CommandTooltipVersionHeader = prefix;
             return this;
@@ -50,7 +50,7 @@
             {
                 if (!tabSection.Exists())
                     continue;
-                var tabBuilder = AddTabInternal(tabSection.GetSection(nameof(Tab.Name)).Value);
+                var tabBuilder = AddTabInternal(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
                 tabBuilder.LoadFromConfig(tabSection);
             }
         }

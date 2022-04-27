@@ -1,5 +1,5 @@
 ﻿#pragma warning disable
-namespace RxBim.Shared
+namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Collections.Generic;

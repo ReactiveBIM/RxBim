@@ -19,7 +19,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public StackedItems StackedItems { get; } = new();
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddCommandButton(
+        public IStackedItemsBuilder CommandButton(
             string name,
             Type commandType,
             Action<IButtonBuilder>? builder = null)
@@ -31,7 +31,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder)
+        public IStackedItemsBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder)
         {
             var pulldownButton = new PulldownButtonBuilder(name);
             builder.Invoke(pulldownButton);
@@ -49,11 +49,11 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
                 if (!buttonSection.Exists())
                     continue;
 
-                if (buttonSection.GetSection(nameof(CommandButton.CommandType)).Exists())
+                if (buttonSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
                 {
                     AddButton<CommandButton>(buttonSection);
                 }
-                else if (buttonSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists())
+                else if (buttonSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
                 {
                     AddButton<PullDownButton>(buttonSection);
                 }

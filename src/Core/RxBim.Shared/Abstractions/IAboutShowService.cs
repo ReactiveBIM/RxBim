@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Shared.Abstractions
 {
     using System;
+    using Application.Ribbon;
 
     /// <summary>
     /// Abstraction for showing about window.

@@ -35,7 +35,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         /// Adds a new stacked items to the panel.
         /// </summary>
         /// <param name="builder">The stacked items builder.</param>
-        public IPanelBuilder AddStackedItems(Action<IStackedItemsBuilder> builder)
+        public IPanelBuilder StackedItems(Action<IStackedItemsBuilder> builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
@@ -47,7 +47,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddCommandButton(
+        public IPanelBuilder CommandButton(
             string name,
             Type commandType,
             Action<IButtonBuilder>? builder = null)
@@ -59,7 +59,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddPullDownButton(
+        public IPanelBuilder PullDownButton(
             string name,
             Action<IPulldownButtonBuilder> builder)
         {
@@ -70,14 +70,14 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddSeparator()
+        public IPanelBuilder Separator()
         {
             BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.Separator });
             return this;
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddSlideOut()
+        public IPanelBuilder SlideOut()
         {
             if (BuildingPanel.Elements.Any(
                 e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
@@ -116,18 +116,18 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             foreach (var elementSection in elementsSection.GetChildren())
             {
-                var stackedButtons = elementSection.GetSection(nameof(StackedItems.StackedButtons));
+                var stackedButtons = elementSection.GetSection(nameof(Application.Ribbon.StackedItems.StackedButtons));
                 if (stackedButtons.Exists())
                 {
                     var stackedItems = new StackedItemsBuilder();
                     stackedItems.LoadButtonsFromConfig(stackedButtons);
                     BuildingPanel.Elements.Add(stackedItems.StackedItems);
                 }
-                else if (elementSection.GetSection(nameof(CommandButton.CommandType)).Exists())
+                else if (elementSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
                 {
                     CreateFromConfigAndAdd<CommandButton>(elementSection);
                 }
-                else if (elementSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists())
+                else if (elementSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
                 {
                     CreateFromConfigAndAdd<PullDownButton>(elementSection);
                 }
@@ -144,10 +144,10 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
                         switch (type)
                         {
                             case PanelLayoutElementType.Separator:
-                                AddSeparator();
+                                Separator();
                                 break;
                             case PanelLayoutElementType.SlideOut:
-                                AddSlideOut();
+                                SlideOut();
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException($"Unknown panel layout element type: {type}");

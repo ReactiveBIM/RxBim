@@ -21,7 +21,7 @@
         public TButton BuildingButton { get; } = new();
 
         /// <inheritdoc />
-        public IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)
+        public IButtonBuilder LargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)
         {
             switch (theme)
             {
@@ -38,7 +38,7 @@
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetSmallImage(string imageRelativePath, ThemeType theme = ThemeType.All)
+        public IButtonBuilder SmallImage(string imageRelativePath, ThemeType theme = ThemeType.All)
         {
             switch (theme)
             {
@@ -55,28 +55,28 @@
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetDescription(string description)
+        public IButtonBuilder Description(string description)
         {
             BuildingButton.Description = description;
             return this;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetToolTip(string toolTip)
+        public IButtonBuilder ToolTip(string toolTip)
         {
             BuildingButton.ToolTip = toolTip;
             return this;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetText(string text)
+        public IButtonBuilder Text(string text)
         {
             BuildingButton.Text = text;
             return this;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetHelpUrl(string url)
+        public IButtonBuilder HelpUrl(string url)
         {
             BuildingButton.HelpUrl = url;
             return this;

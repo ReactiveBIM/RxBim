@@ -14,7 +14,7 @@
         /// <param name="commandType"> A class which implements command.
         /// This command will be execute when user push the button. </param>
         /// <param name="builder">The button builder.</param>
-        IStackedItemsBuilder AddCommandButton(
+        IStackedItemsBuilder CommandButton(
             string name,
             Type commandType,
             Action<IButtonBuilder>? builder = null);
@@ -24,6 +24,6 @@
         /// </summary>
         /// <param name="name">The button internal name.</param>
         /// <param name="builder">The pull-down button builder.</param>
-        IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder);
+        IStackedItemsBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder);
     }
 }
