@@ -1,11 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
-    using RxBim.Shared;
-
     /// <summary>
     /// About button builder.
     /// </summary>
-    public class AboutButtonBuilder : ButtonBuilder<AboutButton>
+    public class AboutButtonBuilder : ButtonBuilder<AboutButton, IAboutButtonBuilder>, IAboutButtonBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AboutButtonBuilder"/> class.

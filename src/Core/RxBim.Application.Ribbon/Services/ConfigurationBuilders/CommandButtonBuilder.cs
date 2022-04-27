@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a button builder.
     /// </summary>
-    public class CommandButtonBuilder : ButtonBuilder<CommandButton>
+    public class CommandButtonBuilder : ButtonBuilder<CommandButton, ICommnadButtonBuilder>, ICommnadButtonBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.

@@ -22,7 +22,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IStackedItemsBuilder CommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);

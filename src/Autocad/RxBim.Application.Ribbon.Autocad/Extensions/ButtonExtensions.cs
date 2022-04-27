@@ -5,7 +5,7 @@
     using Autodesk.Windows;
 
     /// <summary>
-    /// Extensions for <see cref="IButtonBuilder"/>.
+    /// Extensions for <see cref="RibbonButton"/>.
     /// </summary>
     internal static class ButtonExtensions
     {

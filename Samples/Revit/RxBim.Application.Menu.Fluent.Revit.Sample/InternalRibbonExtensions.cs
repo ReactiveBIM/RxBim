@@ -44,11 +44,11 @@
                             .PullDownButton(
                                 "Pulldown1",
                                 pulldown => pulldown
+                                    .LargeImage(@"img\command_32.png")
+                                    .Text("Pulldown\n#1")
                                     .CommandButton<Cmd1>("Command1_Pulldown1")
                                     .CommandButton<Cmd2>("Command2_Pulldown1")
-                                    .CommandButton<Cmd3>("Command3_Pulldown1")
-                                    .LargeImage(@"img\command_32.png")
-                                    .Text("Pulldown\n#1"))
+                                    .CommandButton<Cmd3>("Command3_Pulldown1"))
                             .SlideOut()
                             .CommandButton<Cmd1>("Command1_SlideOut")
                             .CommandButton<Cmd2>("Command2_SlideOut")
@@ -65,11 +65,11 @@
                                 .PullDownButton(
                                     "Pulldown2",
                                     pulldown => pulldown
+                                        .SmallImage(@"img\command_16.png")
+                                        .Text("Pulldown #2")
                                         .CommandButton<Cmd1>("Command1_Pulldown2")
                                         .CommandButton<Cmd2>("Command2_Pulldown2")
-                                        .CommandButton<Cmd3>("Command3_Pulldown2")
-                                        .SmallImage(@"img\command_16.png")
-                                        .Text("Pulldown #2"))
+                                        .CommandButton<Cmd3>("Command3_Pulldown2"))
                                 .CommandButton<Cmd1>("Command1_Stacked2")
                                 .CommandButton<Cmd2>("Command2_Stacked2"))));
         }
@@ -85,7 +85,7 @@
                 .Tab("RxBim_Tab_FromAction", tab => tab
                     .AboutButton(
                         name: "About",
-                        new AboutBoxContent(
+                        content: new AboutBoxContent(
                             title: "RxBim4Revit",
                             "1.0",
                             "RxBim product module for API demo and validation",
@@ -95,7 +95,7 @@
                             {
                                 { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
                             }),
-                        button => button
+                        builder: button => button
                             .Text("About\nbutton")
                             .ToolTip("About information")
                             .Description("Button for displaying the About window")
@@ -105,8 +105,8 @@
                         panel => panel
                             .CommandButton(
                                 name: "Command1_Large_WithText",
-                                typeof(Cmd1),
-                                button => button
+                                commandType: typeof(Cmd1),
+                                builder: button => button
                                     .ToolTip("Tooltip: I'm run command #1. Push me!")
                                     .Text("Command\n#1")
                                     .Description("Description: This is command #1")

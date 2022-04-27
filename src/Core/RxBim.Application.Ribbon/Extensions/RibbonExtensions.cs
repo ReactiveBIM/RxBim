@@ -20,7 +20,7 @@
         public static IPanelBuilder CommandButton<TCommand>(
             this IPanelBuilder parent,
             string name,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
@@ -45,7 +45,7 @@
         public static IPulldownButtonBuilder CommandButton<TCommand>(
             this IPulldownButtonBuilder parent,
             string name,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
@@ -70,7 +70,7 @@
         public static IStackedItemsBuilder CommandButton<TCommand>(
             this IStackedItemsBuilder parent,
             string name,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var commandType = typeof(TCommand);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
@@ -84,7 +84,7 @@
                 });
         }
 
-        private static IButtonBuilder AttributeAction(IButtonBuilder button, RxBimCommandAttribute? attr)
+        private static ICommnadButtonBuilder AttributeAction(ICommnadButtonBuilder button, RxBimCommandAttribute? attr)
         {
             if (attr == null)
                 return button;

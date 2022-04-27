@@ -136,6 +136,8 @@
                                     .PullDownButton(
                                         "Pulldown2",
                                         pulldown => pulldown
+                                            .SmallImage(@"img\command_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img\command_16_light.png", ThemeType.Light)
                                             .CommandButton(
                                                 "Command #1",
                                                 typeof(Cmd1),
@@ -147,9 +149,7 @@
                                             .CommandButton(
                                                 "Command #3",
                                                 typeof(Cmd3),
-                                                button => SetupCommand3Button(button))
-                                            .SmallImage(@"img\command_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img\command_16_light.png", ThemeType.Light))
+                                                button => SetupCommand3Button(button)))
                                     .CommandButton(
                                         "Command1_Small",
                                         typeof(Cmd1),
@@ -160,7 +160,8 @@
                                         button => SetupCommand2Button(button))))));
         }
 
-        private static IButtonBuilder SetupCommand1Button(IButtonBuilder button)
+        private static TButtonBuilder SetupCommand1Button<TButtonBuilder>(TButtonBuilder button)
+            where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
         {
             return button
                 .ToolTip("Tooltip: I'm run command #1. Push me!")
@@ -172,7 +173,8 @@
                 .HelpUrl("https://github.com/ReactiveBIM/RxBim");
         }
 
-        private static IButtonBuilder SetupCommand2Button(IButtonBuilder button)
+        private static TButtonBuilder SetupCommand2Button<TButtonBuilder>(TButtonBuilder button)
+            where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
         {
             return button
                 .ToolTip("Tooltip: I'm run command #2. Push me!")
@@ -184,7 +186,8 @@
                 .HelpUrl("https://www.google.com/");
         }
 
-        private static IButtonBuilder SetupCommand3Button(IButtonBuilder button)
+        private static TButtonBuilder SetupCommand3Button<TButtonBuilder>(TButtonBuilder button)
+            where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
         {
             return button
                 .ToolTip("Tooltip: I'm run command #3. Push me!")

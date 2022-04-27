@@ -13,13 +13,13 @@
         /// </summary>
         /// <param name="name">Internal name of the button.</param>
         /// <param name="commandType">Class which implements IExternalCommand interface.
-        /// This command will be execute when user push the button.</param>
+        ///     This command will be execute when user push the button.</param>
         /// <param name="builder">The button builder.</param>
         /// <returns>Panel where button were created.</returns>
         IPanelBuilder CommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? builder = null);
+            Action<ICommnadButtonBuilder>? builder = null);
 
         /// <summary>
         /// Adds a new Stacked items on the panel.
@@ -55,6 +55,6 @@
         IPanelBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? builder = null);
+            Action<IAboutButtonBuilder>? builder = null);
     }
 }

@@ -44,7 +44,7 @@
         public ITabBuilder AboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? builder = null,
+            Action<IAboutButtonBuilder>? builder = null,
             string? panelName = null)
         {
             var panel = new PanelBuilder(panelName ?? name, _ribbonBuilder, this);

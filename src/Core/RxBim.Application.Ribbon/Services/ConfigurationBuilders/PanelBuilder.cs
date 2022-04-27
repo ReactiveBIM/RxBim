@@ -50,7 +50,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IPanelBuilder CommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
@@ -90,7 +90,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IPanelBuilder AddAboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? builder = null)
+            Action<IAboutButtonBuilder>? builder = null)
         {
             var aboutButton = new AboutButtonBuilder(name, content);
             builder?.Invoke(aboutButton);

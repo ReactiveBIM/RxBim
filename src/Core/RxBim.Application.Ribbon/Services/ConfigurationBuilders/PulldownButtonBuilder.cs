@@ -5,7 +5,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
     /// <summary>
     /// Represents a pull-down builder.
     /// </summary>
-    public class PulldownButtonBuilder : ButtonBuilder<PullDownButton>, IPulldownButtonBuilder
+    public class PulldownButtonBuilder : ButtonBuilder<PullDownButton, IPulldownButtonBuilder>, IPulldownButtonBuilder
     {
         /// <inheritdoc />
         public PulldownButtonBuilder(string name)
@@ -17,7 +17,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IPulldownButtonBuilder CommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);

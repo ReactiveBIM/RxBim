@@ -14,6 +14,7 @@
     <PropertyGroup>
         <Description>RxBim UI Revit Library</Description>
         <PackageId>RxBim.Application.Ribbon.Revit</PackageId>
+        <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
     </PropertyGroup>
 
 </Project>
