@@ -11,6 +11,28 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="img\about_16.png" />
+      <EmbeddedResource Include="img\about_16.png" />
+      <None Remove="img\about_32.png" />
+      <EmbeddedResource Include="img\about_32.png" />
+      <None Remove="img\command_16.png" />
+      <EmbeddedResource Include="img\command_16.png" />
+      <None Remove="img\command_32.png" />
+      <EmbeddedResource Include="img\command_32.png" />
+      <None Remove="img\num1_16.png" />
+      <EmbeddedResource Include="img\num1_16.png" />
+      <None Remove="img\num1_32.png" />
+      <EmbeddedResource Include="img\num1_32.png" />
+      <None Remove="img\num2_16.png" />
+      <EmbeddedResource Include="img\num2_16.png" />
+      <None Remove="img\num2_32.png" />
+      <EmbeddedResource Include="img\num2_32.png" />
+      <None Remove="img\num3_16.png" />
+      <EmbeddedResource Include="img\num3_16.png" />
+      <None Remove="img\num3_32.png" />
+      <EmbeddedResource Include="img\num3_32.png" />
+    </ItemGroup>
 
     <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
 </Project>

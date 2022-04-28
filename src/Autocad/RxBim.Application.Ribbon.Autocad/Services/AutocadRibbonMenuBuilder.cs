@@ -20,7 +20,7 @@
         private readonly Func<ThemeType> _getCurrentTheme;
         private readonly Action _prebuildAction;
         private readonly Action<RibbonToolTip> _toolTipAction;
-        private readonly List<(RibbonButton, Button)> _createdButtons = new();
+        private readonly List<(RibbonButton RibbonButton, Button Button)> _createdButtons = new();
 
         /// <inheritdoc />
         public AutocadRibbonMenuBuilder(
@@ -41,7 +41,7 @@
         public void ApplyCurrentTheme()
         {
             var theme = _getCurrentTheme();
-            _createdButtons.ForEach(x => SetRibbonItemImages(x.Item1, x.Item2, theme));
+            _createdButtons.ForEach(x => SetRibbonItemImages(x.RibbonButton, x.Button, theme));
         }
 
         /// <inheritdoc />
@@ -206,15 +206,19 @@
 
         private void SetRibbonItemImages(RibbonItem button, Button buttonConfig, ThemeType themeType)
         {
+            var assembly = buttonConfig is CommandButton commandButton
+                ? GetCommandType(commandButton.CommandType!).Assembly
+                : null;
+
             if (themeType is ThemeType.Light)
             {
-                button.Image = GetIconImage(buttonConfig.SmallImageLight ?? buttonConfig.SmallImage);
-                button.LargeImage = GetIconImage(buttonConfig.LargeImageLight ?? buttonConfig.LargeImage);
+                button.Image = GetIconImage(buttonConfig.SmallImageLight ?? buttonConfig.SmallImage, assembly);
+                button.LargeImage = GetIconImage(buttonConfig.LargeImageLight ?? buttonConfig.LargeImage, assembly);
             }
             else
             {
-                button.Image = GetIconImage(buttonConfig.SmallImage);
-                button.LargeImage = GetIconImage(buttonConfig.LargeImage);
+                button.Image = GetIconImage(buttonConfig.SmallImage, assembly);
+                button.LargeImage = GetIconImage(buttonConfig.LargeImage, assembly);
             }
         }
 

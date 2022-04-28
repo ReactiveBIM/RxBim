@@ -15,13 +15,13 @@
         public CommandButtonBuilder(string name, Type commandType)
             : base(name)
         {
-            CommandType = commandType;
+            ////CommandType = commandType;
             BuildingButton.CommandType = commandType.AssemblyQualifiedName;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// The command type.
         /// </summary>
-        public Type CommandType { get; }
+        public Type CommandType { get; }*/
     }
 }

@@ -34,8 +34,8 @@
                                     .Text("About\nbutton")
                                     .ToolTip("About information")
                                     .Description("Button for displaying the About window")
-                                    .LargeImage(@"img\about_32.png", ThemeType.Dark)
-                                    .LargeImage(@"img\about_32_light.png", ThemeType.Light))
+                                    .LargeImage(@"img.about_32.png", ThemeType.Dark)
+                                    .LargeImage(@"img.about_32_light.png", ThemeType.Light))
                             .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel
@@ -45,10 +45,10 @@
                                         button => button
                                             .ToolTip("Tooltip: I'm run command #1. Push me!")
                                             .Description("Description: This is command #1")
-                                            .SmallImage(@"img\num1_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img\num1_16_light.png", ThemeType.Light)
-                                            .LargeImage(@"img\num1_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.num1_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img.num1_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.num1_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img.num1_32_light.png", ThemeType.Light)
                                             .HelpUrl("https://github.com/ReactiveBIM/RxBim")
                                             .Text("Command\n#1"))
                                     .CommandButton(
@@ -57,10 +57,10 @@
                                         button => button
                                             .ToolTip("Tooltip: I'm run command #2. Push me!")
                                             .Description("Description: This is command #2")
-                                            .SmallImage(@"img\num2_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img\num2_16_light.png", ThemeType.Light)
-                                            .LargeImage(@"img\num2_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img\num2_32_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.num2_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img.num2_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.num2_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img.num2_32_light.png", ThemeType.Light)
                                             .HelpUrl("https://www.google.com/")
                                             .Text("Command\n#2"))
                                     .CommandButton(
@@ -69,10 +69,10 @@
                                         button => button
                                             .ToolTip("Tooltip: I'm run command #3. Push me!")
                                             .Description("Description: This is command #3")
-                                            .SmallImage(@"img\num3_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img\num3_16_light.png", ThemeType.Light)
-                                            .LargeImage(@"img\num3_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img\num3_32_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.num3_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img.num3_16_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.num3_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img.num3_32_light.png", ThemeType.Light)
                                             .HelpUrl("https://www.autodesk.com/")
                                             .Text("Command\n#3"))
                                     .Separator()
@@ -91,8 +91,8 @@
                                                 "Command #3",
                                                 typeof(Cmd3),
                                                 button => SetupCommand3Button(button).Text("Command\n#3"))
-                                            .LargeImage(@"img\command_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img\command_32_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.command_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img.command_32_light.png", ThemeType.Light)
                                             .Text("Pulldown #1"))
                                     .SlideOut()
                                     .CommandButton(
@@ -136,8 +136,8 @@
                                     .PullDownButton(
                                         "Pulldown2",
                                         pulldown => pulldown
-                                            .SmallImage(@"img\command_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img\command_16_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.command_16.png", ThemeType.Dark)
+                                            .SmallImage(@"img.command_16_light.png", ThemeType.Light)
                                             .CommandButton(
                                                 "Command #1",
                                                 typeof(Cmd1),
@@ -166,10 +166,10 @@
             return button
                 .ToolTip("Tooltip: I'm run command #1. Push me!")
                 .Description("Description: This is command #1")
-                .SmallImage(@"img\num1_16.png", ThemeType.Dark)
-                .SmallImage(@"img\num1_16_light.png", ThemeType.Light)
-                .LargeImage(@"img\num1_32.png", ThemeType.Dark)
-                .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
+                .SmallImage(@"img.num1_16.png", ThemeType.Dark)
+                .SmallImage(@"img.num1_16_light.png", ThemeType.Light)
+                .LargeImage(@"img.num1_32.png", ThemeType.Dark)
+                .LargeImage(@"img.num1_32_light.png", ThemeType.Light)
                 .HelpUrl("https://github.com/ReactiveBIM/RxBim");
         }
 
@@ -179,10 +179,10 @@
             return button
                 .ToolTip("Tooltip: I'm run command #2. Push me!")
                 .Description("Description: This is command #2")
-                .SmallImage(@"img\num2_16.png", ThemeType.Dark)
-                .SmallImage(@"img\num2_16_light.png", ThemeType.Light)
-                .LargeImage(@"img\num2_32.png", ThemeType.Dark)
-                .LargeImage(@"img\num2_32_light.png", ThemeType.Light)
+                .SmallImage(@"img.num2_16.png", ThemeType.Dark)
+                .SmallImage(@"img.num2_16_light.png", ThemeType.Light)
+                .LargeImage(@"img.num2_32.png", ThemeType.Dark)
+                .LargeImage(@"img.num2_32_light.png", ThemeType.Light)
                 .HelpUrl("https://www.google.com/");
         }
 
@@ -192,10 +192,10 @@
             return button
                 .ToolTip("Tooltip: I'm run command #3. Push me!")
                 .Description("Description: This is command #3")
-                .SmallImage(@"img\num3_16.png", ThemeType.Dark)
-                .SmallImage(@"img\num3_16_light.png", ThemeType.Light)
-                .LargeImage(@"img\num3_32.png", ThemeType.Dark)
-                .LargeImage(@"img\num3_32_light.png", ThemeType.Light)
+                .SmallImage(@"img.num3_16.png", ThemeType.Dark)
+                .SmallImage(@"img.num3_16_light.png", ThemeType.Light)
+                .LargeImage(@"img.num3_32.png", ThemeType.Dark)
+                .LargeImage(@"img.num3_32_light.png", ThemeType.Light)
                 .HelpUrl("https://www.autodesk.com/");
         }
     }

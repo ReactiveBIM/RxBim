@@ -1,7 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
+    using System.Linq;
     using System.Reflection;
+    using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using RxBim.Shared;
     using RxBim.Shared.Abstractions;
@@ -144,12 +146,30 @@
         /// <summary>
         /// Returns an image of the button's icon.
         /// </summary>
-        /// <param name="fullOrRelativeImagePath">Image path.</param>
-        protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
+        /// <param name="resourcePath">The image resuorce path.</param>
+        /// <param name="assembly">The assembly containing image embedded resource.</param>
+        protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
         {
-            if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
+            if (string.IsNullOrWhiteSpace(resourcePath))
                 return null;
-            var uri = MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!);
+
+            assembly ??= MenuAssembly;
+            var resource = assembly.GetManifestResourceNames()
+                .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));
+            if (resource != null)
+            {
+                var file = assembly.GetManifestResourceStream(resource);
+                if (file != null)
+                {
+                    var bd = new PngBitmapDecoder(
+                        file,
+                        BitmapCreateOptions.PreservePixelFormat,
+                        BitmapCacheOption.Default);
+                    return bd.Frames[0];
+                }
+            }
+
+            var uri = MenuAssembly.TryGetSupportFileUri(resourcePath!);
             return uri != null ? new BitmapImage(uri) : null;
         }
 

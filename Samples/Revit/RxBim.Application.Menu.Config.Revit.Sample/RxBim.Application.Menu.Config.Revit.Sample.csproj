@@ -1,19 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <None Update="img\*.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <None Update="appsettings.RxBim.Application.Menu.Config.Revit.Sample.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="img\num1_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="img\num1_32.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj"/>
+      <None Remove="img\about_16.png" />
+      <EmbeddedResource Include="img\about_16.png" />
+      <None Remove="img\about_32.png" />
+      <EmbeddedResource Include="img\about_32.png" />
+      <None Remove="img\command_16.png" />
+      <EmbeddedResource Include="img\command_16.png" />
+      <None Remove="img\command_32.png" />
+      <EmbeddedResource Include="img\command_32.png" />
+      <None Remove="img\num2_16.png" />
+      <EmbeddedResource Include="img\num2_16.png" />
+      <None Remove="img\num2_32.png" />
+      <EmbeddedResource Include="img\num2_32.png" />
+      <None Remove="img\num3_16.png" />
+      <EmbeddedResource Include="img\num3_16.png" />
+      <None Remove="img\num3_32.png" />
+      <EmbeddedResource Include="img\num3_32.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
+        <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
+        <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
     </ItemGroup>
 
-    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
 </Project>
