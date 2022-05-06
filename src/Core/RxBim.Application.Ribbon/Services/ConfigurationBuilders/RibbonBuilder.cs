@@ -16,7 +16,7 @@
         /// <inheritdoc />
         public IRibbonBuilder Tab(string title, Action<ITabBuilder> tab)
         {
-            AddTabInternal(title, tab);
+            CreateTab(title, tab);
             return this;
         }
 
@@ -50,8 +50,8 @@
             {
                 if (!tabSection.Exists())
                     continue;
-                var tabBuilder = AddTabInternal(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
-                tabBuilder.LoadFromConfig(tabSection);
+                var tab = CreateTab(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
+                tab.LoadFromConfig(tabSection);
             }
         }
 
@@ -70,7 +70,7 @@
             }
         }
 
-        private TabBuilder AddTabInternal(string tabTitle, Action<ITabBuilder>? tab = null)
+        private TabBuilder CreateTab(string tabTitle, Action<ITabBuilder>? tab = null)
         {
             var builder = new TabBuilder(tabTitle, this);
             tab?.Invoke(builder);

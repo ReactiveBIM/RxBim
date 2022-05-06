@@ -10,7 +10,7 @@
     internal static class InternalRibbonExtensions
     {
         /// <summary>
-        /// Bilds a new Tab using attributes.
+        /// Builds a new Tab using attributes.
         /// </summary>
         /// <param name="ribbon">A ribbon.</param>
         public static IRibbonBuilder TabFromAttributes(this IRibbonBuilder ribbon)

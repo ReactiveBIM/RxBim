@@ -5,8 +5,7 @@
     using System.Reflection;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using RxBim.Shared;
-    using RxBim.Shared.Abstractions;
+    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
@@ -140,7 +139,7 @@
         /// <exception cref="ArgumentException">Type name is invalid.</exception>
         protected Type GetCommandType(string commandTypeName)
         {
-            return MenuAssembly.GetTypeFromName(commandTypeName);
+            return AssemblyExtensions.GetTypeByName(MenuAssembly, commandTypeName);
         }
 
         /// <summary>
@@ -217,9 +216,11 @@
                         CreateAboutButton(tab, panel, aboutButton);
                         break;
                     case CommandButton cmdButton:
+                        cmdButton.LoadFromAttribute(MenuAssembly);
                         CreateCommandButton(panel, cmdButton);
                         break;
                     case PullDownButton pullDownButton:
+                        pullDownButton.LoadFromAttribute(MenuAssembly);
                         CreatePullDownButton(panel, pullDownButton);
                         break;
                     case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.Separator } _:
@@ -229,6 +230,7 @@
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:
+                        stackedItems.LoadFromAttribute(MenuAssembly);
                         CreateStackedItems(panel, stackedItems);
                         break;
                     default:

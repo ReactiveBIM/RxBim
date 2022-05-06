@@ -22,16 +22,7 @@
             string name,
             Action<ICommnadButtonBuilder>? builder = null)
         {
-            var commandType = typeof(TCommand);
-            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.CommandButton(
-                name,
-                typeof(TCommand),
-                x =>
-                {
-                    AttributeAction(x, attr);
-                    builder?.Invoke(x);
-                });
+            return parent.CommandButton(name, typeof(TCommand), builder);
         }
 
         /// <summary>
@@ -47,16 +38,7 @@
             string name,
             Action<ICommnadButtonBuilder>? builder = null)
         {
-            var commandType = typeof(TCommand);
-            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.CommandButton(
-                name,
-                typeof(TCommand),
-                x =>
-                {
-                    AttributeAction(x, attr);
-                    builder?.Invoke(x);
-                });
+            return parent.CommandButton(name, typeof(TCommand), builder);
         }
 
         /// <summary>
@@ -72,24 +54,21 @@
             string name,
             Action<ICommnadButtonBuilder>? builder = null)
         {
-            var commandType = typeof(TCommand);
-            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            return parent.CommandButton(
-                name,
-                typeof(TCommand),
-                x =>
-                {
-                    AttributeAction(x, attr);
-                    builder?.Invoke(x);
-                });
+            return parent.CommandButton(name, typeof(TCommand), builder);
         }
 
-        private static ICommnadButtonBuilder AttributeAction(ICommnadButtonBuilder button, RxBimCommandAttribute? attr)
+        /*/// <summary>
+        /// Sets command button properties from <see cref="RxBimCommandAttribute"/>.
+        /// </summary>
+        /// <param name="button">A Command button builder</param>
+        /// <param name="commandType">The command button type.</param>
+        internal static void BuildFromAttribute(this ICommnadButtonBuilder button, Type commandType)
         {
+            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
             if (attr == null)
-                return button;
+                return;
 
-            return button
+            button
                 .Description(attr.Description!)
                 .Text(attr.Text!)
                 .ToolTip(attr.ToolTip!)
@@ -98,6 +77,45 @@
                 .LargeImage(attr.LargeImage!, ThemeType.Dark)
                 .SmallImage(attr.SmallImageLight!, ThemeType.Light)
                 .LargeImage(attr.LargeImageLight!, ThemeType.Light);
+        }*/
+
+        /// <summary>
+        /// Loads command button properties from <see cref="RxBimCommandAttribute"/>.
+        /// </summary>
+        /// <param name="button">A Command button.</param>
+        /// <param name="assembly">An assembly to load from.</param>
+        internal static void LoadFromAttribute(this IRibbonPanelElement button, Assembly assembly)
+        {
+            switch (button)
+            {
+                case CommandButton cmd: cmd.LoadFromAttributeInternal(assembly); break;
+                case PullDownButton pulldown: pulldown.CommandButtonsList.ForEach(x => x.LoadFromAttribute(assembly)); break;
+                case StackedItems stacked: stacked.StackedButtons.ForEach(x => x.LoadFromAttribute(assembly)); break;
+            }
+        }
+        
+        /// <summary>
+        /// Loads command button properties from <see cref="RxBimCommandAttribute"/>.
+        /// </summary>
+        /// <param name="button">A Command button.</param>
+        /// <param name="assembly">An assembly to load from.</param>
+        private static void LoadFromAttributeInternal(this CommandButton button, Assembly assembly)
+        {
+            if (button.CommandType is null)
+                return;
+            var commandType = AssemblyExtensions.GetTypeByName(assembly, button.CommandType);
+            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
+            if (attr == null)
+                return;
+
+            button.Description ??= attr.Description!;
+            button.Text ??= attr.Text!;
+            button.ToolTip ??= attr.ToolTip!;
+            button.HelpUrl ??= attr.HelpUrl!;
+            button.SmallImage ??= attr.SmallImage!;
+            button.LargeImage ??= attr.LargeImage!;
+            button.SmallImageLight ??= attr.SmallImageLight ?? attr.SmallImage!;
+            button.LargeImageLight ??= attr.LargeImageLight ?? attr.LargeImage!;
         }
     }
 }

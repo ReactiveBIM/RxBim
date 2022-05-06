@@ -3,7 +3,6 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
     using System;
     using System.Linq;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Shared;
 
     /// <summary>
     /// Represents a ribbon panel builder.
@@ -11,18 +10,15 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
     public class PanelBuilder : IPanelBuilder
     {
         private readonly IRibbonBuilder _ribbonBuilder;
-        private readonly ITabBuilder _tabBuilder;
 
         /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
         /// <param name="name">Panel name.</param>
         /// <param name="ribbonBuilder">Ribbon builder.</param>
-        /// <param name="tabBuilder">Tab builder.</param>
-        public PanelBuilder(string name, IRibbonBuilder ribbonBuilder, ITabBuilder tabBuilder)
+        public PanelBuilder(string name, IRibbonBuilder ribbonBuilder)
         {
             _ribbonBuilder = ribbonBuilder;
-            _tabBuilder = tabBuilder;
             BuildingPanel.Name = name;
         }
 
@@ -53,6 +49,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
+            ////buttonBuilder.BuildFromAttribute(commandType);
             builder?.Invoke(buttonBuilder);
             BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
             return this;
@@ -80,7 +77,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IPanelBuilder SlideOut()
         {
             if (BuildingPanel.Elements.Any(
-                e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
+                    e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
             BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.SlideOut });
             return this;
@@ -116,27 +113,28 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             foreach (var elementSection in elementsSection.GetChildren())
             {
-                var stackedButtons = elementSection.GetSection(nameof(Application.Ribbon.StackedItems.StackedButtons));
-                if (stackedButtons.Exists())
+                // Stacked Items
+                var stackedItemsSection = elementSection.GetSection(nameof(Application.Ribbon.StackedItems.StackedButtons));
+                if (stackedItemsSection.Exists())
                 {
                     var stackedItems = new StackedItemsBuilder();
-                    stackedItems.LoadButtonsFromConfig(stackedButtons);
+                    stackedItems.LoadFromConfig(stackedItemsSection);
                     BuildingPanel.Elements.Add(stackedItems.StackedItems);
                 }
                 else if (elementSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
-                {
-                    CreateFromConfigAndAdd<CommandButton>(elementSection);
+                { // Command Button
+                    var button = LoadFromConfig<CommandButton>(elementSection);
                 }
                 else if (elementSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
-                {
-                    CreateFromConfigAndAdd<PullDownButton>(elementSection);
+                { // Pulldown
+                    LoadFromConfig<PullDownButton>(elementSection);
                 }
                 else if (elementSection.GetSection(nameof(AboutButton.Content)).Exists())
-                {
-                    CreateFromConfigAndAdd<AboutButton>(elementSection);
+                { // About
+                    LoadFromConfig<AboutButton>(elementSection);
                 }
                 else
-                {
+                { // Layout element
                     var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.LayoutElementType));
                     if (typeSection.Exists())
                     {
@@ -157,11 +155,12 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             }
         }
 
-        private void CreateFromConfigAndAdd<T>(IConfigurationSection elementSection)
+        private T LoadFromConfig<T>(IConfigurationSection elementSection)
             where T : IRibbonPanelElement
         {
-            var button = elementSection.Get<T>();
-            BuildingPanel.Elements.Add(button);
+            var element = elementSection.Get<T>();
+            BuildingPanel.Elements.Add(element);
+            return element;
         }
     }
 }
