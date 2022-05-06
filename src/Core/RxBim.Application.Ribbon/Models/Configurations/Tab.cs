@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Reprsents a ribbon tab configuration.
+    /// Represents a ribbon tab configuration.
     /// </summary>
     public class Tab
     {

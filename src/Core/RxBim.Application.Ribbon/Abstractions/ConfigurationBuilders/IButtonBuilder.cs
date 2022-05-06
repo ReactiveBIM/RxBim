@@ -1,11 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon
 {
-    /*
-    public interface IButtonBuilderBase
-    {
-    }
-    */
-    
     /// <summary>
     /// Defines a ribbon button configuration builder.
     /// </summary>

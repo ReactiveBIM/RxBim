@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Shared
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Contains a command metadata.
     /// </summary>
+    [PublicAPI]
     public class RxBimCommandAttribute : Attribute
     {
         /// <summary>

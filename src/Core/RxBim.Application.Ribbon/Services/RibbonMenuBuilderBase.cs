@@ -145,7 +145,7 @@
         /// <summary>
         /// Returns an image of the button's icon.
         /// </summary>
-        /// <param name="resourcePath">The image resuorce path.</param>
+        /// <param name="resourcePath">The image resource path.</param>
         /// <param name="assembly">The assembly containing image embedded resource.</param>
         protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
         {

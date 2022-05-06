@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using RxBim.Shared;
 
     /// <summary>
     /// Defines a ribbon panel.
@@ -24,7 +23,7 @@
         /// <summary>
         /// Adds a new Stacked items on the panel.
         /// </summary>
-        /// <param name="builder">The stacke items builder.</param>
+        /// <param name="builder">The stacked items builder.</param>
         /// <returns>Panel where stacked items were created.</returns>
         IPanelBuilder StackedItems(Action<IStackedItemsBuilder> builder);
 

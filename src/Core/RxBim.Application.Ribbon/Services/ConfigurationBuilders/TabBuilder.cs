@@ -2,10 +2,9 @@
 {
     using System;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Shared;
 
     /// <summary>
-    /// Represents a tab buileder.
+    /// Represents a tab builder.
     /// </summary>
     public class TabBuilder : ITabBuilder
     {

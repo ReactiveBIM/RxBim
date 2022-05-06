@@ -18,10 +18,5 @@
             ////CommandType = commandType;
             BuildingButton.CommandType = commandType.AssemblyQualifiedName;
         }
-
-        /*/// <summary>
-        /// The command type.
-        /// </summary>
-        public Type CommandType { get; }*/
     }
 }

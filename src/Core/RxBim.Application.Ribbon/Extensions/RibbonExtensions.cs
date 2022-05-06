@@ -12,7 +12,7 @@
         /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
-        /// <param name="parent">A pannel builder.</param>
+        /// <param name="parent">A panel builder.</param>
         /// <param name="name">Internal name of the button.</param>
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
@@ -28,7 +28,7 @@
         /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
-        /// <param name="parent">A pannel builder.</param>
+        /// <param name="parent">A panel builder.</param>
         /// <param name="name">Internal name of the button.</param>
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
@@ -44,7 +44,7 @@
         /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
-        /// <param name="parent">A pannel builder.</param>
+        /// <param name="parent">A panel builder.</param>
         /// <param name="name">Internal name of the button.</param>
         /// <param name="builder">The button builder.</param>
         /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
@@ -56,28 +56,6 @@
         {
             return parent.CommandButton(name, typeof(TCommand), builder);
         }
-
-        /*/// <summary>
-        /// Sets command button properties from <see cref="RxBimCommandAttribute"/>.
-        /// </summary>
-        /// <param name="button">A Command button builder</param>
-        /// <param name="commandType">The command button type.</param>
-        internal static void BuildFromAttribute(this ICommnadButtonBuilder button, Type commandType)
-        {
-            var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
-            if (attr == null)
-                return;
-
-            button
-                .Description(attr.Description!)
-                .Text(attr.Text!)
-                .ToolTip(attr.ToolTip!)
-                .HelpUrl(attr.HelpUrl!)
-                .SmallImage(attr.SmallImage!, ThemeType.Dark)
-                .LargeImage(attr.LargeImage!, ThemeType.Dark)
-                .SmallImage(attr.SmallImageLight!, ThemeType.Light)
-                .LargeImage(attr.LargeImageLight!, ThemeType.Light);
-        }*/
 
         /// <summary>
         /// Loads command button properties from <see cref="RxBimCommandAttribute"/>.

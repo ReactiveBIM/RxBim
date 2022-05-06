@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using RxBim.Shared;
 
     /// <summary>
     /// Defines a ribbon tab.
