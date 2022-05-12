@@ -13,6 +13,40 @@
     <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="img\command_16.png" />
+    <EmbeddedResource Include="img\command_16.png" />
+    <None Remove="img\command_16_light.png" />
+    <EmbeddedResource Include="img\command_16_light.png" />
+    <None Remove="img\command_32.png" />
+    <EmbeddedResource Include="img\command_32.png" />
+    <None Remove="img\command_32_light.png" />
+    <EmbeddedResource Include="img\command_32_light.png" />
+    <None Remove="img\num1_16.png" />
+    <EmbeddedResource Include="img\num1_16.png" />
+    <None Remove="img\num1_16_light.png" />
+    <EmbeddedResource Include="img\num1_16_light.png" />
+    <None Remove="img\num1_32.png" />
+    <EmbeddedResource Include="img\num1_32.png" />
+    <None Remove="img\num1_32_light.png" />
+    <EmbeddedResource Include="img\num1_32_light.png" />
+    <None Remove="img\num2_16.png" />
+    <EmbeddedResource Include="img\num2_16.png" />
+    <None Remove="img\num2_16_light.png" />
+    <EmbeddedResource Include="img\num2_16_light.png" />
+    <None Remove="img\num2_32.png" />
+    <EmbeddedResource Include="img\num2_32.png" />
+    <None Remove="img\num2_32_light.png" />
+    <EmbeddedResource Include="img\num2_32_light.png" />
+    <None Remove="img\num3_16.png" />
+    <EmbeddedResource Include="img\num3_16.png" />
+    <None Remove="img\num3_16_light.png" />
+    <EmbeddedResource Include="img\num3_16_light.png" />
+    <None Remove="img\num3_32.png" />
+    <EmbeddedResource Include="img\num3_32.png" />
+    <None Remove="img\num3_32_light.png" />
+    <EmbeddedResource Include="img\num3_32_light.png" />
+  </ItemGroup>
 
-  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
 </Project>

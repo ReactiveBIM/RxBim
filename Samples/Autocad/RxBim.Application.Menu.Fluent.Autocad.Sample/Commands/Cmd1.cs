@@ -1,15 +1,24 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Autocad.Sample.Commands
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using Command.Autocad;
-    using Shared;
+    using RxBim.Command.Autocad;
+    using RxBim.Shared;
 
     /// <inheritdoc />
-    [RxBimCommandClass("HelloCmd1Example")]
+    [RxBimCommandClass(
+        "HelloCmd1Example",
+        ToolTip = "Tooltip: I'm run command #1. Push me!",
+        Text = "Command\n#1",
+        Description = "Description: This is command #1",
+        LargeImage = @"img\num1_32.png",
+        SmallImage = @"img\num1_16.png",
+        SmallImageLight = @"img\num1_16_light.png",
+        LargeImageLight = @"img\num1_32_light.png",
+        HelpUrl = "https://github.com/ReactiveBIM/RxBim")]
     public class Cmd1 : RxBimCommand
     {
         /// <summary>
-        /// Command execution.
+        /// Executes the command.
         /// </summary>
         public PluginResult ExecuteCommand()
         {
