@@ -9,10 +9,10 @@
         ToolTip = "Tooltip: I'm run command #3. Push me!",
         Text = "Command\n#3",
         Description = "Description: This is command #3",
-        SmallImage = @"img\num3_16.png",
-        LargeImage = @"img\num3_32.png",
-        SmallImageLight = @"img\num3_16_light.png",
-        LargeImageLight = @"img\num3_32_light.png",
+        SmallImage = @"img\num3_16.jpg",
+        LargeImage = @"img\num3_32.jpg",
+        SmallImageLight = @"img\num3_16_light.jpg",
+        LargeImageLight = @"img\num3_32_light.jpg",
         HelpUrl = "https://www.autodesk.com/")]
     public class Cmd3 : RxBimCommand
     {
