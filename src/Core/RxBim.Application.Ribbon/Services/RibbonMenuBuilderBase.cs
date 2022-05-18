@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Media;
@@ -160,10 +161,27 @@
                 var file = assembly.GetManifestResourceStream(resource);
                 if (file != null)
                 {
-                    var bd = new PngBitmapDecoder(
-                        file,
-                        BitmapCreateOptions.PreservePixelFormat,
-                        BitmapCacheOption.Default);
+                    var imageExtension = Path.GetExtension(resourcePath);
+                    BitmapDecoder bd = imageExtension switch
+                    {
+                        ".png" => new PngBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".bmp" => new BmpBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".jpg" => new JpegBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".ico" => new IconBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        _ => throw new NotSupportedException($"Image with {imageExtension} extension is not supported.")
+                    };
                     return bd.Frames[0];
                 }
             }
