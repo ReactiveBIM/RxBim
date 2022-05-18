@@ -46,8 +46,8 @@
                                     .PullDownButton(
                                         "Pulldown1",
                                         pulldown => pulldown
-                                            .LargeImage(@"img.command_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img.command_32_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
+                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
                                             .Text("Pulldown #1")
                                             .CommandButton<Cmd1>("Command #1")
                                             .CommandButton<Cmd2>("Command #2")
@@ -71,8 +71,8 @@
                                         .PullDownButton(
                                             "Pulldown2",
                                             pulldown => pulldown
-                                                .SmallImage(@"img.command_16.png", ThemeType.Dark)
-                                                .SmallImage(@"img.command_16_light.png", ThemeType.Light)
+                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
+                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
                                                 .CommandButton<Cmd1>("Command #1")
                                                 .CommandButton<Cmd2>("Command #2")
                                                 .CommandButton<Cmd3>("Command #3"))
@@ -120,10 +120,10 @@
                                         button => button
                                             .ToolTip("Tooltip: I'm run command #2. Push me!")
                                             .Description("Description: This is command #2")
-                                            .SmallImage(@"img.num2_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img.num2_16_light.png", ThemeType.Light)
-                                            .LargeImage(@"img.num2_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img.num2_32_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.num2_16.bmp", ThemeType.Dark)
+                                            .SmallImage(@"img.num2_16_light.bmp", ThemeType.Light)
+                                            .LargeImage(@"img.num2_32.bmp", ThemeType.Dark)
+                                            .LargeImage(@"img.num2_32_light.bmp", ThemeType.Light)
                                             .HelpUrl("https://www.google.com/")
                                             .Text("Command\n#2"))
                                     .CommandButton(
@@ -132,10 +132,10 @@
                                         button => button
                                             .ToolTip("Tooltip: I'm run command #3. Push me!")
                                             .Description("Description: This is command #3")
-                                            .SmallImage(@"img.num3_16.png", ThemeType.Dark)
-                                            .SmallImage(@"img.num3_16_light.png", ThemeType.Light)
-                                            .LargeImage(@"img.num3_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img.num3_32_light.png", ThemeType.Light)
+                                            .SmallImage(@"img.num3_16.jpg", ThemeType.Dark)
+                                            .SmallImage(@"img.num3_16_light.jpg", ThemeType.Light)
+                                            .LargeImage(@"img.num3_32.jpg", ThemeType.Dark)
+                                            .LargeImage(@"img.num3_32_light.jpg", ThemeType.Light)
                                             .HelpUrl("https://www.autodesk.com/")
                                             .Text("Command\n#3"))
                                     .Separator()
@@ -154,8 +154,8 @@
                                                 "Command #3",
                                                 typeof(Cmd3),
                                                 button => SetupCommand3Button(button).Text("Command\n#3"))
-                                            .LargeImage(@"img.command_32.png", ThemeType.Dark)
-                                            .LargeImage(@"img.command_32_light.png", ThemeType.Light)
+                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
+                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
                                             .Text("Pulldown #1"))
                                     .SlideOut()
                                     .CommandButton(
@@ -200,8 +200,8 @@
                                         .PullDownButton(
                                             "Pulldown2",
                                             pulldown => pulldown
-                                                .SmallImage(@"img.command_16.png", ThemeType.Dark)
-                                                .SmallImage(@"img.command_16_light.png", ThemeType.Light)
+                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
+                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
                                                 .CommandButton(
                                                     "Command #1",
                                                     typeof(Cmd1),
@@ -243,10 +243,10 @@
             return button
                 .ToolTip("Tooltip: I'm run command #2. Push me!")
                 .Description("Description: This is command #2")
-                .SmallImage(@"img.num2_16.png", ThemeType.Dark)
-                .SmallImage(@"img.num2_16_light.png", ThemeType.Light)
-                .LargeImage(@"img.num2_32.png", ThemeType.Dark)
-                .LargeImage(@"img.num2_32_light.png", ThemeType.Light)
+                .SmallImage(@"img.num2_16.bmp", ThemeType.Dark)
+                .SmallImage(@"img.num2_16_light.bmp", ThemeType.Light)
+                .LargeImage(@"img.num2_32.bmp", ThemeType.Dark)
+                .LargeImage(@"img.num2_32_light.bmp", ThemeType.Light)
                 .HelpUrl("https://www.google.com/");
         }
 
@@ -256,10 +256,10 @@
             return button
                 .ToolTip("Tooltip: I'm run command #3. Push me!")
                 .Description("Description: This is command #3")
-                .SmallImage(@"img.num3_16.png", ThemeType.Dark)
-                .SmallImage(@"img.num3_16_light.png", ThemeType.Light)
-                .LargeImage(@"img.num3_32.png", ThemeType.Dark)
-                .LargeImage(@"img.num3_32_light.png", ThemeType.Light)
+                .SmallImage(@"img.num3_16.jpg", ThemeType.Dark)
+                .SmallImage(@"img.num3_16_light.jpg", ThemeType.Light)
+                .LargeImage(@"img.num3_32.jpg", ThemeType.Dark)
+                .LargeImage(@"img.num3_32_light.jpg", ThemeType.Light)
                 .HelpUrl("https://www.autodesk.com/");
         }
     }
