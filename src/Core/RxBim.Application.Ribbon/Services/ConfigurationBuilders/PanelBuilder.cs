@@ -49,7 +49,6 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
-            ////buttonBuilder.BuildFromAttribute(commandType);
             builder?.Invoke(buttonBuilder);
             BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
             return this;
