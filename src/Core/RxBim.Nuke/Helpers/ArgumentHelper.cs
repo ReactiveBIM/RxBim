@@ -10,11 +10,11 @@
     public static class ArgumentHelper
     {
         /// <summary>
-        /// Проверяет значение, что оно не равно null.
+        /// Checks the value is not null.
         /// </summary>
-        /// <param name="value">Значение для проверки.</param>
+        /// <param name="value">The value to check.</param>
         /// <param name="name">The caller argument name.</param>
-        /// <typeparam name="T">Тип значения</typeparam>
+        /// <typeparam name="T">The value type.</typeparam>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Ensure<T>([NotNull]this T? value, [CallerArgumentExpression("value")] string name = "")
         {

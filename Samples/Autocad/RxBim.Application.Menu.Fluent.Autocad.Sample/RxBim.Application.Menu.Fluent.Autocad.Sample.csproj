@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk"> 
-
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <None Update="img\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>    
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
@@ -13,6 +12,69 @@
     <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
-
-  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+  <ItemGroup>
+    <None Remove="img\command_16.png" />
+    <EmbeddedResource Include="img\command_16_light.ico" />
+    <EmbeddedResource Include="img\command_16.png" />
+    <None Remove="img\command_16_light.png" />
+    <EmbeddedResource Include="img\command_16_light.png" />
+    <None Remove="img\command_32.png" />
+    <EmbeddedResource Include="img\command_32_light.ico" />
+    <EmbeddedResource Include="img\command_32.png" />
+    <None Remove="img\command_32_light.png" />
+    <EmbeddedResource Include="img\command_32_light.png" />
+    <None Remove="img\num1_16.png" />
+    <EmbeddedResource Include="img\num1_16.png" />
+    <None Remove="img\num1_16_light.png" />
+    <EmbeddedResource Include="img\num1_16_light.png" />
+    <None Remove="img\num1_32.png" />
+    <EmbeddedResource Include="img\num1_32.png" />
+    <None Remove="img\num1_32_light.png" />
+    <EmbeddedResource Include="img\num1_32_light.png" />
+    <None Remove="img\num2_16.png" />
+    <EmbeddedResource Include="img\num2_16.png" />
+    <None Remove="img\num2_16_light.png" />
+    <EmbeddedResource Include="img\num2_16_light.png" />
+    <None Remove="img\num2_32.png" />
+    <EmbeddedResource Include="img\num2_32.png" />
+    <None Remove="img\num2_32_light.png" />
+    <EmbeddedResource Include="img\num2_32_light.png" />
+    <None Remove="img\num3_16.png" />
+    <EmbeddedResource Include="img\num3_16.png" />
+    <None Remove="img\num3_16_light.png" />
+    <EmbeddedResource Include="img\num3_16_light.png" />
+    <None Remove="img\num3_32.png" />
+    <EmbeddedResource Include="img\num3_32.png" />
+    <None Remove="img\num3_32_light.png" />
+    <EmbeddedResource Include="img\num3_32_light.png" />
+    <None Remove="img\num2_16_light.bmp" />
+    <EmbeddedResource Include="img\num2_16_light.bmp" />
+    <None Remove="img\num2_32_light.bmp" />
+    <EmbeddedResource Include="img\num2_32_light.bmp" />
+    <None Remove="img\num3_32_light.jpg" />
+    <EmbeddedResource Include="img\num3_32_light.jpg" />
+    <None Remove="img\num3_16_light.jpg" />
+    <EmbeddedResource Include="img\num3_16_light.jpg" />
+    <None Remove="img\command_16.ico" />
+    <EmbeddedResource Include="img\command_16.ico" />
+    <None Remove="img\command_32.ico" />
+    <EmbeddedResource Include="img\command_32.ico" />
+    <None Remove="img\num2_32.bmp" />
+    <EmbeddedResource Include="img\num2_32.bmp" />
+    <None Remove="img\num2_16.bmp" />
+    <EmbeddedResource Include="img\num2_16.bmp" />
+    <None Remove="img\num3_32.jpg" />
+    <EmbeddedResource Include="img\num3_32.jpg" />
+    <None Remove="img\num3_16.jpg" />
+    <EmbeddedResource Include="img\num3_16.jpg" />
+  </ItemGroup>
+  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
+  <PropertyGroup>
+    <PackageGuid>309697fd-ffff-43b8-a369-f353e424b1ca</PackageGuid>
+    <UpgradeCode>3e27aaad-fb16-4ca2-8f9b-b4d6fdfe6d10</UpgradeCode>
+    <Application__RxBim_Application_Menu_Fluent_Autocad_Sample_App>114e7682-d76e-45fc-8982-5275d03b9a9c</Application__RxBim_Application_Menu_Fluent_Autocad_Sample_App>
+    <Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd1>e72ad2a2-e33a-410a-a5d2-42522c9620c1</Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd1>
+    <Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd2>17a72fd5-725b-476e-9165-53b68e4f8291</Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd2>
+    <Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd3>1e79bca3-1ab0-42c1-b8dc-cf2f745ea456</Command__RxBim_Application_Menu_Fluent_Autocad_Sample_Commands_Cmd3>
+  </PropertyGroup>
 </Project>

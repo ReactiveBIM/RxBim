@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
+    using System;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -13,20 +14,21 @@
         public Ribbon Ribbon { get; } = new();
 
         /// <inheritdoc />
-        public ITabBuilder AddTab(string title)
+        public IRibbonBuilder Tab(string title, Action<ITabBuilder> tab)
         {
-            return AddTabInternal(title);
+            CreateTab(title, tab);
+            return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetAddVersionToCommandTooltip(bool enable)
+        public IRibbonBuilder DisplayVersion(bool enable)
         {
             Ribbon.AddVersionToCommandTooltip = enable;
             return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder SetCommandTooltipVersionHeader(string prefix)
+        public IRibbonBuilder VersionPrefix(string prefix)
         {
             Ribbon.CommandTooltipVersionHeader = prefix;
             return this;
@@ -48,8 +50,8 @@
             {
                 if (!tabSection.Exists())
                     continue;
-                var tabBuilder = AddTabInternal(tabSection.GetSection(nameof(Tab.Name)).Value);
-                tabBuilder.LoadFromConfig(tabSection);
+                var tab = CreateTab(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
+                tab.LoadFromConfig(tabSection);
             }
         }
 
@@ -68,9 +70,10 @@
             }
         }
 
-        private TabBuilder AddTabInternal(string tabTitle)
+        private TabBuilder CreateTab(string tabTitle, Action<ITabBuilder>? tab = null)
         {
             var builder = new TabBuilder(tabTitle, this);
+            tab?.Invoke(builder);
             Ribbon.Tabs.Add(builder.BuildingTab);
             return builder;
         }

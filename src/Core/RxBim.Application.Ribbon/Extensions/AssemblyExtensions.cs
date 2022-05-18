@@ -16,7 +16,7 @@
         /// <param name="assembly">The assembly.</param>
         /// <param name="typeName">The class type name.</param>
         /// <exception cref="ArgumentException">The Type name is invalid.</exception>
-        public static Type GetTypeFromName(this Assembly assembly, string typeName)
+        public static Type GetTypeByName(Assembly assembly, string typeName)
         {
             // todo use regex
             var strings = typeName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
@@ -32,7 +32,7 @@
             };
 
             if (type is null)
-                throw new ArgumentException($"Failed to get type from name: {typeName}", nameof(typeName));
+                throw new ArgumentException($"Failed to get type by name: {typeName}", nameof(typeName));
 
             return type;
         }

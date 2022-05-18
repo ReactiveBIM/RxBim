@@ -2,10 +2,9 @@
 {
     using System;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Shared;
 
     /// <summary>
-    /// Represents a tab buileder.
+    /// Represents a tab builder.
     /// </summary>
     public class TabBuilder : ITabBuilder
     {
@@ -34,19 +33,20 @@
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddPanel(string panelTitle)
+        public ITabBuilder Panel(string title, Action<IPanelBuilder> panel)
         {
-            return AddPanelInternal(panelTitle);
+            CreatePanel(title, panel);
+            return this;
         }
 
         /// <inheritdoc />
-        public ITabBuilder AddAboutButton(
+        public ITabBuilder AboutButton(
             string name,
             AboutBoxContent content,
-            Action<IButtonBuilder>? builder = null,
+            Action<IAboutButtonBuilder>? builder = null,
             string? panelName = null)
         {
-            var panel = new PanelBuilder(panelName ?? name, _ribbonBuilder, this);
+            var panel = new PanelBuilder(panelName ?? name, _ribbonBuilder);
             panel.AddAboutButton(name, content, builder);
             BuildingTab.Panels.Add(panel.BuildingPanel);
             return this;
@@ -66,14 +66,15 @@
             {
                 if (!panelsSection.Exists())
                     continue;
-                var panelBuilder = AddPanelInternal(panelSection.GetSection(nameof(Panel.Name)).Value);
-                panelBuilder.LoadFromConfig(panelSection);
+                var panel = CreatePanel(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value);
+                panel.LoadFromConfig(panelSection);
             }
         }
 
-        private PanelBuilder AddPanelInternal(string panelTitle)
+        private PanelBuilder CreatePanel(string panelTitle, Action<IPanelBuilder>? panel = null)
         {
-            var builder = new PanelBuilder(panelTitle, _ribbonBuilder, this);
+            var builder = new PanelBuilder(panelTitle, _ribbonBuilder);
+            panel?.Invoke(builder);
             BuildingTab.Panels.Add(builder.BuildingPanel);
             return builder;
         }

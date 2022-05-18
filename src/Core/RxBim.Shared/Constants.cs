@@ -16,7 +16,7 @@
         public const string StartMethodName = "Start";
 
         /// <summary>
-        /// Method name of the shutted down application.
+        /// Method name of the shut down application.
         /// </summary>
         public const string ShutdownMethodName = "Shutdown";
     }

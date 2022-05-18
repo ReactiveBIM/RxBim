@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using RxBim.Shared;
-    using RxBim.Shared.Abstractions;
+    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
@@ -78,8 +80,8 @@
         /// Returns a ribbon tab with the specified name.
         /// If the tab does not exist, it will be created.
         /// </summary>
-        /// <param name="tabName">Tab name.</param>
-        protected abstract TTab GetOrCreateTab(string tabName);
+        /// <param name="title">Tab name.</param>
+        protected abstract TTab GetOrCreateTab(string title);
 
         /// <summary>
         /// Returns a ribbon panel with the specified name on the tab.
@@ -138,18 +140,53 @@
         /// <exception cref="ArgumentException">Type name is invalid.</exception>
         protected Type GetCommandType(string commandTypeName)
         {
-            return MenuAssembly.GetTypeFromName(commandTypeName);
+            return AssemblyExtensions.GetTypeByName(MenuAssembly, commandTypeName);
         }
 
         /// <summary>
         /// Returns an image of the button's icon.
         /// </summary>
-        /// <param name="fullOrRelativeImagePath">Image path.</param>
-        protected BitmapImage? GetIconImage(string? fullOrRelativeImagePath)
+        /// <param name="resourcePath">The image resource path.</param>
+        /// <param name="assembly">The assembly containing image embedded resource.</param>
+        protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
         {
-            if (string.IsNullOrWhiteSpace(fullOrRelativeImagePath))
+            if (string.IsNullOrWhiteSpace(resourcePath))
                 return null;
-            var uri = MenuAssembly.TryGetSupportFileUri(fullOrRelativeImagePath!);
+
+            assembly ??= MenuAssembly;
+            var resource = assembly.GetManifestResourceNames()
+                .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));
+            if (resource != null)
+            {
+                var file = assembly.GetManifestResourceStream(resource);
+                if (file != null)
+                {
+                    var imageExtension = Path.GetExtension(resourcePath);
+                    BitmapDecoder bd = imageExtension switch
+                    {
+                        ".png" => new PngBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".bmp" => new BmpBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".jpg" => new JpegBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".ico" => new IconBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        _ => throw new NotSupportedException($"Image with {imageExtension} extension is not supported.")
+                    };
+                    return bd.Frames[0];
+                }
+            }
+
+            var uri = MenuAssembly.TryGetSupportFileUri(resourcePath!);
             return uri != null ? new BitmapImage(uri) : null;
         }
 
@@ -197,9 +234,11 @@
                         CreateAboutButton(tab, panel, aboutButton);
                         break;
                     case CommandButton cmdButton:
+                        cmdButton.LoadFromAttribute(MenuAssembly);
                         CreateCommandButton(panel, cmdButton);
                         break;
                     case PullDownButton pullDownButton:
+                        pullDownButton.LoadFromAttribute(MenuAssembly);
                         CreatePullDownButton(panel, pullDownButton);
                         break;
                     case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.Separator } _:
@@ -209,6 +248,7 @@
                         AddSlideOut(panel);
                         break;
                     case StackedItems stackedItems:
+                        stackedItems.LoadFromAttribute(MenuAssembly);
                         CreateStackedItems(panel, stackedItems);
                         break;
                     default:

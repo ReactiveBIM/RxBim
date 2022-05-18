@@ -37,18 +37,18 @@
         }
 
         /// <inheritdoc />
-        protected override string GetOrCreateTab(string tabName)
+        protected override string GetOrCreateTab(string title)
         {
             var existsTab = RevitRibbonControl.RibbonControl.Tabs
-                .FirstOrDefault(t => t.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
             if (existsTab != null)
             {
                 return existsTab.Title;
             }
 
-            _application.CreateRibbonTab(tabName);
-            return tabName;
+            _application.CreateRibbonTab(title);
+            return title;
         }
 
         /// <inheritdoc />
@@ -70,8 +70,8 @@
             var button = new RibbonButton
             {
                 Name = aboutButtonConfig.Name,
-                Image = GetIconImage(aboutButtonConfig.SmallImage),
-                LargeImage = GetIconImage(aboutButtonConfig.LargeImage),
+                Image = GetIconImage(aboutButtonConfig.SmallImage, null),
+                LargeImage = GetIconImage(aboutButtonConfig.LargeImage, null),
                 GroupLocation = RibbonItemGroupLocation.Middle,
                 IsToolTipEnabled = true,
                 ShowImage = true,
@@ -174,7 +174,7 @@
             }
         }
 
-        private void SetButtonProperties(ButtonData buttonData, Button buttonConfig)
+        private void SetButtonProperties(ButtonData buttonData, Button buttonConfig, Assembly? assembly)
         {
             if (buttonConfig.Text != null)
                 buttonData.Text = buttonConfig.Text;
@@ -182,8 +182,8 @@
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
-            buttonData.Image = GetIconImage(buttonConfig.SmallImage);
-            buttonData.LargeImage = GetIconImage(buttonConfig.LargeImage);
+            buttonData.Image = GetIconImage(buttonConfig.SmallImage, assembly);
+            buttonData.LargeImage = GetIconImage(buttonConfig.LargeImage, assembly);
         }
 
         private void SetTooltip(RibbonItemData buttonData, string? tooltip)
@@ -209,7 +209,7 @@
                 {
                     AvailabilityClassName = className
                 };
-            SetButtonProperties(pushButtonData, cmdButtonConfig);
+            SetButtonProperties(pushButtonData, cmdButtonConfig, cmdType.Assembly);
             SetTooltip(pushButtonData, GetTooltipContent(cmdButtonConfig, cmdType));
             return pushButtonData;
         }
@@ -220,7 +220,7 @@
             var pulldownButtonData = new PulldownButtonData(
                 pullDownButtonConfig.Name,
                 pullDownButtonConfig.Text ?? pullDownButtonConfig.Name);
-            SetButtonProperties(pulldownButtonData, pullDownButtonConfig);
+            SetButtonProperties(pulldownButtonData, pullDownButtonConfig, null);
             SetTooltip(pulldownButtonData, pullDownButtonConfig.ToolTip);
             return pulldownButtonData;
         }

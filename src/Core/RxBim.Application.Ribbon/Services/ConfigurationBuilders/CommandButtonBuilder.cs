@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a button builder.
     /// </summary>
-    public class CommandButtonBuilder : ButtonBuilder<CommandButton>
+    public class CommandButtonBuilder : ButtonBuilder<CommandButton, ICommnadButtonBuilder>, ICommnadButtonBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandButtonBuilder"/> class.
@@ -15,13 +15,8 @@
         public CommandButtonBuilder(string name, Type commandType)
             : base(name)
         {
-            CommandType = commandType;
+            ////CommandType = commandType;
             BuildingButton.CommandType = commandType.AssemblyQualifiedName;
         }
-
-        /// <summary>
-        /// The command type.
-        /// </summary>
-        public Type CommandType { get; }
     }
 }

@@ -19,60 +19,60 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public StackedItems StackedItems { get; } = new();
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddCommandButton(
+        public IStackedItemsBuilder CommandButton(
             string name,
             Type commandType,
-            Action<IButtonBuilder>? builder = null)
+            Action<ICommnadButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
 
-            return AddButton(buttonBuilder.BuildingButton);
+            return AddItem(buttonBuilder.BuildingButton);
         }
 
         /// <inheritdoc />
-        public IStackedItemsBuilder AddPullDownButton(string name, Action<IPulldownButtonBuilder> builder)
+        public IStackedItemsBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder)
         {
             var pulldownButton = new PulldownButtonBuilder(name);
             builder.Invoke(pulldownButton);
-            return AddButton(pulldownButton.BuildingButton);
+            return AddItem(pulldownButton.BuildingButton);
         }
 
         /// <summary>
         /// Loads buttons from configurations.
         /// </summary>
         /// <param name="stackedButtons">A buttons config section.</param>
-        internal void LoadButtonsFromConfig(IConfigurationSection stackedButtons)
+        internal void LoadFromConfig(IConfigurationSection stackedButtons)
         {
             foreach (var buttonSection in stackedButtons.GetChildren())
             {
                 if (!buttonSection.Exists())
                     continue;
 
-                if (buttonSection.GetSection(nameof(CommandButton.CommandType)).Exists())
+                if (buttonSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
                 {
-                    AddButton<CommandButton>(buttonSection);
+                    LoadFromConfig<CommandButton>(buttonSection);
                 }
-                else if (buttonSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists())
+                else if (buttonSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
                 {
-                    AddButton<PullDownButton>(buttonSection);
+                    LoadFromConfig<PullDownButton>(buttonSection);
                 }
             }
         }
 
-        private StackedItemsBuilder AddButton(Button button)
+        private StackedItemsBuilder AddItem(Button item)
         {
             if (StackedItems.StackedButtons.Count == MaxStackSize)
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
-            StackedItems.StackedButtons.Add(button);
+            StackedItems.StackedButtons.Add(item);
             return this;
         }
 
-        private void AddButton<T>(IConfiguration buttonSection)
+        private void LoadFromConfig<T>(IConfiguration buttonSection)
             where T : Button
         {
-            var button = buttonSection.Get<T>();
-            AddButton(button);
+            var item = buttonSection.Get<T>();
+            AddItem(item);
         }
     }
 }

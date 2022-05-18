@@ -1,16 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj"/>
-        <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj"/>
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="img\*.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
-    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
+    <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
+    <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="img\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="img\about_16.png" />
+    <EmbeddedResource Include="img\about_16.png" />
+    <None Remove="img\about_32.png" />
+    <EmbeddedResource Include="img\about_32.png" />
+    <None Remove="img\command_16.png" />
+    <EmbeddedResource Include="img\command_16.png" />
+    <None Remove="img\command_32.png" />
+    <EmbeddedResource Include="img\command_32.png" />
+    <None Remove="img\num1_16.png" />
+    <EmbeddedResource Include="img\num1_16.png" />
+    <None Remove="img\num1_32.png" />
+    <EmbeddedResource Include="img\num1_32.png" />
+    <None Remove="img\num2_16.png" />
+    <EmbeddedResource Include="img\num2_16.png" />
+    <None Remove="img\num2_32.png" />
+    <EmbeddedResource Include="img\num2_16.bmp" />
+    <EmbeddedResource Include="img\num2_32.png" />
+    <None Remove="img\num3_16.png" />
+    <EmbeddedResource Include="img\num2_32.bmp" />
+    <EmbeddedResource Include="img\num3_16.png" />
+    <None Remove="img\num3_32.png" />
+    <EmbeddedResource Include="img\num3_32.png" />
+    <None Remove="img\num3_16.jpg" />
+    <EmbeddedResource Include="img\num3_16.jpg" />
+    <None Remove="img\num3_32.jpg" />
+    <EmbeddedResource Include="img\num3_32.jpg" />
+    <None Remove="img\command_16.ico" />
+    <EmbeddedResource Include="img\command_16.ico" />
+    <None Remove="img\command_32.ico" />
+    <EmbeddedResource Include="img\command_32.ico" />
+  </ItemGroup>
+  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
+  <PropertyGroup>
+    <PackageGuid>dd8e4558-cde8-431f-a621-4cb25304bfce</PackageGuid>
+    <UpgradeCode>09f0658d-e4c2-4725-a50a-98b6dbd15fa9</UpgradeCode>
+    <Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>11b955dc-4115-44ea-a688-383a0803b56c</Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>
+    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd1>1e28cd58-c7a6-4a5d-9d1b-27841fc0af02</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd1>
+    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd2>769795d6-2c36-4177-8781-8a420a73818f</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd2>
+    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd3>556ab0a6-cf42-405f-9036-7a42d4f9f4af</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd3>
+  </PropertyGroup>
 </Project>

@@ -2,8 +2,8 @@ namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Di;
     using Services;
 
     /// <summary>

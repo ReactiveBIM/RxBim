@@ -2,10 +2,12 @@
 {
     using System.Reflection;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilderFactory"/> for Revit.
     /// </summary>
+    [UsedImplicitly]
     public class RevitRibbonMenuBuilderFactory : IRibbonMenuBuilderFactory
     {
         private readonly UIControlledApplication _application;

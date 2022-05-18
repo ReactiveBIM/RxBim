@@ -3,8 +3,9 @@
     /// <summary>
     /// Base implementation of a button builder.
     /// </summary>
-    public abstract class ButtonBuilder<TButton> : IButtonBuilder
+    public abstract class ButtonBuilder<TButton, TButtonBuilder> : IButtonBuilderBase<TButton, TButtonBuilder>
         where TButton : Button, new()
+        where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the button builder.
@@ -21,7 +22,7 @@
         public TButton BuildingButton { get; } = new();
 
         /// <inheritdoc />
-        public IButtonBuilder SetLargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)
+        public TButtonBuilder LargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)
         {
             switch (theme)
             {
@@ -34,11 +35,11 @@
                     break;
             }
 
-            return this;
+            return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetSmallImage(string imageRelativePath, ThemeType theme = ThemeType.All)
+        public TButtonBuilder SmallImage(string imageRelativePath, ThemeType theme = ThemeType.All)
         {
             switch (theme)
             {
@@ -51,35 +52,35 @@
                     break;
             }
 
-            return this;
+            return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetDescription(string description)
+        public TButtonBuilder Description(string description)
         {
             BuildingButton.Description = description;
-            return this;
+            return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetToolTip(string toolTip)
+        public TButtonBuilder ToolTip(string toolTip)
         {
             BuildingButton.ToolTip = toolTip;
-            return this;
+            return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetText(string text)
+        public TButtonBuilder Text(string text)
         {
             BuildingButton.Text = text;
-            return this;
+            return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
-        public IButtonBuilder SetHelpUrl(string url)
+        public TButtonBuilder HelpUrl(string url)
         {
             BuildingButton.HelpUrl = url;
-            return this;
+            return (this as TButtonBuilder)!;
         }
     }
 }

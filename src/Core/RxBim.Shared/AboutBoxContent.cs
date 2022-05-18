@@ -1,5 +1,5 @@
 ﻿#pragma warning disable
-namespace RxBim.Shared
+namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Collections.Generic;
@@ -46,22 +46,22 @@ namespace RxBim.Shared
         }
 
         /// <summary>
-        /// Зоголовок
+        /// The title.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Версия продукта
+        /// The string representation of the product version.
         /// </summary>
         public string ProductVersion { get; set; }
 
         /// <summary>
-        /// Описание программы
+        /// The product description.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Версия сборки
+        /// The product build number.
         /// </summary>
         public Version BuildVersion
         {
@@ -79,12 +79,12 @@ namespace RxBim.Shared
         }
 
         /// <summary>
-        /// Название компании
+        /// The company name.
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// Список ссылок
+        /// The hyperlink list.
         /// </summary>
         public Dictionary<string, string> Links { get; set; }
 

@@ -3,12 +3,12 @@
     using System;
     using System.Reflection;
     using ConfigurationBuilders;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Di;
-    using RxBim.Shared.Abstractions;
+    using Shared.Abstractions;
 
     /// <summary>
-    /// Contqins DI Container Extensions for Ribbon Menu.
+    /// Contains DI Container Extensions for Ribbon Menu.
     /// </summary>
     public static class ContainerExtensions
     {

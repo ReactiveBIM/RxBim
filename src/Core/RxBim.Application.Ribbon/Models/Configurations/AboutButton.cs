@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon
 {
-    using RxBim.Shared;
-
     /// <summary>
     /// Button for displaying the About window.
     /// </summary>

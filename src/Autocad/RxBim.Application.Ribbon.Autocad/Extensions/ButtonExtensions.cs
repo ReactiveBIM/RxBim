@@ -5,7 +5,7 @@
     using Autodesk.Windows;
 
     /// <summary>
-    /// Extensions for <see cref="IButtonBuilder"/>.
+    /// Extensions for <see cref="RibbonButton"/>.
     /// </summary>
     internal static class ButtonExtensions
     {
@@ -69,7 +69,7 @@
         /// <exception cref="InvalidOperationException">If the button name is not specified.</exception>
         public static void SetProperties(
             this RibbonButton ribbonButton,
-            Application.Ribbon.Button buttonConfig,
+            Button buttonConfig,
             RibbonItemSize size,
             Orientation orientation,
             bool forceTextSettings)
@@ -105,7 +105,7 @@
         /// Returns orientation for single large button.
         /// </summary>
         /// <param name="button">Button config.</param>
-        public static Orientation GetOrientation(this Application.Ribbon.Button button)
+        public static Orientation GetOrientation(this Button button)
         {
             return !string.IsNullOrWhiteSpace(button.Text)
                 ? Orientation.Vertical
