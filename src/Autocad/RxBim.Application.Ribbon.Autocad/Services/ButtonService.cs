@@ -7,7 +7,7 @@
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
     using GalaSoft.MvvmLight.Command;
-    using Button = Button;
+    using Button = Application.Ribbon.Button;
 
     /// <inheritdoc />
     public class ButtonService : IButtonService
@@ -59,7 +59,7 @@
         {
             var button = CreateNewButton<RibbonButton>(config, size, orientation, false, false);
 
-            if (!string.IsNullOrWhiteSpace(config.CommandType) && _menuData.MenuAssembly != null)
+            if (!string.IsNullOrWhiteSpace(config.CommandType))
             {
                 var commandType = _menuData.MenuAssembly.GetTypeByName(config.CommandType!);
                 var tooltip = _menuData.GetTooltipContent(config, commandType);
@@ -150,7 +150,7 @@
         private void SetRibbonItemImages(RibbonItem button, Button buttonConfig)
         {
             var assembly = buttonConfig is CommandButton commandButton
-                ? _menuData.MenuAssembly?.GetTypeByName(commandButton.CommandType!).Assembly
+                ? _menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
                 : null;
 
             var themeType = _colorThemeService.GetCurrentTheme();

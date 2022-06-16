@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     /// <summary>
-    /// Type of a panel layout element.
+    /// Type of a panel layout item.
     /// </summary>
-    public enum PanelLayoutElementType
+    public enum PanelLayoutItemType
     {
         /// <summary>
         /// Unknown.

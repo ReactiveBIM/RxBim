@@ -46,10 +46,10 @@
         /// Loads a ribbon menu from configuration.
         /// </summary>
         /// <param name="config">Configuration.</param>
-        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        /// <param name="fromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
         internal void LoadFromConfig(
             IConfiguration config,
-            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
+            IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
             SetProperties(config.GetSection(nameof(Ribbon)));
 

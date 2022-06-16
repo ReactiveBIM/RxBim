@@ -13,12 +13,12 @@
         public List<Tab> Tabs { get; set; } = new();
 
         /// <summary>
-        /// If true, the version number will be added to the tooltip text for a command element.
+        /// If true, the version number will be added to the tooltip text for a command item.
         /// </summary>
         public bool AddVersionToCommandTooltip { get; set; } = true;
 
         /// <summary>
-        /// Version information prefix for a command element tooltip.
+        /// Version information prefix for a command item tooltip.
         /// </summary>
         /// <remarks>
         /// Examples: "v" -> "v1.0.0", "Ver." -> "Ver.1.0.0", "Version: " -> "Version: 1.0.0".

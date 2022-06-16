@@ -37,10 +37,10 @@
         /// Load from config
         /// </summary>
         /// <param name="section">Tab config section</param>
-        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        /// <param name="fromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
         internal void LoadFromConfig(
             IConfigurationSection section,
-            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
+            IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
             var panelsSection = section.GetSection(nameof(Tab.Panels));
             if (!panelsSection.Exists())

@@ -62,16 +62,22 @@
         /// </summary>
         /// <param name="button">A Command button.</param>
         /// <param name="assembly">An assembly to load from.</param>
-        internal static void LoadFromAttribute(this IRibbonPanelElement button, Assembly assembly)
+        internal static void LoadFromAttribute(this IRibbonPanelItem button, Assembly assembly)
         {
             switch (button)
             {
-                case CommandButton cmd: cmd.LoadFromAttributeInternal(assembly); break;
-                case PullDownButton pulldown: pulldown.CommandButtonsList.ForEach(x => x.LoadFromAttribute(assembly)); break;
-                case StackedItems stacked: stacked.StackedButtons.ForEach(x => x.LoadFromAttribute(assembly)); break;
+                case CommandButton cmd:
+                    cmd.LoadFromAttributeInternal(assembly);
+                    break;
+                case PullDownButton pulldown:
+                    pulldown.CommandButtonsList.ForEach(x => x.LoadFromAttribute(assembly));
+                    break;
+                case StackedItems stacked:
+                    stacked.Items.ForEach(x => x.LoadFromAttribute(assembly));
+                    break;
             }
         }
-        
+
         /// <summary>
         /// Loads command button properties from <see cref="RxBimCommandAttribute"/>.
         /// </summary>

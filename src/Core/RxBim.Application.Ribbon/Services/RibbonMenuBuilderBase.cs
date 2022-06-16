@@ -8,19 +8,19 @@
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
         private readonly MenuData _menuData;
-        private readonly IDiCollectionService<IAddElementStrategy> _addElementsDiCollectionService;
+        private readonly IDiCollectionService<IAddItemStrategy> _strategiesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
-        /// <param name="addElementsDiCollectionService">Factory for collection of <see cref="IAddElementStrategy"/>.</param>
+        /// <param name="strategiesService">Factory for collection of <see cref="IAddItemStrategy"/>.</param>
         protected RibbonMenuBuilderBase(
             MenuData menuData,
-            IDiCollectionService<IAddElementStrategy> addElementsDiCollectionService)
+            IDiCollectionService<IAddItemStrategy> strategiesService)
         {
             _menuData = menuData;
-            _addElementsDiCollectionService = addElementsDiCollectionService;
+            _strategiesService = strategiesService;
         }
 
         /// <inheritdoc />
@@ -77,9 +77,7 @@
             var tab = GetOrCreateTab(tabConfig.Name!);
 
             foreach (var panelConfig in tabConfig.Panels)
-            {
                 CreatePanel(tab, panelConfig);
-            }
         }
 
         private void CreatePanel(TTab tab, Panel panelConfig)
@@ -89,15 +87,15 @@
 
             var panel = GetOrCreatePanel(tab, panelConfig.Name!);
 
-            var addElementStrategies = _addElementsDiCollectionService.GetItems().ToList();
+            var addItemStrategies = _strategiesService.GetItems().ToList();
 
-            foreach (var element in panelConfig.Elements)
+            foreach (var item in panelConfig.Items)
             {
-                var strategy = addElementStrategies.FirstOrDefault(x => x.IsApplicable(element));
+                var strategy = addItemStrategies.FirstOrDefault(x => x.IsApplicable(item));
                 if (strategy != null)
-                    strategy.CreateAndAddElement(panel!, element);
+                    strategy.CreateAndAddItem(panel!, item);
                 else
-                    throw new InvalidOperationException($"Unknown panel item type: {element.GetType().Name}");
+                    throw new InvalidOperationException($"Unknown panel item type: {item.GetType().Name}");
             }
         }
     }

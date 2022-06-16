@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a button configuration.
     /// </summary>
-    public abstract class Button : IRibbonPanelElement
+    public abstract class Button : IRibbonPanelItem
     {
         /// <summary>
         /// The button name.

@@ -35,7 +35,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             var stackedItems = new StackedItemsBuilder();
             builder.Invoke(stackedItems);
-            BuildingPanel.Elements.Add(stackedItems.StackedItems);
+            BuildingPanel.Items.Add(stackedItems.StackedItems);
             return this;
         }
 
@@ -47,7 +47,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
-            BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
+            BuildingPanel.Items.Add(buttonBuilder.BuildingButton);
             return this;
         }
 
@@ -58,16 +58,16 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         {
             var pulldownButton = new PulldownButtonBuilder(name);
             builder.Invoke(pulldownButton);
-            BuildingPanel.Elements.Add(pulldownButton.BuildingButton);
+            BuildingPanel.Items.Add(pulldownButton.BuildingButton);
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder Separator()
         {
-            BuildingPanel.Elements.Add(new PanelLayoutElement
+            BuildingPanel.Items.Add(new PanelLayoutItem
             {
-                LayoutElementType = PanelLayoutElementType.Separator
+                LayoutItemType = PanelLayoutItemType.Separator
             });
             return this;
         }
@@ -75,17 +75,17 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder SlideOut()
         {
-            if (BuildingPanel.Elements.Any(
-                    e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
+            if (BuildingPanel.Items.Any(
+                    e => e is PanelLayoutItem { LayoutItemType: PanelLayoutItemType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.SlideOut });
+            BuildingPanel.Items.Add(new PanelLayoutItem { LayoutItemType = PanelLayoutItemType.SlideOut });
             return this;
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddElement(IRibbonPanelElement element)
+        public IPanelBuilder AddItem(IRibbonPanelItem item)
         {
-            BuildingPanel.Elements.Add(element);
+            BuildingPanel.Items.Add(item);
             return this;
         }
 
@@ -93,19 +93,19 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         /// Load from config.
         /// </summary>
         /// <param name="section">Config section.</param>
-        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        /// <param name="fromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
         internal void LoadFromConfig(
             IConfigurationSection section,
-            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
+            IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
-            var elementsSection = section.GetSection(nameof(Panel.Elements));
-            if (!elementsSection.Exists())
+            var itemsSection = section.GetSection(nameof(Panel.Items));
+            if (!itemsSection.Exists())
                 return;
 
-            foreach (var elementSection in elementsSection.GetChildren())
+            foreach (var itemSection in itemsSection.GetChildren())
             {
-                var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(elementSection));
-                strategy?.CreateFromConfigAndAdd(elementSection, this);
+                var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(itemSection));
+                strategy?.CreateAndAddToPanelConfig(itemSection, this);
             }
         }
     }

@@ -1,12 +1,12 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddElementStrategies
+﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
 {
     using System.Windows.Controls;
     using Autodesk.Windows;
 
     /// <summary>
-    /// Implementation of <see cref="IAddElementStrategy"/> for pull-down button.
+    /// Implementation of <see cref="IAddItemStrategy"/> for pull-down button.
     /// </summary>
-    public class PullDownButtonStrategy : ElementStrategyBase<PullDownButton>
+    public class PullDownButtonStrategy : ItemStrategyBase<PullDownButton>
     {
         private readonly IPanelService _panelService;
         private readonly IButtonService _buttonService;
@@ -19,7 +19,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void AddItem(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
         {
             var orientation = pullDownButtonConfig.GetOrientation();
             _panelService.AddItem(ribbonPanel,
@@ -27,7 +27,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItem CreateElementForStack(PullDownButton pullDownButtonConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(PullDownButton pullDownButtonConfig, RibbonItemSize size)
         {
             return _buttonService.CreatePullDownButton(pullDownButtonConfig, size, Orientation.Horizontal);
         }
