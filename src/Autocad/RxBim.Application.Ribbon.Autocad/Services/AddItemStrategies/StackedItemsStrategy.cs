@@ -3,20 +3,20 @@
     using System.Linq;
     using Autodesk.Windows;
     using ConfigurationBuilders;
-    using Shared.Abstractions;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IAddItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
-        private readonly IDiCollectionService<IAddItemStrategy> _diCollectionService;
+        private readonly IServiceLocator _serviceLocator;
         private readonly IPanelService _panelService;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IDiCollectionService<IAddItemStrategy> diCollectionService, IPanelService panelService)
+        public StackedItemsStrategy(IServiceLocator serviceLocator, IPanelService panelService)
         {
-            _diCollectionService = diCollectionService;
+            _serviceLocator = serviceLocator;
             _panelService = panelService;
         }
 
@@ -27,7 +27,7 @@
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
-            var strategies = _diCollectionService.GetItems().ToList();
+            var strategies = _serviceLocator.GetServicesAssignableTo<IAddItemStrategy>().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 

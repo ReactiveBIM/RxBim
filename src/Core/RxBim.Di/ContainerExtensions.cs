@@ -1,6 +1,8 @@
 ﻿namespace RxBim.Di
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
 
@@ -322,7 +324,7 @@
         /// <param name="action">The function for creating a configuration.</param>
         public static void AddConfiguration(
             this IContainer container,
-            Func<ConfigurationBuilder, IConfiguration> action)
+            Func<ConfigurationBuilder, IConfiguration>? action)
         {
             if (action != null)
             {
@@ -362,6 +364,29 @@
             where TService : class
         {
             return container.GetService<TService>() ?? throw new InvalidOperationException(nameof(container));
+        }
+
+        /// <summary>
+        /// Adds type implementations to the container.
+        /// </summary>
+        /// <param name="container">DI container.</param>
+        /// <param name="assembly">An assembly with type implementations.</param>
+        /// <typeparam name="T">Base type.</typeparam>
+        public static IContainer RegisterTypes<T>(
+            this IContainer container,
+            Assembly? assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            var interfaceType = typeof(T);
+            var types = assembly.GetTypes()
+                .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
+                .Except(container.GetCurrentRegistrations().Select(x => x.ServiceType))
+                .ToList();
+
+            foreach (var type in types)
+                container.AddTransient(type);
+
+            return container;
         }
     }
 }

@@ -3,23 +3,23 @@
     using System;
     using System.Linq;
     using ConfigurationBuilders;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using Shared.Abstractions;
 
     /// <summary>
     /// The strategy for getting a <see cref="StackedItems"/> from a configuration section.
     /// </summary>
     public class StackedItemsStrategy : IItemFromConfigStrategy
     {
-        private readonly IDiCollectionService<IItemFromConfigStrategy> _strategiesService;
+        private readonly IServiceLocator _serviceLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedItemsStrategy"/> class.
         /// </summary>
-        /// <param name="strategiesService">Strategies service.</param>
-        public StackedItemsStrategy(IDiCollectionService<IItemFromConfigStrategy> strategiesService)
+        /// <param name="serviceLocator"><see cref="IServiceLocator"/>.</param>
+        public StackedItemsStrategy(IServiceLocator serviceLocator)
         {
-            _strategiesService = strategiesService;
+            _serviceLocator = serviceLocator;
         }
 
         /// <inheritdoc />
@@ -37,7 +37,7 @@
 
             var stackedItems = new StackedItemsBuilder();
 
-            var fromConfigStrategies = _strategiesService.GetItems().ToList();
+            var fromConfigStrategies = _serviceLocator.GetServicesAssignableTo<IItemFromConfigStrategy>().ToList();
             foreach (var child in itemsSection.GetChildren())
             {
                 var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(child));
