@@ -73,8 +73,8 @@
         {
             container
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
-                .AddStrategies<IElementFromConfigStrategy>()
-                .AddStrategies<IAddElementStrategy>()
+                .AddStrategies<IItemFromConfigStrategy>()
+                .AddStrategies<IAddItemStrategy>()
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 
@@ -86,7 +86,7 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var strategyFactory = container.GetService<IDiCollectionService<IElementFromConfigStrategy>>();
+            var strategyFactory = container.GetService<IDiCollectionService<IItemFromConfigStrategy>>();
             var strategies = strategyFactory.GetItems().ToList();
 
             var builder = new RibbonBuilder();

@@ -5,11 +5,11 @@
     /// <summary>
     /// Represents a vertical stack of buttons on a ribbon.
     /// </summary>
-    public class StackedItems : IRibbonPanelElement
+    public class StackedItems : IRibbonPanelItem
     {
         /// <summary>
-        /// The button list.
+        /// The item list.
         /// </summary>
-        public List<Button> StackedButtons { get; set; } = new();
+        public List<IRibbonPanelItem> Items { get; set; } = new();
     }
 }

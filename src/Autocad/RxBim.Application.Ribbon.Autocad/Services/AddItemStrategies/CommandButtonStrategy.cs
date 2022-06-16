@@ -1,12 +1,12 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddElementStrategies
+﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
 {
     using System.Windows.Controls;
     using Autodesk.Windows;
 
     /// <summary>
-    /// Implementation of <see cref="IAddElementStrategy"/> for command button.
+    /// Implementation of <see cref="IAddItemStrategy"/> for command button.
     /// </summary>
-    public class CommandButtonStrategy : ElementStrategyBase<CommandButton>
+    public class CommandButtonStrategy : ItemStrategyBase<CommandButton>
     {
         private readonly IPanelService _panelService;
         private readonly IButtonService _buttonService;
@@ -19,7 +19,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
+        protected override void AddItem(RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
         {
             var orientation = cmdButtonConfig.GetOrientation();
             _panelService.AddItem(ribbonPanel,
@@ -27,7 +27,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItem CreateElementForStack(CommandButton cmdButtonConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(CommandButton cmdButtonConfig, RibbonItemSize size)
         {
             return _buttonService.CreateCommandButton(cmdButtonConfig, size, Orientation.Horizontal);
         }

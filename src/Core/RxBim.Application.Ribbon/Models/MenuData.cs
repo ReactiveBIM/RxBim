@@ -12,6 +12,8 @@
     /// </summary>
     public class MenuData
     {
+        private Assembly? _menuAssembly;
+
         /// <summary>
         /// Ribbon configuration
         /// </summary>
@@ -20,7 +22,11 @@
         /// <summary>
         /// Menu defining assembly.
         /// </summary>
-        public Assembly? MenuAssembly { get; set; }
+        public Assembly MenuAssembly
+        {
+            get => _menuAssembly ?? throw new InvalidOperationException("No value set!");
+            set => _menuAssembly = value;
+        }
 
         /// <summary>
         /// Returns an image of the button's icon.
@@ -33,8 +39,6 @@
                 return null;
 
             assembly ??= MenuAssembly;
-            if (assembly is null)
-                return null;
 
             var resource = assembly.GetManifestResourceNames()
                 .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));

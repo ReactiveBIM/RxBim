@@ -51,9 +51,9 @@
         IPanelBuilder SlideOut();
 
         /// <summary>
-        /// Adds a element to the panel.
+        /// Adds a item to the panel.
         /// </summary>
-        /// <param name="element">Element.</param>
-        IPanelBuilder AddElement(IRibbonPanelElement element);
+        /// <param name="item">The ribbon panel item.</param>
+        IPanelBuilder AddItem(IRibbonPanelItem item);
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     /// <summary>
-    /// Defines an element of the ribbon panel.
+    /// Defines an item of the ribbon panel.
     /// </summary>
-    public interface IRibbonPanelElement
+    public interface IRibbonPanelItem
     {
     }
 }

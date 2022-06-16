@@ -13,8 +13,8 @@
         public string? Name { get; set; }
 
         /// <summary>
-        /// The panel element list.
+        /// The panel item list.
         /// </summary>
-        public List<IRibbonPanelElement> Elements { get; set; } = new();
+        public List<IRibbonPanelItem> Items { get; set; } = new();
     }
 }

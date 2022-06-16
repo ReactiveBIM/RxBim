@@ -5,6 +5,7 @@ namespace RxBim.Application.Ribbon
     using Di;
     using Microsoft.Extensions.Configuration;
     using Services;
+    using Shared;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
@@ -23,6 +24,7 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
+            container.RegisterTypes<IAddItemStrategy>();
             container.AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
         }
 
@@ -38,6 +40,7 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
+            container.RegisterTypes<IAddItemStrategy>();
             container.AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
     }

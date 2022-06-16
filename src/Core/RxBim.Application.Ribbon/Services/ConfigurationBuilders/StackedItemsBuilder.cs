@@ -1,7 +1,6 @@
 namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
-    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Represents an items stack builder.
@@ -38,41 +37,13 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             return AddItem(pulldownButton.BuildingButton);
         }
 
-        /// <summary>
-        /// Loads buttons from configurations.
-        /// </summary>
-        /// <param name="stackedButtons">A buttons config section.</param>
-        internal void LoadFromConfig(IConfigurationSection stackedButtons)
+        /// <inheritdoc />
+        public IStackedItemsBuilder AddItem(IRibbonPanelItem item)
         {
-            foreach (var buttonSection in stackedButtons.GetChildren())
-            {
-                if (!buttonSection.Exists())
-                    continue;
-
-                if (buttonSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
-                {
-                    LoadFromConfig<CommandButton>(buttonSection);
-                }
-                else if (buttonSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
-                {
-                    LoadFromConfig<PullDownButton>(buttonSection);
-                }
-            }
-        }
-
-        private StackedItemsBuilder AddItem(Button item)
-        {
-            if (StackedItems.StackedButtons.Count == MaxStackSize)
-                throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
-            StackedItems.StackedButtons.Add(item);
+            if (StackedItems.Items.Count == MaxStackSize)
+                throw new InvalidOperationException($"Can't create more than {MaxStackSize} items in the StackedItem!");
+            StackedItems.Items.Add(item);
             return this;
-        }
-
-        private void LoadFromConfig<T>(IConfiguration buttonSection)
-            where T : Button
-        {
-            var item = buttonSection.Get<T>();
-            AddItem(item);
         }
     }
 }

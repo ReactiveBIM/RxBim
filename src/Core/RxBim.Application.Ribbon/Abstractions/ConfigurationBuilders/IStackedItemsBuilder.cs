@@ -25,5 +25,11 @@
         /// <param name="name">The button internal name.</param>
         /// <param name="builder">The pull-down button builder.</param>
         IStackedItemsBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder);
+
+        /// <summary>
+        /// Adds a item in the stack.
+        /// </summary>
+        /// <param name="item">Ribbon item.</param>
+        IStackedItemsBuilder AddItem(IRibbonPanelItem item);
     }
 }
