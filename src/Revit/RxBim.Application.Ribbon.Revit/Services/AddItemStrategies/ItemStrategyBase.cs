@@ -27,38 +27,39 @@
         }
 
         /// <inheritdoc />
-        public void CreateAndAddItem(object panel, IRibbonPanelItem config)
+        public void AddItem(object tab, object panel, IRibbonPanelItem config)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not TItem itemConfig)
+            if (tab is not string tabName || panel is not RibbonPanel ribbonPanel || config is not TItem itemConfig)
                 return;
 
-            CreateAndAddItem(ribbonPanel, itemConfig);
+            AddItem(tabName, ribbonPanel, itemConfig);
         }
 
         /// <inheritdoc />
-        public object CreateItemForStack(IRibbonPanelItem config, bool small = false)
+        public object GetItemForStack(IRibbonPanelItem config, bool small = false)
         {
             if (config is not TItem itemConfig)
                 throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
 
-            return CreateItemForStack(itemConfig);
+            return GetItemForStack(itemConfig);
         }
 
         /// <summary>
         /// Creates and adds to ribbon an item.
         /// </summary>
+        /// <param name="tabName">Ribbon tab name.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="itemConfig">Ribbon item configuration.</param>
-        protected abstract void CreateAndAddItem(RibbonPanel ribbonPanel, TItem itemConfig);
+        protected abstract void AddItem(string tabName, RibbonPanel ribbonPanel, TItem itemConfig);
 
         /// <summary>
         /// Creates and returns an item for a stack.
         /// </summary>
         /// <param name="itemConfig">Ribbon item configuration.</param>
-        protected abstract RibbonItemData CreateItemForStack(TItem itemConfig);
+        protected abstract RibbonItemData GetItemForStack(TItem itemConfig);
 
         /// <summary>
-        /// Stub for CreateItemForStack, if item can't be stacked.
+        /// Stub for GetItemForStack, if item can't be stacked.
         /// </summary>
         /// <param name="itemConfig">Ribbon item configuration.</param>
         protected RibbonItemData CannotBeStackedStub(TItem itemConfig)

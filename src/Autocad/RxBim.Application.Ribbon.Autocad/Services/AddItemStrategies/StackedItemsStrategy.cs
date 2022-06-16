@@ -21,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
             var stackSize = stackedItems.Items.Count;
             var stackedItemsRow = new RibbonRowPanel();
@@ -42,7 +42,7 @@
                 if (itemStrategy is null)
                     continue;
 
-                var item = (RibbonItem)itemStrategy.CreateItemForStack(buttonConfig, small);
+                var item = (RibbonItem)itemStrategy.GetItemForStack(buttonConfig, small);
                 stackedItemsRow.Items.Add(item);
             }
         }

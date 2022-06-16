@@ -93,7 +93,7 @@
             {
                 var strategy = addItemStrategies.FirstOrDefault(x => x.IsApplicable(item));
                 if (strategy != null)
-                    strategy.CreateAndAddItem(panel!, item);
+                    strategy.AddItem(tab!, panel!, item);
                 else
                     throw new InvalidOperationException($"Unknown panel item type: {item.GetType().Name}");
             }

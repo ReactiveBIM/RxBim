@@ -16,16 +16,17 @@
         }
 
         /// <inheritdoc />
-        public void CreateAndAddItem(object panel, IRibbonPanelItem config)
+        public void AddItem(object tab, object panel, IRibbonPanelItem config)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not TItem itemConfig)
+            if (tab is not RibbonTab ribbonTab || panel is not RibbonPanel ribbonPanel ||
+                config is not TItem itemConfig)
                 return;
 
-            AddItem(ribbonPanel, itemConfig);
+            AddItem(ribbonTab, ribbonPanel, itemConfig);
         }
 
         /// <inheritdoc />
-        public object CreateItemForStack(IRibbonPanelItem config, bool small = false)
+        public object GetItemForStack(IRibbonPanelItem config, bool small = false)
         {
             if (config is not TItem itemConfig)
                 throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
@@ -37,9 +38,10 @@
         /// <summary>
         /// Creates and adds to ribbon an item.
         /// </summary>
+        /// <param name="ribbonTab">Ribbon tab.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="itemConfig">Ribbon item configuration.</param>
-        protected abstract void AddItem(RibbonPanel ribbonPanel, TItem itemConfig);
+        protected abstract void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, TItem itemConfig);
 
         /// <summary>
         /// Creates and returns an item for a stack.
@@ -49,7 +51,7 @@
         protected abstract RibbonItem GetItemForStack(TItem itemConfig, RibbonItemSize size);
 
         /// <summary>
-        /// Stub for CreateItemForStack, if item can't be stacked.
+        /// Stub for GetItemForStack, if item can't be stacked.
         /// </summary>
         /// <param name="itemConfig">Ribbon item configuration.</param>
         protected RibbonItem CantBeStackedStub(TItem itemConfig)

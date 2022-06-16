@@ -21,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddItem(RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
             var strategies = _strategiesService.GetItems().ToList();
 
@@ -43,7 +43,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData CreateItemForStack(StackedItems itemConfig)
+        protected override RibbonItemData GetItemForStack(StackedItems itemConfig)
         {
             return CannotBeStackedStub(itemConfig);
         }
@@ -55,7 +55,7 @@
             var strategy = strategies.FirstOrDefault(x => x.IsApplicable(firstItem));
             if (strategy is null)
                 throw new InvalidOperationException($"Can't found strategy for: {firstItem.GetType().FullName}");
-            return (RibbonItemData)strategy.CreateItemForStack(firstItem);
+            return (RibbonItemData)strategy.GetItemForStack(firstItem);
         }
     }
 }

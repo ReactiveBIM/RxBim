@@ -23,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonPanel ribbonPanel, PanelLayoutItem itemConfig)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, PanelLayoutItem itemConfig)
         {
             _panelService.AddSlideOut(ribbonPanel);
         }

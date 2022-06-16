@@ -14,14 +14,14 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddItem(RibbonPanel panel, CommandButton cmdButtonConfig)
+        protected override void AddItem(string tabName, RibbonPanel panel, CommandButton cmdButtonConfig)
         {
             var pushButtonData = CreateCommandButtonData(cmdButtonConfig);
             panel.AddItem(pushButtonData);
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData CreateItemForStack(CommandButton cmdButtonConfig)
+        protected override RibbonItemData GetItemForStack(CommandButton cmdButtonConfig)
         {
             return CreateCommandButtonData(cmdButtonConfig);
         }
