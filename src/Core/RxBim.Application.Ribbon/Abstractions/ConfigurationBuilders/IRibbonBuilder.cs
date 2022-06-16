@@ -18,7 +18,7 @@ namespace RxBim.Application.Ribbon
         /// Sets whether to add the version information to the tooltip text.
         /// </summary>
         /// <param name="enable">The value.</param>
-        IRibbonBuilder DisplayVersion(bool enable);
+        IRibbonBuilder SetDisplayVersion(bool enable);
 
         /// <summary>
         /// Enables to add the version information to the tooltip text.

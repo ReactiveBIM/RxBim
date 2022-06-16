@@ -21,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder DisplayVersion(bool enable)
+        public IRibbonBuilder SetDisplayVersion(bool enable)
         {
             Ribbon.AddVersionToCommandTooltip = enable;
             return this;

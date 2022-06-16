@@ -8,6 +8,11 @@
     public interface IPanelBuilder : IRibbonItemsContainerBuilder
     {
         /// <summary>
+        /// Building panel
+        /// </summary>
+        Panel BuildingPanel { get; }
+
+        /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
         /// <param name="name">Internal name of the button.</param>
@@ -44,16 +49,5 @@
         /// Adds a new switch for the sliding part of the panel.
         /// </summary>
         IPanelBuilder SlideOut();
-
-        /// <summary>
-        /// Adds a new button for displaying the About window.
-        /// </summary>
-        /// <param name="name">Button name.</param>
-        /// <param name="content">About button content.</param>
-        /// <param name="builder">The button builder.</param>
-        IPanelBuilder AddAboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IAboutButtonBuilder>? builder = null);
     }
 }

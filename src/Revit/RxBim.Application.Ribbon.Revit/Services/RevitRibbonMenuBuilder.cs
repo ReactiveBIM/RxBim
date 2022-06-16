@@ -191,7 +191,7 @@
             CheckButtonName(config);
             if (string.IsNullOrWhiteSpace(config.CommandType))
                 throw new ArgumentException($"Command type not found! Button: {config.Name}");
-            var cmdType = GetCommandType(config.CommandType!);
+            var cmdType = MenuAssembly.GetTypeByName(config.CommandType!);
             var className = cmdType.FullName;
             var assemblyLocation = cmdType.Assembly.Location;
             var pushButtonData =
