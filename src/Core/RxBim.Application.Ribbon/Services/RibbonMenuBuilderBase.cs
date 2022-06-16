@@ -2,25 +2,23 @@
 {
     using System;
     using System.Linq;
-    using Shared.Abstractions;
+    using Di;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
         private readonly MenuData _menuData;
-        private readonly IDiCollectionService<IAddItemStrategy> _strategiesService;
+        private readonly IServiceLocator _serviceLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
-        /// <param name="strategiesService">Factory for collection of <see cref="IAddItemStrategy"/>.</param>
-        protected RibbonMenuBuilderBase(
-            MenuData menuData,
-            IDiCollectionService<IAddItemStrategy> strategiesService)
+        /// <param name="serviceLocator"><see cref="IServiceLocator"/>.</param>
+        protected RibbonMenuBuilderBase(MenuData menuData, IServiceLocator serviceLocator)
         {
             _menuData = menuData;
-            _strategiesService = strategiesService;
+            _serviceLocator = serviceLocator;
         }
 
         /// <inheritdoc />
@@ -87,7 +85,7 @@
 
             var panel = GetOrCreatePanel(tab, panelConfig.Name!);
 
-            var addItemStrategies = _strategiesService.GetItems().ToList();
+            var addItemStrategies = _serviceLocator.GetServicesAssignableTo<IAddItemStrategy>().ToList();
 
             foreach (var item in panelConfig.Items)
             {

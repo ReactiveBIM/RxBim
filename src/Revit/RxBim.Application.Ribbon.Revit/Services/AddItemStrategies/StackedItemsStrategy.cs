@@ -4,26 +4,26 @@
     using System.Collections.Generic;
     using System.Linq;
     using Autodesk.Revit.UI;
-    using Shared.Abstractions;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IAddItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
-        private readonly IDiCollectionService<IAddItemStrategy> _strategiesService;
+        private readonly IServiceLocator _serviceLocator;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IDiCollectionService<IAddItemStrategy> strategiesService, MenuData menuData)
+        public StackedItemsStrategy(IServiceLocator serviceLocator, MenuData menuData)
             : base(menuData)
         {
-            _strategiesService = strategiesService;
+            _serviceLocator = serviceLocator;
         }
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
-            var strategies = _strategiesService.GetItems().ToList();
+            var strategies = _serviceLocator.GetServicesAssignableTo<IAddItemStrategy>().ToList();
 
             var button1 = GetStackedItem(strategies, stackedItems.Items[0]);
             var button2 = GetStackedItem(strategies, stackedItems.Items[1]);

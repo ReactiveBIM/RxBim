@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Autodesk.Revit.UI;
-    using Shared.Abstractions;
+    using Di;
     using UIFramework;
 
     /// <summary>
@@ -17,8 +17,8 @@
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IDiCollectionService<IAddItemStrategy> strategiesService)
-            : base(menuData, strategiesService)
+            IServiceLocator serviceLocator)
+            : base(menuData, serviceLocator)
         {
             _application = application;
         }
