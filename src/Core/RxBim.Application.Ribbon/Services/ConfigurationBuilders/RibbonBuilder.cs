@@ -24,21 +24,21 @@
         /// <inheritdoc />
         public IRibbonBuilder SetDisplayVersion(bool enable)
         {
-            Ribbon.AddVersionToCommandTooltip = enable;
+            Ribbon.DisplayVersion = enable;
             return this;
         }
 
         /// <inheritdoc />
         public IRibbonBuilder EnableDisplayVersion()
         {
-            Ribbon.AddVersionToCommandTooltip = true;
+            Ribbon.DisplayVersion = true;
             return this;
         }
 
         /// <inheritdoc />
         public IRibbonBuilder VersionPrefix(string prefix)
         {
-            Ribbon.CommandTooltipVersionHeader = prefix;
+            Ribbon.VersionPrefix = prefix;
             return this;
         }
 
@@ -68,24 +68,24 @@
 
         private void SetProperties(IConfiguration config)
         {
-            var versionSection = config.GetSection(nameof(Ribbon.AddVersionToCommandTooltip));
+            var versionSection = config.GetSection(nameof(Ribbon.DisplayVersion));
             if (versionSection.Exists())
             {
-                Ribbon.AddVersionToCommandTooltip = versionSection.Get<bool>();
+                Ribbon.DisplayVersion = versionSection.Get<bool>();
             }
 
-            var headerSection = config.GetSection(nameof(Ribbon.CommandTooltipVersionHeader));
+            var headerSection = config.GetSection(nameof(Ribbon.VersionPrefix));
             if (headerSection.Exists())
             {
-                Ribbon.CommandTooltipVersionHeader = headerSection.Value;
+                Ribbon.VersionPrefix = headerSection.Value;
             }
         }
 
         private TabBuilder CreateTab(string tabTitle, Action<ITabBuilder>? tab = null)
         {
-            var builder = new TabBuilder(tabTitle, this);
+            var builder = new TabBuilder(tabTitle);
             tab?.Invoke(builder);
-            Ribbon.Tabs.Add(builder.BuildingTab);
+            Ribbon.Tabs.Add(builder.Build());
             return builder;
         }
     }

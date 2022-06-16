@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a builder for PulldownButton.
     /// </summary>
-    public interface IPulldownButtonBuilder : IButtonBuilderBase<PullDownButton, IPulldownButtonBuilder>
+    public interface IPulldownButtonBuilder : IButtonBuilder<IPulldownButtonBuilder>
     {
         /// <summary>
         /// Adds a new button the pulldown button.

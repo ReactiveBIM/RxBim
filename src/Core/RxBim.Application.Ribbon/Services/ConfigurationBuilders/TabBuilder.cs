@@ -9,28 +9,30 @@
     /// </summary>
     public class TabBuilder : ITabBuilder
     {
+        private readonly Tab _tab = new();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TabBuilder"/> class.
         /// </summary>
         /// <param name="name">Tab name.</param>
-        /// <param name="ribbonBuilder">Ribbon builder.</param>
-        public TabBuilder(string name, RibbonBuilder ribbonBuilder)
+        public TabBuilder(string name)
         {
-            RibbonBuilder = ribbonBuilder;
-            BuildingTab.Name = name;
+            _tab.Name = name;
         }
-
-        /// <inheritdoc />
-        public IRibbonBuilder RibbonBuilder { get; }
-
-        /// <inheritdoc />
-        public Tab BuildingTab { get; } = new();
 
         /// <inheritdoc />
         public ITabBuilder Panel(string title, Action<IPanelBuilder> panel)
         {
             CreatePanel(title, panel);
             return this;
+        }
+
+        /// <summary>
+        /// Returns tab.
+        /// </summary>
+        internal Tab Build()
+        {
+            return _tab;
         }
 
         /// <summary>
@@ -59,7 +61,7 @@
         {
             var builder = new PanelBuilder(panelTitle);
             panel?.Invoke(builder);
-            BuildingTab.Panels.Add(builder.BuildingPanel);
+            _tab.Panels.Add(builder.Build());
             return builder;
         }
     }

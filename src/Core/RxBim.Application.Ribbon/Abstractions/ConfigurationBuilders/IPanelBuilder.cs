@@ -5,13 +5,8 @@
     /// <summary>
     /// Defines a ribbon panel.
     /// </summary>
-    public interface IPanelBuilder : IRibbonItemsContainerBuilder
+    public interface IPanelBuilder
     {
-        /// <summary>
-        /// Building panel
-        /// </summary>
-        Panel BuildingPanel { get; }
-
         /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
@@ -54,6 +49,6 @@
         /// Adds a item to the panel.
         /// </summary>
         /// <param name="item">The ribbon panel item.</param>
-        IPanelBuilder AddItem(IRibbonPanelItem item);
+        void AddItem(IRibbonPanelItem item);
     }
 }

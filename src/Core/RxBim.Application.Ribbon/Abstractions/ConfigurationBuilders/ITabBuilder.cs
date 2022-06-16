@@ -5,18 +5,8 @@
     /// <summary>
     /// Defines a ribbon tab.
     /// </summary>
-    public interface ITabBuilder : IRibbonItemsContainerBuilder
+    public interface ITabBuilder
     {
-        /// <summary>
-        /// Building tab
-        /// </summary>
-        Tab BuildingTab { get; }
-
-        /// <summary>
-        /// The parent builder for the ribbon.
-        /// </summary>
-        IRibbonBuilder RibbonBuilder { get; }
-
         /// <summary>
         /// Adds a new panel to the tab.
         /// </summary>
