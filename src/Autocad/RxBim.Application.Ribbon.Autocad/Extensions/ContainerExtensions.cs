@@ -5,6 +5,7 @@
     using Di;
     using Microsoft.Extensions.Configuration;
     using Services;
+    using Shared;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.

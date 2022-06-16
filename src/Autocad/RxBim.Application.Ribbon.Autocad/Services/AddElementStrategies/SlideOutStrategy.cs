@@ -1,13 +1,11 @@
 ﻿namespace RxBim.Application.Ribbon.Services.AddElementStrategies
 {
-    using System;
-    using Application.Ribbon.AddElementStrategies;
     using Autodesk.Windows;
 
     /// <summary>
     /// Implementation of <see cref="IAddElementStrategy"/> for slide-out.
     /// </summary>
-    public class SlideOutStrategy : SlideOutStrategyBase
+    public class SlideOutStrategy : ElementStrategyBase<PanelLayoutElement>
     {
         private readonly IPanelService _panelService;
 
@@ -18,18 +16,22 @@
         }
 
         /// <inheritdoc />
-        public override void CreateElement(object panel, IRibbonPanelElement config)
+        public override bool IsApplicable(IRibbonPanelElement config)
         {
-            if (panel is not RibbonPanel ribbonPanel)
-                return;
+            return base.IsApplicable(config) &&
+                   ((PanelLayoutElement)config).LayoutElementType == PanelLayoutElementType.SlideOut;
+        }
 
+        /// <inheritdoc />
+        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, PanelLayoutElement elementConfig)
+        {
             _panelService.AddSlideOut(ribbonPanel);
         }
 
         /// <inheritdoc />
-        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        protected override RibbonItem CreateElementForStack(PanelLayoutElement elementConfig, RibbonItemSize size)
         {
-            throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
+            return CantBeStackedStub(elementConfig);
         }
     }
 }
