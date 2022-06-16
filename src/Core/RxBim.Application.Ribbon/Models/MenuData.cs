@@ -84,11 +84,11 @@
         public string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
         {
             var toolTip = cmdButtonConfig.ToolTip;
-            if (RibbonConfiguration is null || toolTip is null || !RibbonConfiguration.AddVersionToCommandTooltip)
+            if (RibbonConfiguration is null || toolTip is null || !RibbonConfiguration.DisplayVersion)
                 return toolTip;
             if (toolTip.Length > 0)
                 toolTip += Environment.NewLine;
-            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
+            toolTip += $"{RibbonConfiguration.VersionPrefix}{commandType.Assembly.GetName().Version}";
             return toolTip;
         }
     }

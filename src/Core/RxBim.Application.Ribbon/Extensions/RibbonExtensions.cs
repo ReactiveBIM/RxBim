@@ -87,7 +87,7 @@
         {
             if (button.CommandType is null)
                 return;
-            var commandType = AssemblyExtensions.GetTypeByName(assembly, button.CommandType);
+            var commandType = assembly.GetTypeByName(button.CommandType);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
             if (attr == null)
                 return;

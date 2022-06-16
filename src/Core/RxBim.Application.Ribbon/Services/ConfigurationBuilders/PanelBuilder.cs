@@ -11,18 +11,18 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
     public class PanelBuilder : IPanelBuilder
     {
         /// <summary>
+        /// Building panel.
+        /// </summary>
+        private readonly Panel _panel = new();
+
+        /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
         /// <param name="name">Panel name.</param>
         public PanelBuilder(string name)
         {
-            BuildingPanel.Name = name;
+            _panel.Name = name;
         }
-
-        /// <summary>
-        /// Building panel.
-        /// </summary>
-        public Panel BuildingPanel { get; } = new();
 
         /// <summary>
         /// Adds a new stacked items to the panel.
@@ -35,7 +35,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             var stackedItems = new StackedItemsBuilder();
             builder.Invoke(stackedItems);
-            BuildingPanel.Items.Add(stackedItems.StackedItems);
+            _panel.Items.Add(stackedItems.StackedItems);
             return this;
         }
 
@@ -47,7 +47,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
-            BuildingPanel.Items.Add(buttonBuilder.BuildingButton);
+            _panel.Items.Add(buttonBuilder.Build());
             return this;
         }
 
@@ -58,14 +58,14 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         {
             var pulldownButton = new PulldownButtonBuilder(name);
             builder.Invoke(pulldownButton);
-            BuildingPanel.Items.Add(pulldownButton.BuildingButton);
+            _panel.Items.Add(pulldownButton.Build());
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder Separator()
         {
-            BuildingPanel.Items.Add(new PanelLayoutItem
+            _panel.Items.Add(new PanelLayoutItem
             {
                 LayoutItemType = PanelLayoutItemType.Separator
             });
@@ -75,18 +75,25 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         /// <inheritdoc />
         public IPanelBuilder SlideOut()
         {
-            if (BuildingPanel.Items.Any(
+            if (_panel.Items.Any(
                     e => e is PanelLayoutItem { LayoutItemType: PanelLayoutItemType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Items.Add(new PanelLayoutItem { LayoutItemType = PanelLayoutItemType.SlideOut });
+            _panel.Items.Add(new PanelLayoutItem { LayoutItemType = PanelLayoutItemType.SlideOut });
             return this;
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddItem(IRibbonPanelItem item)
+        public void AddItem(IRibbonPanelItem item)
         {
-            BuildingPanel.Items.Add(item);
-            return this;
+            _panel.Items.Add(item);
+        }
+
+        /// <summary>
+        /// Returns panel.
+        /// </summary>
+        internal Panel Build()
+        {
+            return _panel;
         }
 
         /// <summary>
