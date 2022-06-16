@@ -20,6 +20,7 @@
         private readonly IRibbonComponentStorageService _storageService;
         private readonly IRibbonEventsService _ribbonEventsService;
         private readonly IColorThemeService _colorThemeService;
+        private readonly ITabService _tabService;
         private bool _alreadyBuiltOnce;
 
         /// <inheritdoc />
@@ -29,13 +30,15 @@
             IButtonService buttonService,
             IRibbonComponentStorageService storageService,
             IRibbonEventsService ribbonEventsService,
-            IColorThemeService colorThemeService)
+            IColorThemeService colorThemeService,
+            ITabService tabService)
         {
             _panelService = panelService;
             _buttonService = buttonService;
             _storageService = storageService;
             _ribbonEventsService = ribbonEventsService;
             _colorThemeService = colorThemeService;
+            _tabService = tabService;
             _onlineHelpService = onlineHelpService;
             _colorThemeService.ThemeChanged += (_, _) => _buttonService.ApplyCurrentTheme(GetIconImage);
             _ribbonEventsService.NeedRebuild += (_, _) => BuildRibbonMenu();
@@ -64,25 +67,8 @@
         protected override bool CheckRibbonCondition() => ComponentManager.Ribbon != null;
 
         /// <inheritdoc />
-        protected override RibbonTab GetOrCreateTab(string tabName)
-        {
-            var tab = ComponentManager.Ribbon.Tabs.FirstOrDefault(x =>
-                x.IsVisible && x.Title != null && x.Title.Equals(tabName, StringComparison.OrdinalIgnoreCase));
-
-            if (tab is not null)
-                return tab;
-
-            tab = new RibbonTab
-            {
-                Title = tabName,
-                Id = $"TAB_{tabName.GetHashCode():0}"
-            };
-
-            ComponentManager.Ribbon.Tabs.Add(tab);
-            _storageService.AddTab(tab);
-
-            return tab;
-        }
+        protected override RibbonTab GetOrCreateTab(string tabName) =>
+            _tabService.GetTab(tabName) ?? _tabService.CreateTab(tabName);
 
         /// <inheritdoc />
         protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName) =>
@@ -160,7 +146,7 @@
 
             if (!string.IsNullOrWhiteSpace(config.CommandType))
             {
-                var commandType = GetCommandType(config.CommandType!);
+                var commandType = MenuAssembly.GetTypeByName(config.CommandType!);
                 var tooltip = GetTooltipContent(config, commandType);
                 _buttonService.SetTooltip(button, tooltip, config.HelpUrl, config.Description);
                 var commandName = commandType.GetCommandName();

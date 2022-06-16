@@ -10,20 +10,26 @@
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
+        private readonly IAddElementsStrategiesFactory _addElementsStrategiesFactory;
         private Assembly? _menuAssembly;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
+        /// </summary>
+        /// <param name="addElementsStrategiesFactory"><see cref="IAddElementsStrategiesFactory"/>.</param>
+        protected RibbonMenuBuilderBase(IAddElementsStrategiesFactory addElementsStrategiesFactory)
+        {
+            _addElementsStrategiesFactory = addElementsStrategiesFactory;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? MenuCreated;
 
         /// <summary>
         /// Menu defining assembly
         /// </summary>
-        public Assembly MenuAssembly
-        {
-            private get
-            {
-                return _menuAssembly ?? throw new InvalidOperationException(
-                    $"Need to set the assembly for the menu first! ({nameof(MenuAssembly)} property)");
-            }
-            set => _menuAssembly = value;
-        }
+        protected Assembly MenuAssembly => _menuAssembly ??
+                                           throw new InvalidOperationException($"Call {nameof(Initialize)} first!");
 
         /// <summary>
         /// Ribbon configuration.
@@ -42,16 +48,22 @@
 
             foreach (var tabConfig in RibbonConfiguration.Tabs)
                 CreateTab(tabConfig);
+
+            MenuCreated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <inheritdoc />
-        public Type GetCommandType(string commandTypeName)
+        public void Initialize(Assembly menuAssembly)
         {
-            return MenuAssembly.GetTypeByName(commandTypeName);
+            _menuAssembly = menuAssembly;
         }
 
-        /// <inheritdoc />
-        public string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
+        /// <summary>
+        /// Returns tooltip content for command button
+        /// </summary>
+        /// <param name="cmdButtonConfig">Command button configuration</param>
+        /// <param name="commandType">Type of command class</param>
+        protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
         {
             var toolTip = cmdButtonConfig.ToolTip;
             if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
@@ -67,7 +79,7 @@
         /// </summary>
         /// <param name="resourcePath">The image resource path.</param>
         /// <param name="assembly">The assembly containing image embedded resource.</param>
-        public ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
+        protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
         {
             if (string.IsNullOrWhiteSpace(resourcePath))
                 return null;
@@ -136,47 +148,6 @@
         /// <param name="panelName">Panel name.</param>
         protected abstract TPanel GetOrCreatePanel(TTab tab, string panelName);
 
-        /// <summary>
-        /// Creates a new about button.
-        /// </summary>
-        /// <param name="tab">Ribbon tab.</param>
-        /// <param name="panel">Panel.</param>
-        /// <param name="aboutButtonConfig">About button configuration.</param>
-        protected abstract void CreateAboutButton(TTab tab, TPanel panel, AboutButton aboutButtonConfig);
-
-        /// <summary>
-        /// Creates a new command button.
-        /// </summary>
-        /// <param name="panel">Panel.</param>
-        /// <param name="cmdButtonConfig">Command button configuration.</param>
-        protected abstract void CreateCommandButton(TPanel panel, CommandButton cmdButtonConfig);
-
-        /// <summary>
-        /// Creates a new pull-down button.
-        /// </summary>
-        /// <param name="panel">Panel.</param>
-        /// <param name="pullDownButtonConfig">Pull-down button configuration.</param>
-        protected abstract void CreatePullDownButton(TPanel panel, PullDownButton pullDownButtonConfig);
-
-        /// <summary>
-        /// Adds a new separator to a given panel.
-        /// </summary>
-        /// <param name="panel">The given panel.</param>
-        protected abstract void AddSeparator(TPanel panel); // todo naming inconsistency: add- get- create-
-
-        /// <summary>
-        /// Adds a new slide-out to a given panel.
-        /// </summary>
-        /// <param name="panel">Panel.</param>
-        protected abstract void AddSlideOut(TPanel panel);
-
-        /// <summary>
-        /// Creates stacked buttons.
-        /// </summary>
-        /// <param name="panel">Panel.</param>
-        /// <param name="stackedItems">Stacked.</param>
-        protected abstract void CreateStackedItems(TPanel panel, StackedItems stackedItems);
-
         private void CreateTab(Tab tabConfig)
         {
             if (string.IsNullOrWhiteSpace(tabConfig.Name))
@@ -197,35 +168,15 @@
 
             var panel = GetOrCreatePanel(tab, panelConfig.Name!);
 
-            foreach (var elementConfig in panelConfig.Elements)
+            var addElementStrategies = _addElementsStrategiesFactory.GetStrategies().ToList();
+
+            foreach (var element in panelConfig.Elements)
             {
-                switch (elementConfig)
-                {
-                    case AboutButton aboutButton:
-                        CreateAboutButton(tab, panel, aboutButton);
-                        break;
-                    case CommandButton cmdButton:
-                        cmdButton.LoadFromAttribute(MenuAssembly);
-                        CreateCommandButton(panel, cmdButton);
-                        break;
-                    case PullDownButton pullDownButton:
-                        pullDownButton.LoadFromAttribute(MenuAssembly);
-                        CreatePullDownButton(panel, pullDownButton);
-                        break;
-                    case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.Separator } _:
-                        AddSeparator(panel);
-                        break;
-                    case PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut } _:
-                        AddSlideOut(panel);
-                        break;
-                    case StackedItems stackedItems:
-                        stackedItems.LoadFromAttribute(MenuAssembly);
-                        CreateStackedItems(panel, stackedItems);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(
-                            $"Unknown panel item type: {elementConfig.GetType().Name}");
-                }
+                var strategy = addElementStrategies.FirstOrDefault(x => x.IsApplicable(element));
+                if (strategy != null)
+                    strategy.CreateElement(this, tab!, panel!, element);
+                else
+                    throw new InvalidOperationException($"Unknown panel item type: {element.GetType().Name}");
             }
         }
     }
