@@ -3,18 +3,17 @@
     using System.Linq;
     using Autodesk.Windows;
     using ConfigurationBuilders;
-    using Shared.Abstractions;
 
     /// <summary>
     /// Implementation of <see cref="IAddElementStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ElementStrategyBase<StackedItems>
     {
-        private readonly IStrategyFactory<IAddElementStrategy> _strategyFactory;
+        private readonly IStrategiesFactory<IAddElementStrategy> _strategyFactory;
         private readonly IPanelService _panelService;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IStrategyFactory<IAddElementStrategy> strategyFactory, IPanelService panelService)
+        public StackedItemsStrategy(IStrategiesFactory<IAddElementStrategy> strategyFactory, IPanelService panelService)
         {
             _strategyFactory = strategyFactory;
             _panelService = panelService;
