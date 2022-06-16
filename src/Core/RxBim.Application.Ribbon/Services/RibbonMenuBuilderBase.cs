@@ -2,24 +2,25 @@
 {
     using System;
     using System.Linq;
+    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
         private readonly MenuData _menuData;
-        private readonly IStrategiesFactory<IAddElementStrategy> _addElementsStrategiesFactory;
+        private readonly IDiCollectionService<IAddElementStrategy> _addElementsDiCollectionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
-        /// <param name="addElementsStrategiesFactory">Factory for collection of <see cref="IAddElementStrategy"/>.</param>
+        /// <param name="addElementsDiCollectionService">Factory for collection of <see cref="IAddElementStrategy"/>.</param>
         protected RibbonMenuBuilderBase(
             MenuData menuData,
-            IStrategiesFactory<IAddElementStrategy> addElementsStrategiesFactory)
+            IDiCollectionService<IAddElementStrategy> addElementsDiCollectionService)
         {
             _menuData = menuData;
-            _addElementsStrategiesFactory = addElementsStrategiesFactory;
+            _addElementsDiCollectionService = addElementsDiCollectionService;
         }
 
         /// <inheritdoc />
@@ -88,7 +89,7 @@
 
             var panel = GetOrCreatePanel(tab, panelConfig.Name!);
 
-            var addElementStrategies = _addElementsStrategiesFactory.GetStrategies().ToList();
+            var addElementStrategies = _addElementsDiCollectionService.GetItems().ToList();
 
             foreach (var element in panelConfig.Elements)
             {

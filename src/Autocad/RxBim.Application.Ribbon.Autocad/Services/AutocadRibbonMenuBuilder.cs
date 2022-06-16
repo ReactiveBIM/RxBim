@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
     using Autodesk.Windows;
+    using Shared.Abstractions;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD.
@@ -26,8 +27,8 @@
             IColorThemeService colorThemeService,
             ITabService tabService,
             MenuData menuData,
-            IStrategiesFactory<IAddElementStrategy> addElementsStrategiesFactory)
-            : base(menuData, addElementsStrategiesFactory)
+            IDiCollectionService<IAddElementStrategy> addElementsDiCollectionService)
+            : base(menuData, addElementsDiCollectionService)
         {
             _panelService = panelService;
             _buttonService = buttonService;

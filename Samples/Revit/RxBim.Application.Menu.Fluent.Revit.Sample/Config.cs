@@ -2,7 +2,6 @@
 {
     using Di;
     using Ribbon;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
