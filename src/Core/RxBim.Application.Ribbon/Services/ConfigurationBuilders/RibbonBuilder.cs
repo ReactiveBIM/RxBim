@@ -28,6 +28,13 @@
         }
 
         /// <inheritdoc />
+        public IRibbonBuilder EnableDisplayVersion()
+        {
+            Ribbon.AddVersionToCommandTooltip = true;
+            return this;
+        }
+
+        /// <inheritdoc />
         public IRibbonBuilder VersionPrefix(string prefix)
         {
             Ribbon.CommandTooltipVersionHeader = prefix;
