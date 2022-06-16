@@ -19,5 +19,10 @@
         /// Variable name to suppress the message display (muttering).
         /// </summary>
         public const string MuterringVariableName = "NOMUTT";
+
+        /// <summary>
+        /// Value of variable with name <see cref="MuterringVariableName"/> for suppresses muttering.
+        /// </summary>
+        public const short MuterringOffValue = 1;
     }
 }

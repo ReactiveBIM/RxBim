@@ -14,7 +14,7 @@
     /// <remarks>
     /// https://forums.autodesk.com/t5/net/getting-ribbon-help-to-call-html/m-p/4943910.
     /// </remarks>
-    public class OnlineHelpService : IDisposable, IOnlineHelpService
+    internal class OnlineHelpService : IDisposable, IOnlineHelpService
     {
         private readonly HashSet<RibbonToolTip> _trackedToolTips = new();
         private bool _dropNextHelpCall;
@@ -90,18 +90,16 @@
         {
             if (e.Message.message == (int)Messages.KeyDown)
             {
-                if ((int)e.Message.wParam != (int)Keys.F1 ||
-                    _helpTopic == null ||
+                if ((int)e.Message.wParam != (int)Keys.F1 || _helpTopic == null ||
                     !Uri.IsWellFormedUriString(_helpTopic, UriKind.Absolute))
                 {
                     return;
                 }
 
                 _dropNextHelpCall = true;
-                const short offMsg = 1;
-                var oldValue = Application.GetSystemVariable(MuterringVariableName);
-                Application.SetSystemVariable(MuterringVariableName, offMsg);
-                var cmd = $"._BROWSER {_helpTopic} _{MuterringVariableName} {oldValue} ";
+                var currentMuterringState = Application.GetSystemVariable(MuterringVariableName);
+                Application.SetSystemVariable(MuterringVariableName, MuterringOffValue);
+                var cmd = $"._BROWSER {_helpTopic} _{MuterringVariableName} {currentMuterringState} ";
                 Application.DocumentManager.MdiActiveDocument.SendStringToExecute(cmd, true, false, false);
                 e.Handled = true;
             }

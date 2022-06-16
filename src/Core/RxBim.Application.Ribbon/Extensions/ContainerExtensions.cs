@@ -21,13 +21,13 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
-        public static void AddMenu<T>(
+        public static void AddMenu<TBuilder>(
             this IContainer container,
             Action<IRibbonBuilder> builder,
             Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+            where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<T>(assembly);
+            container.AddBuilder<TBuilder>(assembly);
             container.AddSingleton(() =>
             {
                 var ribbon = new RibbonBuilder();
@@ -51,7 +51,7 @@
             this IContainer container,
             IConfiguration? config,
             Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+            where T : class, IRibbonMenuBuilder
         {
             container.AddBuilder<T>(assembly);
             container.AddSingleton(() => GetMenuConfiguration(container, config));
@@ -59,13 +59,14 @@
         }
 
         private static void AddBuilder<T>(this IContainer container, Assembly assembly)
-            where T : class, IRibbonMenuBuilderFactory
+            where T : class, IRibbonMenuBuilder
         {
-            container.AddSingleton<IRibbonMenuBuilderFactory, T>();
-            container.AddSingleton(() =>
+            container.AddSingleton<IRibbonMenuBuilder, T>();
+            container.AddSingleton<Action<Ribbon>>(() =>
             {
-                var builderFactory = container.GetService<IRibbonMenuBuilderFactory>();
-                return builderFactory.CreateMenuBuilder(assembly);
+                var menuBuilder = container.GetService<IRibbonMenuBuilder>();
+                menuBuilder.MenuAssembly = assembly;
+                return menuBuilder.BuildRibbonMenu;
             });
         }
 

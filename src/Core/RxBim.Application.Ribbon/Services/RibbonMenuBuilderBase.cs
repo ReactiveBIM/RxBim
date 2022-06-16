@@ -6,24 +6,24 @@
     using System.Reflection;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
-        /// </summary>
-        /// <param name="menuAssembly">Menu defining assembly.</param>
-        protected RibbonMenuBuilderBase(Assembly menuAssembly)
-        {
-            MenuAssembly = menuAssembly;
-        }
+        private Assembly? _menuAssembly;
 
         /// <summary>
-        /// Menu defining assembly.
+        /// Menu defining assembly
         /// </summary>
-        private Assembly MenuAssembly { get; }
+        public Assembly MenuAssembly
+        {
+            private get
+            {
+                return _menuAssembly ?? throw new InvalidOperationException(
+                    $"Need to set the assembly for the menu first! ({nameof(MenuAssembly)} property)");
+            }
+            set => _menuAssembly = value;
+        }
 
         /// <summary>
         /// Ribbon configuration.

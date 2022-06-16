@@ -23,7 +23,7 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonMenuBuilderFactory>(builder, menuAssembly);
+            container.AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddMenu<RevitRibbonMenuBuilderFactory>(cfg, menuAssembly);
+            container.AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
     }
 }

@@ -10,6 +10,11 @@
     public interface IRibbonMenuBuilder
     {
         /// <summary>
+        /// Menu defining assembly
+        /// </summary>
+        public Assembly MenuAssembly { set; }
+
+        /// <summary>
         /// Constructs a CAD platform-specific ribbon.
         /// </summary>
         /// <param name="ribbonConfig">The ribbon configuration.</param>

@@ -25,11 +25,7 @@
         private readonly IAboutShowService _aboutShowService;
 
         /// <inheritdoc />
-        public RevitRibbonMenuBuilder(
-            Assembly menuAssembly,
-            UIControlledApplication application,
-            IAboutShowService aboutShowService)
-            : base(menuAssembly)
+        public RevitRibbonMenuBuilder(UIControlledApplication application, IAboutShowService aboutShowService)
         {
             _application = application;
             _aboutShowService = aboutShowService;

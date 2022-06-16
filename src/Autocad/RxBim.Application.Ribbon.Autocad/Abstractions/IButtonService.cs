@@ -1,6 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon
 {
+    using System;
+    using System.Reflection;
     using System.Windows.Controls;
+    using System.Windows.Media;
     using Autodesk.Windows;
 
     /// <summary>
@@ -9,30 +12,45 @@
     public interface IButtonService
     {
         /// <summary>
+        /// Creates and returns a basic button.
+        /// </summary>
+        /// <param name="config">Button configuration.</param>
+        /// <param name="size">Button size.</param>
+        /// <param name="orientation">Button orientation.</param>
+        /// <param name="forceTextSettings">Force settings for text placement.</param>
+        /// <param name="getImage">The function to get the image of the button icon.</param>
+        /// <param name="addToolTip">Add tooltip.</param>
+        /// <typeparam name="T">Button type.</typeparam>
+        T CreateNewButtonBase<T>(
+            Button config,
+            RibbonItemSize size,
+            Orientation orientation,
+            bool forceTextSettings,
+            Func<string?, Assembly?, ImageSource?> getImage,
+            bool addToolTip)
+            where T : RibbonButton, new();
+
+        /// <summary>
+        /// Sets a tooltip for a button.
+        /// </summary>
+        /// <param name="button">Button.</param>
+        /// <param name="tooltipText">Tooltip text.</param>
+        /// <param name="helpUrl">Help url.</param>
+        /// <param name="description">Tooltip description.</param>
+        void SetTooltip(RibbonItem button, string? tooltipText, string? helpUrl, string? description);
+
+        /// <summary>
         /// Creates and returns about button.
         /// </summary>
         /// <param name="config">Button configuration.</param>
         /// <param name="size">Button size.</param>
         /// <param name="orientation">Button orientation.</param>
-        RibbonButton CreateAboutButton(AboutButton config, RibbonItemSize size, Orientation orientation);
-
-        /// <summary>
-        /// Creates and returns command button.
-        /// </summary>
-        /// <param name="config">Button configuration.</param>
-        /// <param name="size">Button size.</param>
-        /// <param name="orientation">Button orientation.</param>
-        /// <returns></returns>
-        RibbonButton CreateCommandButton(CommandButton config, RibbonItemSize size, Orientation orientation);
-
-        /// <summary>
-        /// Creates and returns pull-down button.
-        /// </summary>
-        /// <param name="config">Button configuration.</param>
-        /// <param name="size">Button size.</param>
-        /// <param name="orientation">Button orientation.</param>
-        /// <returns></returns>
-        RibbonSplitButton CreatePullDownButton(PullDownButton config, RibbonItemSize size, Orientation orientation);
+        /// <param name="getImage">The function to get the image of the button icon.</param>
+        RibbonButton CreateAboutButton(
+            AboutButton config,
+            RibbonItemSize size,
+            Orientation orientation,
+            Func<string?, Assembly?, ImageSource?> getImage);
 
         /// <summary>
         /// Clears the button cache.
@@ -40,8 +58,9 @@
         void ClearButtonCache();
 
         /// <summary>
-        /// Applies the color theme to all buttons.
+        /// Applies current color theme for all buttons.
         /// </summary>
-        void ApplyCurrentTheme();
+        /// <param name="getImage">The function to get the image of the button icon.</param>
+        void ApplyCurrentTheme(Func<string?, Assembly?, ImageSource?> getImage);
     }
 }
