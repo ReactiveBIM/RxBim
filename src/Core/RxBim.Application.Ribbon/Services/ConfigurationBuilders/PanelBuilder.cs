@@ -82,6 +82,13 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             return this;
         }
 
+        /// <inheritdoc />
+        public IPanelBuilder AddElement(IRibbonPanelElement element)
+        {
+            BuildingPanel.Elements.Add(element);
+            return this;
+        }
+
         /// <summary>
         /// Load from config.
         /// </summary>
@@ -89,7 +96,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
         internal void LoadFromConfig(
             IConfigurationSection section,
-            IEnumerable<IElementFromConfigStrategy> fromConfigStrategies)
+            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
         {
             var elementsSection = section.GetSection(nameof(Panel.Elements));
             if (!elementsSection.Exists())
@@ -97,60 +104,9 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             foreach (var elementSection in elementsSection.GetChildren())
             {
-                // Stacked Items
-                var stackedItemsSection =
-                    elementSection.GetSection(nameof(Application.Ribbon.StackedItems.StackedButtons));
-                if (stackedItemsSection.Exists())
-                {
-                    var stackedItems = new StackedItemsBuilder();
-                    stackedItems.LoadFromConfig(stackedItemsSection);
-                    BuildingPanel.Elements.Add(stackedItems.StackedItems);
-                }
-                else if (elementSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
-                {
-                    // Command Button
-                    var button = LoadFromConfig<CommandButton>(elementSection);
-                }
-                else if (elementSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList))
-                         .Exists())
-                {
-                    // Pulldown
-                    LoadFromConfig<PullDownButton>(elementSection);
-                }
-                else if (elementSection.GetSection(nameof(AboutButton.Content)).Exists())
-                {
-                    // About
-                    LoadFromConfig<AboutButton>(elementSection);
-                }
-                else
-                {
-                    // Layout element
-                    var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.LayoutElementType));
-                    if (typeSection.Exists())
-                    {
-                        var type = typeSection.Get<PanelLayoutElementType>();
-                        switch (type)
-                        {
-                            case PanelLayoutElementType.Separator:
-                                Separator();
-                                break;
-                            case PanelLayoutElementType.SlideOut:
-                                SlideOut();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException($"Unknown panel layout element type: {type}");
-                        }
-                    }
-                }
+                var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(elementSection));
+                strategy?.CreateFromConfigAndAdd(elementSection, this);
             }
-        }
-
-        private T LoadFromConfig<T>(IConfigurationSection elementSection)
-            where T : IRibbonPanelElement
-        {
-            var element = elementSection.Get<T>();
-            BuildingPanel.Elements.Add(element);
-            return element;
         }
     }
 }

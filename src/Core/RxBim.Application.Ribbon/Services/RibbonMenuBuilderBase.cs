@@ -1,124 +1,45 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
+    using Shared.Abstractions;
 
     /// <inheritdoc />
     public abstract class RibbonMenuBuilderBase<TTab, TPanel> : IRibbonMenuBuilder
     {
-        private readonly IAddElementsStrategiesFactory _addElementsStrategiesFactory;
-        private Assembly? _menuAssembly;
+        private readonly MenuData _menuData;
+        private readonly IStrategyFactory<IAddElementStrategy> _addElementsStrategiesFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonMenuBuilderBase{TTab, TPanel}"/> class.
         /// </summary>
-        /// <param name="addElementsStrategiesFactory"><see cref="IAddElementsStrategiesFactory"/>.</param>
-        protected RibbonMenuBuilderBase(IAddElementsStrategiesFactory addElementsStrategiesFactory)
+        /// <param name="menuData"><see cref="MenuData"/>.</param>
+        /// <param name="addElementsStrategiesFactory">Factory for collection of <see cref="IAddElementStrategy"/>.</param>
+        protected RibbonMenuBuilderBase(
+            MenuData menuData,
+            IStrategyFactory<IAddElementStrategy> addElementsStrategiesFactory)
         {
+            _menuData = menuData;
             _addElementsStrategiesFactory = addElementsStrategiesFactory;
         }
 
         /// <inheritdoc />
         public event EventHandler? MenuCreated;
 
-        /// <summary>
-        /// Menu defining assembly
-        /// </summary>
-        protected Assembly MenuAssembly => _menuAssembly ??
-                                           throw new InvalidOperationException($"Call {nameof(Initialize)} first!");
-
-        /// <summary>
-        /// Ribbon configuration.
-        /// </summary>
-        private Ribbon? RibbonConfiguration { get; set; }
-
         /// <inheritdoc />
         public void BuildRibbonMenu(Ribbon? ribbonConfig = null)
         {
-            RibbonConfiguration ??= ribbonConfig;
+            _menuData.RibbonConfiguration ??= ribbonConfig;
 
-            if (RibbonConfiguration is null || !CheckRibbonCondition())
+            if (_menuData.RibbonConfiguration is null || !CheckRibbonCondition())
                 return;
 
             PreBuildActions();
 
-            foreach (var tabConfig in RibbonConfiguration.Tabs)
+            foreach (var tabConfig in _menuData.RibbonConfiguration.Tabs)
                 CreateTab(tabConfig);
 
             MenuCreated?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc />
-        public void Initialize(Assembly menuAssembly)
-        {
-            _menuAssembly = menuAssembly;
-        }
-
-        /// <summary>
-        /// Returns tooltip content for command button
-        /// </summary>
-        /// <param name="cmdButtonConfig">Command button configuration</param>
-        /// <param name="commandType">Type of command class</param>
-        protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
-        {
-            var toolTip = cmdButtonConfig.ToolTip;
-            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
-                return toolTip;
-            if (toolTip.Length > 0)
-                toolTip += Environment.NewLine;
-            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
-            return toolTip;
-        }
-
-        /// <summary>
-        /// Returns an image of the button's icon.
-        /// </summary>
-        /// <param name="resourcePath">The image resource path.</param>
-        /// <param name="assembly">The assembly containing image embedded resource.</param>
-        protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
-        {
-            if (string.IsNullOrWhiteSpace(resourcePath))
-                return null;
-
-            assembly ??= MenuAssembly;
-            var resource = assembly.GetManifestResourceNames()
-                .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));
-            if (resource != null)
-            {
-                var file = assembly.GetManifestResourceStream(resource);
-                if (file != null)
-                {
-                    var imageExtension = Path.GetExtension(resourcePath);
-                    BitmapDecoder bd = imageExtension switch
-                    {
-                        ".png" => new PngBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".bmp" => new BmpBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".jpg" => new JpegBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".ico" => new IconBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        _ => throw new NotSupportedException($"Image with {imageExtension} extension is not supported.")
-                    };
-                    return bd.Frames[0];
-                }
-            }
-
-            var uri = MenuAssembly.TryGetSupportFileUri(resourcePath!);
-            return uri != null ? new BitmapImage(uri) : null;
         }
 
         /// <summary>
@@ -174,7 +95,7 @@
             {
                 var strategy = addElementStrategies.FirstOrDefault(x => x.IsApplicable(element));
                 if (strategy != null)
-                    strategy.CreateElement(this, tab!, panel!, element);
+                    strategy.CreateElement(tab!, panel!, element);
                 else
                     throw new InvalidOperationException($"Unknown panel item type: {element.GetType().Name}");
             }

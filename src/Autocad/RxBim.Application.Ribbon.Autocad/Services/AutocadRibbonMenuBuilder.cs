@@ -7,6 +7,7 @@
     using Autodesk.Windows;
     using ConfigurationBuilders;
     using GalaSoft.MvvmLight.CommandWpf;
+    using Shared.Abstractions;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
@@ -31,7 +32,10 @@
             IRibbonComponentStorageService storageService,
             IRibbonEventsService ribbonEventsService,
             IColorThemeService colorThemeService,
-            ITabService tabService)
+            ITabService tabService,
+            MenuData menuData,
+            IStrategyFactory<IAddElementStrategy> addElementsStrategiesFactory)
+            : base(menuData, addElementsStrategiesFactory)
         {
             _panelService = panelService;
             _buttonService = buttonService;
@@ -40,7 +44,7 @@
             _colorThemeService = colorThemeService;
             _tabService = tabService;
             _onlineHelpService = onlineHelpService;
-            _colorThemeService.ThemeChanged += (_, _) => _buttonService.ApplyCurrentTheme(GetIconImage);
+            _colorThemeService.ThemeChanged += (_, _) => _buttonService.ApplyCurrentTheme();
             _ribbonEventsService.NeedRebuild += (_, _) => BuildRibbonMenu();
         }
 
@@ -75,36 +79,6 @@
             _panelService.GetOrCreatePanel(acRibbonTab, panelName);
 
         /// <inheritdoc />
-        protected override void CreateAboutButton(RibbonTab tab, RibbonPanel panel, AboutButton aboutButtonConfig)
-        {
-            var orientation = aboutButtonConfig.GetOrientation();
-            _panelService.AddItem(panel,
-                _buttonService.CreateAboutButton(aboutButtonConfig, RibbonItemSize.Large, orientation, GetIconImage));
-        }
-
-        /// <inheritdoc />
-        protected override void CreateCommandButton(RibbonPanel panel, CommandButton cmdButtonConfig)
-        {
-            var orientation = cmdButtonConfig.GetOrientation();
-            _panelService.AddItem(panel,
-                CreateCommandButtonInternal(cmdButtonConfig, RibbonItemSize.Large, orientation));
-        }
-
-        /// <inheritdoc />
-        protected override void CreatePullDownButton(RibbonPanel panel, PullDownButton pullDownButtonConfig)
-        {
-            var orientation = pullDownButtonConfig.GetOrientation();
-            _panelService.AddItem(panel,
-                CreatePullDownButtonInternal(pullDownButtonConfig, RibbonItemSize.Large, orientation));
-        }
-
-        /// <inheritdoc />
-        protected override void AddSeparator(RibbonPanel panel) => _panelService.AddSeparator(panel);
-
-        /// <inheritdoc />
-        protected override void AddSlideOut(RibbonPanel panel) => _panelService.AddSlideOut(panel);
-
-        /// <inheritdoc />
         protected override void CreateStackedItems(RibbonPanel panel, StackedItems stackedItems)
         {
             var stackSize = stackedItems.StackedButtons.Count;
@@ -126,72 +100,14 @@
                     AboutButton aboutButton =>
                         _buttonService.CreateAboutButton(aboutButton, size, Orientation.Horizontal, GetIconImage),
                     CommandButton cmdButton =>
-                        CreateCommandButtonInternal(cmdButton, size, Orientation.Horizontal),
+                        _buttonService.CreateCommandButtonInternal(cmdButton, size, Orientation.Horizontal),
                     PullDownButton pullDownButton =>
-                        CreatePullDownButtonInternal(pullDownButton, size, Orientation.Horizontal),
+                        _buttonService.CreatePullDownButtonInternal(pullDownButton, size, Orientation.Horizontal),
                     _ => throw new ArgumentOutOfRangeException($"Unknown button type: {buttonConfig.GetType().Name}")
                 };
 
                 stackedItemsRow.Items.Add(buttonItem);
             }
-        }
-
-        private RibbonButton CreateCommandButtonInternal(
-            CommandButton config,
-            RibbonItemSize size,
-            Orientation orientation)
-        {
-            var button =
-                _buttonService.CreateNewButtonBase<RibbonButton>(config, size, orientation, false, GetIconImage, false);
-
-            if (!string.IsNullOrWhiteSpace(config.CommandType))
-            {
-                var commandType = MenuAssembly.GetTypeByName(config.CommandType!);
-                var tooltip = GetTooltipContent(config, commandType);
-                _buttonService.SetTooltip(button, tooltip, config.HelpUrl, config.Description);
-                var commandName = commandType.GetCommandName();
-                button.CommandHandler = new RelayCommand(() => RunCommand(commandName), true);
-            }
-            else
-            {
-                _buttonService.SetTooltip(button, config.ToolTip, config.HelpUrl, config.Description);
-            }
-
-            return button;
-        }
-
-        private RibbonSplitButton CreatePullDownButtonInternal(
-            PullDownButton config,
-            RibbonItemSize size,
-            Orientation orientation)
-        {
-            var forceTextSettings = config.CommandButtonsList.Any(x => !string.IsNullOrWhiteSpace(x.Text));
-            var splitButton = _buttonService.CreateNewButtonBase<RibbonSplitButton>(config,
-                size,
-                orientation,
-                forceTextSettings,
-                GetIconImage,
-                true);
-
-            splitButton.ListStyle = RibbonSplitButtonListStyle.List;
-            splitButton.ListButtonStyle = RibbonListButtonStyle.SplitButton;
-            splitButton.ListImageSize =
-                size == RibbonItemSize.Standard ? RibbonImageSize.Standard : RibbonImageSize.Large;
-            splitButton.IsSplit = false;
-            splitButton.IsSynchronizedWithCurrentItem = false;
-
-            foreach (var commandButtonConfig in config.CommandButtonsList)
-            {
-                splitButton.Items.Add(CreateCommandButtonInternal(commandButtonConfig, size, orientation));
-            }
-
-            return splitButton;
-        }
-
-        private void RunCommand(string commandName)
-        {
-            var document = Application.DocumentManager.MdiActiveDocument;
-            document?.SendStringToExecute($"{commandName} ", false, false, true);
         }
     }
 }

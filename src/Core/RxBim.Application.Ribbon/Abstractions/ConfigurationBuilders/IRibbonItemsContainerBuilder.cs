@@ -5,9 +5,5 @@
     /// </summary>
     public interface IRibbonItemsContainerBuilder
     {
-        /// <summary>
-        /// Finishes the ribbon item building.
-        /// </summary>
-        IRibbonBuilder ReturnToRibbon();
     }
 }

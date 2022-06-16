@@ -21,15 +21,13 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
-        public static void AddMenu<TBuilder, TFactory>(
+        public static void AddMenu<TBuilder>(
             this IContainer container,
             Action<IRibbonBuilder> builder,
             Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
-            where TFactory : class, IAddElementsStrategiesFactory
         {
             container.AddBuilder<TBuilder>(assembly);
-            container.AddElementsStrategiesFactory<TFactory>();
             container.AddSingleton(() =>
             {
                 var ribbon = new RibbonBuilder();
@@ -49,15 +47,13 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
-        public static void AddMenu<TBuilder, TFactory>(
+        public static void AddMenu<TBuilder>(
             this IContainer container,
             IConfiguration? config,
             Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
-            where TFactory : class, IAddElementsStrategiesFactory
         {
             container.AddBuilder<TBuilder>(assembly);
-            container.AddElementsStrategiesFactory<TFactory>();
             container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
@@ -65,19 +61,9 @@
         private static void AddBuilder<T>(this IContainer container, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {
+            container.AddSingleton(() => new MenuData { MenuAssembly = assembly });
+            container.AddStrategies<IElementFromConfigStrategy>();
             container.AddSingleton<IRibbonMenuBuilder, T>();
-            container.AddSingleton<Action<Ribbon>>(() =>
-            {
-                var menuBuilder = container.GetService<IRibbonMenuBuilder>();
-                menuBuilder.Initialize(assembly);
-                return menuBuilder.BuildRibbonMenu;
-            });
-        }
-
-        private static void AddElementsStrategiesFactory<TFactory>(this IContainer container)
-            where TFactory : class, IAddElementsStrategiesFactory
-        {
-            container.AddSingleton<IAddElementsStrategiesFactory, TFactory>();
         }
 
         private static void DecorateContainer(this IContainer container)
@@ -88,8 +74,12 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
+            var strategyFactory = container.GetService<IStrategyFactory<IElementFromConfigStrategy>>();
+            var strategies = strategyFactory.GetStrategies().ToList();
+
             var builder = new RibbonBuilder();
-            builder.LoadFromConfig(cfg);
+            builder.LoadFromConfig(cfg, strategies);
+
             return builder.Ribbon;
         }
     }

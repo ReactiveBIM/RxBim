@@ -12,10 +12,6 @@
         }
 
         /// <inheritdoc />
-        public abstract void CreateElement(
-            IRibbonMenuBuilder menuBuilder,
-            object tab,
-            object panel,
-            IRibbonPanelElement config);
+        public abstract void CreateElement(object tab, object panel, IRibbonPanelElement config);
     }
 }

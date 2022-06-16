@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -45,7 +46,10 @@
         /// Loads a ribbon menu from configuration.
         /// </summary>
         /// <param name="config">Configuration.</param>
-        internal void LoadFromConfig(IConfiguration config)
+        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        internal void LoadFromConfig(
+            IConfiguration config,
+            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
         {
             SetProperties(config.GetSection(nameof(Ribbon)));
 
@@ -58,7 +62,7 @@
                 if (!tabSection.Exists())
                     continue;
                 var tab = CreateTab(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
-                tab.LoadFromConfig(tabSection);
+                tab.LoadFromConfig(tabSection, fromConfigStrategies);
             }
         }
 

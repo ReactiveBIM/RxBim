@@ -7,7 +7,7 @@
     /// <summary>
     /// Extensions for <see cref="RibbonButton"/>.
     /// </summary>
-    internal static class ButtonExtensions
+    public static class ButtonExtensions
     {
         /// <summary>
         /// Sets the base properties for the ribbon button from the button configuration.
