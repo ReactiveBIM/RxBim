@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon
 {
-    using System.Collections.Generic;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -18,7 +17,7 @@
         /// Creates an element and adds to a elements collection.
         /// </summary>
         /// <param name="elementSection">Element configuration section.</param>
-        /// <param name="elements">Elements collection.</param>
-        void CreateFromConfigAndAdd(IConfigurationSection elementSection, ICollection<IRibbonPanelElement> elements);
+        /// <param name="panelBuilder">Panel builder.</param>
+        void CreateFromConfigAndAdd(IConfigurationSection elementSection, IPanelBuilder panelBuilder);
     }
 }

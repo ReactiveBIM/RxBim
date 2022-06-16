@@ -14,12 +14,10 @@
         /// <summary>
         /// Creates an element.
         /// </summary>
-        /// <param name="menuBuilder"><see cref="IRibbonMenuBuilder"/> object.</param>
         /// <param name="tab">Ribbon tab.</param>
         /// <param name="panel">Ribbon panel.</param>
         /// <param name="config">Ribbon item configuration.</param>
         void CreateElement(
-            IRibbonMenuBuilder menuBuilder,
             object tab,
             object panel,
             IRibbonPanelElement config);

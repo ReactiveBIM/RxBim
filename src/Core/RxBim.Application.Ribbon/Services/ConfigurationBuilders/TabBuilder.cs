@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -26,12 +27,6 @@
         public Tab BuildingTab { get; } = new();
 
         /// <inheritdoc />
-        public IRibbonBuilder ReturnToRibbon()
-        {
-            return RibbonBuilder;
-        }
-
-        /// <inheritdoc />
         public ITabBuilder Panel(string title, Action<IPanelBuilder> panel)
         {
             CreatePanel(title, panel);
@@ -39,10 +34,13 @@
         }
 
         /// <summary>
-        /// Loads a tab from configuration.
+        /// Load from config
         /// </summary>
-        /// <param name="section">Tab config section.</param>
-        internal void LoadFromConfig(IConfigurationSection section)
+        /// <param name="section">Tab config section</param>
+        /// <param name="fromConfigStrategies">Collection of <see cref="IElementFromConfigStrategy"/>.</param>
+        internal void LoadFromConfig(
+            IConfigurationSection section,
+            IReadOnlyCollection<IElementFromConfigStrategy> fromConfigStrategies)
         {
             var panelsSection = section.GetSection(nameof(Tab.Panels));
             if (!panelsSection.Exists())
@@ -53,7 +51,7 @@
                 if (!panelsSection.Exists())
                     continue;
                 var panel = CreatePanel(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value);
-                panel.LoadFromConfig(panelSection);
+                panel.LoadFromConfig(panelSection, fromConfigStrategies);
             }
         }
 

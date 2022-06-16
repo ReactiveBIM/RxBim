@@ -3,14 +3,14 @@
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// The strategy for getting a <see cref="CommandButton"/> from a configuration section.
+    /// The strategy for getting a <see cref="PullDownButton"/> from a configuration section.
     /// </summary>
-    public class CommandButtonStrategy : SimpleElementStrategyBase<CommandButton>
+    public class PullDownButtonStrategy : SimpleElementStrategyBase<PullDownButton>
     {
         /// <inheritdoc />
         public override bool IsApplicable(IConfigurationSection elementSection)
         {
-            return elementSection.GetSection(nameof(CommandButton.CommandType)).Exists();
+            return elementSection.GetSection(nameof(PullDownButton.CommandButtonsList)).Exists();
         }
     }
 }
