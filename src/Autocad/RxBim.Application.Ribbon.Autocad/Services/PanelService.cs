@@ -5,8 +5,19 @@
     using Autodesk.Windows;
 
     /// <inheritdoc />
-    public class PanelService : IPanelService
+    internal class PanelService : IPanelService
     {
+        private readonly IRibbonComponentStorageService _storageService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PanelService"/> class.
+        /// </summary>
+        /// <param name="storageService"><see cref="IRibbonComponentStorageService"/>.</param>
+        public PanelService(IRibbonComponentStorageService storageService)
+        {
+            _storageService = storageService;
+        }
+
         /// <inheritdoc />
         public void AddSeparator(RibbonPanel panel)
         {
@@ -19,7 +30,9 @@
             if (HasSlideOut(panel))
                 return;
 
-            panel.Source.Items.Add(new RibbonPanelBreak());
+            var ribbonPanelBreak = new RibbonPanelBreak();
+            panel.Source.Items.Add(ribbonPanelBreak);
+            _storageService.AddItem(ribbonPanelBreak, panel.Source.Items);
             AddNewRow(panel);
         }
 
@@ -28,39 +41,35 @@
         {
             var ribbonRowPanel = GetCurrentRow(panel);
             ribbonRowPanel.Items.Add(item);
+            _storageService.AddItem(item, ribbonRowPanel.Items);
         }
 
         /// <inheritdoc />
-        public RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName)
+        public RibbonPanel GetOrCreatePanel(RibbonTab tab, string panelName)
         {
-            var acRibbonPanel = acRibbonTab.Panels.FirstOrDefault(x =>
+            var panel = tab.Panels.FirstOrDefault(x =>
                 x.Source.Name != null &&
                 x.Source.Name.Equals(panelName, StringComparison.OrdinalIgnoreCase));
-            if (acRibbonPanel is null)
+            if (panel is null)
             {
-                acRibbonPanel = new RibbonPanel
+                panel = new RibbonPanel
                 {
                     Source = new RibbonPanelSource
                     {
                         Name = panelName,
                         Title = panelName,
-                        Id = $"{acRibbonTab.Id}_PANEL_{panelName.GetHashCode():0}"
+                        Id = $"{tab.Id}_PANEL_{panelName.GetHashCode():0}"
                     },
                 };
 
-                acRibbonTab.Panels.Add(acRibbonPanel);
+                tab.Panels.Add(panel);
+                _storageService.AddPanel(panel);
             }
 
-            if (GetCurrentRowOrNull(acRibbonPanel) is null)
-                AddNewRow(acRibbonPanel);
+            if (GetCurrentRowOrNull(panel) is null)
+                AddNewRow(panel);
 
-            return acRibbonPanel;
-        }
-
-        /// <inheritdoc />
-        public void DeletePanel(RibbonPanel panel)
-        {
-            panel.Tab.Panels.Remove(panel);
+            return panel;
         }
 
         /// <summary>
@@ -78,7 +87,9 @@
         /// <param name="acRibbonPanel">Panel</param>
         private void AddNewRow(RibbonPanel acRibbonPanel)
         {
-            acRibbonPanel.Source.Items.Add(new RibbonRowPanel());
+            var ribbonRowPanel = new RibbonRowPanel();
+            acRibbonPanel.Source.Items.Add(ribbonRowPanel);
+            _storageService.AddItem(ribbonRowPanel, acRibbonPanel.Source.Items);
         }
 
         /// <summary>

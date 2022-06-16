@@ -30,14 +30,8 @@
         /// Returns a ribbon panel with the specified name on the tab.
         /// If the panel does not exist, it will be created.
         /// </summary>
-        /// <param name="acRibbonTab">Ribbon tab.</param>
+        /// <param name="tab">Ribbon tab.</param>
         /// <param name="panelName">Panel name.</param>
-        RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName);
-
-        /// <summary>
-        /// Deletes a panel.
-        /// </summary>
-        /// <param name="panel">The panel to be removed.</param>
-        void DeletePanel(RibbonPanel panel);
+        RibbonPanel GetOrCreatePanel(RibbonTab tab, string panelName);
     }
 }

@@ -26,9 +26,9 @@
             {
                 try
                 {
-                    var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
+                    var ribbonMenuBuildAction = container.GetService<Action<Ribbon>>();
                     var ribbonConfiguration = container.GetService<Ribbon>();
-                    ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration);
+                    ribbonMenuBuildAction(ribbonConfiguration);
                 }
                 catch (Exception e)
                 {
