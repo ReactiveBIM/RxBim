@@ -8,7 +8,7 @@
     /// <summary>
     /// Extensions for the <see cref="Assembly"/> class.
     /// </summary>
-    internal static class AssemblyExtensions
+    public static class AssemblyExtensions
     {
         /// <summary>
         /// Returns class type.
@@ -16,7 +16,7 @@
         /// <param name="assembly">The assembly.</param>
         /// <param name="typeName">The class type name.</param>
         /// <exception cref="ArgumentException">The Type name is invalid.</exception>
-        public static Type GetTypeByName(Assembly assembly, string typeName)
+        public static Type GetTypeByName(this Assembly assembly, string typeName)
         {
             // todo use regex
             var strings = typeName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
@@ -44,7 +44,7 @@
         /// <param name="fullOrRelativePath">Full or relative path to support file.</param>
         public static Uri? TryGetSupportFileUri(this Assembly assembly, string fullOrRelativePath)
         {
-            string path = Path.IsPathRooted(fullOrRelativePath) && File.Exists(fullOrRelativePath)
+            var path = Path.IsPathRooted(fullOrRelativePath) && File.Exists(fullOrRelativePath)
                 ? fullOrRelativePath
                 : Path.Combine(GetAssemblyDirectory(assembly), fullOrRelativePath);
 

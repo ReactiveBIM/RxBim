@@ -2,8 +2,8 @@
 {
     using System;
     using System.Reflection;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Di;
     using Services;
 
     /// <summary>
@@ -48,6 +48,9 @@
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
             container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
             container.AddSingleton<IThemeService, ThemeService>();
+            container.AddSingleton<IPanelService, PanelService>();
+            container.AddSingleton<IButtonService, ButtonService>();
+            container.AddSingleton<IRibbonElementsService, RibbonElementsService>();
         }
     }
 }

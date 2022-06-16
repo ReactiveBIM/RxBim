@@ -5,7 +5,6 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Shared.Abstractions;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -57,22 +56,6 @@
             container.AddBuilder<T>(assembly);
             container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
-        }
-
-        /// <summary>
-        /// Returns AboutShowService.
-        /// </summary>
-        /// <param name="container">DI container.</param>
-        internal static IAboutShowService? TryGetAboutShowService(this IContainer container)
-        {
-            try
-            {
-                return container.GetService<IAboutShowService>();
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         private static void AddBuilder<T>(
