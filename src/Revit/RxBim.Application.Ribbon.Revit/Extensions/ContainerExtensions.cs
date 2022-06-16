@@ -23,8 +23,9 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.RegisterTypes<IAddItemStrategy>();
-            container.AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
+            container
+                .AddStrategies()
+                .AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
         }
 
         /// <summary>
@@ -39,8 +40,14 @@ namespace RxBim.Application.Ribbon
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.RegisterTypes<IAddItemStrategy>();
-            container.AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
+            container
+                .AddStrategies()
+                .AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
+        }
+
+        private static IContainer AddStrategies(this IContainer container)
+        {
+            return container.RegisterTypes<IAddItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
         }
     }
 }
