@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services.AddElementStrategies
 {
+    using System;
     using Application.Ribbon.AddElementStrategies;
     using Autodesk.Windows;
 
@@ -17,12 +18,18 @@
         }
 
         /// <inheritdoc />
-        public override void CreateElement(object tab, object panel, IRibbonPanelElement config)
+        public override void CreateElement(object panel, IRibbonPanelElement config)
         {
             if (panel is not RibbonPanel ribbonPanel)
                 return;
 
             _panelService.AddSeparator(ribbonPanel);
+        }
+
+        /// <inheritdoc />
+        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        {
+            throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
         }
     }
 }
