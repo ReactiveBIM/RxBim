@@ -19,7 +19,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
         {
             var orientation = cmdButtonConfig.GetOrientation();
             _panelService.AddItem(ribbonPanel,

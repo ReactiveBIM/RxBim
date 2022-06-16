@@ -19,7 +19,10 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void AddItem(
+            RibbonTab ribbonTab,
+            RibbonPanel ribbonPanel,
+            PullDownButton pullDownButtonConfig)
         {
             var orientation = pullDownButtonConfig.GetOrientation();
             _panelService.AddItem(ribbonPanel,

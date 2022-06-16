@@ -14,15 +14,16 @@
         /// <summary>
         /// Creates an item.
         /// </summary>
+        /// <param name="tab">Ribbon tab.</param>
         /// <param name="panel">Ribbon panel.</param>
         /// <param name="config">Ribbon item configuration.</param>
-        void CreateAndAddItem(object panel, IRibbonPanelItem config);
+        void AddItem(object tab, object panel, IRibbonPanelItem config);
 
         /// <summary>
         /// Creates and returns an item for a stack.
         /// </summary>
         /// <param name="config">Ribbon item configuration.</param>
         /// <param name="small">Item is small.</param>
-        object CreateItemForStack(IRibbonPanelItem config, bool small = false);
+        object GetItemForStack(IRibbonPanelItem config, bool small = false);
     }
 }

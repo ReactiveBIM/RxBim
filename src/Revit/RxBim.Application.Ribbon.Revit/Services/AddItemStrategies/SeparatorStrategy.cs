@@ -21,13 +21,13 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddItem(RibbonPanel ribbonPanel, PanelLayoutItem itemConfig)
+        protected override void AddItem(string tabName, RibbonPanel ribbonPanel, PanelLayoutItem itemConfig)
         {
             ribbonPanel.AddSeparator();
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData CreateItemForStack(PanelLayoutItem itemConfig)
+        protected override RibbonItemData GetItemForStack(PanelLayoutItem itemConfig)
         {
             return CannotBeStackedStub(itemConfig);
         }

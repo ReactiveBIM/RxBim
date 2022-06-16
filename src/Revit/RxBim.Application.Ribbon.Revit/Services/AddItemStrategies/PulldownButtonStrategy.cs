@@ -15,7 +15,7 @@
         }
 
         /// <inheritdoc />
-        protected override void CreateAndAddItem(RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void AddItem(string tabName, RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
         {
             var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);
@@ -24,7 +24,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData CreateItemForStack(PullDownButton pullDownButtonConfig)
+        protected override RibbonItemData GetItemForStack(PullDownButton pullDownButtonConfig)
         {
             return CreatePulldownButtonData(pullDownButtonConfig);
         }
