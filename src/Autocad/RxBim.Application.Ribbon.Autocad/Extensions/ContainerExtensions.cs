@@ -5,7 +5,6 @@
     using Di;
     using Microsoft.Extensions.Configuration;
     using Services;
-    using Shared;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
@@ -46,7 +45,7 @@
 
         private static void AddInternalObjects(this IContainer container)
         {
-            container.AddStrategies<IAddElementStrategy>();
+            container.RegisterStrategies<IAddElementStrategy>();
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
             container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
             container.AddSingleton<IColorThemeService, ColorThemeService>();
