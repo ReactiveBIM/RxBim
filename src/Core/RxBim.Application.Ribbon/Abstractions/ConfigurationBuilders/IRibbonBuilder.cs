@@ -21,6 +21,11 @@ namespace RxBim.Application.Ribbon
         IRibbonBuilder DisplayVersion(bool enable);
 
         /// <summary>
+        /// Enables to add the version information to the tooltip text.
+        /// </summary>
+        IRibbonBuilder EnableDisplayVersion();
+
+        /// <summary>
         /// Sets the version prefix.
         /// </summary>
         /// <param name="prefix">The prefix text.</param>

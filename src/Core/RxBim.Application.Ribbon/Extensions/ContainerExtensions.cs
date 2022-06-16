@@ -58,9 +58,7 @@
             container.DecorateContainer();
         }
 
-        private static void AddBuilder<T>(
-            this IContainer container,
-            Assembly assembly)
+        private static void AddBuilder<T>(this IContainer container, Assembly assembly)
             where T : class, IRibbonMenuBuilderFactory
         {
             container.AddSingleton<IRibbonMenuBuilderFactory, T>();

@@ -3,6 +3,7 @@
     using System;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Windows;
+    using static AutocadMenuConstants;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
@@ -54,11 +55,8 @@
 
         private void OnSystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
-            const string wsCurrentVariableName = "WSCURRENT";
-            if (e.Name.Equals(wsCurrentVariableName, StringComparison.OrdinalIgnoreCase))
-            {
+            if (e.Name.Equals(WorkSpaceVariableName, StringComparison.OrdinalIgnoreCase))
                 OnIdleForRibbonCreating();
-            }
         }
 
         private void OnIdleForRibbonCreating()

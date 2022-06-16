@@ -2,20 +2,19 @@
 {
     using System;
     using Autodesk.AutoCAD.ApplicationServices;
+    using static AutocadMenuConstants;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
-    /// <inheritdoc cref="IThemeService" />
-    public class ThemeService : IThemeService, IDisposable
+    /// <inheritdoc cref="IColorThemeService" />
+    public class ColorThemeService : IColorThemeService, IDisposable
     {
-        private const string ThemeVariableName = "COLORTHEME";
-
         private readonly IButtonService _buttonService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThemeService"/> class.
+        /// Initializes a new instance of the <see cref="ColorThemeService"/> class.
         /// </summary>
         /// <param name="buttonService"><see cref="IButtonService"/>.</param>
-        public ThemeService(IButtonService buttonService)
+        public ColorThemeService(IButtonService buttonService)
         {
             _buttonService = buttonService;
         }
@@ -29,7 +28,7 @@
         /// <inheritdoc />
         public ThemeType GetCurrentTheme()
         {
-            var themeTypeValue = (short)Application.GetSystemVariable(ThemeVariableName);
+            var themeTypeValue = (short)Application.GetSystemVariable(ColorThemeVariableName);
             return themeTypeValue == 0 ? ThemeType.Dark : ThemeType.Light;
         }
 
@@ -41,7 +40,7 @@
 
         private void ApplicationOnSystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
-            if (e.Name.Equals(ThemeVariableName, StringComparison.OrdinalIgnoreCase))
+            if (e.Name.Equals(ColorThemeVariableName, StringComparison.OrdinalIgnoreCase))
                 _buttonService.ApplyCurrentTheme();
         }
     }

@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     /// <summary>
-    /// Theme service.
+    /// Color theme service.
     /// </summary>
-    public interface IThemeService
+    public interface IColorThemeService
     {
         /// <summary>
         /// Starts the service.

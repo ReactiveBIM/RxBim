@@ -71,7 +71,7 @@
         {
             var orientation = aboutButtonConfig.GetOrientation();
             _panelService.AddItem(panel,
-                CreateAboutButtonInternal(aboutButtonConfig, RibbonItemSize.Large, orientation));
+                _buttonService.CreateAboutButton(aboutButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
@@ -87,7 +87,7 @@
         {
             var orientation = pullDownButtonConfig.GetOrientation();
             _panelService.AddItem(panel,
-                CreatePullDownButtonInternal(pullDownButtonConfig, RibbonItemSize.Large, orientation));
+                _buttonService.CreatePullDownButton(pullDownButtonConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
@@ -117,39 +117,17 @@
                 var buttonConfig = stackedItems.StackedButtons[i];
                 var buttonItem = buttonConfig switch
                 {
-                    AboutButton aboutButton => CreateAboutButtonInternal(aboutButton, size, Orientation.Horizontal),
-                    CommandButton cmdButton => _buttonService.CreateCommandButton(cmdButton,
-                        size,
-                        Orientation.Horizontal),
-                    PullDownButton pullDownButton => CreatePullDownButtonInternal(pullDownButton,
-                        size,
-                        Orientation.Horizontal),
+                    AboutButton aboutButton =>
+                        _buttonService.CreateAboutButton(aboutButton, size, Orientation.Horizontal),
+                    CommandButton cmdButton =>
+                        _buttonService.CreateCommandButton(cmdButton, size, Orientation.Horizontal),
+                    PullDownButton pullDownButton => _buttonService
+                        .CreatePullDownButton(pullDownButton, size, Orientation.Horizontal),
                     _ => throw new ArgumentOutOfRangeException($"Unknown button type: {buttonConfig.GetType().Name}")
                 };
 
                 stackedItemsRow.Items.Add(buttonItem);
             }
-        }
-
-        private RibbonItem CreateAboutButtonInternal(AboutButton config, RibbonItemSize large, Orientation orientation)
-        {
-            return _buttonService.CreateAboutButton(config, large, orientation);
-        }
-
-        private RibbonButton CreatePullDownButtonInternal(
-            PullDownButton pullDownButtonConfig,
-            RibbonItemSize size,
-            Orientation orientation)
-        {
-            var splitButton = _buttonService.CreatePullDownButton(pullDownButtonConfig, size, orientation);
-
-            foreach (var commandButtonConfig in pullDownButtonConfig.CommandButtonsList)
-            {
-                splitButton.Items.Add(
-                    _buttonService.CreateCommandButton(commandButtonConfig, size, orientation));
-            }
-
-            return splitButton;
         }
     }
 }

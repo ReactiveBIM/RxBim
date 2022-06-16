@@ -5,6 +5,7 @@
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.Internal.Windows;
     using Autodesk.Windows;
+    using static AutocadMenuConstants;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
@@ -97,13 +98,11 @@
                 }
 
                 _dropNextHelpCall = true;
-                const string varName = "NOMUTT";
                 const short offMsg = 1;
-                var oldValue = Application.GetSystemVariable(varName);
-                Application.SetSystemVariable(varName, offMsg);
-                var cmd = $"._BROWSER {_helpTopic} _{varName} {oldValue} ";
-                Application.DocumentManager.MdiActiveDocument
-                    .SendStringToExecute(cmd, true, false, false);
+                var oldValue = Application.GetSystemVariable(MuterringVariableName);
+                Application.SetSystemVariable(MuterringVariableName, offMsg);
+                var cmd = $"._BROWSER {_helpTopic} _{MuterringVariableName} {oldValue} ";
+                Application.DocumentManager.MdiActiveDocument.SendStringToExecute(cmd, true, false, false);
                 e.Handled = true;
             }
             else if (e.Message.message == (int)Messages.AcadHelp && _dropNextHelpCall)
