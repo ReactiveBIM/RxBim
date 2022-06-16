@@ -45,7 +45,7 @@
 
         private static void AddInternalObjects(this IContainer container)
         {
-            container.RegisterTypes<IAddItemStrategy>();
+            container.RegisterTypes<IAddItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
             container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
             container.AddSingleton<IColorThemeService, ColorThemeService>();
