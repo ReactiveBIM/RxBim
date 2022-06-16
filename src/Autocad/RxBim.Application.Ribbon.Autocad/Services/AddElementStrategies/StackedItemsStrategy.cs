@@ -1,8 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services.AddElementStrategies
 {
-    using System;
     using System.Linq;
-    using Application.Ribbon.AddElementStrategies;
     using Autodesk.Windows;
     using ConfigurationBuilders;
     using Shared.Abstractions;
@@ -10,7 +8,7 @@
     /// <summary>
     /// Implementation of <see cref="IAddElementStrategy"/> for stacked items.
     /// </summary>
-    public class StackedItemsStrategy : StackedItemStrategyBase
+    public class StackedItemsStrategy : ElementStrategyBase<StackedItems>
     {
         private readonly IStrategyFactory<IAddElementStrategy> _strategyFactory;
         private readonly IPanelService _panelService;
@@ -23,11 +21,8 @@
         }
 
         /// <inheritdoc />
-        public override void CreateElement(object panel, IRibbonPanelElement config)
+        protected override void CreateAndAddElement(RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
-            if (panel is not RibbonPanel ribbonPanel || config is not StackedItems stackedItems)
-                return;
-
             var stackSize = stackedItems.StackedButtons.Count;
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
@@ -53,9 +48,9 @@
         }
 
         /// <inheritdoc />
-        public override object CreateElementForStack(IRibbonPanelElement config, bool small)
+        protected override RibbonItem CreateElementForStack(StackedItems elementConfig, RibbonItemSize size)
         {
-            throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
+            return CantBeStackedStub(elementConfig);
         }
     }
 }

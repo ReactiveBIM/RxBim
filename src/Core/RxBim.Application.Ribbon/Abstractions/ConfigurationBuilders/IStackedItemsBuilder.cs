@@ -17,7 +17,7 @@
         IStackedItemsBuilder CommandButton(
             string name,
             Type commandType,
-            Action<ICommnadButtonBuilder>? builder = null);
+            Action<ICommandButtonBuilder>? builder = null);
 
         /// <summary>
         /// Adds a new pull down button to the stack.

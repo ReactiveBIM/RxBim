@@ -20,7 +20,7 @@
         public static IPanelBuilder CommandButton<TCommand>(
             this IPanelBuilder parent,
             string name,
-            Action<ICommnadButtonBuilder>? builder = null)
+            Action<ICommandButtonBuilder>? builder = null)
         {
             return parent.CommandButton(name, typeof(TCommand), builder);
         }
@@ -36,7 +36,7 @@
         public static IPulldownButtonBuilder CommandButton<TCommand>(
             this IPulldownButtonBuilder parent,
             string name,
-            Action<ICommnadButtonBuilder>? builder = null)
+            Action<ICommandButtonBuilder>? builder = null)
         {
             return parent.CommandButton(name, typeof(TCommand), builder);
         }
@@ -52,7 +52,7 @@
         public static IStackedItemsBuilder CommandButton<TCommand>(
             this IStackedItemsBuilder parent,
             string name,
-            Action<ICommnadButtonBuilder>? builder = null)
+            Action<ICommandButtonBuilder>? builder = null)
         {
             return parent.CommandButton(name, typeof(TCommand), builder);
         }

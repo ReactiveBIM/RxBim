@@ -17,6 +17,6 @@
         IPulldownButtonBuilder CommandButton(
             string name,
             Type commandType,
-            Action<ICommnadButtonBuilder>? builder = null);
+            Action<ICommandButtonBuilder>? builder = null);
     }
 }

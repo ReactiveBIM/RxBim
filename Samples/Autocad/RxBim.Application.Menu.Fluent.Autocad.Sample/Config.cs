@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Autocad.Sample
 {
-    using System.Collections.Generic;
     using Commands;
     using Di;
     using Ribbon;
-    using Shared.Abstractions;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -12,7 +10,6 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddSingleton<IAboutShowService, AboutShowService>();
             container.AddAutocadMenu(ribbon =>
                 ribbon
                     .EnableDisplayVersion()
@@ -20,24 +17,6 @@
                     .Tab(
                         title: "RxBim_Tab_FromAttributes",
                         tab => tab
-                            .AboutButton(
-                                name: "About",
-                                new AboutBoxContent(
-                                    title: "RxBim4AutoCAD",
-                                    productVersion: "1.0",
-                                    description: "RxBim product module for API demo and validation",
-                                    buildVersion: GetType().Assembly.GetName().Version,
-                                    companyName: "ReactiveBIM",
-                                    links: new Dictionary<string, string>
-                                    {
-                                        { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                                    }),
-                                button => button
-                                    .Text("About\nbutton")
-                                    .ToolTip("About information")
-                                    .Description("Button for displaying the About window")
-                                    .LargeImage(@"img.about_32.png", ThemeType.Dark)
-                                    .LargeImage(@"img.about_32_light.png", ThemeType.Light))
                             .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel
@@ -83,24 +62,6 @@
                     .Tab(
                         title: "RxBim_Tab_FromAction",
                         tab => tab
-                            .AboutButton(
-                                name: "About",
-                                new AboutBoxContent(
-                                    title: "RxBim4AutoCAD",
-                                    productVersion: "1.0",
-                                    description: "RxBim product module for API demo and validation",
-                                    buildVersion: GetType().Assembly.GetName().Version,
-                                    companyName: "ReactiveBIM",
-                                    links: new Dictionary<string, string>
-                                    {
-                                        { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                                    }),
-                                button => button
-                                    .Text("About\nbutton")
-                                    .ToolTip("About information")
-                                    .Description("Button for displaying the About window")
-                                    .LargeImage(@"img.about_32.png", ThemeType.Dark)
-                                    .LargeImage(@"img.about_32_light.png", ThemeType.Light))
                             .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel

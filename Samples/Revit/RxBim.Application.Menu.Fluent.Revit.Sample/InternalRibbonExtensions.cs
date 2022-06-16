@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Revit.Sample
 {
-    using System.Collections.Generic;
-    using System.Reflection;
     using Ribbon;
 
     /// <summary>
@@ -17,23 +15,6 @@
         {
             return ribbon
                 .Tab("RxBim_Tab_FromAttr", tab => tab
-                    .AboutButton(
-                        name: "About",
-                        new AboutBoxContent(
-                            title: "RxBim4Revit",
-                            "1.0",
-                            "RxBim product module for API demo and validation",
-                            Assembly.GetExecutingAssembly().GetName().Version,
-                            "ReactiveBIM",
-                            new Dictionary<string, string>
-                            {
-                                { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                            }),
-                        button => button
-                            .Text("About\nbutton")
-                            .ToolTip("About information")
-                            .Description("Button for displaying the About window")
-                            .LargeImage(@"img\about_32.png"))
                     .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
@@ -83,23 +64,6 @@
         {
             return ribbon
                 .Tab("RxBim_Tab_FromAction", tab => tab
-                    .AboutButton(
-                        name: "About",
-                        content: new AboutBoxContent(
-                            title: "RxBim4Revit",
-                            "1.0",
-                            "RxBim product module for API demo and validation",
-                            Assembly.GetExecutingAssembly().GetName().Version,
-                            "ReactiveBIM",
-                            new Dictionary<string, string>
-                            {
-                                { "Examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                            }),
-                        builder: button => button
-                            .Text("About\nbutton")
-                            .ToolTip("About information")
-                            .Description("Button for displaying the About window")
-                            .LargeImage(@"img\about_32.png"))
                     .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
