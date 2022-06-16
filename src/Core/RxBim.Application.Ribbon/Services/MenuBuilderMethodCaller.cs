@@ -1,8 +1,8 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using RxBim.Di;
-    using RxBim.Shared;
+    using Di;
+    using Shared;
 
     /// <summary>
     /// Decorator creating the plugin ribbon.
@@ -28,8 +28,7 @@
                 {
                     var ribbonMenuBuilder = container.GetService<IRibbonMenuBuilder>();
                     var ribbonConfiguration = container.GetService<Ribbon>();
-                    var aboutShowService = container.TryGetAboutShowService();
-                    ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration, aboutShowService);
+                    ribbonMenuBuilder.BuildRibbonMenu(ribbonConfiguration);
                 }
                 catch (Exception e)
                 {

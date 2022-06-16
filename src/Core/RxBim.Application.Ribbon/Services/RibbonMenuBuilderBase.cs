@@ -26,20 +26,14 @@
         private Assembly MenuAssembly { get; }
 
         /// <summary>
-        /// Service for displaying the "About" window.
-        /// </summary>
-        private IAboutShowService? AboutShowService { get; set; }
-
-        /// <summary>
         /// Ribbon configuration.
         /// </summary>
         private Ribbon? RibbonConfiguration { get; set; }
 
         /// <inheritdoc />
-        public void BuildRibbonMenu(Ribbon? ribbonConfig = null, IAboutShowService? aboutShowService = null)
+        public void BuildRibbonMenu(Ribbon? ribbonConfig = null)
         {
             RibbonConfiguration ??= ribbonConfig;
-            AboutShowService ??= aboutShowService;
 
             if (RibbonConfiguration is null || !CheckRibbonCondition())
                 return;
@@ -50,25 +44,76 @@
                 CreateTab(tabConfig);
         }
 
+        /// <inheritdoc />
+        public Type GetCommandType(string commandTypeName)
+        {
+            return MenuAssembly.GetTypeByName(commandTypeName);
+        }
+
+        /// <inheritdoc />
+        public string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
+        {
+            var toolTip = cmdButtonConfig.ToolTip;
+            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
+                return toolTip;
+            if (toolTip.Length > 0)
+                toolTip += Environment.NewLine;
+            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
+            return toolTip;
+        }
+
+        /// <summary>
+        /// Returns an image of the button's icon.
+        /// </summary>
+        /// <param name="resourcePath">The image resource path.</param>
+        /// <param name="assembly">The assembly containing image embedded resource.</param>
+        public ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+                return null;
+
+            assembly ??= MenuAssembly;
+            var resource = assembly.GetManifestResourceNames()
+                .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));
+            if (resource != null)
+            {
+                var file = assembly.GetManifestResourceStream(resource);
+                if (file != null)
+                {
+                    var imageExtension = Path.GetExtension(resourcePath);
+                    BitmapDecoder bd = imageExtension switch
+                    {
+                        ".png" => new PngBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".bmp" => new BmpBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".jpg" => new JpegBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        ".ico" => new IconBitmapDecoder(
+                            file,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.Default),
+                        _ => throw new NotSupportedException($"Image with {imageExtension} extension is not supported.")
+                    };
+                    return bd.Frames[0];
+                }
+            }
+
+            var uri = MenuAssembly.TryGetSupportFileUri(resourcePath!);
+            return uri != null ? new BitmapImage(uri) : null;
+        }
+
         /// <summary>
         /// Executed before the start of building the menu.
         /// </summary>
         protected virtual void PreBuildActions()
         {
-        }
-
-        /// <summary>
-        /// Attempts to display the About window.
-        /// </summary>
-        /// <param name="content">Content.</param>
-        /// <returns>True if successful, otherwise false.</returns>
-        protected bool TryShowAboutWindow(AboutBoxContent content)
-        {
-            if (AboutShowService is null)
-                return false;
-
-            AboutShowService.ShowAboutBox(content);
-            return true;
         }
 
         /// <summary>
@@ -131,80 +176,6 @@
         /// <param name="panel">Panel.</param>
         /// <param name="stackedItems">Stacked.</param>
         protected abstract void CreateStackedItems(TPanel panel, StackedItems stackedItems);
-
-        /// <summary>
-        /// Returns command class type.
-        /// </summary>
-        /// <param name="commandTypeName">Command class type name.</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">Type name is invalid.</exception>
-        protected Type GetCommandType(string commandTypeName)
-        {
-            return AssemblyExtensions.GetTypeByName(MenuAssembly, commandTypeName);
-        }
-
-        /// <summary>
-        /// Returns an image of the button's icon.
-        /// </summary>
-        /// <param name="resourcePath">The image resource path.</param>
-        /// <param name="assembly">The assembly containing image embedded resource.</param>
-        protected ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
-        {
-            if (string.IsNullOrWhiteSpace(resourcePath))
-                return null;
-
-            assembly ??= MenuAssembly;
-            var resource = assembly.GetManifestResourceNames()
-                .FirstOrDefault(x => x.EndsWith(resourcePath!.Replace('\\', '.')));
-            if (resource != null)
-            {
-                var file = assembly.GetManifestResourceStream(resource);
-                if (file != null)
-                {
-                    var imageExtension = Path.GetExtension(resourcePath);
-                    BitmapDecoder bd = imageExtension switch
-                    {
-                        ".png" => new PngBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".bmp" => new BmpBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".jpg" => new JpegBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        ".ico" => new IconBitmapDecoder(
-                            file,
-                            BitmapCreateOptions.PreservePixelFormat,
-                            BitmapCacheOption.Default),
-                        _ => throw new NotSupportedException($"Image with {imageExtension} extension is not supported.")
-                    };
-                    return bd.Frames[0];
-                }
-            }
-
-            var uri = MenuAssembly.TryGetSupportFileUri(resourcePath!);
-            return uri != null ? new BitmapImage(uri) : null;
-        }
-
-        /// <summary>
-        /// Returns tooltip content for command button.
-        /// </summary>
-        /// <param name="cmdButtonConfig">Command button configuration.</param>
-        /// <param name="commandType">Type of command class.</param>
-        protected string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
-        {
-            var toolTip = cmdButtonConfig.ToolTip;
-            if (toolTip is null || !RibbonConfiguration!.AddVersionToCommandTooltip)
-                return toolTip;
-            if (toolTip.Length > 0)
-                toolTip += Environment.NewLine;
-            toolTip += $"{RibbonConfiguration.CommandTooltipVersionHeader}{commandType.Assembly.GetName().Version}";
-            return toolTip;
-        }
 
         private void CreateTab(Tab tabConfig)
         {
