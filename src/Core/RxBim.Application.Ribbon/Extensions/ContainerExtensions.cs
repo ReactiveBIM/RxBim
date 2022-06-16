@@ -6,6 +6,8 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
+    using Shared;
+    using Shared.Abstractions;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -59,34 +61,11 @@
             container.DecorateContainer();
         }
 
-        /// <summary>
-        /// Adds strategy implementations to container.
-        /// </summary>
-        /// <param name="container">DI container.</param>
-        /// <param name="assembly">Assembly with strategy implementations.</param>
-        /// <typeparam name="T">Strategy interface type.</typeparam>
-        public static IContainer RegisterStrategies<T>(this IContainer container, Assembly? assembly = null)
-        {
-            assembly ??= Assembly.GetCallingAssembly();
-            var interfaceType = typeof(T);
-            var types = assembly.GetTypes()
-                .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
-                .Except(container.GetCurrentRegistrations().Select(x => x.ServiceType))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                container.AddTransient(type);
-            }
-
-            return container;
-        }
-
         private static IContainer AddStrategies<T>(this IContainer container)
         {
             return container
-                .RegisterStrategies<T>()
-                .AddSingleton<IStrategiesFactory<T>>(() => new StrategiesFactory<T>(container));
+                .RegisterTypes<T>()
+                .AddDiCollectionService<T>();
         }
 
         private static void AddBuilder<T>(this IContainer container, Assembly assembly)
@@ -107,8 +86,8 @@
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
             cfg ??= container.GetService<IConfiguration>();
-            var strategyFactory = container.GetService<IStrategiesFactory<IElementFromConfigStrategy>>();
-            var strategies = strategyFactory.GetStrategies().ToList();
+            var strategyFactory = container.GetService<IDiCollectionService<IElementFromConfigStrategy>>();
+            var strategies = strategyFactory.GetItems().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);
