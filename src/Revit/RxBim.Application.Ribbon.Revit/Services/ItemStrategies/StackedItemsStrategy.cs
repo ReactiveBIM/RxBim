@@ -1,13 +1,13 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Autodesk.Revit.UI;
-    using Di;
+    using RxBim.Di;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for stacked items.
+    /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
@@ -23,7 +23,7 @@
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
-            var strategies = _serviceLocator.GetServicesAssignableTo<IAddItemStrategy>().ToList();
+            var strategies = _serviceLocator.GetServicesAssignableTo<IItemStrategy>().ToList();
 
             var button1 = GetStackedItem(strategies, stackedItems.Items[0]);
             var button2 = GetStackedItem(strategies, stackedItems.Items[1]);
@@ -49,7 +49,7 @@
         }
 
         private static RibbonItemData GetStackedItem(
-            IEnumerable<IAddItemStrategy> strategies,
+            IEnumerable<IItemStrategy> strategies,
             IRibbonPanelItem firstItem)
         {
             var strategy = strategies.FirstOrDefault(x => x.IsApplicable(firstItem));

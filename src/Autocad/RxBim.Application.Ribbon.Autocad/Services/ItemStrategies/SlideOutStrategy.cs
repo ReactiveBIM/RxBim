@@ -1,9 +1,9 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using Autodesk.Windows;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for slide-out.
+    /// Implementation of <see cref="IItemStrategy"/> for slide-out.
     /// </summary>
     public class SlideOutStrategy : ItemStrategyBase<PanelLayoutItem>
     {

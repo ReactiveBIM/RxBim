@@ -1,12 +1,12 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using System;
     using Autodesk.Windows;
 
     /// <summary>
-    /// Basic implementation of <see cref="IAddItemStrategy"/> for AutoCAD menu item.
+    /// Basic implementation of <see cref="IItemStrategy"/> for AutoCAD menu item.
     /// </summary>
-    public abstract class ItemStrategyBase<TItem> : IAddItemStrategy
+    public abstract class ItemStrategyBase<TItem> : IItemStrategy
         where TItem : IRibbonPanelItem
     {
         /// <inheritdoc />
@@ -41,6 +41,7 @@
         /// <param name="ribbonTab">Ribbon tab.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="itemConfig">Ribbon item configuration.</param>
+        // ReSharper disable once UnusedParameter.Global
         protected abstract void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, TItem itemConfig);
 
         /// <summary>

@@ -66,7 +66,7 @@
             container
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
                 .RegisterTypes<IItemFromConfigStrategy>(Lifetime.Singleton, thisAssembly)
-                .RegisterTypes<IAddItemStrategy>(Lifetime.Singleton, thisAssembly)
+                .RegisterTypes<IItemStrategy>(Lifetime.Singleton, thisAssembly)
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 

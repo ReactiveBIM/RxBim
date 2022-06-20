@@ -1,18 +1,18 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using System;
     using Autodesk.Revit.UI;
 
     /// <summary>
-    /// Basic implementation of <see cref="IAddItemStrategy"/> for Revit menu item.
+    /// Basic implementation of <see cref="IItemStrategy"/> for Revit menu item.
     /// </summary>
-    public abstract class ItemStrategyBase<TItem> : IAddItemStrategy
+    public abstract class ItemStrategyBase<TItem> : IItemStrategy
         where TItem : IRibbonPanelItem
     {
         private readonly MenuData _menuData;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemStrategyBase{T}"/> class.
+        /// Initializes a new instance of the <see cref="ItemStrategyBase{TItem}"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
         protected ItemStrategyBase(MenuData menuData)
@@ -50,6 +50,7 @@
         /// <param name="tabName">Ribbon tab name.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="itemConfig">Ribbon item configuration.</param>
+        // ReSharper disable once UnusedParameter.Global
         protected abstract void AddItem(string tabName, RibbonPanel ribbonPanel, TItem itemConfig);
 
         /// <summary>

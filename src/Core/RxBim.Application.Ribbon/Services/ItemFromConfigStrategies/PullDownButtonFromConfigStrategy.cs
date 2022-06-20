@@ -5,7 +5,7 @@
     /// <summary>
     /// The strategy for getting a <see cref="PullDownButton"/> from a configuration section.
     /// </summary>
-    public class PullDownButtonStrategy : SimpleItemStrategyBase<PullDownButton>
+    public class PullDownButtonFromConfigStrategy : SimpleItemFromConfigStrategyBase<PullDownButton>
     {
         /// <inheritdoc />
         public override bool IsApplicable(IConfigurationSection itemSection)

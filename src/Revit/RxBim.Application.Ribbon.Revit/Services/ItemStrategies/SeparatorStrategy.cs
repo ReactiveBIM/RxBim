@@ -1,14 +1,14 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using Autodesk.Revit.UI;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for slide-out.
+    /// Implementation of <see cref="IItemStrategy"/> for separator.
     /// </summary>
-    public class SlideOutStrategy : ItemStrategyBase<PanelLayoutItem>
+    public class SeparatorStrategy : ItemStrategyBase<PanelLayoutItem>
     {
         /// <inheritdoc />
-        public SlideOutStrategy(MenuData menuData)
+        public SeparatorStrategy(MenuData menuData)
             : base(menuData)
         {
         }
@@ -17,13 +17,13 @@
         public override bool IsApplicable(IRibbonPanelItem config)
         {
             return base.IsApplicable(config) &&
-                   ((PanelLayoutItem)config).LayoutItemType == PanelLayoutItemType.SlideOut;
+                   ((PanelLayoutItem)config).LayoutItemType == PanelLayoutItemType.Separator;
         }
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, PanelLayoutItem itemConfig)
         {
-            ribbonPanel.AddSlideOut();
+            ribbonPanel.AddSeparator();
         }
 
         /// <inheritdoc />

@@ -47,7 +47,7 @@ namespace RxBim.Application.Ribbon
 
         private static IContainer AddStrategies(this IContainer container)
         {
-            return container.RegisterTypes<IAddItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
+            return container.RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
         }
     }
 }

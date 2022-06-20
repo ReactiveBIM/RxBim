@@ -6,7 +6,7 @@
     /// <summary>
     /// The strategy for getting a markup item from a configuration section.
     /// </summary>
-    public abstract class MarkupItemStrategy : IItemFromConfigStrategy
+    public abstract class MarkupItemFromConfigStrategy : IItemFromConfigStrategy
     {
         /// <summary>
         /// Item type.

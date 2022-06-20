@@ -3,7 +3,7 @@
     /// <summary>
     /// The strategy for getting a slide-out from a configuration section.
     /// </summary>
-    public class SlideOutStrategy : MarkupItemStrategy
+    public class SlideOutFromConfigStrategy : MarkupItemFromConfigStrategy
     {
         /// <inheritdoc />
         protected override PanelLayoutItemType ItemType => PanelLayoutItemType.SlideOut;

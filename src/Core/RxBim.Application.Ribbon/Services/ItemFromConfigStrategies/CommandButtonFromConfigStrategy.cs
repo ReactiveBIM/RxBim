@@ -5,7 +5,7 @@
     /// <summary>
     /// The strategy for getting a <see cref="CommandButton"/> from a configuration section.
     /// </summary>
-    public class CommandButtonStrategy : SimpleItemStrategyBase<CommandButton>
+    public class CommandButtonFromConfigStrategy : SimpleItemFromConfigStrategyBase<CommandButton>
     {
         /// <inheritdoc />
         public override bool IsApplicable(IConfigurationSection itemSection)

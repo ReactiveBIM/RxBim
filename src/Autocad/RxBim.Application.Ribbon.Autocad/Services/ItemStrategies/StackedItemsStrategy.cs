@@ -1,14 +1,14 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using System.Linq;
     using Autodesk.Windows;
-    using ConfigurationBuilders;
-    using Di;
+    using RxBim.Application.Ribbon.ConfigurationBuilders;
+    using RxBim.Di;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for stacked items.
+    /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
-    public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
+    public class StackedItemsStrategy : ItemStrategyBase<Application.Ribbon.StackedItems>
     {
         private readonly IServiceLocator _serviceLocator;
         private readonly IPanelService _panelService;
@@ -21,13 +21,13 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, Application.Ribbon.StackedItems stackedItems)
         {
             var stackSize = stackedItems.Items.Count;
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
-            var strategies = _serviceLocator.GetServicesAssignableTo<IAddItemStrategy>().ToList();
+            var strategies = _serviceLocator.GetServicesAssignableTo<IItemStrategy>().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 
@@ -48,7 +48,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(StackedItems itemConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(Application.Ribbon.StackedItems itemConfig, RibbonItemSize size)
         {
             return CantBeStackedStub(itemConfig);
         }

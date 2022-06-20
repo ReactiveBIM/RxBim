@@ -5,7 +5,7 @@
     /// <summary>
     /// The strategy for getting a simple item from a configuration section.
     /// </summary>
-    public abstract class SimpleItemStrategyBase<T> : IItemFromConfigStrategy
+    public abstract class SimpleItemFromConfigStrategyBase<T> : IItemFromConfigStrategy
         where T : IRibbonPanelItem
     {
         /// <inheritdoc />

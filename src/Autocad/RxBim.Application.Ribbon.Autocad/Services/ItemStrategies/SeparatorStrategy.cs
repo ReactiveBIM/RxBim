@@ -1,9 +1,9 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using Autodesk.Windows;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for separator.
+    /// Implementation of <see cref="IItemStrategy"/> for separator.
     /// </summary>
     public class SeparatorStrategy : ItemStrategyBase<PanelLayoutItem>
     {

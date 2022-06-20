@@ -3,7 +3,7 @@
     /// <summary>
     /// The strategy for getting a separator from a configuration section.
     /// </summary>
-    public class SeparatorStrategy : MarkupItemStrategy
+    public class SeparatorFromConfigStrategy : MarkupItemFromConfigStrategy
     {
         /// <inheritdoc />
         protected override PanelLayoutItemType ItemType => PanelLayoutItemType.Separator;
