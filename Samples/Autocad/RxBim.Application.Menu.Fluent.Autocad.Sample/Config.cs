@@ -15,51 +15,6 @@
                     .EnableDisplayVersion()
                     .VersionPrefix("Version: ")
                     .Tab(
-                        title: "RxBim_Tab_FromAttributes",
-                        tab => tab
-                            .Panel(
-                                title: "RxBim_Panel_1",
-                                panel => panel
-                                    .CommandButton<Cmd1>("Command1_Large_WithText")
-                                    .CommandButton<Cmd2>("Command2_Large_WithText")
-                                    .CommandButton<Cmd3>("Command3_Large_WithText")
-                                    .Separator()
-                                    .PullDownButton(
-                                        "Pulldown1",
-                                        pulldown => pulldown
-                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
-                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
-                                            .Text("Pulldown #1")
-                                            .CommandButton<Cmd1>("Command #1")
-                                            .CommandButton<Cmd2>("Command #2")
-                                            .CommandButton<Cmd3>("Command #3"))
-                                    .SlideOut()
-                                    .CommandButton<Cmd1>("Command1_Large_SlideOut")
-                                    .CommandButton<Cmd2>("Command2_Large_SlideOut")
-                                    .CommandButton<Cmd3>("Command3_Large_SlideOut"))
-                            .Panel("RxBim_Panel_2",
-                                panel => panel
-                                    .StackedItems(items => items
-                                        .CommandButton<Cmd1>("Command1_Small_WithText")
-                                        .CommandButton<Cmd2>("Command2_Small_WithText")
-                                        .CommandButton<Cmd3>("Command3_Small_WithText"))
-                                    .Separator()
-                                    .StackedItems(items => items
-                                        .CommandButton<Cmd1>("Command1_Large_WithText")
-                                        .CommandButton<Cmd2>("Command2_Large_WithText"))
-                                    .Separator()
-                                    .StackedItems(items => items
-                                        .PullDownButton(
-                                            "Pulldown2",
-                                            pulldown => pulldown
-                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
-                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
-                                                .CommandButton<Cmd1>("Command #1")
-                                                .CommandButton<Cmd2>("Command #2")
-                                                .CommandButton<Cmd3>("Command #3"))
-                                        .CommandButton<Cmd1>("Command1_Small")
-                                        .CommandButton<Cmd2>("Command2_Small"))))
-                    .Tab(
                         title: "RxBim_Tab_FromAction",
                         tab => tab
                             .Panel(
@@ -184,7 +139,52 @@
                                         .CommandButton(
                                             "Command2_Small",
                                             typeof(Cmd2),
-                                            button => SetupCommand2Button(button))))));
+                                            button => SetupCommand2Button(button)))))
+                .Tab(
+                        title: "RxBim_Tab_FromAttributes",
+                        tab => tab
+                            .Panel(
+                                title: "RxBim_Panel_1",
+                                panel => panel
+                                    .CommandButton<Cmd1>("Command1_Large_WithText")
+                                    .CommandButton<Cmd2>("Command2_Large_WithText")
+                                    .CommandButton<Cmd3>("Command3_Large_WithText")
+                                    .Separator()
+                                    .PullDownButton(
+                                        "Pulldown1",
+                                        pulldown => pulldown
+                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
+                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
+                                            .Text("Pulldown #1")
+                                            .CommandButton<Cmd1>("Command #1")
+                                            .CommandButton<Cmd2>("Command #2")
+                                            .CommandButton<Cmd3>("Command #3"))
+                                    .SlideOut()
+                                    .CommandButton<Cmd1>("Command1_Large_SlideOut")
+                                    .CommandButton<Cmd2>("Command2_Large_SlideOut")
+                                    .CommandButton<Cmd3>("Command3_Large_SlideOut"))
+                            .Panel("RxBim_Panel_2",
+                                panel => panel
+                                    .StackedItems(items => items
+                                        .CommandButton<Cmd1>("Command1_Small_WithText")
+                                        .CommandButton<Cmd2>("Command2_Small_WithText")
+                                        .CommandButton<Cmd3>("Command3_Small_WithText"))
+                                    .Separator()
+                                    .StackedItems(items => items
+                                        .CommandButton<Cmd1>("Command1_Large_WithText")
+                                        .CommandButton<Cmd2>("Command2_Large_WithText"))
+                                    .Separator()
+                                    .StackedItems(items => items
+                                        .PullDownButton(
+                                            "Pulldown2",
+                                            pulldown => pulldown
+                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
+                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
+                                                .CommandButton<Cmd1>("Command #1")
+                                                .CommandButton<Cmd2>("Command #2")
+                                                .CommandButton<Cmd3>("Command #3"))
+                                        .CommandButton<Cmd1>("Command1_Small")
+                                        .CommandButton<Cmd2>("Command2_Small")))));
         }
 
         private static TButtonBuilder SetupCommand1Button<TButtonBuilder>(TButtonBuilder button)
