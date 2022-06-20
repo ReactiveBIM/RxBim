@@ -29,6 +29,6 @@ namespace RxBim.Application.Ribbon
         /// Sets the version prefix.
         /// </summary>
         /// <param name="prefix">The prefix text.</param>
-        IRibbonBuilder VersionPrefix(string prefix);
+        IRibbonBuilder SetVersionPrefix(string prefix);
     }
 }

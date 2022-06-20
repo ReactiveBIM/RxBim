@@ -31,10 +31,7 @@
         /// <param name="config">Button configuration.</param>
         /// <param name="size">Button size.</param>
         /// <param name="orientation">Button orientation.</param>
-        RibbonButton CreateCommandButton(
-            CommandButton config,
-            RibbonItemSize size,
-            Orientation orientation);
+        RibbonButton CreateCommandButton(CommandButton config, RibbonItemSize size, Orientation? orientation = null);
 
         /// <summary>
         /// Creates and returns a pull-down button.

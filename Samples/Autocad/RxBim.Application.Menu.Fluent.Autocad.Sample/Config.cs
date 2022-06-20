@@ -13,7 +13,7 @@
             container.AddAutocadMenu(ribbon =>
                 ribbon
                     .EnableDisplayVersion()
-                    .VersionPrefix("Version: ")
+                    .SetVersionPrefix("Version: ")
                     .Tab(
                         title: "RxBim_Tab_FromAction",
                         tab => tab

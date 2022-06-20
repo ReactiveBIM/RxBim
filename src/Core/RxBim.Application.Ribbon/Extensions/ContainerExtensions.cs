@@ -33,7 +33,7 @@
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
-                return ribbon.Ribbon;
+                return ribbon.Build();
             });
             container.DecorateContainer();
         }
@@ -84,7 +84,7 @@
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);
 
-            return builder.Ribbon;
+            return builder.Build();
         }
     }
 }

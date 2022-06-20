@@ -9,10 +9,7 @@
     /// </summary>
     public class RibbonBuilder : IRibbonBuilder
     {
-        /// <summary>
-        /// Building ribbon.
-        /// </summary>
-        public Ribbon Ribbon { get; } = new();
+        private readonly Ribbon _ribbon = new();
 
         /// <inheritdoc />
         public IRibbonBuilder Tab(string title, Action<ITabBuilder> tab)
@@ -24,22 +21,30 @@
         /// <inheritdoc />
         public IRibbonBuilder SetDisplayVersion(bool enable)
         {
-            Ribbon.DisplayVersion = enable;
+            _ribbon.DisplayVersion = enable;
             return this;
         }
 
         /// <inheritdoc />
         public IRibbonBuilder EnableDisplayVersion()
         {
-            Ribbon.DisplayVersion = true;
+            _ribbon.DisplayVersion = true;
             return this;
         }
 
         /// <inheritdoc />
-        public IRibbonBuilder VersionPrefix(string prefix)
+        public IRibbonBuilder SetVersionPrefix(string prefix)
         {
-            Ribbon.VersionPrefix = prefix;
+            _ribbon.VersionPrefix = prefix;
             return this;
+        }
+
+        /// <summary>
+        /// Returns building ribbon.
+        /// </summary>
+        internal Ribbon Build()
+        {
+            return _ribbon;
         }
 
         /// <summary>
@@ -71,13 +76,13 @@
             var versionSection = config.GetSection(nameof(Ribbon.DisplayVersion));
             if (versionSection.Exists())
             {
-                Ribbon.DisplayVersion = versionSection.Get<bool>();
+                _ribbon.DisplayVersion = versionSection.Get<bool>();
             }
 
             var headerSection = config.GetSection(nameof(Ribbon.VersionPrefix));
             if (headerSection.Exists())
             {
-                Ribbon.VersionPrefix = headerSection.Value;
+                _ribbon.VersionPrefix = headerSection.Value;
             }
         }
 
@@ -85,7 +90,7 @@
         {
             var builder = new TabBuilder(tabTitle);
             tab?.Invoke(builder);
-            Ribbon.Tabs.Add(builder.Build());
+            _ribbon.Tabs.Add(builder.Build());
             return builder;
         }
     }
