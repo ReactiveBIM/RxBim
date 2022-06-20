@@ -2,13 +2,13 @@
 {
     using System.Linq;
     using Autodesk.Windows;
-    using RxBim.Application.Ribbon.ConfigurationBuilders;
-    using RxBim.Di;
+    using ConfigurationBuilders;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
-    public class StackedItemsStrategy : ItemStrategyBase<Application.Ribbon.StackedItems>
+    public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
         private readonly IServiceLocator _serviceLocator;
         private readonly IPanelService _panelService;
@@ -21,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, Application.Ribbon.StackedItems stackedItems)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
             var stackSize = stackedItems.Items.Count;
             var stackedItemsRow = new RibbonRowPanel();
@@ -48,7 +48,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(Application.Ribbon.StackedItems itemConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(StackedItems itemConfig, RibbonItemSize size)
         {
             return CantBeStackedStub(itemConfig);
         }

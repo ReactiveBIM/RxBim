@@ -10,26 +10,25 @@
         where TItem : IRibbonPanelItem
     {
         /// <inheritdoc />
-        public virtual bool IsApplicable(IRibbonPanelItem config)
+        public virtual bool IsApplicable(IRibbonPanelItem item)
         {
-            return config is TItem;
+            return item is TItem;
         }
 
         /// <inheritdoc />
-        public void AddItem(object tab, object panel, IRibbonPanelItem config)
+        public void AddItem(object tab, object panel, IRibbonPanelItem item)
         {
-            if (tab is not RibbonTab ribbonTab || panel is not RibbonPanel ribbonPanel ||
-                config is not TItem itemConfig)
+            if (tab is not RibbonTab ribbonTab || panel is not RibbonPanel ribbonPanel || item is not TItem itemConfig)
                 return;
 
             AddItem(ribbonTab, ribbonPanel, itemConfig);
         }
 
         /// <inheritdoc />
-        public object GetItemForStack(IRibbonPanelItem config, bool small = false)
+        public object GetItemForStack(IRibbonPanelItem item, bool small = false)
         {
-            if (config is not TItem itemConfig)
-                throw new InvalidOperationException($"Invalid config type: {config.GetType().FullName}");
+            if (item is not TItem itemConfig)
+                throw new InvalidOperationException($"Invalid item type: {item.GetType().FullName}");
             var size = small ? RibbonItemSize.Standard : RibbonItemSize.Large;
 
             return GetItemForStack(itemConfig, size);

@@ -16,10 +16,10 @@
         }
 
         /// <inheritdoc />
-        public override bool IsApplicable(IRibbonPanelItem config)
+        public override bool IsApplicable(IRibbonPanelItem item)
         {
-            return base.IsApplicable(config) &&
-                   ((PanelLayoutItem)config).LayoutItemType == PanelLayoutItemType.Separator;
+            return base.IsApplicable(item) &&
+                   ((PanelLayoutItem)item).LayoutItemType == PanelLayoutItemType.Separator;
         }
 
         /// <inheritdoc />

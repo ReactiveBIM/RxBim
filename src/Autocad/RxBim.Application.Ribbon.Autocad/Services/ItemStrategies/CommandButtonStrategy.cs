@@ -6,7 +6,7 @@
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for command button.
     /// </summary>
-    public class CommandButtonStrategy : ItemStrategyBase<Application.Ribbon.CommandButton>
+    public class CommandButtonStrategy : ItemStrategyBase<CommandButton>
     {
         private readonly IPanelService _panelService;
         private readonly IButtonService _buttonService;
@@ -21,7 +21,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, Application.Ribbon.CommandButton cmdButtonConfig)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
         {
             cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
             var orientation = cmdButtonConfig.GetOrientation();
@@ -30,7 +30,7 @@
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(Application.Ribbon.CommandButton cmdButtonConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(CommandButton cmdButtonConfig, RibbonItemSize size)
         {
             cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
             return _buttonService.CreateCommandButton(cmdButtonConfig, size, Orientation.Horizontal);

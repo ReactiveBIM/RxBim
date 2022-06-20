@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
+    using Abstractions;
     using Autodesk.Revit.UI;
 
     /// <summary>
@@ -8,19 +9,20 @@
     public class CommandButtonStrategy : ItemStrategyBase<CommandButton>
     {
         private readonly MenuData _menuData;
+        private readonly IRibbonPanelItemService _ribbonPanelItemService;
 
         /// <inheritdoc />
-        public CommandButtonStrategy(MenuData menuData)
-            : base(menuData)
+        public CommandButtonStrategy(MenuData menuData, IRibbonPanelItemService ribbonPanelItemService)
         {
             _menuData = menuData;
+            _ribbonPanelItemService = ribbonPanelItemService;
         }
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel panel, CommandButton cmdButtonConfig)
         {
             cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
-            var pushButtonData = CreateCommandButtonData(cmdButtonConfig);
+            var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
             panel.AddItem(pushButtonData);
         }
 
@@ -28,7 +30,7 @@
         protected override RibbonItemData GetItemForStack(CommandButton cmdButtonConfig)
         {
             cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
-            return CreateCommandButtonData(cmdButtonConfig);
+            return _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
         }
     }
 }

@@ -7,7 +7,7 @@
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
     using GalaSoft.MvvmLight.Command;
-    using Button = Application.Ribbon.Button;
+    using Button = Button;
 
     /// <inheritdoc />
     public class ButtonService : IButtonService
