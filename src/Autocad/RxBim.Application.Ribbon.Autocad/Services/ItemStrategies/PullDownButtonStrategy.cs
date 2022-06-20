@@ -1,10 +1,10 @@
-﻿namespace RxBim.Application.Ribbon.Services.AddItemStrategies
+﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
     using System.Windows.Controls;
     using Autodesk.Windows;
 
     /// <summary>
-    /// Implementation of <see cref="IAddItemStrategy"/> for pull-down button.
+    /// Implementation of <see cref="IItemStrategy"/> for pull-down button.
     /// </summary>
     public class PullDownButtonStrategy : ItemStrategyBase<PullDownButton>
     {

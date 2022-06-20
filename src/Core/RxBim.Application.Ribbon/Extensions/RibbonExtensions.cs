@@ -62,44 +62,24 @@
         /// </summary>
         /// <param name="button">A Command button.</param>
         /// <param name="assembly">An assembly to load from.</param>
-        internal static void LoadFromAttribute(this IRibbonPanelItem button, Assembly assembly)
-        {
-            switch (button)
-            {
-                case CommandButton cmd:
-                    cmd.LoadFromAttributeInternal(assembly);
-                    break;
-                case PullDownButton pulldown:
-                    pulldown.CommandButtonsList.ForEach(x => x.LoadFromAttribute(assembly));
-                    break;
-                case StackedItems stacked:
-                    stacked.Items.ForEach(x => x.LoadFromAttribute(assembly));
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Loads command button properties from <see cref="RxBimCommandAttribute"/>.
-        /// </summary>
-        /// <param name="button">A Command button.</param>
-        /// <param name="assembly">An assembly to load from.</param>
-        private static void LoadFromAttributeInternal(this CommandButton button, Assembly assembly)
+        public static void LoadFromAttribute(this CommandButton button, Assembly assembly)
         {
             if (button.CommandType is null)
                 return;
+
             var commandType = assembly.GetTypeByName(button.CommandType);
             var attr = commandType.GetCustomAttribute<RxBimCommandAttribute>(true);
             if (attr == null)
                 return;
 
-            button.Description ??= attr.Description!;
-            button.Text ??= attr.Text!;
-            button.ToolTip ??= attr.ToolTip!;
-            button.HelpUrl ??= attr.HelpUrl!;
-            button.SmallImage ??= attr.SmallImage!;
-            button.LargeImage ??= attr.LargeImage!;
-            button.SmallImageLight ??= attr.SmallImageLight ?? attr.SmallImage!;
-            button.LargeImageLight ??= attr.LargeImageLight ?? attr.LargeImage!;
+            button.Description ??= attr.Description;
+            button.Text ??= attr.Text;
+            button.ToolTip ??= attr.ToolTip;
+            button.HelpUrl ??= attr.HelpUrl;
+            button.SmallImage ??= attr.SmallImage;
+            button.LargeImage ??= attr.LargeImage;
+            button.SmallImageLight ??= attr.SmallImageLight ?? attr.SmallImage;
+            button.LargeImageLight ??= attr.LargeImageLight ?? attr.LargeImage;
         }
     }
 }

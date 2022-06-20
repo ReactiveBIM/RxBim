@@ -3,7 +3,7 @@
     /// <summary>
     /// Strategy for adding item to the ribbon.
     /// </summary>
-    public interface IAddItemStrategy
+    public interface IItemStrategy
     {
         /// <summary>
         /// Returns true if the strategy is applicable for specified item configuration. Otherwise returns false.

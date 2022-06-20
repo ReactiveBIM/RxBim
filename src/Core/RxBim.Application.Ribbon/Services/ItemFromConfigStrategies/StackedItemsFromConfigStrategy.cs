@@ -9,15 +9,15 @@
     /// <summary>
     /// The strategy for getting a <see cref="StackedItems"/> from a configuration section.
     /// </summary>
-    public class StackedItemsStrategy : IItemFromConfigStrategy
+    public class StackedItemsFromConfigStrategy : IItemFromConfigStrategy
     {
         private readonly IServiceLocator _serviceLocator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StackedItemsStrategy"/> class.
+        /// Initializes a new instance of the <see cref="StackedItemsFromConfigStrategy"/> class.
         /// </summary>
         /// <param name="serviceLocator"><see cref="IServiceLocator"/>.</param>
-        public StackedItemsStrategy(IServiceLocator serviceLocator)
+        public StackedItemsFromConfigStrategy(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }
