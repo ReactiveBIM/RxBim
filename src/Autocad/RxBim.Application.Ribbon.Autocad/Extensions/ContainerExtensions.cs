@@ -23,7 +23,7 @@
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddInternalObjects();
+            container.AddServices();
             container.AddMenu<AutocadRibbonMenuBuilder>(builder, menuAssembly);
         }
 
@@ -39,11 +39,11 @@
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddInternalObjects();
+            container.AddServices();
             container.AddMenu<AutocadRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
-        private static void AddInternalObjects(this IContainer container)
+        private static void AddServices(this IContainer container)
         {
             container.RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();

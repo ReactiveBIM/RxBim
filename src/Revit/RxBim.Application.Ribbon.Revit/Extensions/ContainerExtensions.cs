@@ -2,6 +2,7 @@ namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
+    using Abstractions;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Services;
@@ -24,7 +25,7 @@ namespace RxBim.Application.Ribbon
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container
-                .AddStrategies()
+                .AddServices()
                 .AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
         }
 
@@ -41,13 +42,15 @@ namespace RxBim.Application.Ribbon
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             container
-                .AddStrategies()
+                .AddServices()
                 .AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
-        private static IContainer AddStrategies(this IContainer container)
+        private static IContainer AddServices(this IContainer container)
         {
-            return container.RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
+            return container
+                .RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly())
+                .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
-    using System.Linq;
+    using Abstractions;
     using Autodesk.Revit.UI;
 
     /// <summary>
@@ -8,10 +8,12 @@
     /// </summary>
     public class PulldownButtonStrategy : ItemStrategyBase<PullDownButton>
     {
+        private readonly IRibbonPanelItemService _ribbonPanelItemService;
+
         /// <inheritdoc />
-        public PulldownButtonStrategy(MenuData menuData)
-            : base(menuData)
+        public PulldownButtonStrategy(IRibbonPanelItemService ribbonPanelItemService)
         {
+            _ribbonPanelItemService = ribbonPanelItemService;
         }
 
         /// <inheritdoc />
@@ -19,8 +21,7 @@
         {
             var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);
-
-            CreateButtonsForPullDown(pullDownButtonConfig, pulldownButton);
+            _ribbonPanelItemService.CreateButtonsForPullDown(pullDownButtonConfig, pulldownButton);
         }
 
         /// <inheritdoc />
@@ -29,22 +30,14 @@
             return CreatePulldownButtonData(pullDownButtonConfig);
         }
 
-        private void CreateButtonsForPullDown(PullDownButton pullDownButtonConfig, PulldownButton pulldownButton)
-        {
-            foreach (var pushButtonData in pullDownButtonConfig.CommandButtonsList.Select(CreateCommandButtonData))
-            {
-                pulldownButton.AddPushButton(pushButtonData);
-            }
-        }
-
         private PulldownButtonData CreatePulldownButtonData(PullDownButton pullDownButtonConfig)
         {
-            CheckButtonName(pullDownButtonConfig);
+            _ribbonPanelItemService.CheckButtonName(pullDownButtonConfig);
             var pulldownButtonData = new PulldownButtonData(
                 pullDownButtonConfig.Name,
                 pullDownButtonConfig.Text ?? pullDownButtonConfig.Name);
-            SetButtonProperties(pulldownButtonData, pullDownButtonConfig);
-            SetTooltip(pulldownButtonData, pullDownButtonConfig.ToolTip);
+            _ribbonPanelItemService.SetButtonProperties(pulldownButtonData, pullDownButtonConfig);
+            _ribbonPanelItemService.SetTooltip(pulldownButtonData, pullDownButtonConfig.ToolTip);
             return pulldownButtonData;
         }
     }

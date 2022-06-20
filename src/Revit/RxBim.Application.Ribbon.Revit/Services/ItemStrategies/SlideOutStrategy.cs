@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
+    using Abstractions;
     using Autodesk.Revit.UI;
 
     /// <summary>
@@ -7,17 +8,19 @@
     /// </summary>
     public class SlideOutStrategy : ItemStrategyBase<PanelLayoutItem>
     {
+        private readonly IRibbonPanelItemService _ribbonPanelItemService;
+
         /// <inheritdoc />
-        public SlideOutStrategy(MenuData menuData)
-            : base(menuData)
+        public SlideOutStrategy(IRibbonPanelItemService ribbonPanelItemService)
         {
+            _ribbonPanelItemService = ribbonPanelItemService;
         }
 
         /// <inheritdoc />
-        public override bool IsApplicable(IRibbonPanelItem config)
+        public override bool IsApplicable(IRibbonPanelItem item)
         {
-            return base.IsApplicable(config) &&
-                   ((PanelLayoutItem)config).LayoutItemType == PanelLayoutItemType.SlideOut;
+            return base.IsApplicable(item) &&
+                   ((PanelLayoutItem)item).LayoutItemType == PanelLayoutItemType.SlideOut;
         }
 
         /// <inheritdoc />
@@ -29,7 +32,7 @@
         /// <inheritdoc />
         protected override RibbonItemData GetItemForStack(PanelLayoutItem itemConfig)
         {
-            return CannotBeStackedStub(itemConfig);
+            return _ribbonPanelItemService.CannotBeStackedStub(itemConfig);
         }
     }
 }
