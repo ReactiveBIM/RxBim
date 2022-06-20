@@ -21,7 +21,6 @@
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel panel, CommandButton cmdButtonConfig)
         {
-            cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
             var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
             panel.AddItem(pushButtonData);
         }
@@ -29,7 +28,6 @@
         /// <inheritdoc />
         protected override RibbonItemData GetItemForStack(CommandButton cmdButtonConfig)
         {
-            cmdButtonConfig.LoadFromAttribute(_menuData.MenuAssembly);
             return _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
         }
     }

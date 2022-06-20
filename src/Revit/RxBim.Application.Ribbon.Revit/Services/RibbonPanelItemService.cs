@@ -28,6 +28,7 @@
         /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
         {
+            button.LoadFromAttribute(_menuData.MenuAssembly);
             CheckButtonName(button);
             if (string.IsNullOrWhiteSpace(button.CommandType))
                 throw new ArgumentException($"Command type not found! Button: {button.Name}");

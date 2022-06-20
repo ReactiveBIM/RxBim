@@ -51,13 +51,17 @@
             return ribbonButton;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RibbonButton CreateCommandButton(
             CommandButton config,
             RibbonItemSize size,
-            Orientation orientation)
+            Orientation? orientation = null)
         {
-            var button = CreateNewButton<RibbonButton>(config, size, orientation, false, false);
+            config.LoadFromAttribute(_menuData.MenuAssembly);
+
+            var orientationValue = orientation ?? config.GetOrientation();
+
+            var button = CreateNewButton<RibbonButton>(config, size, orientationValue, false, false);
 
             if (!string.IsNullOrWhiteSpace(config.CommandType))
             {

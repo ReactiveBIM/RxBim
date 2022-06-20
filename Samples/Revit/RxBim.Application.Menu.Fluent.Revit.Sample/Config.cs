@@ -11,7 +11,7 @@
         {
             container.AddRevitMenu(ribbon => ribbon
                 .EnableDisplayVersion()
-                .VersionPrefix("Version: ")
+                .SetVersionPrefix("Version: ")
                 .TabFromAttributes()
                 .TabFromBuilder());
         }

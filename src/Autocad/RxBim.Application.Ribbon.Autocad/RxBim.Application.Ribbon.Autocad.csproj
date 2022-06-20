@@ -14,10 +14,6 @@
         <Reference Include="WindowsBase" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Models" />
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim UI AutoCAD Library</Description>
         <PackageId>RxBim.Application.Ribbon.Autocad</PackageId>
