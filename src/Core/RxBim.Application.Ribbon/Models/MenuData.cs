@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="resourcePath">The image resource path.</param>
         /// <param name="assembly">The assembly containing image embedded resource.</param>
-        public ImageSource? GetIconImage(string? resourcePath, Assembly? assembly)
+        public ImageSource? GetIconImage(string? resourcePath, Assembly? assembly = null)
         {
             if (string.IsNullOrWhiteSpace(resourcePath))
                 return null;
