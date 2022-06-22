@@ -1,12 +1,13 @@
 ﻿namespace RxBim.Nuke.Builds
 {
+    extern alias NukeCommon;
     using System.Linq;
-    using global::Nuke.Common;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.Tools.DotNet;
-    using global::Nuke.Common.Utilities.Collections;
-    using static global::Nuke.Common.IO.PathConstruction;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using NukeCommon::Nuke.Common;
+    using NukeCommon::Nuke.Common.IO;
+    using NukeCommon::Nuke.Common.Tools.DotNet;
+    using NukeCommon::Nuke.Common.Utilities.Collections;
+    using static NukeCommon::Nuke.Common.IO.PathConstruction;
+    using static NukeCommon::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <content>
     /// Common build targets.
@@ -62,7 +63,7 @@
                     .SetProjectFile(GetProjectPath(Project)));
             });
 
-        private AbsolutePath GetProjectPath(string? name)
+        private AbsolutePath? GetProjectPath(string? name)
         {
             return Solution.AllProjects.FirstOrDefault(x => x.Name == name)?.Path ?? Solution.Path;
         }

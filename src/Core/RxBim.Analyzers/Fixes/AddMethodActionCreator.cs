@@ -49,7 +49,7 @@
             TypeDeclarationSyntax typeDecl)
         {
             var method = SyntaxFactory.MethodDeclaration(SyntaxFactory.List<AttributeListSyntax>(),
-                    SyntaxFactory.TokenList(new SyntaxToken[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) }),
+                    SyntaxFactory.TokenList(new[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) }),
                     SyntaxFactory.ParseTypeName(Constants.PluginResult),
                     null,
                     SyntaxFactory.Identifier(MethodName),

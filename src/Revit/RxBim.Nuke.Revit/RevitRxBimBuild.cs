@@ -48,7 +48,7 @@
 
                 var addinFile = $"{project.Name}.addin";
                 var addinPath = project.Directory / addinFile;
-                if (!FileExists(addinPath))
+                if (!addinPath.FileExists())
                 {
                     var dllPath = project.GetTargetPath();
 

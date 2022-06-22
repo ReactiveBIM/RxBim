@@ -1,22 +1,25 @@
-﻿namespace RxBim.Nuke.Extensions
+﻿extern alias NukeCommon;
+using static NukeCommon::Nuke.Common.Tools.DotNet.DotNetTasks;
+
+namespace RxBim.Nuke.Extensions
 {
+    extern alias NukeCommon;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
     using Builds;
-    using global::Nuke.Common;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.DotNet;
-    using global::Nuke.Common.Tools.Git;
-    using global::Nuke.Common.Utilities;
     using Models;
     using MsiBuilder;
+    using NukeCommon::Nuke.Common.IO;
+    using NukeCommon::Nuke.Common.ProjectModel;
+    using NukeCommon::Nuke.Common.Tooling;
+    using NukeCommon::Nuke.Common.Tools.DotNet;
+    using NukeCommon::Nuke.Common.Tools.Git;
+    using NukeCommon::Nuke.Common.Utilities;
+    using Serilog;
     using static Constants;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static Helpers.AssemblyScanner;
 
     /// <summary>
@@ -143,8 +146,9 @@
                 projectXml.Add(new XElement("PropertyGroup", properties));
                 projectXml.Save(project.Path);
 
-                Logger.Info(
-                    $"Properties {properties.Select(x => x.Name.ToString()).ToList().JoinComma()} for {project.Name} project added\"");
+                Log.Information("Properties {Properties} for {ProjectName} project added\"",
+                    properties.Select(x => x.Name.ToString()).ToList().JoinComma(),
+                    project.Name);
 
                 project.CommitChanges();
             }
@@ -267,11 +271,11 @@
             var commit = ConsoleUtility.PromptForChoice("Commit changes?", ("Yes", "Yes"), ("No", "No"));
 
             if (commit switch
-            {
-                "Yes" => true,
-                "No" => false,
-                _ => false
-            })
+                {
+                    "Yes" => true,
+                    "No" => false,
+                    _ => false
+                })
             {
                 GitTasks.Git($"add \"{project.Path}\"", project.Solution.Directory);
                 GitTasks.Git(

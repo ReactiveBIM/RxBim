@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Builds
 {
+    extern alias NukeCommon;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -7,20 +8,22 @@
     using Builders;
     using Extensions;
     using Generators;
-    using global::Nuke.Common;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.DotNet;
-    using global::Nuke.Common.Tools.Git;
-    using global::Nuke.Common.Tools.InnoSetup;
     using Helpers;
     using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
-    using static global::Nuke.Common.IO.FileSystemTasks;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using NukeCommon::Nuke.Common.Tooling;
+    using NukeCommon::Nuke.Common.Tools.DotNet;
+    using NukeCommon::Nuke.Common.Tools.InnoSetup;
     using static Helpers.WixHelper;
+    using static NukeCommon::Nuke.Common.IO.FileSystemTasks;
+    using static NukeCommon::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using AbsolutePath = NukeCommon::Nuke.Common.IO.AbsolutePath;
+    using GitTasks = NukeCommon::Nuke.Common.Tools.Git.GitTasks;
+    using InnoSetupTasks = NukeCommon::Nuke.Common.Tools.InnoSetup.InnoSetupTasks;
+    using Project = NukeCommon::Nuke.Common.ProjectModel.Project;
+    using Target = NukeCommon::Nuke.Common.Target;
+    using ToolPathResolver = NukeCommon::Nuke.Common.Tooling.ToolPathResolver;
 
     /// <summary>
     /// Contains tools for MSI packages creating.
@@ -29,7 +32,7 @@
     /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
     /// <typeparam name="TPropGen">Project properties generator.</typeparam>
     [PublicAPI]
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeBuild
+    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeCommon::Nuke.Common.NukeBuild
         where TWix : WixBuilder<TPackGen>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()

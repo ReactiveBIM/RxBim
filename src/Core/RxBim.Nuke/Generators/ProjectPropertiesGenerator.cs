@@ -1,12 +1,13 @@
 ﻿namespace RxBim.Nuke.Generators
 {
+    extern alias NukeCommon;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Xml.Linq;
-    using global::Nuke.Common.ProjectModel;
-    using Nuke.Extensions;
-    using Nuke.Models;
+    using Extensions;
+    using Models;
+    using NukeCommon::Nuke.Common.ProjectModel;
 
     /// <summary>
     /// Project properties generator.

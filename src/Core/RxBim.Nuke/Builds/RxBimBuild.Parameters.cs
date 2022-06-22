@@ -1,14 +1,15 @@
 namespace RxBim.Nuke.Builds
 {
+    extern alias NukeCommon;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using global::Nuke.Common;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Utilities;
     using Models;
+    using NukeCommon::Nuke.Common;
+    using NukeCommon::Nuke.Common.ProjectModel;
+    using NukeCommon::Nuke.Common.Utilities;
 
     /// <content>
     /// Расширение Build-скрипта для сборки MSI. Параметры.

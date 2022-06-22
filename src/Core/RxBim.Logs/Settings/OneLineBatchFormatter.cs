@@ -4,19 +4,16 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Serilog.Sinks.Http;
     using Serilog.Sinks.Http.BatchFormatters;
 
     /// <inheritdoc />
-    public class OneLineBatchFormatter : ArrayBatchFormatter
+    public class OneLineBatchFormatter : IBatchFormatter
     {
-        /// <inheritdoc />
-        public OneLineBatchFormatter(long? eventBodyLimitBytes = 256 * 1024)
-            : base(eventBodyLimitBytes)
-        {
-        }
+        private readonly ArrayBatchFormatter _baseFormatter = new();
 
         /// <inheritdoc />
-        public override void Format(IEnumerable<string> logEvents, TextWriter output)
+        public void Format(IEnumerable<string> logEvents, TextWriter output)
         {
             if (logEvents == null)
                 throw new ArgumentNullException(nameof(logEvents));
@@ -24,7 +21,7 @@
                 throw new ArgumentNullException(nameof(output));
 
             logEvents = logEvents.Select(x => x.Replace(Environment.NewLine, string.Empty));
-            base.Format(logEvents, output);
+            _baseFormatter.Format(logEvents, output);
         }
     }
 }

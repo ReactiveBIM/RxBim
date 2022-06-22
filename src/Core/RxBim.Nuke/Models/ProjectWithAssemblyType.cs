@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.Models
 {
-    using global::Nuke.Common.ProjectModel;
+    extern alias NukeCommon;
+    using NukeCommon::Nuke.Common.ProjectModel;
 
     /// <summary>
     /// Pair of the <see cref="Project"/> and the <see cref="AssemblyType"/>.

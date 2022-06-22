@@ -1,13 +1,14 @@
 ﻿namespace RxBim.Nuke.Builds
 {
+    extern alias NukeCommon;
     using System;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using global::Nuke.Common;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tools.Git;
     using Helpers;
+    using NukeCommon::Nuke.Common;
+    using NukeCommon::Nuke.Common.ProjectModel;
+    using NukeCommon::Nuke.Common.Tools.Git;
 
     /// <content>
     /// GIT build targets.

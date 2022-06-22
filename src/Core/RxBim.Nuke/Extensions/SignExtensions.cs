@@ -1,10 +1,11 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
+    extern alias NukeCommon;
     using System;
-    using global::Nuke.Common;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.SignTool;
+    using NukeCommon::Nuke.Common.IO;
+    using NukeCommon::Nuke.Common.Tooling;
+    using NukeCommon::Nuke.Common.Tools.SignTool;
+    using Serilog;
 
     /// <summary>
     /// Extension methods helps add digital sign to files.
@@ -57,7 +58,7 @@
                         programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
             }
 
-            Logger.Info($"ToolPath: {settings.ProcessToolPath}");
+            Log.Information("ToolPath: {Path}", settings.ProcessToolPath);
 
             SignToolTasks.SignTool(settings);
         }

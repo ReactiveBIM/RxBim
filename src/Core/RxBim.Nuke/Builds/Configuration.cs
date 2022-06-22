@@ -1,8 +1,9 @@
 ﻿#pragma warning disable SA1401
 namespace RxBim.Nuke.Builds
 {
+    extern alias NukeCommon;
     using System.ComponentModel;
-    using global::Nuke.Common.Tooling;
+    using NukeCommon::Nuke.Common.Tooling;
 
     /// <summary>
     /// Build configuration.
