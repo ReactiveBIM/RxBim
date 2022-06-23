@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Nuke.Helpers
 {
+    extern alias nc;
     using System;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using global::Nuke.Common.IO;
+    using nc::Nuke.Common.IO;
     using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;

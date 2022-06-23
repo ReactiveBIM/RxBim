@@ -1,23 +1,24 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
+    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
     using Builds;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.DotNet;
-    using global::Nuke.Common.Tools.Git;
-    using global::Nuke.Common.Utilities;
     using Models;
     using MsiBuilder;
+    using nc::Nuke.Common.IO;
+    using nc::Nuke.Common.ProjectModel;
+    using nc::Nuke.Common.Tooling;
+    using nc::Nuke.Common.Tools.DotNet;
+    using nc::Nuke.Common.Tools.Git;
+    using nc::Nuke.Common.Utilities;
     using Serilog;
     using static Constants;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static Helpers.AssemblyScanner;
+    using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <summary>
     /// Project extensions.

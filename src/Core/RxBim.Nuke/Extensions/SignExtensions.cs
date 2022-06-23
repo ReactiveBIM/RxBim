@@ -1,9 +1,10 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
+    extern alias nc;
     using System;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.SignTool;
+    using nc::Nuke.Common.IO;
+    using nc::Nuke.Common.Tooling;
+    using nc::Nuke.Common.Tools.SignTool;
     using Serilog;
 
     /// <summary>

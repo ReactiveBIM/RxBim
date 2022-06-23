@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Builders
 {
+    extern alias nc;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Text;
@@ -7,11 +8,11 @@
     using System.Linq;
     using System.Runtime.InteropServices;
     using Extensions;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.Utilities.Collections;
     using Helpers;
     using InnoSetup.ScriptBuilder;
     using MsiBuilder;
+    using nc::Nuke.Common.IO;
+    using nc::Nuke.Common.Utilities.Collections;
 
     /// <summary>
     /// The Inno Setup builder.

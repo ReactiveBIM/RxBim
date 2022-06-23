@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Builds
 {
+    extern alias nc;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -7,20 +8,20 @@
     using Builders;
     using Extensions;
     using Generators;
-    using global::Nuke.Common;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tooling;
-    using global::Nuke.Common.Tools.DotNet;
-    using global::Nuke.Common.Tools.Git;
-    using global::Nuke.Common.Tools.InnoSetup;
     using Helpers;
     using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
-    using static global::Nuke.Common.IO.FileSystemTasks;
-    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using nc::Nuke.Common;
+    using nc::Nuke.Common.IO;
+    using nc::Nuke.Common.ProjectModel;
+    using nc::Nuke.Common.Tooling;
+    using nc::Nuke.Common.Tools.DotNet;
+    using nc::Nuke.Common.Tools.Git;
+    using nc::Nuke.Common.Tools.InnoSetup;
     using static Helpers.WixHelper;
+    using static nc::Nuke.Common.IO.FileSystemTasks;
+    using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <summary>
     /// Contains tools for MSI packages creating.
