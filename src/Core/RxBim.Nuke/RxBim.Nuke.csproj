@@ -39,12 +39,4 @@
         <PackageId>RxBim.Nuke</PackageId>
     </PropertyGroup>
 
-    <Target Name="StrongNameAlias" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
-        <ItemGroup>
-            <ReferencePath Condition="'%(FileName)' == 'Nuke.Common'">
-                <Aliases>NukeCommon</Aliases>
-            </ReferencePath>
-        </ItemGroup>
-    </Target>
-
 </Project>

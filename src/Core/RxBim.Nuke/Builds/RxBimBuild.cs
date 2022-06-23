@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Nuke.Builds
 {
-    extern alias NukeCommon;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -8,22 +7,20 @@
     using Builders;
     using Extensions;
     using Generators;
+    using global::Nuke.Common;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
+    using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Tools.InnoSetup;
     using Helpers;
     using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
-    using NukeCommon::Nuke.Common.Tooling;
-    using NukeCommon::Nuke.Common.Tools.DotNet;
-    using NukeCommon::Nuke.Common.Tools.InnoSetup;
+    using static global::Nuke.Common.IO.FileSystemTasks;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static Helpers.WixHelper;
-    using static NukeCommon::Nuke.Common.IO.FileSystemTasks;
-    using static NukeCommon::Nuke.Common.Tools.DotNet.DotNetTasks;
-    using AbsolutePath = NukeCommon::Nuke.Common.IO.AbsolutePath;
-    using GitTasks = NukeCommon::Nuke.Common.Tools.Git.GitTasks;
-    using InnoSetupTasks = NukeCommon::Nuke.Common.Tools.InnoSetup.InnoSetupTasks;
-    using Project = NukeCommon::Nuke.Common.ProjectModel.Project;
-    using Target = NukeCommon::Nuke.Common.Target;
-    using ToolPathResolver = NukeCommon::Nuke.Common.Tooling.ToolPathResolver;
 
     /// <summary>
     /// Contains tools for MSI packages creating.
@@ -32,7 +29,7 @@
     /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
     /// <typeparam name="TPropGen">Project properties generator.</typeparam>
     [PublicAPI]
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeCommon::Nuke.Common.NukeBuild
+    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen> : NukeBuild
         where TWix : WixBuilder<TPackGen>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()
@@ -139,7 +136,10 @@
                     return;
 
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
+                    ProjectForMsiBuild,
+                    OutputTmpDirBin,
+                    OutputTmpDir,
+                    Configuration);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -160,10 +160,16 @@
             .Executes(() =>
             {
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild, OutputTmpDirBin, OutputTmpDir, Configuration);
+                    ProjectForMsiBuild,
+                    OutputTmpDirBin,
+                    OutputTmpDir,
+                    Configuration);
 
                 _wix.GenerateAdditionalFiles(
-                    ProjectForMsiBuild.Name, Solution.AllProjects, types, OutputTmpDir);
+                    ProjectForMsiBuild.Name,
+                    Solution.AllProjects,
+                    types,
+                    OutputTmpDir);
             });
 
         /// <summary>
@@ -173,10 +179,7 @@
             .Requires(() => Project)
             .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
-            .Executes(() =>
-            {
-                _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Configuration, OutputTmpDir);
-            });
+            .Executes(() => { _wix.GeneratePackageContentsFile(ProjectForMsiBuild, Configuration, OutputTmpDir); });
 
         private void CreateOutDirectory()
         {
@@ -208,10 +211,10 @@
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder.Create(
-                options,
-                (AbsolutePath)OutputTmpDir,
-                (AbsolutePath)OutputTmpDirBin,
-                setupFileName)
+                    options,
+                    (AbsolutePath)OutputTmpDir,
+                    (AbsolutePath)OutputTmpDirBin,
+                    setupFileName)
                 .AddIcons()
                 .AddFonts()
                 .AddUninstallScript()

@@ -1,13 +1,12 @@
 ﻿namespace RxBim.Nuke.Builds
 {
-    extern alias NukeCommon;
     using System.Linq;
-    using NukeCommon::Nuke.Common;
-    using NukeCommon::Nuke.Common.IO;
-    using NukeCommon::Nuke.Common.Tools.DotNet;
-    using NukeCommon::Nuke.Common.Utilities.Collections;
-    using static NukeCommon::Nuke.Common.IO.PathConstruction;
-    using static NukeCommon::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using global::Nuke.Common;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Utilities.Collections;
+    using static global::Nuke.Common.IO.PathConstruction;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <content>
     /// Common build targets.
