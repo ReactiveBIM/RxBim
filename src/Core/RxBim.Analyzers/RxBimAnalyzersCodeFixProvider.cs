@@ -16,13 +16,12 @@ namespace RxBim.Analyzers
     public class RxBimAnalyzersCodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc />
-        public sealed override ImmutableArray<string> FixableDiagnosticIds =>
-            ImmutableArray.Create(
-                CmdAction.DiagnosticId,
-                CmdMethodAction.DiagnosticId,
-                AppAction.StartDiagnosticId,
-                AppAction.ShutdownDiagnosticId,
-                AppMethodAction.DiagnosticId);
+        public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
+            CmdAction.DiagnosticId,
+            CmdMethodAction.DiagnosticId,
+            AppAction.StartDiagnosticId,
+            AppAction.ShutdownDiagnosticId,
+            AppMethodAction.DiagnosticId);
 
         /// <inheritdoc />
         public sealed override FixAllProvider GetFixAllProvider()
@@ -39,9 +38,9 @@ namespace RxBim.Analyzers
                 try
                 {
                     var diagnosticSpan = diagnostic.Location.SourceSpan;
-                    var codeAction = await CodeActionFactory.GetCreator(diagnostic.Id)
-                        .Create(context, diagnosticSpan);
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                    var codeAction = await CodeActionFactory.GetCreator(diagnostic.Id).Create(context, diagnosticSpan);
+                    if (codeAction != null)
+                        context.RegisterCodeFix(codeAction, diagnostic);
                 }
                 catch
                 {
