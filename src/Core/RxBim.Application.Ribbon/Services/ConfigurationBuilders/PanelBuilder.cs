@@ -1,6 +1,7 @@
 namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Extensions.Configuration;
 
@@ -9,23 +10,19 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
     /// </summary>
     public class PanelBuilder : IPanelBuilder
     {
-        private readonly IRibbonBuilder _ribbonBuilder;
+        /// <summary>
+        /// Building panel.
+        /// </summary>
+        private readonly Panel _panel = new();
 
         /// <summary>
         /// Initializes a new instance of the PanelBuilder class.
         /// </summary>
         /// <param name="name">Panel name.</param>
-        /// <param name="ribbonBuilder">Ribbon builder.</param>
-        public PanelBuilder(string name, IRibbonBuilder ribbonBuilder)
+        public PanelBuilder(string name)
         {
-            _ribbonBuilder = ribbonBuilder;
-            BuildingPanel.Name = name;
+            _panel.Name = name;
         }
-
-        /// <summary>
-        /// Building panel.
-        /// </summary>
-        public Panel BuildingPanel { get; } = new();
 
         /// <summary>
         /// Adds a new stacked items to the panel.
@@ -38,7 +35,7 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
 
             var stackedItems = new StackedItemsBuilder();
             builder.Invoke(stackedItems);
-            BuildingPanel.Elements.Add(stackedItems.StackedItems);
+            _panel.Items.Add(stackedItems.StackedItems);
             return this;
         }
 
@@ -46,11 +43,11 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         public IPanelBuilder CommandButton(
             string name,
             Type commandType,
-            Action<ICommnadButtonBuilder>? builder = null)
+            Action<ICommandButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
-            BuildingPanel.Elements.Add(buttonBuilder.BuildingButton);
+            _panel.Items.Add(buttonBuilder.Build());
             return this;
         }
 
@@ -61,105 +58,62 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         {
             var pulldownButton = new PulldownButtonBuilder(name);
             builder.Invoke(pulldownButton);
-            BuildingPanel.Elements.Add(pulldownButton.BuildingButton);
+            _panel.Items.Add(pulldownButton.Build());
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder Separator()
         {
-            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.Separator });
+            _panel.Items.Add(new PanelLayoutItem
+            {
+                LayoutItemType = PanelLayoutItemType.Separator
+            });
             return this;
         }
 
         /// <inheritdoc />
         public IPanelBuilder SlideOut()
         {
-            if (BuildingPanel.Elements.Any(
-                    e => e is PanelLayoutElement { LayoutElementType: PanelLayoutElementType.SlideOut }))
+            if (_panel.Items.Any(
+                    e => e is PanelLayoutItem { LayoutItemType: PanelLayoutItemType.SlideOut }))
                 throw new InvalidOperationException("The panel already contains SlideOut!");
-            BuildingPanel.Elements.Add(new PanelLayoutElement { LayoutElementType = PanelLayoutElementType.SlideOut });
+            _panel.Items.Add(new PanelLayoutItem { LayoutItemType = PanelLayoutItemType.SlideOut });
             return this;
         }
 
         /// <inheritdoc />
-        public IPanelBuilder AddAboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IAboutButtonBuilder>? builder = null)
+        public void AddItem(IRibbonPanelItem item)
         {
-            var aboutButton = new AboutButtonBuilder(name, content);
-            builder?.Invoke(aboutButton);
-            BuildingPanel.Elements.Add(aboutButton.BuildingButton);
-            return this;
+            _panel.Items.Add(item);
         }
 
-        /// <inheritdoc />
-        public IRibbonBuilder ReturnToRibbon()
+        /// <summary>
+        /// Returns panel.
+        /// </summary>
+        internal Panel Build()
         {
-            return _ribbonBuilder;
+            return _panel;
         }
 
         /// <summary>
         /// Load from config.
         /// </summary>
         /// <param name="section">Config section.</param>
-        internal void LoadFromConfig(IConfigurationSection section)
+        /// <param name="fromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
+        internal void LoadFromConfig(
+            IConfigurationSection section,
+            IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
-            var elementsSection = section.GetSection(nameof(Panel.Elements));
-            if (!elementsSection.Exists())
+            var itemsSection = section.GetSection(nameof(Panel.Items));
+            if (!itemsSection.Exists())
                 return;
 
-            foreach (var elementSection in elementsSection.GetChildren())
+            foreach (var itemSection in itemsSection.GetChildren())
             {
-                // Stacked Items
-                var stackedItemsSection = elementSection.GetSection(nameof(Application.Ribbon.StackedItems.StackedButtons));
-                if (stackedItemsSection.Exists())
-                {
-                    var stackedItems = new StackedItemsBuilder();
-                    stackedItems.LoadFromConfig(stackedItemsSection);
-                    BuildingPanel.Elements.Add(stackedItems.StackedItems);
-                }
-                else if (elementSection.GetSection(nameof(Application.Ribbon.CommandButton.CommandType)).Exists())
-                { // Command Button
-                    var button = LoadFromConfig<CommandButton>(elementSection);
-                }
-                else if (elementSection.GetSection(nameof(Application.Ribbon.PullDownButton.CommandButtonsList)).Exists())
-                { // Pulldown
-                    LoadFromConfig<PullDownButton>(elementSection);
-                }
-                else if (elementSection.GetSection(nameof(AboutButton.Content)).Exists())
-                { // About
-                    LoadFromConfig<AboutButton>(elementSection);
-                }
-                else
-                { // Layout element
-                    var typeSection = elementSection.GetSection(nameof(PanelLayoutElement.LayoutElementType));
-                    if (typeSection.Exists())
-                    {
-                        var type = typeSection.Get<PanelLayoutElementType>();
-                        switch (type)
-                        {
-                            case PanelLayoutElementType.Separator:
-                                Separator();
-                                break;
-                            case PanelLayoutElementType.SlideOut:
-                                SlideOut();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException($"Unknown panel layout element type: {type}");
-                        }
-                    }
-                }
+                var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(itemSection));
+                strategy?.CreateAndAddToPanelConfig(itemSection, this);
             }
-        }
-
-        private T LoadFromConfig<T>(IConfigurationSection elementSection)
-            where T : IRibbonPanelElement
-        {
-            var element = elementSection.Get<T>();
-            BuildingPanel.Elements.Add(element);
-            return element;
         }
     }
 }

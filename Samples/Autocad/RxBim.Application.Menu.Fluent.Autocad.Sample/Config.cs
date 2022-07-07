@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Autocad.Sample
 {
-    using System.Collections.Generic;
     using Commands;
     using Di;
     using Ribbon;
@@ -13,92 +12,11 @@
         {
             container.AddAutocadMenu(ribbon =>
                 ribbon
-                    .DisplayVersion(true)
-                    .VersionPrefix("Version: ")
-                    .Tab(
-                        title: "RxBim_Tab_FromAttributes",
-                        tab => tab
-                            .AboutButton(
-                                name: "About",
-                                new AboutBoxContent(
-                                    title: "RxBim4AutoCAD",
-                                    productVersion: "1.0",
-                                    description: "RxBim product module for API demo and validation",
-                                    buildVersion: GetType().Assembly.GetName().Version,
-                                    companyName: "ReactiveBIM",
-                                    links: new Dictionary<string, string>
-                                    {
-                                        { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                                    }),
-                                button => button
-                                    .Text("About\nbutton")
-                                    .ToolTip("About information")
-                                    .Description("Button for displaying the About window")
-                                    .LargeImage(@"img.about_32.png", ThemeType.Dark)
-                                    .LargeImage(@"img.about_32_light.png", ThemeType.Light))
-                            .Panel(
-                                title: "RxBim_Panel_1",
-                                panel => panel
-                                    .CommandButton<Cmd1>("Command1_Large_WithText")
-                                    .CommandButton<Cmd2>("Command2_Large_WithText")
-                                    .CommandButton<Cmd3>("Command3_Large_WithText")
-                                    .Separator()
-                                    .PullDownButton(
-                                        "Pulldown1",
-                                        pulldown => pulldown
-                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
-                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
-                                            .Text("Pulldown #1")
-                                            .CommandButton<Cmd1>("Command #1")
-                                            .CommandButton<Cmd2>("Command #2")
-                                            .CommandButton<Cmd3>("Command #3"))
-                                    .SlideOut()
-                                    .CommandButton<Cmd1>("Command1_Large_SlideOut")
-                                    .CommandButton<Cmd2>("Command2_Large_SlideOut")
-                                    .CommandButton<Cmd3>("Command3_Large_SlideOut"))
-                            .Panel("RxBim_Panel_2",
-                                panel => panel
-                                    .StackedItems(items => items
-                                        .CommandButton<Cmd1>("Command1_Small_WithText")
-                                        .CommandButton<Cmd2>("Command2_Small_WithText")
-                                        .CommandButton<Cmd3>("Command3_Small_WithText"))
-                                    .Separator()
-                                    .StackedItems(items => items
-                                        .CommandButton<Cmd1>("Command1_Large_WithText")
-                                        .CommandButton<Cmd2>("Command2_Large_WithText"))
-                                    .Separator()
-                                    .StackedItems(items => items
-                                        .PullDownButton(
-                                            "Pulldown2",
-                                            pulldown => pulldown
-                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
-                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
-                                                .CommandButton<Cmd1>("Command #1")
-                                                .CommandButton<Cmd2>("Command #2")
-                                                .CommandButton<Cmd3>("Command #3"))
-                                        .CommandButton<Cmd1>("Command1_Small")
-                                        .CommandButton<Cmd2>("Command2_Small"))))
+                    .EnableDisplayVersion()
+                    .SetVersionPrefix("Version: ")
                     .Tab(
                         title: "RxBim_Tab_FromAction",
                         tab => tab
-                            .AboutButton(
-                                name: "About",
-                                new AboutBoxContent(
-                                    title: "RxBim4AutoCAD",
-                                    productVersion: "1.0",
-                                    description: "RxBim product module for API demo and validation",
-                                    buildVersion: GetType().Assembly.GetName().Version,
-                                    companyName: "ReactiveBIM",
-                                    links: new Dictionary<string, string>
-                                    {
-                                        { "Download examples", "https://github.com/ReactiveBIM/RxBim.Examples" }
-                                    }),
-                                button => button
-                                    .Text("About\nbutton")
-                                    .ToolTip("About information")
-                                    .Description("Button for displaying the About window")
-                                    .LargeImage(@"img.about_32.png", ThemeType.Dark)
-                                    .LargeImage(@"img.about_32_light.png", ThemeType.Light))
                             .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel
@@ -221,7 +139,52 @@
                                         .CommandButton(
                                             "Command2_Small",
                                             typeof(Cmd2),
-                                            button => SetupCommand2Button(button))))));
+                                            button => SetupCommand2Button(button)))))
+                .Tab(
+                        title: "RxBim_Tab_FromAttributes",
+                        tab => tab
+                            .Panel(
+                                title: "RxBim_Panel_1",
+                                panel => panel
+                                    .CommandButton<Cmd1>("Command1_Large_WithText")
+                                    .CommandButton<Cmd2>("Command2_Large_WithText")
+                                    .CommandButton<Cmd3>("Command3_Large_WithText")
+                                    .Separator()
+                                    .PullDownButton(
+                                        "Pulldown1",
+                                        pulldown => pulldown
+                                            .LargeImage(@"img.command_32.ico", ThemeType.Dark)
+                                            .LargeImage(@"img.command_32_light.ico", ThemeType.Light)
+                                            .Text("Pulldown #1")
+                                            .CommandButton<Cmd1>("Command #1")
+                                            .CommandButton<Cmd2>("Command #2")
+                                            .CommandButton<Cmd3>("Command #3"))
+                                    .SlideOut()
+                                    .CommandButton<Cmd1>("Command1_Large_SlideOut")
+                                    .CommandButton<Cmd2>("Command2_Large_SlideOut")
+                                    .CommandButton<Cmd3>("Command3_Large_SlideOut"))
+                            .Panel("RxBim_Panel_2",
+                                panel => panel
+                                    .StackedItems(items => items
+                                        .CommandButton<Cmd1>("Command1_Small_WithText")
+                                        .CommandButton<Cmd2>("Command2_Small_WithText")
+                                        .CommandButton<Cmd3>("Command3_Small_WithText"))
+                                    .Separator()
+                                    .StackedItems(items => items
+                                        .CommandButton<Cmd1>("Command1_Large_WithText")
+                                        .CommandButton<Cmd2>("Command2_Large_WithText"))
+                                    .Separator()
+                                    .StackedItems(items => items
+                                        .PullDownButton(
+                                            "Pulldown2",
+                                            pulldown => pulldown
+                                                .SmallImage(@"img.command_16.ico", ThemeType.Dark)
+                                                .SmallImage(@"img.command_16_light.ico", ThemeType.Light)
+                                                .CommandButton<Cmd1>("Command #1")
+                                                .CommandButton<Cmd2>("Command #2")
+                                                .CommandButton<Cmd3>("Command #3"))
+                                        .CommandButton<Cmd1>("Command1_Small")
+                                        .CommandButton<Cmd2>("Command2_Small")))));
         }
 
         private static TButtonBuilder SetupCommand1Button<TButtonBuilder>(TButtonBuilder button)

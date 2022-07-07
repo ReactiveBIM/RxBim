@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines a ribbon button configuration builder.
     /// </summary>
-    public interface IButtonBuilder<out TButtonBuilder> /////: IButtonBuilderBase
+    public interface IButtonBuilder<out TButtonBuilder>
         where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
     {
         /// <summary>

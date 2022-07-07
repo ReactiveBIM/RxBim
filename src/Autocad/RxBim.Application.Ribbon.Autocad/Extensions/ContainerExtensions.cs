@@ -2,8 +2,8 @@
 {
     using System;
     using System.Reflection;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Di;
     using Services;
 
     /// <summary>
@@ -23,8 +23,8 @@
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(builder, menuAssembly);
+            container.AddServices();
+            container.AddMenu<AutocadRibbonMenuBuilder>(builder, menuAssembly);
         }
 
         /// <summary>
@@ -39,15 +39,20 @@
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddInternalObjects();
-            container.AddMenu<AutocadRibbonMenuBuilderFactory>(cfg, menuAssembly);
+            container.AddServices();
+            container.AddMenu<AutocadRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
-        private static void AddInternalObjects(this IContainer container)
+        private static void AddServices(this IContainer container)
         {
+            container.RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
             container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
             container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
-            container.AddSingleton<IThemeService, ThemeService>();
+            container.AddSingleton<IColorThemeService, ColorThemeService>();
+            container.AddSingleton<ITabService, TabService>();
+            container.AddSingleton<IPanelService, PanelService>();
+            container.AddSingleton<IButtonService, ButtonService>();
+            container.AddSingleton<IRibbonComponentStorageService, RibbonComponentStorageService>();
         }
     }
 }

@@ -10,8 +10,8 @@
         public void Configure(IContainer container)
         {
             container.AddRevitMenu(ribbon => ribbon
-                .DisplayVersion(true)
-                .VersionPrefix("Version: ")
+                .EnableDisplayVersion()
+                .SetVersionPrefix("Version: ")
                 .TabFromAttributes()
                 .TabFromBuilder());
         }

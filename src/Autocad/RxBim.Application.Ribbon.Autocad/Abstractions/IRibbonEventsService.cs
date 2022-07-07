@@ -8,7 +8,7 @@
     public interface IRibbonEventsService
     {
         /// <summary>
-        /// Raises when the ribbon needs to rebuild.
+        /// Ribbon need to rebuild
         /// </summary>
         event EventHandler NeedRebuild;
 

@@ -11,11 +11,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="img\about_16.png" />
-    <EmbeddedResource Include="img\about_16.png" />
-    <None Remove="img\about_32.png" />
-    <EmbeddedResource Include="img\about_32.png" />
+  <ItemGroup>   
     <None Remove="img\command_16.png" />
     <EmbeddedResource Include="img\command_16.ico" />
     <EmbeddedResource Include="img\command_16.png" />

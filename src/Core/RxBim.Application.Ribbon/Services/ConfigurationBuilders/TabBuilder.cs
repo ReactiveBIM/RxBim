@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -8,28 +9,15 @@
     /// </summary>
     public class TabBuilder : ITabBuilder
     {
-        private readonly RibbonBuilder _ribbonBuilder;
+        private readonly Tab _tab = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TabBuilder"/> class.
         /// </summary>
         /// <param name="name">Tab name.</param>
-        /// <param name="ribbonBuilder">Ribbon builder.</param>
-        public TabBuilder(string name, RibbonBuilder ribbonBuilder)
+        public TabBuilder(string name)
         {
-            _ribbonBuilder = ribbonBuilder;
-            BuildingTab.Name = name;
-        }
-
-        /// <summary>
-        /// The tab to create configuration.
-        /// </summary>
-        public Tab BuildingTab { get; } = new();
-
-        /// <inheritdoc />
-        public IRibbonBuilder ReturnToRibbon()
-        {
-            return _ribbonBuilder;
+            _tab.Name = name;
         }
 
         /// <inheritdoc />
@@ -39,24 +27,22 @@
             return this;
         }
 
-        /// <inheritdoc />
-        public ITabBuilder AboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IAboutButtonBuilder>? builder = null,
-            string? panelName = null)
+        /// <summary>
+        /// Returns tab.
+        /// </summary>
+        internal Tab Build()
         {
-            var panel = new PanelBuilder(panelName ?? name, _ribbonBuilder);
-            panel.AddAboutButton(name, content, builder);
-            BuildingTab.Panels.Add(panel.BuildingPanel);
-            return this;
+            return _tab;
         }
 
         /// <summary>
-        /// Loads a tab from configuration.
+        /// Load from config
         /// </summary>
-        /// <param name="section">Tab config section.</param>
-        internal void LoadFromConfig(IConfigurationSection section)
+        /// <param name="section">Tab config section</param>
+        /// <param name="fromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
+        internal void LoadFromConfig(
+            IConfigurationSection section,
+            IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
             var panelsSection = section.GetSection(nameof(Tab.Panels));
             if (!panelsSection.Exists())
@@ -67,15 +53,15 @@
                 if (!panelsSection.Exists())
                     continue;
                 var panel = CreatePanel(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value);
-                panel.LoadFromConfig(panelSection);
+                panel.LoadFromConfig(panelSection, fromConfigStrategies);
             }
         }
 
         private PanelBuilder CreatePanel(string panelTitle, Action<IPanelBuilder>? panel = null)
         {
-            var builder = new PanelBuilder(panelTitle, _ribbonBuilder);
+            var builder = new PanelBuilder(panelTitle);
             panel?.Invoke(builder);
-            BuildingTab.Panels.Add(builder.BuildingPanel);
+            _tab.Panels.Add(builder.Build());
             return builder;
         }
     }

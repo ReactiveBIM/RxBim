@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a ribbon panel.
     /// </summary>
-    public interface IPanelBuilder : IRibbonItemsContainerBuilder
+    public interface IPanelBuilder
     {
         /// <summary>
         /// Adds a new push button to the panel.
@@ -18,7 +18,7 @@
         IPanelBuilder CommandButton(
             string name,
             Type commandType,
-            Action<ICommnadButtonBuilder>? builder = null);
+            Action<ICommandButtonBuilder>? builder = null);
 
         /// <summary>
         /// Adds a new Stacked items on the panel.
@@ -46,14 +46,9 @@
         IPanelBuilder SlideOut();
 
         /// <summary>
-        /// Adds a new button for displaying the About window.
+        /// Adds a item to the panel.
         /// </summary>
-        /// <param name="name">Button name.</param>
-        /// <param name="content">About button content.</param>
-        /// <param name="builder">The button builder.</param>
-        IPanelBuilder AddAboutButton(
-            string name,
-            AboutBoxContent content,
-            Action<IAboutButtonBuilder>? builder = null);
+        /// <param name="item">The ribbon panel item.</param>
+        void AddItem(IRibbonPanelItem item);
     }
 }

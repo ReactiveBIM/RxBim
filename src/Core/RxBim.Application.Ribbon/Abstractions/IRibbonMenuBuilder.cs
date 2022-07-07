@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon
 {
-    using RxBim.Shared.Abstractions;
+    using System;
 
     /// <summary>
     /// Defines a CAD platform-specific ribbon menu builder.
@@ -8,10 +8,14 @@
     public interface IRibbonMenuBuilder
     {
         /// <summary>
+        /// The menu has been created.
+        /// </summary>
+        event EventHandler MenuCreated;
+
+        /// <summary>
         /// Constructs a CAD platform-specific ribbon.
         /// </summary>
         /// <param name="ribbonConfig">The ribbon configuration.</param>
-        /// <param name="aboutShowService">The Service displaying an "About" window.</param>
-        void BuildRibbonMenu(Ribbon? ribbonConfig, IAboutShowService? aboutShowService);
+        void BuildRibbonMenu(Ribbon? ribbonConfig = null);
     }
 }

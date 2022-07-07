@@ -3,7 +3,7 @@
     /// <summary>
     /// Base implementation of a button builder.
     /// </summary>
-    public abstract class ButtonBuilder<TButton, TButtonBuilder> : IButtonBuilderBase<TButton, TButtonBuilder>
+    public abstract class ButtonBuilder<TButton, TButtonBuilder> : IButtonBuilder<TButtonBuilder>
         where TButton : Button, new()
         where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
     {
@@ -13,13 +13,13 @@
         /// <param name="name">The button name.</param>
         protected ButtonBuilder(string name)
         {
-            BuildingButton.Name = name;
+            Button.Name = name;
         }
 
         /// <summary>
         /// The button to create configuration.
         /// </summary>
-        public TButton BuildingButton { get; } = new();
+        protected TButton Button { get; } = new();
 
         /// <inheritdoc />
         public TButtonBuilder LargeImage(string imageRelativePath, ThemeType theme = ThemeType.All)
@@ -28,10 +28,10 @@
             {
                 case ThemeType.All:
                 case ThemeType.Dark:
-                    BuildingButton.LargeImage = imageRelativePath;
+                    Button.LargeImage = imageRelativePath;
                     break;
                 case ThemeType.Light:
-                    BuildingButton.LargeImageLight = imageRelativePath;
+                    Button.LargeImageLight = imageRelativePath;
                     break;
             }
 
@@ -45,10 +45,10 @@
             {
                 case ThemeType.All:
                 case ThemeType.Dark:
-                    BuildingButton.SmallImage = imageRelativePath;
+                    Button.SmallImage = imageRelativePath;
                     break;
                 case ThemeType.Light:
-                    BuildingButton.SmallImageLight = imageRelativePath;
+                    Button.SmallImageLight = imageRelativePath;
                     break;
             }
 
@@ -58,29 +58,37 @@
         /// <inheritdoc />
         public TButtonBuilder Description(string description)
         {
-            BuildingButton.Description = description;
+            Button.Description = description;
             return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
         public TButtonBuilder ToolTip(string toolTip)
         {
-            BuildingButton.ToolTip = toolTip;
+            Button.ToolTip = toolTip;
             return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
         public TButtonBuilder Text(string text)
         {
-            BuildingButton.Text = text;
+            Button.Text = text;
             return (this as TButtonBuilder)!;
         }
 
         /// <inheritdoc />
         public TButtonBuilder HelpUrl(string url)
         {
-            BuildingButton.HelpUrl = url;
+            Button.HelpUrl = url;
             return (this as TButtonBuilder)!;
+        }
+
+        /// <summary>
+        /// Returns button.
+        /// </summary>
+        internal TButton Build()
+        {
+            return Button;
         }
     }
 }
