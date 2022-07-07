@@ -22,22 +22,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\RxBim.MsiBuilder\Options.cs">
-        <Link>Options.cs</Link>
-      </Compile>
+        <Compile Include="..\RxBim.MsiBuilder\Options.cs">
+            <Link>Options.cs</Link>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Builders\uninstall.pas" />
+        <EmbeddedResource Include="Builders\uninstall.pas" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Directory.Build.Props" />
+        <None Include="Directory.Build.Props" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+      <Content Include="Directory.Build.Props" />
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
-         <Description>RxBim nuke plugin for building MSI</Description>
+        <Description>RxBim nuke plugin for building MSI</Description>
         <PackageId>RxBim.Nuke</PackageId>
     </PropertyGroup>
 
