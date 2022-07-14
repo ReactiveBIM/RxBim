@@ -22,6 +22,7 @@ using Enumeration = Versions.Enumeration;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[]
     {
         DevelopBranch, FeatureBranches
