@@ -37,6 +37,7 @@ using Enumeration = Versions.Enumeration;
     })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[]
     {
         MasterBranch, "release/**"
