@@ -20,6 +20,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="diagnosticSpan">A span.</param>
-        public Task<CodeAction> Create(CodeFixContext context, TextSpan diagnosticSpan);
+        public Task<CodeAction?> Create(CodeFixContext context, TextSpan diagnosticSpan);
     }
 }

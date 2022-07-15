@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <UseWpf>true</UseWpf>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
+        <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\..\src\Autocad\RxBim.Logs.Autocad\RxBim.Logs.Autocad.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="appsettings.RxBim.Command.Autocad.Example.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <PropertyGroup>
+        <PackageGuid>b1390114-2d4b-4eba-89c6-49165a83c0ea</PackageGuid>
+        <UpgradeCode>368d8d8c-ca53-4801-bf1b-f871d58a11ca</UpgradeCode>
+    </PropertyGroup>
+</Project>

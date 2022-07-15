@@ -107,7 +107,8 @@ namespace RxBim.Logs.Settings.Configuration
             // Per issue #111, it is safe to use case-insensitive matching on argument names. The CLR doesn't permit this type
             // of overloading, and the Microsoft.Extensions.Configuration keys are case-insensitive (case is preserved with some
             // config sources, but key-matching is case-insensitive and case-preservation does not appear to be guaranteed).
-            var selectedMethod = candidateMethods
+            var candidateMethodsList = candidateMethods.ToList();
+            var selectedMethod = candidateMethodsList
                 .Where(m => m.Name == name)
                 .Where(m => m.GetParameters()
                     .Skip(1)
@@ -128,20 +129,21 @@ namespace RxBim.Logs.Settings.Configuration
 
             if (selectedMethod == null)
             {
-                var methodsByName = candidateMethods
+                var methodsByName = candidateMethodsList
                     .Where(m => m.Name == name)
                     .Select(m => $"{m.Name}({string.Join(", ", m.GetParameters().Skip(1).Select(p => p.Name))})")
                     .ToList();
 
                 if (!methodsByName.Any())
                 {
-                    SelfLog.WriteLine($"Unable to find a method called {name}. Candidate methods are:{Environment.NewLine}{string.Join(Environment.NewLine, candidateMethods)}");
+                    SelfLog.WriteLine($"Unable to find a method called {name}. Candidate methods are:{Environment.NewLine}{string.Join(Environment.NewLine, candidateMethodsList)}");
                 }
                 else
                 {
+                    var suppliedArgumentNamesList = suppliedArgumentNames.ToList();
                     SelfLog.WriteLine($"Unable to find a method called {name} "
-                                      + (suppliedArgumentNames.Any()
-                                          ? "for supplied arguments: " + string.Join(", ", suppliedArgumentNames)
+                                      + (suppliedArgumentNamesList.Any()
+                                          ? "for supplied arguments: " + string.Join(", ", suppliedArgumentNamesList)
                                           : "with no supplied arguments")
                                       + ". Candidate methods are:"
                                       + Environment.NewLine
@@ -194,7 +196,7 @@ namespace RxBim.Logs.Settings.Configuration
         }
 
         private static IReadOnlyCollection<Assembly> LoadConfigurationAssemblies(
-            IConfigurationSection section,
+            IConfiguration section,
             AssemblyFinder assemblyFinder)
         {
             var serilogAssembly = typeof(ILogger).Assembly;
@@ -371,7 +373,8 @@ namespace RxBim.Logs.Settings.Configuration
                     _resolutionContext.LookUpSwitchByName(minLevelControlledByDirective.Value);
 
                 // not calling ApplyMinimumLevel local function because here we have a reference to a LogLevelSwitch already
-                loggerConfiguration.MinimumLevel.ControlledBy(globalMinimumLevelSwitch);
+                if (globalMinimumLevelSwitch != null)
+                    loggerConfiguration.MinimumLevel.ControlledBy(globalMinimumLevelSwitch);
             }
 
             foreach (var overrideDirective in minimumLevelDirective.GetSection("Override").GetChildren())
@@ -388,7 +391,8 @@ namespace RxBim.Logs.Settings.Configuration
                     var overrideSwitch = _resolutionContext.LookUpSwitchByName(overridenLevelOrSwitch);
 
                     // not calling ApplyMinimumLevel local function because here we have a reference to a LogLevelSwitch already
-                    loggerConfiguration.MinimumLevel.Override(overridePrefix, overrideSwitch);
+                    if (overrideSwitch != null)
+                        loggerConfiguration.MinimumLevel.Override(overridePrefix, overrideSwitch);
                 }
             }
 

@@ -16,14 +16,14 @@
 
   <ItemGroup>
     <PackageReference Include="BimLab.Nuke" Version="2022.2.0" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.3.0" />
-    <PackageReference Include="NuGet.CommandLine" Version="6.0.2">
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.4.0-dev001" />
+    <PackageReference Include="NuGet.CommandLine" Version="6.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="6.0.1" />
-    <PackageReference Include="RazorLight" Version="2.0.0-rc.4" />
-    <PackageReference Include="RevitTestFramework" Version="1.19.22">
+    <PackageReference Include="Nuke.Common" Version="6.1.2" />
+    <PackageReference Include="RazorLight" Version="2.0.0" />
+    <PackageReference Include="RevitTestFramework" Version="1.19.23">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

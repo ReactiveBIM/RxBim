@@ -52,7 +52,10 @@ namespace RxBim.MsiBuilder
         [Option('f', "fileName", Required = true, HelpText = "Set msi file name.")]
         public string? OutFileName { get; set; }
 
-        [Option('a', "addAllAppToManifest", Required = false, HelpText = "Set need add all Application from output to manifest.")]
+        [Option('a',
+            "addAllAppToManifest",
+            Required = false,
+            HelpText = "Set need add all Application from output to manifest.")]
         public bool AddAllAppToManifest { get; set; }
 
         [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]

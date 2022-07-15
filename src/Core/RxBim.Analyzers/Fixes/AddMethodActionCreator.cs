@@ -27,19 +27,22 @@
         protected abstract string MethodName { get; }
 
         /// <inheritdoc />
-        public async Task<CodeAction> Create(CodeFixContext context, TextSpan diagnosticSpan)
+        public async Task<CodeAction?> Create(CodeFixContext context, TextSpan diagnosticSpan)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
+            var parent = root?.FindToken(diagnosticSpan.Start).Parent;
+            if (parent is null)
+                return null;
+
             return CodeAction.Create(
                 title: Title,
-                createChangedSolution: c =>
-                    GetSolutionAsync(root,
-                        context.Document,
-                        root.FindToken(diagnosticSpan.Start)
-                            .Parent.AncestorsAndSelf()
-                            .OfType<TypeDeclarationSyntax>()
-                            .First()),
+                createChangedSolution: _ => GetSolutionAsync(
+                    root!,
+                    context.Document,
+                    parent.AncestorsAndSelf()
+                        .OfType<TypeDeclarationSyntax>()
+                        .First()),
                 equivalenceKey: Title);
         }
 
@@ -49,7 +52,7 @@
             TypeDeclarationSyntax typeDecl)
         {
             var method = SyntaxFactory.MethodDeclaration(SyntaxFactory.List<AttributeListSyntax>(),
-                    SyntaxFactory.TokenList(new SyntaxToken[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) }),
+                    SyntaxFactory.TokenList(new[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) }),
                     SyntaxFactory.ParseTypeName(Constants.PluginResult),
                     null,
                     SyntaxFactory.Identifier(MethodName),
@@ -57,6 +60,7 @@
                     SyntaxFactory.ParameterList(),
                     SyntaxFactory.List<TypeParameterConstraintClauseSyntax>(),
                     SyntaxFactory.Block(SyntaxFactory.ParseStatement("return PluginResult.Succeeded;")),
+                    null,
                     SyntaxFactory.Token(SyntaxKind.None))
                 .WithAdditionalAnnotations(Formatter.Annotation);
 

@@ -1,14 +1,15 @@
 namespace RxBim.Nuke.Builds
 {
+    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using global::Nuke.Common;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Utilities;
     using Models;
+    using nc::Nuke.Common;
+    using nc::Nuke.Common.ProjectModel;
+    using nc::Nuke.Common.Utilities;
 
     /// <content>
     /// Расширение Build-скрипта для сборки MSI. Параметры.
@@ -94,14 +95,13 @@ namespace RxBim.Nuke.Builds
         /// <summary>
         /// Output temp directory path.
         /// </summary>
-        protected virtual string OutputTmpDir
-            => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
+        protected virtual string OutputTmpDir =>
+            _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
 
         /// <summary>
         /// Output "bin" temp directory path.
         /// </summary>
-        protected virtual string OutputTmpDirBin
-            => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
+        protected virtual string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
 
         private Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == _project);
     }
