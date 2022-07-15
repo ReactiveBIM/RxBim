@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <None Update="appsettingsRxBim.Application.Autocad.Example.json">
+    <None Update="appsettings.RxBim.Application.Autocad.Example.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="RxBim.Application.Autocad" Version="1.0.3" />
-    <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.0.0" />
-    <PackageReference Include="RxBim.Logs.Autocad" Version="1.0.3" />   
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Logs.Autocad\RxBim.Logs.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <PackageGuid>2a0d9351-b3f5-4da8-b993-b43f39ba8339</PackageGuid>

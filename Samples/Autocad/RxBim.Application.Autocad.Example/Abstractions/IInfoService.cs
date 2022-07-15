@@ -1,13 +1,13 @@
-﻿namespace RxBim.Application.Autocad.Example
+﻿namespace RxBim.Application.Autocad.Example.Abstractions
 {
     /// <summary>
     /// IService
     /// </summary>
-    public interface IService
+    public interface IInfoService
     {
         /// <summary>
         /// Go
         /// </summary>
-        void Go();
+        void ShowAutocadVersion();
     }
 }
