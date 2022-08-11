@@ -1,9 +1,10 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
+    extern alias nc;
     using System.Collections.Generic;
     using System.Linq;
-    using global::Nuke.Common.IO;
     using Models;
+    using nc::Nuke.Common.IO;
     using static Constants;
     using static Helpers.AssemblyScanner;
 

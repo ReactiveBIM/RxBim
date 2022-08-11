@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj"/>
+        <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
     </ItemGroup>
 
     <!--    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">-->
@@ -16,9 +16,9 @@
     <!--    </ItemGroup>-->
 
     <ItemGroup>
-        <PackageReference Include="Nuke.Common" Version="5.2.1"/>
-        <PackageReference Include="RazorLight" Version="2.0.0-rc.4"/>
-        <PackageReference Include="RevitTestFramework" Version="1.19.22">
+        <PackageReference Include="Nuke.Common" Version="6.1.2" />
+        <PackageReference Include="RazorLight" Version="2.0.0" />
+        <PackageReference Include="RevitTestFramework" Version="1.19.23">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Directory.Build.Props"/>
+        <Content Include="Directory.Build.Props" />
     </ItemGroup>
 
     <PropertyGroup>

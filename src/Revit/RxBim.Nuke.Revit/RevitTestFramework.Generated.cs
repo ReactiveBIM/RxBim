@@ -37,7 +37,7 @@ public static partial class RevitTestTasks
     /// </summary>
     public static IReadOnlyCollection<Output> RevitTest(string arguments, string workingDirectory = null, IReadOnlyDictionary<string, string> environmentVariables = null, int? timeout = null, bool? logOutput = null, bool? logInvocation = null, bool? logTimestamp = null, string logFile = null, Func<string, string> outputFilter = null)
     {
-        using var process = ProcessTasks.StartProcess(RevitTestPath, arguments, workingDirectory, environmentVariables, timeout, logOutput, logInvocation, logTimestamp, logFile, RevitTestLogger, outputFilter);
+        using var process = ProcessTasks.StartProcess(RevitTestPath, arguments, workingDirectory, environmentVariables, timeout, logOutput, logInvocation, RevitTestLogger, outputFilter);
         process.AssertZeroExitCode();
         return process.Output;
     }

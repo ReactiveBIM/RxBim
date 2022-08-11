@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Builders
 {
+    extern alias nc;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Text;
@@ -7,11 +8,11 @@
     using System.Linq;
     using System.Runtime.InteropServices;
     using Extensions;
-    using global::Nuke.Common.IO;
-    using global::Nuke.Common.Utilities.Collections;
     using Helpers;
     using InnoSetup.ScriptBuilder;
     using MsiBuilder;
+    using nc::Nuke.Common.IO;
+    using nc::Nuke.Common.Utilities.Collections;
 
     /// <summary>
     /// The Inno Setup builder.
@@ -51,7 +52,8 @@
             Files
                 .CreateEntry(
                     outputProjBinDir / "*",
-                    InnoConstants.App).Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
+                    InnoConstants.App)
+                .Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
             Files
                 .CreateEntry(outputProjDir / "*", installDir);
         }
@@ -67,8 +69,8 @@
             Options options,
             AbsolutePath outputProjDir,
             AbsolutePath outputProjBinDir,
-            string? setupFileName = null)
-            => new(options, outputProjDir, outputProjBinDir, setupFileName);
+            string? setupFileName = null) =>
+            new(options, outputProjDir, outputProjBinDir, setupFileName);
 
         /// <summary>
         /// Adds setup and uninstall icons from <see cref="Options"/>.
@@ -108,8 +110,8 @@
             return this;
         }
 
-        private static IEnumerable<string> FillFonts(string path)
-            => Directory.EnumerateFiles(path, "*.ttf", SearchOption.AllDirectories).ToList();
+        private static IEnumerable<string> FillFonts(string path) =>
+            Directory.EnumerateFiles(path, "*.ttf", SearchOption.AllDirectories).ToList();
 
         private static string GetFontName(string fontPath)
         {

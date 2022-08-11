@@ -1,13 +1,14 @@
 ﻿namespace RxBim.Nuke.Builders
 {
+    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using Extensions;
     using Generators;
-    using global::Nuke.Common.ProjectModel;
     using Models;
     using MsiBuilder;
+    using nc::Nuke.Common.ProjectModel;
 
     /// <summary>
     /// The Wix package builder.
@@ -52,7 +53,9 @@
         {
             var installDir = GetInstallDir(project, configuration);
             return _options ??= project.GetSetupOptions(
-                installDir, outputDir, configuration);
+                installDir,
+                outputDir,
+                configuration);
         }
 
         /// <summary>

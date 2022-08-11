@@ -19,10 +19,10 @@ using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using Enumeration = Versions.Enumeration;
 
-[CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[]
     {
         DevelopBranch, FeatureBranches
@@ -37,6 +37,7 @@ using Enumeration = Versions.Enumeration;
     })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[]
     {
         MasterBranch, "release/**"

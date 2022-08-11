@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Nuke.Helpers
 {
+    extern alias nc;
     using System;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using global::Nuke.Common.IO;
+    using nc::Nuke.Common.IO;
     using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;
@@ -90,13 +91,13 @@
             {
                 DownLoadFileAsync(url, path).GetAwaiter().GetResult();
             }
-            
+
             public static async Task DownLoadFileAsync(string url, string path)
             {
                 var client = new HttpClient();
                 var bytes = await client.GetByteArrayAsync(url);
                 File.WriteAllBytes(path, bytes);
-            } 
+            }
         }
-}
+    }
 }

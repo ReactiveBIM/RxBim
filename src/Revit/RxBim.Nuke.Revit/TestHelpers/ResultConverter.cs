@@ -6,8 +6,8 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Xml;
-    using global::Nuke.Common;
     using RazorLight;
+    using Serilog;
 
     /// <summary>
     /// Converts RTF xml result into html.
@@ -25,13 +25,13 @@
 
             var testResultData = CreateTestResultData(doc);
 
-            Logger.Info(testResultData.ToString());
+            Log.Information("{Result}", testResultData.ToString());
 
             var result = await RenderResult(testResultData);
 
             await SaveResult(resultPath, result);
 
-            Logger.Info($"Test results has been saved into {resultPath}");
+            Log.Information("Test results has been saved into {ResultPath}", resultPath);
         }
 
         private TestResultData CreateTestResultData(XmlDocument doc)
