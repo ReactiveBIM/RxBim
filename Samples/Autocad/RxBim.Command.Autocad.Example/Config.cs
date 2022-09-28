@@ -4,6 +4,7 @@
     using Di;
     using Logs.Autocad;
     using Services;
+    using ViewModels;
     using Views;
 
     /// <inheritdoc />
@@ -14,6 +15,7 @@
         {
             container.AddTransient<ISomeService, SomeService>();
             container.AddTransient<SomeWindow>();
+            container.AddTransient<SomeViewModel>();
             container.AddLogs();
         }
     }
