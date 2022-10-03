@@ -60,12 +60,12 @@
         /// </summary>
         /// <param name="rootProjectName">Root project name.</param>
         /// <param name="allProject">All projects.</param>
-        /// <param name="additionalAssembliesTypes">Additional assemblies types.</param>
+        /// <param name="allAssembliesTypes">All assemblies types.</param>
         /// <param name="outputDir">Output directory path.</param>
         public virtual void GenerateAdditionalFiles(
             string? rootProjectName,
             IEnumerable<Project> allProject,
-            IEnumerable<AssemblyType> additionalAssembliesTypes,
+            IEnumerable<AssemblyType> allAssembliesTypes,
             string outputDir)
         {
         }
