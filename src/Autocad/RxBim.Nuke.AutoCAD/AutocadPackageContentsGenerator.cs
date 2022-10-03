@@ -18,7 +18,7 @@
             {
                 Description = $"Autocad {acadMinVersion}+ part",
                 Platform = "AutoCAD*",
-                ModuleName = $"{name}\\{name}.dll",
+                ModuleName = $"{project.Name}\\{name}.dll",
                 OS = "Win64",
                 SeriesMin = acadMinVersion
             });
