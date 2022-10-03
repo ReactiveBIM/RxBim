@@ -21,7 +21,8 @@ namespace RxBim.Application.Autocad.Example
         /// <param name="service"><see cref="IInfoService"/> instance.</param>
         public PluginResult Start(IInfoService service)
         {
-            Application.ShowAlertDialog("RxBimApplication example app started!");
+            Application.ShowAlertDialog("RxBimApplication example started!");
+            service.ShowAutocadVersion();
             return PluginResult.Succeeded;
         }
 
@@ -30,7 +31,7 @@ namespace RxBim.Application.Autocad.Example
         /// </summary>
         public PluginResult Shutdown()
         {
-            Application.ShowAlertDialog("RxBimApplication example app finished!");
+            Application.ShowAlertDialog("RxBimApplication example finished!");
             return PluginResult.Succeeded;
         }
     }
