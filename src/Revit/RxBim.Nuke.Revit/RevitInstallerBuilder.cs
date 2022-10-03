@@ -9,17 +9,17 @@
     using Models;
 
     /// <inheritdoc />
-    public class RevitWixBuilder : WixBuilder<RevitPackageContentsGenerator>
+    public class RevitInstallerBuilder : InstallerBuilder<RevitPackageContentsGenerator>
     {
         /// <inheritdoc />
         public override void GenerateAdditionalFiles(
             string? rootProjectName,
             IEnumerable<Project> allProject,
-            IEnumerable<AssemblyType> addInTypes,
+            IEnumerable<AssemblyType> additionalAssembliesTypes,
             string outputDir)
         {
             var addInGenerator = new AddInGenerator();
-            var addInTypesPerProjects = addInTypes
+            var addInTypesPerProjects = additionalAssembliesTypes
                 .Select(x => new ProjectWithAssemblyType(
                     allProject.First(proj => proj.Name == x.AssemblyName), x))
                 .ToList();

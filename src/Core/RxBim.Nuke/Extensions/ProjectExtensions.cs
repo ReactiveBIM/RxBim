@@ -188,9 +188,8 @@
             if (options.AddAllAppToManifest)
             {
                 // Adds all dependency assemblies from the output path
-                additionalFiles = Directory.GetFiles(output, "*.dll")
-                    .Except(new[] { file })
-                    .ToList();
+                additionalFiles = Directory.GetFiles(output, "*.dll").ToList();
+                additionalFiles.Remove(file);
             }
             else if (options.ProjectsAddingToManifest != null
                      && options.ProjectsAddingToManifest.Any())
@@ -225,9 +224,7 @@
             var targetDir = project.Directory / project.GetProperty("OutputPath");
 
             if (multiple)
-            {
                 targetDir /= targetFx;
-            }
 
             return targetDir;
         }
@@ -298,9 +295,7 @@
 
             var fxNameFirst = project.GetTargetFrameworks()?.FirstOrDefault();
             if (string.IsNullOrEmpty(fxNameFirst))
-            {
                 throw new InvalidOperationException($"Can't find target framework for project {project.Name}");
-            }
 
             multiple = true;
             return fxNameFirst;
@@ -310,10 +305,9 @@
             string file,
             string[] typeNames)
         {
-            var types = Scan(file)
+            return Scan(file)
                 .Where(x => typeNames.Contains(x.BaseTypeName))
                 .ToList();
-            return types;
         }
     }
 }
