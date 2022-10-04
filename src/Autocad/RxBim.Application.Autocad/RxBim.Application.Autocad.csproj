@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj"/>
         <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj"/>
     </ItemGroup>
 
