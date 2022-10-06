@@ -1,7 +1,6 @@
 ﻿namespace Versions;
 
-public record AppVersion(string Name, string FullName, params ProjectItem[] Properties)
-    : Enumeration()
+public record AppVersion(string AppName, string AppFullName, params ProjectItem[] Items) : Enumeration
 {
     public static AppVersion Revit2019 = new("Revit", "Autodesk Revit 2019",
         new ApplicationVersion("2019"),
@@ -51,5 +50,5 @@ public record AppVersion(string Name, string FullName, params ProjectItem[] Prop
         new RuntimePackageReference("AutoCAD2021.Base", "1.0.0")
     );
 
-    public override string ToString() => FullName;
+    public override string ToString() => AppFullName;
 }

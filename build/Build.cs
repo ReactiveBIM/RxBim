@@ -139,7 +139,7 @@ partial class Build : NukeBuild,
         });
 
     Target ResetEnv => _ => _
-        .Description("Resets the sulition to its defaults.")
+        .Description("Resets the solution to its defaults.")
         .Executes(() =>
         {
             From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
@@ -153,11 +153,11 @@ partial class Build : NukeBuild,
     private void SetupEnvironment(AppVersion appVersion)
     {
         From<IHazSolution>().Solution.AllProjects
-            .Where(x => x.Directory.ToString().Contains(appVersion.Name) || x.Name.Contains(appVersion.Name))
+            .Where(x => x.Directory.ToString().Contains(appVersion.AppName) || x.Name.Contains(appVersion.AppName))
             .ForEach(p =>
             {
                 File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);
-                Log.Information("Project {project} set up for {app}", p.Name, appVersion.FullName);
+                Log.Information("Project {project} set up for {app}", p.Name, appVersion.AppFullName);
             });
     }
 }
