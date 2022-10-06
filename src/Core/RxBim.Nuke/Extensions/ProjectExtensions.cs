@@ -8,7 +8,6 @@
     using System.Xml.Linq;
     using Builds;
     using Models;
-    using MsiBuilder;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
     using nc::Nuke.Common.Tooling;

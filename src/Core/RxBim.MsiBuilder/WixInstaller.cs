@@ -6,6 +6,7 @@ namespace RxBim.MsiBuilder
     using System.IO;
     using System.Linq;
     using System.Text;
+    using Nuke.Models;
     using WixSharp;
     using WixSharp.CommonTasks;
     using File = WixSharp.File;
@@ -27,7 +28,8 @@ namespace RxBim.MsiBuilder
                         .Concat(new[]
                         {
                             new Dir(projectName, FillEntities(null, new[] { sourceDir }).ToArray())
-                        }).ToArray()))
+                        })
+                        .ToArray()))
             {
                 Description = options.Description,
                 Package =
@@ -56,7 +58,12 @@ namespace RxBim.MsiBuilder
 
             project.AddAction(
                 new ManagedAction(
-                    CustomActions.InstallFonts, GetType().Assembly.Location, Return.ignore, When.After, Step.InstallFinalize, Condition.Always));
+                    CustomActions.InstallFonts,
+                    GetType().Assembly.Location,
+                    Return.ignore,
+                    When.After,
+                    Step.InstallFinalize,
+                    Condition.Always));
 
             var attributesDefinition = $"AdminImage=yes;";
             if (!string.IsNullOrEmpty(options.Comments))
@@ -75,8 +82,8 @@ namespace RxBim.MsiBuilder
         }
 
         private IEnumerable<WixEntity> FillEntities(
-            Dir parent,
-            IEnumerable<string> paths,
+            Dir? parent,
+            IEnumerable<string?> paths,
             bool withSubDirectories = true)
         {
             var added = new List<string>();
@@ -85,6 +92,9 @@ namespace RxBim.MsiBuilder
 
             foreach (var path in paths)
             {
+                if (path is null)
+                    continue;
+
                 foreach (var file in Directory.EnumerateFiles(path, "*"))
                 {
                     var info = new FileInfo(file);

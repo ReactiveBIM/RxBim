@@ -7,7 +7,6 @@
     using Extensions;
     using Generators;
     using Models;
-    using MsiBuilder;
     using nc::Nuke.Common.ProjectModel;
 
     /// <summary>

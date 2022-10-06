@@ -1,5 +1,7 @@
-﻿#pragma warning disable SA1600,1591
-namespace RxBim.MsiBuilder
+﻿#pragma warning disable CS1591
+#pragma warning disable SA1600
+
+namespace RxBim.Nuke.Models
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -97,8 +99,8 @@ namespace RxBim.MsiBuilder
                     foreach (var v in eValue)
                     {
                         if (result.Length > 0)
-                            result.Append(" ");
-                        result.Append(v.ToString());
+                            result.Append(' ');
+                        result.Append(v);
                     }
 
                     return result.ToString();

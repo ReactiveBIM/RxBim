@@ -10,7 +10,7 @@
     using Extensions;
     using Helpers;
     using InnoSetup.ScriptBuilder;
-    using MsiBuilder;
+    using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.Utilities.Collections;
 

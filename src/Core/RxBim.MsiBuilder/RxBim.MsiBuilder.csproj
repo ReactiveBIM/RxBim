@@ -10,6 +10,12 @@
       <PackageReference Include="WixSharp.bin" Version="1.17.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Include="..\RxBim.Nuke\Models\Options.cs">
+        <Link>Options.cs</Link>
+      </Compile>
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
          <Description>RxBim MSI builder</Description>

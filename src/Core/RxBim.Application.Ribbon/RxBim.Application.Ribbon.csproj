@@ -19,7 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
