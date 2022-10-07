@@ -3,39 +3,23 @@ using Nuke.Common;
 
 interface IVersion2020Build : IPublish
 {
-    Target Compile2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Compile);
+    Target SetupEnv2020 => _ => _
+        .Before<IRestore>()
+        .Executes(() =>
+        {
+            this.SetupEnvironment(AppVersion.Revit2020);
+            this.SetupEnvironment(AppVersion.Autocad2020);
+        });
 
-    Target Restore2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Restore);
+    Target Compile2020 => _ => _.DependsOn(SetupEnv2020, Compile);
 
-    Target Pack2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Pack);
+    Target Restore2020 => _ => _.DependsOn(SetupEnv2020, Restore);
 
-    Target Release2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Release);
+    Target Pack2020 => _ => _.DependsOn(SetupEnv2020, Pack);
 
-    Target Prerelease2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Prerelease);
+    Target Release2020 => _ => _.DependsOn(SetupEnv2020, Release);
 
-    Target Publish2020 => _ => _
-        .Unlisted()
-        .Executes(SetupEnv2020)
-        .Triggers(Publish);
-    
-    void SetupEnv2020()
-    {
-        this.SetupEnvironment(AppVersion.Revit2020);
-        this.SetupEnvironment(AppVersion.Autocad2020);
-    }
+    Target Prerelease2020 => _ => _.DependsOn(SetupEnv2020, Prerelease);
+
+    Target Publish2020 => _ => _.DependsOn(SetupEnv2020, Publish);
 }

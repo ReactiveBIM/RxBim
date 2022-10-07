@@ -8,6 +8,12 @@ using static Nuke.Common.IO.FileSystemTasks;
 
 interface IVersionBuild : IVersion2020Build, IVersion2021Build
 {
+    Target CompileAllVersions => _ => _
+        .Executes(() =>
+        {
+            
+        });
+    
     Target SetupEnv => _ => _
         .Description("Sets the solution up to work with particular version of CAD/BIM.")
         .Executes(() =>

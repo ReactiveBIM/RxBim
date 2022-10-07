@@ -5,6 +5,7 @@
         <NoWarn>NU1701;NU1702;CS1591</NoWarn>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <NotRefenceApi>true</NotRefenceApi>
+        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

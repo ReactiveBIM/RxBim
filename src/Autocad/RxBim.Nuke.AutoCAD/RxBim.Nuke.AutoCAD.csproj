@@ -5,6 +5,7 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Configurations>Debug;Release</Configurations>
         <NotRefenceApi>true</NotRefenceApi>
+        <Version>$(ApiVersion)</Version>
     </PropertyGroup>
 
     <ItemGroup>
