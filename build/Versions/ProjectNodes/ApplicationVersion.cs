@@ -1,0 +1,1 @@
+public record ApplicationVersion(string Value) : ProjectNode(nameof(ApplicationVersion), Value, NodeType.Property);

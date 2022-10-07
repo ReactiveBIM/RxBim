@@ -2,8 +2,6 @@
 using System.Text;
 using System.Xml;
 
-namespace Versions;
-
 public static class AppVersionExtensions
 {
     public static string ToProjectProps(this AppVersion appVersion) =>
@@ -22,8 +20,8 @@ public static class AppVersionExtensions
     static XmlElement GenerateProjectElement(this AppVersion appVersion, XmlDocument doc)
     {
         var projectElement = doc.CreateElement("Project");
-        projectElement.AddGroup(appVersion, doc, "PropertyGroup", ItemType.Property);
-        projectElement.AddGroup(appVersion, doc, "ItemGroup", ItemType.Item);
+        projectElement.AddGroup(appVersion, doc, "PropertyGroup", NodeType.Property);
+        projectElement.AddGroup(appVersion, doc, "ItemGroup", NodeType.Item);
         return projectElement;
     }
 
@@ -32,27 +30,27 @@ public static class AppVersionExtensions
         AppVersion appVersion,
         XmlDocument doc,
         string groupName,
-        ItemType type)
+        NodeType type)
     {
         var group = doc.CreateElement(groupName);
 
-        foreach (var item in appVersion.Items.Where(x => x.Type == type))
+        foreach (var item in appVersion.Nodes.Where(x => x.Type == type))
             group.AppendChild(item.ToXmlElement(doc));
 
         projectElement.AppendChild(group);
     }
 
-    static XmlElement ToXmlElement(this ProjectItem item, XmlDocument doc)
+    static XmlElement ToXmlElement(this ProjectNode node, XmlDocument doc)
     {
-        var xmlElement = doc.CreateElement(item.Name);
-        if (item.Attributes != null)
+        var xmlElement = doc.CreateElement(node.Name);
+        if (node.Attributes != null)
         {
-            foreach (var attribute in item.Attributes)
+            foreach (var attribute in node.Attributes)
                 xmlElement.SetAttribute(attribute.Name, attribute.Value);
         }
 
-        if (!string.IsNullOrWhiteSpace(item.Value))
-            xmlElement.InnerText = item.Value;
+        if (!string.IsNullOrWhiteSpace(node.Value))
+            xmlElement.InnerText = node.Value;
 
         return xmlElement;
     }

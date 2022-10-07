@@ -4,6 +4,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
         <NoWarn>CS0618</NoWarn>
+        <DefineConstants>$(RxBimDefineConstants)</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="!$(ProjectName.Contains('Tests'))">

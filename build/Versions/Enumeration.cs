@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Versions;
-
 public abstract record Enumeration
 {
     public static IEnumerable<T> GetAll<T>() where T : Enumeration =>

@@ -1,6 +1,4 @@
-﻿namespace Versions;
-
-public record AppVersion(string AppName, string AppFullName, params ProjectItem[] Items) : Enumeration
+﻿public record AppVersion(string AppName, string AppFullName, params ProjectNode[] Nodes) : Enumeration
 {
     public static AppVersion Revit2019 = new("Revit", "Autodesk Revit 2019",
         new ApplicationVersion("2019"),

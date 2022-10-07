@@ -1,0 +1,1 @@
+public record NodeAttribute(string Name, string Value);

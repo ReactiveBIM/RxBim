@@ -13,11 +13,10 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
 using Serilog;
-using Versions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using Enumeration = Versions.Enumeration;
+using Enumeration = Enumeration;
 
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
@@ -126,14 +125,14 @@ partial class Build : NukeBuild,
     [Parameter(ValueProviderMember = nameof(values))]
     string AppVersion { get; set; }
 
-    IEnumerable<string> values => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
+    IEnumerable<string> values => global::Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
 
     Target SetupEnv => _ => _
         .Description("Sets the solution up to work with particular version of CAD/BIM.")
         .Requires(() => AppVersion)
         .Executes(() =>
         {
-            var appVersion = Enumeration.GetAll<AppVersion>()
+            var appVersion = global::Enumeration.GetAll<AppVersion>()
                 .SingleOrError(x => x.ToString() == AppVersion, "Selected application not found");
             SetupEnvironment(appVersion);
         });

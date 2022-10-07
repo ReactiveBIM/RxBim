@@ -1,0 +1,1 @@
+public record TargetFramework(string Value) : ProjectNode(nameof(TargetFramework), Value, NodeType.Property);
