@@ -1,22 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
+using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
-using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
-using Serilog;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using Enumeration = Enumeration;
 
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
@@ -49,8 +45,8 @@ using Enumeration = Enumeration;
     {
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
-partial class Build : NukeBuild,
-    IPublish
+[PublicAPI]
+partial class Build : NukeBuild, IVersionBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -84,7 +80,7 @@ partial class Build : NukeBuild,
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
 
-    [Parameter] public bool AttachDebugger = false;
+    [Parameter] public bool AttachDebugger;
 
     /// <summary>
     /// Example target. Runs local only....
@@ -122,41 +118,10 @@ partial class Build : NukeBuild,
                 .Convert(results, resultPath);
         });
 
-    [Parameter(ValueProviderMember = nameof(values))]
-    string AppVersion { get; set; }
-
-    IEnumerable<string> values => global::Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
-
-    Target SetupEnv => _ => _
-        .Description("Sets the solution up to work with particular version of CAD/BIM.")
-        .Requires(() => AppVersion)
-        .Executes(() =>
-        {
-            var appVersion = global::Enumeration.GetAll<AppVersion>()
-                .SingleOrError(x => x.ToString() == AppVersion, "Selected application not found");
-            SetupEnvironment(appVersion);
-        });
-
-    Target ResetEnv => _ => _
-        .Description("Resets the solution to its defaults.")
-        .Executes(() =>
-        {
-            From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
-                .ForEach(DeleteFile);
-        });
-
-    private T From<T>()
+    T From<T>()
         where T : INukeBuild
         => (T)(object)this;
 
-    private void SetupEnvironment(AppVersion appVersion)
-    {
-        From<IHazSolution>().Solution.AllProjects
-            .Where(x => x.Directory.ToString().Contains(appVersion.AppName) || x.Name.Contains(appVersion.AppName))
-            .ForEach(p =>
-            {
-                File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);
-                Log.Information("Project {project} set up for {app}", p.Name, appVersion.AppFullName);
-            });
-    }
+    /// <inheritdoc />
+    public string CurrentAppVersion { get; set; }
 }
