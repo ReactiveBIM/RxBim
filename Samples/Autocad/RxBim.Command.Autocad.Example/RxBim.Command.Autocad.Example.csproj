@@ -22,4 +22,6 @@
         <PackageGuid>b1390114-2d4b-4eba-89c6-49165a83c0ea</PackageGuid>
         <UpgradeCode>368d8d8c-ca53-4801-bf1b-f871d58a11ca</UpgradeCode>
     </PropertyGroup>
+
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
 </Project>

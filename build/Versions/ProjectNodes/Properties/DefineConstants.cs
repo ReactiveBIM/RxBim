@@ -1,0 +1,1 @@
+﻿public record DefineConstants(string Value) : ProjectNode(nameof(DefineConstants), Value, NodeType.Property);
