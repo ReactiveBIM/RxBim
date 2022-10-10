@@ -4,6 +4,10 @@
 
 namespace RxBim.Nuke.Versions
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     public partial class AppVersion
     {
         public static AppVersion Revit2019 = new(
@@ -85,5 +89,15 @@ namespace RxBim.Nuke.Versions
             new TargetFramework("net48"),
             new RuntimePackageReference("AutoCAD2021.Base", "1.0.0"),
             new DefineConstants("ACAD2023"));
+
+        /// <summary>
+        /// Returns all members of the enumeration.
+        /// </summary>
+        public static IEnumerable<AppVersion> GetAll() =>
+            typeof(AppVersion).GetFields(BindingFlags.Public |
+                                         BindingFlags.Static |
+                                         BindingFlags.DeclaredOnly)
+                .Select(f => f.GetValue(null))
+                .Cast<AppVersion>();
     }
 }

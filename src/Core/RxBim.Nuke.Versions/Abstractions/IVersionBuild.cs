@@ -8,7 +8,6 @@ namespace RxBim.Nuke.Versions
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
-    using static EnumerationUtils;
     using static global::Nuke.Common.IO.FileSystemTasks;
 
     public partial interface IVersionBuild : IPublish
@@ -18,7 +17,7 @@ namespace RxBim.Nuke.Versions
             .Requires(() => AppVersion)
             .Executes(() =>
             {
-                var appVersion = GetAll<AppVersion>()
+                var appVersion = AppVersion.GetAll()
                     .SingleOrError(x => x.Description == AppVersion.Description, "Selected version not found");
                 this.SetupEnvironment(appVersion!);
             });
