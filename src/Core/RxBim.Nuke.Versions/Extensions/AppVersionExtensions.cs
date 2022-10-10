@@ -18,7 +18,7 @@
         /// <param name="project"><see cref="Project"/> object.</param>
         public static bool IsApplicableFor(this AppVersion appVersion, Project project)
         {
-            var appName = appVersion.AppType.ToString();
+            var appName = appVersion.Type.ToString();
             return project.Directory.ToString().Contains(appName) || project.Name.Contains(appName);
         }
 

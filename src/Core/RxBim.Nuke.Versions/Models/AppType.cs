@@ -3,7 +3,7 @@
     /// <summary>
     /// Type of CAD application.
     /// </summary>
-    public enum CadAppType
+    public enum AppType
     {
         /// <summary>
         /// Revit application.
