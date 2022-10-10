@@ -1,7 +1,11 @@
-﻿using Nuke.Common;
+﻿#pragma warning disable CS1591
+#pragma warning disable SA1205
+#pragma warning disable SA1600
 
 namespace RxBim.Nuke.Versions
 {
+    using global::Nuke.Common;
+
     partial interface IVersionBuild
     {
         Target SetupEnv2021 => _ => _

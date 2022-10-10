@@ -1,4 +1,7 @@
-﻿namespace RxBim.Nuke.Versions
+﻿#pragma warning disable SA1205
+#pragma warning disable SA1600
+
+namespace RxBim.Nuke.Versions
 {
     using global::Nuke.Common;
 

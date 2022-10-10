@@ -4,7 +4,7 @@ namespace RxBim.Nuke.Versions
     /// Application version property.
     /// </summary>
     /// <param name="Value">Property value.</param>
-    public record ApplicationVersion(string Value) : ProjectSettingBase(nameof(ApplicationVersion),
+    public record ApplicationVersion(string Value) : ProjectSetting(nameof(ApplicationVersion),
         Value,
         SettingType.Property);
 }
