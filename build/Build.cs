@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
@@ -15,7 +14,6 @@ using RxBim.Nuke.Versions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using Enumeration = RxBim.Nuke.Versions.Enumeration;
 
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
@@ -61,7 +59,7 @@ class Build : NukeBuild, IVersionBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().List);
+    public static int Main() => Execute<Build>(x => x.From<IVersionBuild>().SetupEnv);
 
     Target Clean => _ => _
         .Before<IRestore>()
@@ -125,8 +123,6 @@ class Build : NukeBuild, IVersionBuild
         where T : INukeBuild
         => (T)(object)this;
 
-    [Parameter(ValueProviderMember = nameof(AppVersionValues))]
-    public string CurrentAppVersion { get; set; }
-
-    IEnumerable<string> AppVersionValues => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
+    [Parameter]
+    public AppVersion AppVersion { get; set; }
 }

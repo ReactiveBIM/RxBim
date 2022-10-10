@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using global::Nuke.Common.Tooling;
 
     /// <summary>
     /// Implementation of the base enumeration.
     /// </summary>
-    public abstract record Enumeration
+    public static class EnumerationUtils
     {
         /// <summary>
         /// Returns all members of the enumeration.
