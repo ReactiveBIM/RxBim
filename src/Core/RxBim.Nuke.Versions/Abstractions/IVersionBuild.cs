@@ -32,9 +32,6 @@ namespace RxBim.Nuke.Versions
                     .ForEach(DeleteFile);
             });
 
-        [Parameter(ValueProviderMember = nameof(AppVersionValues))]
         string CurrentAppVersion { get; set; }
-
-        IEnumerable<string> AppVersionValues => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
     }
 }

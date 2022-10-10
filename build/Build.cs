@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
@@ -14,6 +15,7 @@ using RxBim.Nuke.Versions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using Enumeration = RxBim.Nuke.Versions.Enumeration;
 
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
@@ -47,7 +49,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : NukeBuild, IVersionBuild
+class Build : NukeBuild, IVersionBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -123,6 +125,8 @@ partial class Build : NukeBuild, IVersionBuild
         where T : INukeBuild
         => (T)(object)this;
 
-    /// <inheritdoc />
+    [Parameter(ValueProviderMember = nameof(AppVersionValues))]
     public string CurrentAppVersion { get; set; }
+
+    IEnumerable<string> AppVersionValues => Enumeration.GetAll<AppVersion>().Select(x => x.ToString());
 }
