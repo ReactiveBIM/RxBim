@@ -1,1 +1,0 @@
-﻿public record ProjectNode(string Name, string Value, NodeType Type, params NodeAttribute[] Attributes);

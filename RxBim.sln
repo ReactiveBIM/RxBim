@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Autocad.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.Autocad.Example", "samples\Autocad\RxBim.Command.Autocad.Example\RxBim.Command.Autocad.Example.csproj", "{92242965-660C-4127-9C64-D8A24D56D941}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Nuke.Versions", "src\Core\RxBim.Nuke.Versions\RxBim.Nuke.Versions.csproj", "{2DB17876-F5F5-422F-9128-18AC818C2133}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -258,6 +260,10 @@ Global
 		{92242965-660C-4127-9C64-D8A24D56D941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92242965-660C-4127-9C64-D8A24D56D941}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92242965-660C-4127-9C64-D8A24D56D941}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB17876-F5F5-422F-9128-18AC818C2133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB17876-F5F5-422F-9128-18AC818C2133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB17876-F5F5-422F-9128-18AC818C2133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB17876-F5F5-422F-9128-18AC818C2133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{77448DA8-C5E2-4C26-B5C1-AB8DED61C86B} = {D348F299-FAC7-4BC5-AA78-BBC48B4969EB}
@@ -299,5 +305,6 @@ Global
 		{017D1D62-E758-408C-84FD-49ABCCA5B2E9} = {8B7AB5B5-D806-45E8-B574-F497EB20E3A6}
 		{EA579190-EC25-4A8A-B7EA-9A91AE71ACC7} = {F5D27901-C025-49F1-9CA0-B140D0BDA673}
 		{92242965-660C-4127-9C64-D8A24D56D941} = {F5D27901-C025-49F1-9CA0-B140D0BDA673}
+		{2DB17876-F5F5-422F-9128-18AC818C2133} = {8B7AB5B5-D806-45E8-B574-F497EB20E3A6}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.5.0-dev002" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Directory.Build.Props" />
+    </ItemGroup>
+
+</Project>
