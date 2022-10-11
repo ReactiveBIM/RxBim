@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS1591
-#pragma warning disable SA1401
-#pragma warning disable SA1600
+﻿#pragma warning disable CS1591, SA1401, SA1600, SA1601, CA2211
 
 namespace RxBim.Nuke.Versions
 {
