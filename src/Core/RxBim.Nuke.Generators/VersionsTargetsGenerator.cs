@@ -1,7 +1,11 @@
 ﻿namespace RxBim.Nuke.Generators
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Constants;
 
     /// <summary>
@@ -15,9 +19,9 @@
         /// <inheritdoc />
         public void Initialize(GeneratorInitializationContext context)
         {
-// #if DEBUG
-//             Debugger.Launch();
-// #endif
+#if DEBUG
+            Debugger.Launch();
+#endif
         }
 
         /// <inheritdoc />
@@ -27,7 +31,8 @@
             var appVersion = _context.Compilation.GetTypeByMetadataName(AppVersionClassTypeName);
             if (appVersion is null)
                 return;
-            var versionNumbers = GetVersionNumbers();
+
+            var versionNumbers = GetVersionNumbers(appVersion);
             foreach (var versionNumber in versionNumbers)
             {
                 var source = GetSource(versionNumber);
@@ -35,8 +40,13 @@
             }
         }
 
-        private static IEnumerable<string> GetVersionNumbers()
+        private static IEnumerable<string> GetVersionNumbers(INamedTypeSymbol appVersion)
         {
+            var appVersionValues = appVersion.GetMembers()
+                .Where(x => x.IsStatic && x.Kind is SymbolKind.Field).Cast<IFieldSymbol>();
+
+            appVersionValues.Select(x => x.DeclaringSyntaxReferences).First();
+
             return new[]
             {
                 "2019",
@@ -75,6 +85,25 @@ namespace RxBim.Nuke.Versions
     }}
 }}";
             return source;
+        }
+
+        private static string GetVersionNumber(IFieldSymbol symbol)
+        {
+            var refs = symbol.DeclaringSyntaxReferences;
+            var span = symbol.Locations.First().SourceSpan;
+            var ref1 = refs.First();
+            var syntax = (VariableDeclaratorSyntax)ref1.SyntaxTree.GetRoot().FindNode(span);
+            var innerSyntax = (EqualsValueClauseSyntax)syntax.ChildNodes().First();
+            var objCreation = (ImplicitObjectCreationExpressionSyntax)innerSyntax.ChildNodes().First();
+            var ttt = objCreation.ArgumentList.Arguments;
+            var argumentsSyntax = (ArgumentListSyntax)objCreation.ChildNodes().First();
+            var appVerArg = argumentsSyntax.ChildNodes().Cast<ArgumentSyntax>().ElementAt(2);
+            var argCreation = (ObjectCreationExpressionSyntax)appVerArg.ChildNodes().First();
+            var argType = (IdentifierNameSyntax)argCreation.Type;
+            var isAppVer = argType.Identifier.Text.Equals("ApplicationVersion");
+            var arg = argCreation.ArgumentList.Arguments.First();
+            var exprSyntax = (LiteralExpressionSyntax)arg.Expression;
+            
         }
     }
 }
