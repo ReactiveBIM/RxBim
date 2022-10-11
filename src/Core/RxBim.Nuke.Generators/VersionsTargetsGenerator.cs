@@ -1,12 +1,9 @@
 ﻿namespace RxBim.Nuke.Generators
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using static Constants;
 
     /// <summary>
     /// Generates NUKE targets for different versions of CAD/BIM applications.
@@ -19,16 +16,16 @@
         /// <inheritdoc />
         public void Initialize(GeneratorInitializationContext context)
         {
-#if DEBUG
-            Debugger.Launch();
-#endif
+// #if DEBUG
+//             Debugger.Launch();
+// #endif
         }
 
         /// <inheritdoc />
         public void Execute(GeneratorExecutionContext context)
         {
             _context = context;
-            var appVersion = _context.Compilation.GetTypeByMetadataName(AppVersionClassTypeName);
+            var appVersion = _context.Compilation.GetTypeByMetadataName("RxBim.Nuke.Versions.AppVersion");
             if (appVersion is null)
                 return;
 
@@ -40,21 +37,21 @@
             }
         }
 
-        private static IEnumerable<string> GetVersionNumbers(INamedTypeSymbol appVersion)
+        private static IEnumerable<string> GetVersionNumbers(INamespaceOrTypeSymbol appVersion)
         {
             var appVersionValues = appVersion.GetMembers()
-                .Where(x => x.IsStatic && x.Kind is SymbolKind.Field).Cast<IFieldSymbol>();
+                .Where(x => x.IsStatic && x.Kind is SymbolKind.Field)
+                .Cast<IFieldSymbol>();
 
-            appVersionValues.Select(x => x.DeclaringSyntaxReferences).First();
+            var numbers = new HashSet<string>();
 
-            return new[]
+            foreach (var appVersionValue in appVersionValues)
             {
-                "2019",
-                "2020",
-                "2021",
-                "2022",
-                "2023"
-            };
+                if (TryGetVersionNumber(appVersionValue, out var number))
+                    numbers.Add(number);
+            }
+
+            return numbers;
         }
 
         private static string GetSource(string versionNumber)
@@ -87,23 +84,29 @@ namespace RxBim.Nuke.Versions
             return source;
         }
 
-        private static string GetVersionNumber(IFieldSymbol symbol)
+        private static bool TryGetVersionNumber(ISymbol value, out string verNumber)
         {
-            var refs = symbol.DeclaringSyntaxReferences;
-            var span = symbol.Locations.First().SourceSpan;
-            var ref1 = refs.First();
-            var syntax = (VariableDeclaratorSyntax)ref1.SyntaxTree.GetRoot().FindNode(span);
-            var innerSyntax = (EqualsValueClauseSyntax)syntax.ChildNodes().First();
-            var objCreation = (ImplicitObjectCreationExpressionSyntax)innerSyntax.ChildNodes().First();
-            var ttt = objCreation.ArgumentList.Arguments;
-            var argumentsSyntax = (ArgumentListSyntax)objCreation.ChildNodes().First();
-            var appVerArg = argumentsSyntax.ChildNodes().Cast<ArgumentSyntax>().ElementAt(2);
-            var argCreation = (ObjectCreationExpressionSyntax)appVerArg.ChildNodes().First();
-            var argType = (IdentifierNameSyntax)argCreation.Type;
-            var isAppVer = argType.Identifier.Text.Equals("ApplicationVersion");
-            var arg = argCreation.ArgumentList.Arguments.First();
-            var exprSyntax = (LiteralExpressionSyntax)arg.Expression;
-            
+            verNumber = string.Empty;
+
+            var sourceSpan = value.Locations.First().SourceSpan;
+            var syntaxReference = value.DeclaringSyntaxReferences.FirstOrDefault(x =>
+                x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
+            if (syntaxReference is null)
+                return false;
+
+            var fieldDeclarationSyntax =
+                (VariableDeclaratorSyntax)syntaxReference.SyntaxTree.GetRoot().FindNode(sourceSpan);
+            var appVerArgCreation = fieldDeclarationSyntax.DescendantNodes()
+                .OfType<ObjectCreationExpressionSyntax>()
+                .FirstOrDefault(x => x.Type is IdentifierNameSyntax { Identifier: { Text: "ApplicationVersion" } });
+
+            var arg = appVerArgCreation?.ArgumentList?.Arguments.FirstOrDefault();
+            if (arg?.Expression is not LiteralExpressionSyntax expressionSyntax)
+                return false;
+
+            verNumber = expressionSyntax.Token.ValueText;
+
+            return !string.IsNullOrEmpty(verNumber);
         }
     }
 }
