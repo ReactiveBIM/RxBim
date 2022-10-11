@@ -59,7 +59,7 @@ class Build : NukeBuild, IVersionBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IVersionBuild>().SetupEnv);
+    public static int Main() => Execute<Build>(x => x.From<ICompile>().Compile);
 
     Target Clean => _ => _
         .Before<IRestore>()

@@ -10,11 +10,7 @@ namespace RxBim.Nuke.Versions
     {
         Target SetupEnv2020 => _ => _
             .Before(Compile, Restore, Pack, Release, Prerelease, Publish)
-            .Executes(() =>
-            {
-                this.SetupEnvironment(AppVersion.Revit2020);
-                this.SetupEnvironment(AppVersion.Autocad2020);
-            });
+            .Executes(() => this.SetupEnvironment("2020"));
 
         Target Compile2020 => _ => _.DependsOn(SetupEnv2020, Compile);
 
