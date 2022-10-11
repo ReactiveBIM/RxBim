@@ -84,18 +84,18 @@ namespace RxBim.Nuke.Versions
             return source;
         }
 
-        private static bool TryGetVersionNumber(ISymbol value, out string verNumber)
+        private static bool TryGetVersionNumber(ISymbol fieldSymbol, out string verNumber)
         {
             verNumber = string.Empty;
 
-            var sourceSpan = value.Locations.First().SourceSpan;
-            var syntaxReference = value.DeclaringSyntaxReferences.FirstOrDefault(x =>
+            var sourceSpan = fieldSymbol.Locations.First().SourceSpan;
+            var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault(x =>
                 x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
-            if (syntaxReference is null)
+
+            if (syntaxReference?.GetSyntax().FindNode(sourceSpan) is not VariableDeclaratorSyntax
+                fieldDeclarationSyntax)
                 return false;
 
-            var fieldDeclarationSyntax =
-                (VariableDeclaratorSyntax)syntaxReference.SyntaxTree.GetRoot().FindNode(sourceSpan);
             var appVerArgCreation = fieldDeclarationSyntax.DescendantNodes()
                 .OfType<ObjectCreationExpressionSyntax>()
                 .FirstOrDefault(x => x.Type is IdentifierNameSyntax { Identifier: { Text: "ApplicationVersion" } });
