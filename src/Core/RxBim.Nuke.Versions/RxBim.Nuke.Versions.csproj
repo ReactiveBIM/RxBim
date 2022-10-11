@@ -14,4 +14,8 @@
       <Content Include="Directory.Build.Props" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj" />
+    </ItemGroup>
+
 </Project>
