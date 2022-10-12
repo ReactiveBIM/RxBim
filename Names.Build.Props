@@ -1,0 +1,13 @@
+<Project>
+    <PropertyGroup Condition="'$(NotRefenceApi)' == 'true'">
+        <PackageId>$(MSBuildProjectName)</PackageId>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NotRefenceApi)' != 'true'">
+        <PackageId>$(MSBuildProjectName).$(ApplicationVersion)</PackageId>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <AssemblyName>$(PackageId).$(Version)</AssemblyName>
+    </PropertyGroup>
+</Project>

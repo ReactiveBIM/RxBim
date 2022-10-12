@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <Description>RxBim Application api Library for AutoCAD</Description>
-        <PackageId>$(MSBuildProjectName).$(ApplicationVersion)</PackageId>
-        <AssemblyName>$(PackageId).$(Version)</AssemblyName>
     </PropertyGroup>
     
     <ItemGroup>

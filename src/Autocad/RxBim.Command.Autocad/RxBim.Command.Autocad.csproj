@@ -7,7 +7,6 @@
 
     <PropertyGroup>
         <Description>RxBim Command api Library for AutoCAD</Description>
-        <PackageId>RxBim.Command.Autocad</PackageId>
     </PropertyGroup>
 
 </Project>

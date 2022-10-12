@@ -1,9 +1,10 @@
 ﻿<Project>
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
-    
     <PropertyGroup>
         <Version>1.0.8-dev001</Version>
     </PropertyGroup>
-
+    
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Solution.Build.Props', '$(MSBuildThisFileDirectory)../'))" />
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Autocad.Build.Props', '$(MSBuildThisFileDirectory)../'))" />
+    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')"/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Names.Build.Props', '$(MSBuildThisFileDirectory)../'))" />
 </Project>

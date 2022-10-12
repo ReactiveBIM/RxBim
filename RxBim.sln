@@ -57,7 +57,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		LICENSE = LICENSE
 		stylecop.ruleset = stylecop.ruleset
 		stylecopTests.ruleset = stylecopTests.ruleset
-		Directory.Build.Props = Directory.Build.Props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.SimpleInjector", "src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj", "{B639A396-924A-4E4B-ABF7-9A27A8B3C998}"
@@ -82,14 +81,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8B7AB5B5-D806-45E8-B574-F497EB20E3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{77448DA8-C5E2-4C26-B5C1-AB8DED61C86B}"
-	ProjectSection(SolutionItems) = preProject
-		src\Revit\Directory.Build.Props = src\Revit\Directory.Build.Props
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{D2AB0208-628E-47A0-8203-D25DEB089E4F}"
-	ProjectSection(SolutionItems) = preProject
-		src\Autocad\Directory.Build.Props = src\Autocad\Directory.Build.Props
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Menu.Config.Revit.Sample", "Samples\Revit\RxBim.Application.Menu.Config.Revit.Sample\RxBim.Application.Menu.Config.Revit.Sample.csproj", "{DB7FF50A-560D-4C99-8F6D-84F779887826}"
 EndProject
@@ -114,6 +107,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Nuke.Versions", "src\Core\RxBim.Nuke.Versions\RxBim.Nuke.Versions.csproj", "{2DB17876-F5F5-422F-9128-18AC818C2133}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Nuke.Generators", "src\Core\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj", "{318DD099-6434-4AA1-BCDF-90EFC4BF32C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build.Props", "Build.Props", "{B71A1C13-A69E-4BB5-AC2D-E4C8D2C54891}"
+	ProjectSection(SolutionItems) = preProject
+		Autocad.Build.Props = Autocad.Build.Props
+		Names.Build.Props = Names.Build.Props
+		Revit.Build.Props = Revit.Build.Props
+		Solution.Build.Props = Solution.Build.Props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -313,5 +314,6 @@ Global
 		{92242965-660C-4127-9C64-D8A24D56D941} = {F5D27901-C025-49F1-9CA0-B140D0BDA673}
 		{2DB17876-F5F5-422F-9128-18AC818C2133} = {8B7AB5B5-D806-45E8-B574-F497EB20E3A6}
 		{318DD099-6434-4AA1-BCDF-90EFC4BF32C8} = {8B7AB5B5-D806-45E8-B574-F497EB20E3A6}
+		{B71A1C13-A69E-4BB5-AC2D-E4C8D2C54891} = {EA24ECE8-41E0-4A12-8DEF-0C073A3AA0DB}
 	EndGlobalSection
 EndGlobal
