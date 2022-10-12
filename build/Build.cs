@@ -47,7 +47,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-class Build : NukeBuild, IVersionBuild
+partial class Build : NukeBuild, IVersionBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";

@@ -8,5 +8,5 @@ namespace RxBim.Nuke.Versions
     public record RuntimePackageReference(string Name, string Version)
         : ProjectSetting(nameof(PackageReference), string.Empty, SettingType.Item, new("Include", Name),
             new(nameof(Version), Version),
-            new("ExcludeAssets", "build,runtime"));
+            new("ExcludeAssets", "build; runtime"));
 }
