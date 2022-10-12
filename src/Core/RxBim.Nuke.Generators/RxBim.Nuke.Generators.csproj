@@ -4,7 +4,6 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <NoWarn>NU1702;SA1200</NoWarn>
         <Nullable>enable</Nullable>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
@@ -28,9 +27,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim Nuke generation Library</Description>
-        <PackageId>RxBim.Nuke.Generators</PackageId>
     </PropertyGroup>
     
 </Project>

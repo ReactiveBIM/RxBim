@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
@@ -23,9 +22,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim Application UI api Library</Description>
-        <PackageId>RxBim.Application.Ribbon</PackageId>
     </PropertyGroup>
 
 </Project>

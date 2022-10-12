@@ -6,7 +6,6 @@
 
     <PropertyGroup>
         <Description>RxBim Application api Library</Description>
-        <PackageId>RxBim.Application.Revit</PackageId>
     </PropertyGroup>
 
 </Project>

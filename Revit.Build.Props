@@ -4,7 +4,6 @@
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <LangVersion>latest</LangVersion>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
     
@@ -14,7 +13,6 @@
 
     <PropertyGroup>
         <ApplicationVersion>2019</ApplicationVersion>
-        <Version>$(ApplicationVersion).$(ApiVersion)</Version>
     </PropertyGroup>
     
 </Project>

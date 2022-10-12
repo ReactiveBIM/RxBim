@@ -1,8 +1,10 @@
 ﻿<Project>
     <PropertyGroup>
-        <ApiVersion>1.1.1</ApiVersion>
+        <NotRefenceApi>true</NotRefenceApi>
+        <Version>1.1.2-dev001</Version>
     </PropertyGroup>
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Solution.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Names.Build.Props', '$(MSBuildThisFileDirectory)../'))" />
 
 </Project>
