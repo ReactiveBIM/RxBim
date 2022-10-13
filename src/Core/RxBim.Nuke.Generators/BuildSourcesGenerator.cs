@@ -1,13 +1,14 @@
 ﻿namespace RxBim.Nuke.Generators
 {
     // using System.Diagnostics;
+    using System.Linq;
     using Microsoft.CodeAnalysis;
 
     /// <summary>
     /// Generates source for Build class.
     /// </summary>
     [Generator]
-    public class VersionBuildGenerator : ISourceGenerator
+    public class BuildSourcesGenerator : ISourceGenerator
     {
         /// <inheritdoc />
         public void Initialize(GeneratorInitializationContext context)
@@ -27,6 +28,15 @@
             var source = GetSource();
 
             context.AddSource("Build.g.cs", source);
+
+            var gitHubActionsAttributes =
+                build.GetAttributes().Where(x => x.AttributeClass is { Name: "GitHubActions" }).ToList();
+
+            if (!gitHubActionsAttributes.Any())
+                return;
+
+            if (!context.TryGetVersionNumbers(out var versionNumbers, false))
+                return;
         }
 
         private static string GetSource()
