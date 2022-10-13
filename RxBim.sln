@@ -81,8 +81,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8B7AB5B5-D806-45E8-B574-F497EB20E3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{77448DA8-C5E2-4C26-B5C1-AB8DED61C86B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Revit\Revit.Build.Props = src\Revit\Revit.Build.Props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{D2AB0208-628E-47A0-8203-D25DEB089E4F}"
+	ProjectSection(SolutionItems) = preProject
+		src\Autocad\Autocad.Build.Props = src\Autocad\Autocad.Build.Props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Application.Menu.Config.Revit.Sample", "Samples\Revit\RxBim.Application.Menu.Config.Revit.Sample\RxBim.Application.Menu.Config.Revit.Sample.csproj", "{DB7FF50A-560D-4C99-8F6D-84F779887826}"
 EndProject
@@ -110,9 +116,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Nuke.Generators", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build.Props", "Build.Props", "{B71A1C13-A69E-4BB5-AC2D-E4C8D2C54891}"
 	ProjectSection(SolutionItems) = preProject
-		Autocad.Build.Props = Autocad.Build.Props
 		Names.Build.Props = Names.Build.Props
-		Revit.Build.Props = Revit.Build.Props
 		Solution.Build.Props = Solution.Build.Props
 	EndProjectSection
 EndProject

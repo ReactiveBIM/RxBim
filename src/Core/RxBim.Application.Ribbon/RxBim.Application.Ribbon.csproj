@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" ExcludeAssets="runtime" />
-        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
         <Reference Include="WindowsBase" />
