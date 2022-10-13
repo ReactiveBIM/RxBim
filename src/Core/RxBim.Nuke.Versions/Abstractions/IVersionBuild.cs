@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS1591
-#pragma warning disable SA1205
-#pragma warning disable SA1600
+﻿#pragma warning disable CS1591, SA1205, SA1600
 
 namespace RxBim.Nuke.Versions
 {
@@ -15,7 +13,6 @@ namespace RxBim.Nuke.Versions
         Target SetupEnv => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
             .Requires(() => AppVersionNumber)
-            .Before(Compile, Restore, Pack, Release, Prerelease, Publish)
             .Executes(() => this.SetupEnvironment(AppVersionNumber));
 
         Target SetupEnvForApp => _ => _
@@ -37,20 +34,8 @@ namespace RxBim.Nuke.Versions
                     .ForEach(DeleteFile);
             });
 
-        Target CompileVersion => _ => _.DependsOn(SetupEnv, Compile);
+        AppVersion AppVersion { get; set; }
 
-        Target RestoreVersion => _ => _.DependsOn(SetupEnv, Restore);
-
-        Target PackVersion => _ => _.DependsOn(SetupEnv, Pack);
-
-        Target ReleaseVersion => _ => _.DependsOn(SetupEnv, Release);
-
-        Target PrereleaseVersion => _ => _.DependsOn(SetupEnv, Prerelease);
-
-        Target PublishVersion => _ => _.DependsOn(SetupEnv, Publish);
-
-        AppVersion AppVersion { get; }
-
-        AppVersionNumber AppVersionNumber { get; }
+        AppVersionNumber AppVersionNumber { get; set; }
     }
 }
