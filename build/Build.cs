@@ -125,4 +125,7 @@ partial class Build : NukeBuild, IVersionBuild
 
     [Parameter]
     public AppVersion AppVersion { get; set; }
+
+    [Parameter]
+    public AppVersionNumber AppVersionNumber { get; set; }
 }

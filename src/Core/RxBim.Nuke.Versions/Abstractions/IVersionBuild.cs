@@ -13,7 +13,13 @@ namespace RxBim.Nuke.Versions
     public partial interface IVersionBuild : IPublish
     {
         Target SetupEnv => _ => _
-            .Description("Sets the solution up to work with particular version of CAD/BIM.")
+            .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
+            .Requires(() => AppVersionNumber)
+            .Before(Compile, Restore, Pack, Release, Prerelease, Publish)
+            .Executes(() => this.SetupEnvironment(AppVersionNumber));
+
+        Target SetupEnvForApp => _ => _
+            .Description("Configures the solution to work with a specific version of a specific CAD/BIM application.")
             .Requires(() => AppVersion)
             .Executes(() =>
             {
@@ -31,6 +37,20 @@ namespace RxBim.Nuke.Versions
                     .ForEach(DeleteFile);
             });
 
+        Target CompileVersion => _ => _.DependsOn(SetupEnv, Compile);
+
+        Target RestoreVersion => _ => _.DependsOn(SetupEnv, Restore);
+
+        Target PackVersion => _ => _.DependsOn(SetupEnv, Pack);
+
+        Target ReleaseVersion => _ => _.DependsOn(SetupEnv, Release);
+
+        Target PrereleaseVersion => _ => _.DependsOn(SetupEnv, Prerelease);
+
+        Target PublishVersion => _ => _.DependsOn(SetupEnv, Publish);
+
         AppVersion AppVersion { get; }
+
+        AppVersionNumber AppVersionNumber { get; }
     }
 }
