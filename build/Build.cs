@@ -10,7 +10,6 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
-using RxBim.Nuke.Versions;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -19,40 +18,22 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
-    OnPushBranches = new[]
-    {
-        DevelopBranch, FeatureBranches
-    },
-    InvokedTargets = new[]
-    {
-        nameof(Test), nameof(IPublish.Publish)
-    },
-    ImportSecrets = new[]
-    {
-        "NUGET_API_KEY", "ALL_PACKAGES"
-    })]
+    OnPushBranches = new[] { DevelopBranch, FeatureBranches },
+    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
+    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
-    OnPushBranches = new[]
-    {
-        MasterBranch, "release/**"
-    },
-    InvokedTargets = new[]
-    {
-        nameof(Test), nameof(IPublish.Publish)
-    },
-    ImportSecrets = new[]
-    {
-        "NUGET_API_KEY", "ALL_PACKAGES"
-    })]
+    OnPushBranches = new[] { MasterBranch, ReleaseBranches },
+    InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
+    ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 [PublicAPI]
-partial class Build : NukeBuild, IVersionBuild
+partial class Build : NukeBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
     const string FeatureBranches = "feature/**";
-    const string Revit = "Revit";
+    const string ReleaseBranches = "release/**";
 
     public Build()
     {
@@ -122,10 +103,4 @@ partial class Build : NukeBuild, IVersionBuild
     T From<T>()
         where T : INukeBuild
         => (T)(object)this;
-
-    [Parameter]
-    public AppVersion AppVersion { get; set; }
-
-    [Parameter]
-    public AppVersionNumber AppVersionNumber { get; set; }
 }

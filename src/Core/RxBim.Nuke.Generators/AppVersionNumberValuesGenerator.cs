@@ -12,8 +12,6 @@
     [Generator]
     public class AppVersionNumberValuesGenerator : ISourceGenerator
     {
-        private GeneratorExecutionContext _context;
-
         /// <inheritdoc />
         public void Initialize(GeneratorInitializationContext context)
         {
@@ -25,15 +23,14 @@
         /// <inheritdoc />
         public void Execute(GeneratorExecutionContext context)
         {
-            _context = context;
-            var appVersion = _context.Compilation.GetTypeByMetadataName("RxBim.Nuke.Versions.AppVersion");
-            if (appVersion is null)
+            var appVersion = context.Compilation.GetTypeByMetadataName("RxBim.Nuke.Versions.AppVersion");
+            if (appVersion is null || !context.CheckAssembly(appVersion))
                 return;
 
             var versionNumbers = GetVersionNumbers(appVersion);
 
             var verNumSource = GetSource(versionNumbers);
-            _context.AddSource("AppVersionNumber.g.cs", verNumSource);
+            context.AddSource("AppVersionNumber.g.cs", verNumSource);
         }
 
         private static string GetSource(IEnumerable<string> versionNumbers)
