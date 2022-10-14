@@ -27,6 +27,7 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ReactiveBIM/RxBim</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ReactiveBIM/RxBim.git</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
 

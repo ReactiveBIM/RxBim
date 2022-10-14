@@ -21,7 +21,7 @@ namespace RxBim.Application.Autocad.Example
         /// <param name="service"><see cref="IInfoService"/> instance.</param>
         public PluginResult Start(IInfoService service)
         {
-            service.ShowAutocadVersion();
+            Application.ShowAlertDialog("RxBimApplication example app started!");
             return PluginResult.Succeeded;
         }
 
