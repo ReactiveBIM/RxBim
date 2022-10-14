@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Nuke.Generators
 {
-    // using System.Diagnostics;
+    using System.Diagnostics;
     using System.Linq;
     using Microsoft.CodeAnalysis;
 
@@ -35,7 +35,11 @@
             if (!gitHubActionsAttributes.Any())
                 return;
 
-            if (!context.TryGetVersionNumbers(out var versionNumbers, false))
+#if DEBUG
+            Debugger.Launch();
+#endif
+
+            if (!context.TryGetVersionNumbersFromReferencedAssembly(out var versionNumbers))
                 return;
         }
 
