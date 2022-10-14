@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Transactions\RxBim.Transactions.csproj" />
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <Description>RxBim transactions API Library for Revit</Description>
+        <PackageId>RxBim.Transactions.Revit</PackageId>
+    </PropertyGroup>
+    
+</Project>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Ribbon.Autocad\RxBim.Application.Ribbon.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="img\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.RxBim.Application.Menu.Config.Autocad.Sample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="img\num1_32_light.png" />
+    <EmbeddedResource Include="img\command_16.ico" />
+    <EmbeddedResource Include="img\command_16_light.ico" />
+    <EmbeddedResource Include="img\command_32.ico" />
+    <EmbeddedResource Include="img\command_32_light.ico" />
+    <EmbeddedResource Include="img\num1_32_light.png" />
+    <None Remove="img\num2_16.png" />
+    <EmbeddedResource Include="img\num2_16.bmp" />
+    <EmbeddedResource Include="img\num2_16.png" />
+    <None Remove="img\num2_16_light.png" />
+    <EmbeddedResource Include="img\num2_16_light.bmp" />
+    <EmbeddedResource Include="img\num2_16_light.png" />
+    <None Remove="img\num2_32.png" />
+    <EmbeddedResource Include="img\num2_32.bmp" />
+    <EmbeddedResource Include="img\num2_32.png" />
+    <None Remove="img\num2_32_light.png" />
+    <EmbeddedResource Include="img\num2_32_light.bmp" />
+    <EmbeddedResource Include="img\num2_32_light.png" />
+    <None Remove="img\num3_16.png" />
+    <EmbeddedResource Include="img\num3_16.jpg" />
+    <EmbeddedResource Include="img\num3_16.png" />
+    <None Remove="img\num3_16_light.png" />
+    <EmbeddedResource Include="img\num3_16_light.jpg" />
+    <EmbeddedResource Include="img\num3_16_light.png" />
+    <None Remove="img\num3_32.png" />
+    <EmbeddedResource Include="img\num3_32.jpg" />
+    <EmbeddedResource Include="img\num3_32.png" />
+    <None Remove="img\num3_32_light.png" />
+    <EmbeddedResource Include="img\num3_32_light.jpg" />
+    <EmbeddedResource Include="img\num3_32_light.png" />
+  </ItemGroup>
+  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
+  <PropertyGroup>
+    <PackageGuid>f8530b97-cafd-439f-b44d-e9c8ee9fdd8b</PackageGuid>
+    <UpgradeCode>189d840e-3ff6-4abe-bfa8-ddcca17e4a2a</UpgradeCode>
+  </PropertyGroup>
+</Project>

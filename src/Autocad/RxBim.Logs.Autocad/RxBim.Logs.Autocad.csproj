@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Logs\RxBim.Logs.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim logs Library for AutoCAD</Description>
+        <PackageId>RxBim.Logs.Autocad</PackageId>
+    </PropertyGroup>
+
+</Project>

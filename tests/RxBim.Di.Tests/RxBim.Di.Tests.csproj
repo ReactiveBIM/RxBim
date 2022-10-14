@@ -3,21 +3,28 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <NoWarn>CS1591</NoWarn>
+        <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.1.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
         <PackageReference Include="xunit" Version="2.4.0" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-        <PackageReference Include="coverlet.collector" Version="1.2.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Logs\RxBim.Logs.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Shared\RxBim.Shared.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Di.ServiceProvider\RxBim.Di.ServiceProvider.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Logs\RxBim.Logs.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
 </Project>

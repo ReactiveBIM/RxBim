@@ -248,7 +248,7 @@ paket-files/
 
 # FAKE - F# Make
 .fake/
-
+.nuke/
 # JetBrains Rider
 .idea/
 *.sln.iml
@@ -275,3 +275,5 @@ global.json
 
 testoutput/
 result.html
+
+RxBim.Build.Props

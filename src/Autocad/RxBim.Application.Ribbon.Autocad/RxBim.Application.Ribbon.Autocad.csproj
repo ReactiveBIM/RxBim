@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim UI AutoCAD Library</Description>
+        <PackageId>RxBim.Application.Ribbon.Autocad</PackageId>
+        <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
+    </PropertyGroup>
+
+</Project>

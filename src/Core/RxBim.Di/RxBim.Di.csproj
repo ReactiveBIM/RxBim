@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
+            <ExcludeAssets>runtime</ExcludeAssets>
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        
+        <!-- DO NOT CHANGE OR UPDATE VERSIONS OF MICROSOFT.EXTENSIONS.CONFIGURATION PACKAGES!!! -->
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0"/>
+        <!-- DO NOT CHANGE OR UPDATE VERSIONS OF MICROSOFT.EXTENSIONS.CONFIGURATION PACKAGES!!! -->
+        
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RxBim.Analyzers\RxBim.Analyzers.csproj"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+        <Description>RxBim DI Library</Description>
+        <PackageId>RxBim.Di</PackageId>
+    </PropertyGroup>
+
+</Project>

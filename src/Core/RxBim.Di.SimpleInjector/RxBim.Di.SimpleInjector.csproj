@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>RxBim.Di</RootNamespace>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SimpleInjector" Version="5.3.3" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+      <ProjectReference Include="..\RxBim.Transactions\RxBim.Transactions.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim DI Library</Description>
+        <PackageId>RxBim.Di.SimpleInjector</PackageId>
+    </PropertyGroup>
+
+</Project>

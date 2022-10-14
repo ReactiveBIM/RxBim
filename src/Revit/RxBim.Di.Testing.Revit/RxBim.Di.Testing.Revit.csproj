@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Analyzers\RxBim.Analyzers.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Di\RxBim.Di.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim Testing Library</Description>
+        <PackageId>RxBim.Di.Testing.Revit</PackageId>
+    </PropertyGroup>
+
+</Project>

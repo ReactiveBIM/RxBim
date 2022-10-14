@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
+         <Description>RxBim shared Library</Description>
+        <PackageId>RxBim.Shared</PackageId>
+    </PropertyGroup>
+
+</Project>

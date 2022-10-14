@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Configurations>Debug;Release</Configurations>
+        <NotRefenceApi>true</NotRefenceApi>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim nuke plugin for building MSI for AutoCAD</Description>
+        <PackageId>RxBim.Nuke.AutoCAD</PackageId>
+    </PropertyGroup>
+
+</Project>

@@ -2,7 +2,6 @@
 {
     using System;
     using FluentAssertions;
-    using Shared.Abstractions;
     using TestDependencies;
     using TestObjects;
     using Xunit;
@@ -18,7 +17,6 @@
             {
                 testDiConfigurator.Container.GetService<IBaseService>();
                 testDiConfigurator.Container.GetService<IPluginService>();
-                testDiConfigurator.Container.GetService<IUserSettings>();
             };
             act.Should().NotThrow();
         }
