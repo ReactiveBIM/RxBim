@@ -27,7 +27,7 @@
         /// <param name="context">Generator context.</param>
         /// <param name="versionNumbers">Applications versions.</param>
         /// <returns>True if application versions are collected successfully. Otherwise, false.</returns>
-        public static bool TryGetVersionNumbersFromReferencedAssembly(
+        public static bool TryGetVersionNumbersFromExternalAssembly(
             this GeneratorExecutionContext context,
             out IReadOnlyCollection<string> versionNumbers)
         {
@@ -64,13 +64,13 @@
                 return false;
             }
 
-            versionNumbers = GetVersionNumbers(appVersion);
+            versionNumbers = GetVersionNumbersFromSymbol(appVersion);
             return true;
         }
 
-        private static IReadOnlyCollection<string> GetVersionNumbers(INamespaceOrTypeSymbol appVersion)
+        private static IReadOnlyCollection<string> GetVersionNumbersFromSymbol(INamespaceOrTypeSymbol versionSymbol)
         {
-            var appVersionValues = appVersion.GetMembers()
+            var appVersionValues = versionSymbol.GetMembers()
                 .Where(x => x.IsStatic && x.Kind is SymbolKind.Field)
                 .Cast<IFieldSymbol>();
 
@@ -78,14 +78,14 @@
 
             foreach (var appVersionValue in appVersionValues)
             {
-                if (TryGetVersionNumber(appVersionValue, out var number))
+                if (TryGetVersionNumberFromFieldValue(appVersionValue, out var number))
                     numbers.Add(number);
             }
 
             return numbers;
         }
 
-        private static bool TryGetVersionNumber(ISymbol fieldSymbol, out string verNumber)
+        private static bool TryGetVersionNumberFromFieldValue(ISymbol fieldSymbol, out string verNumber)
         {
             verNumber = string.Empty;
 
