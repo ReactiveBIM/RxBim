@@ -30,7 +30,7 @@
             context.AddSource("Build.g.cs", source);
 
             var gitHubActionsAttributes =
-                build.GetAttributes().Where(x => x.AttributeClass is { Name: "GitHubActions" }).ToList();
+                build.GetAttributes().Where(x => x.AttributeClass is { Name: "GitHubActionsAttribute" }).ToList();
 
             if (!gitHubActionsAttributes.Any())
                 return;
