@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Net.Http.Headers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -88,57 +86,92 @@ partial class Build : IVersionBuild
 
             var sourceSpan = syntaxReference.Span;
             var attNode = rootNode.FindNode(sourceSpan);
-            var parsedCopy = attNode.GetNodeParsedCopy();
 
-// #if DEBUG
-//             Debugger.Launch();
-// #endif
-            if (!TryGetActionNameToken(parsedCopy, out var nameToken))
+            var nameTokenNullable = GetActionNameToken(attNode);
+            if (!nameTokenNullable.HasValue)
                 return string.Empty;
 
-            actionName = nameToken.ValueText;
+            var nameToken = nameTokenNullable.Value;
 
-            var attribs = new List<string>();
+            var targetsInitializerNode = GetInvokeTargets(attNode);
+            if (targetsInitializerNode is null)
+                return string.Empty;
 
-            foreach (var versionNumber in versionNumbers)
-            {
-                var text = $"\"{actionName}{versionNumber}\"";
-                var valueText = $"{actionName}{versionNumber}";
-                var newNameToken = SyntaxFactory.Token(nameToken.LeadingTrivia,
-                    SyntaxKind.StringLiteralToken,
-                    text,
-                    valueText,
-                    nameToken.TrailingTrivia);
+            actionName = nameTokenNullable.Value.ValueText;
 
-                var newAttribNode = parsedCopy.ReplaceToken(nameToken, newNameToken);
-
-                attribs.Add($"[{newAttribNode.GetText()}]");
-            }
+            var attLines = versionNumbers
+                .Select(versionNumber => attNode.ReplaceSyntax(
+                    new[] { targetsInitializerNode },
+                    (_, _) => GetInitializerNodeWithSetEnvTarget(targetsInitializerNode, versionNumber),
+                    new[] { nameToken },
+                    (_, _) => GetNameWithVersionToken(nameToken, versionNumber),
+                    null,
+                    null))
+                .Select(newAttNode => $"[{newAttNode.GetText()}]")
+                .ToList();
 
             return @$"{usingLines}
-{string.Join(Environment.NewLine, attribs)}
+{string.Join(Environment.NewLine, attLines)}
 partial class Build
 {{
 }}";
         }
 
-        private bool TryGetActionNameToken(SyntaxNode parsedCopy, out SyntaxToken nameToken)
+        private SyntaxNode GetInitializerNodeWithSetEnvTarget(
+            InitializerExpressionSyntax initializer,
+            string versionNumber)
         {
-            var nameArgumentSyntax = parsedCopy
-                .GetChildNode<GlobalStatementSyntax>()
-                ?.GetChildNode<ExpressionStatementSyntax>()
-                ?.GetChildNode<InvocationExpressionSyntax>()
-                ?.GetChildNode<ArgumentListSyntax>()
-                ?.GetChildNode<ArgumentSyntax>(x => x.Expression is LiteralExpressionSyntax);
+            var valueText = $"{Constants.SetupEnv}{versionNumber}";
+            var text = $"\"{valueText}\"";
 
-            if (nameArgumentSyntax is null)
-            {
-                nameToken = SyntaxFactory.MissingToken(SyntaxKind.StringLiteralToken);
-                return false;
-            }
+            var newExpr = initializer.Expressions
+                .Insert(0,
+                    SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                        SyntaxFactory.Token(SyntaxTriviaList.Empty,
+                            SyntaxKind.StringLiteralToken,
+                            text,
+                            valueText,
+                            SyntaxTriviaList.Empty)));
 
-            nameToken = ((LiteralExpressionSyntax)nameArgumentSyntax.Expression).Token;
-            return true;
+            return SyntaxFactory.InitializerExpression(SyntaxKind.ArrayInitializerExpression, newExpr);
+        }
+
+        private SyntaxToken? GetActionNameToken(SyntaxNode attNode)
+        {
+            var argumentSyntax = attNode
+                .GetChildNode<AttributeArgumentListSyntax>()
+                ?.GetChildNode<AttributeArgumentSyntax>(x => x.Expression is LiteralExpressionSyntax);
+
+            return (argumentSyntax?.Expression as LiteralExpressionSyntax)?.Token;
+        }
+
+        private InitializerExpressionSyntax? GetInvokeTargets(SyntaxNode attNode)
+        {
+            var argumentSyntax = attNode
+                .GetChildNode<AttributeArgumentListSyntax>()
+                ?.GetChildNode<AttributeArgumentSyntax>(syntax =>
+                    syntax.NameEquals != null &&
+                    syntax.NameEquals.Name.ChildTokens().Any(token => token.ValueText.Equals("InvokedTargets")));
+
+            if (argumentSyntax is null)
+                return null;
+
+            var arrayCreationExpressionSyntax = (ImplicitArrayCreationExpressionSyntax)argumentSyntax.Expression;
+            var initializer = arrayCreationExpressionSyntax.Initializer;
+
+            return initializer;
+        }
+
+        private SyntaxToken GetNameWithVersionToken(SyntaxToken nameToken, string versionNumber)
+        {
+            var valueText = $"{nameToken.ValueText}{versionNumber}";
+            var text = $"\"{valueText}\"";
+            var newNameToken = SyntaxFactory.Token(nameToken.LeadingTrivia,
+                SyntaxKind.StringLiteralToken,
+                text,
+                valueText,
+                nameToken.TrailingTrivia);
+            return newNameToken;
         }
     }
 }

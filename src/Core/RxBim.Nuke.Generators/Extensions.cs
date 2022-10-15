@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Constants;
 
@@ -13,17 +12,6 @@
     /// </summary>
     public static class Extensions
     {
-        /// <summary>
-        /// Returns parsed copy of <see cref="SyntaxNode"/> object.
-        /// </summary>
-        /// <param name="node"><see cref="SyntaxNode"/> object.</param>
-        public static SyntaxNode GetNodeParsedCopy(this SyntaxNode node)
-        {
-            var text = node.GetText();
-            var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            return syntaxTree.GetRoot();
-        }
-
         /// <summary>
         /// Returns child node.
         /// </summary>
