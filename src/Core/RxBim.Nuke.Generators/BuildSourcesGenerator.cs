@@ -1,11 +1,13 @@
 ﻿namespace RxBim.Nuke.Generators
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Net.Http.Headers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Symbols;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     /// <summary>
     /// Generates source for Build class.
@@ -41,10 +43,11 @@
             if (!context.TryGetVersionNumbersFromExternalAssembly(out var versionNumbers))
                 return;
 
-            foreach (var versionNumber in versionNumbers)
+            foreach (var actionsAttribute in gitHubActionsAttributes)
             {
-                var source = GetBuildVerActionsSource(gitHubActionsAttributes, versionNumber);
-                context.AddSource($"Build.Versions.Actions{versionNumber}.g.cs", source);
+                var source = GetBuildVerActionsSource(actionsAttribute, versionNumbers, out var actionName);
+                if (!string.IsNullOrEmpty(actionName))
+                    context.AddSource($"Build.Versions.Actions.{actionName}.g.cs", source);
             }
         }
 
@@ -69,30 +72,73 @@ partial class Build : IVersionBuild
 }";
         }
 
-        private static string GetBuildVerActionsSource(
-            List<AttributeData> gitHubActionsAttributes,
-            string versionNumber)
+        private string GetBuildVerActionsSource(
+            AttributeData actionsAttribute,
+            IEnumerable<string> versionNumbers,
+            out string actionName)
         {
-            foreach (var actionsAttribute in gitHubActionsAttributes)
+            actionName = string.Empty;
+            var syntaxReference = actionsAttribute.ApplicationSyntaxReference;
+            if (syntaxReference is null)
+                return string.Empty;
+
+            var rootNode = syntaxReference.SyntaxTree.GetRoot();
+
+            var usingLines = rootNode.GetUsingLines();
+
+            var sourceSpan = syntaxReference.Span;
+            var attNode = rootNode.FindNode(sourceSpan);
+            var parsedCopy = attNode.GetNodeParsedCopy();
+
+// #if DEBUG
+//             Debugger.Launch();
+// #endif
+            if (!TryGetActionNameToken(parsedCopy, out var nameToken))
+                return string.Empty;
+
+            actionName = nameToken.ValueText;
+
+            var attribs = new List<string>();
+
+            foreach (var versionNumber in versionNumbers)
             {
-                var sourceSpan = actionsAttribute.ApplicationSyntaxReference?.Span;
+                var text = $"\"{actionName}{versionNumber}\"";
+                var valueText = $"{actionName}{versionNumber}";
+                var newNameToken = SyntaxFactory.Token(nameToken.LeadingTrivia,
+                    SyntaxKind.StringLiteralToken,
+                    text,
+                    valueText,
+                    nameToken.TrailingTrivia);
 
-#if DEBUG
-                Debugger.Launch();
-#endif
+                var newAttribNode = parsedCopy.ReplaceToken(nameToken, newNameToken);
 
-                var attNode = actionsAttribute.ApplicationSyntaxReference.SyntaxTree.GetRoot()
-                    .FindNode(sourceSpan.Value);
-                var text = attNode.GetText();
-                
-                var newNode = SyntaxFactory.Attribute(attNode.);
-                
-                    text.
-                        @"GitHubActions("""
-                    "InvokedTargets = new[] { "
+                attribs.Add($"[{newAttribNode.GetText()}]");
             }
 
-            return string.Empty;
+            return @$"{usingLines}
+{string.Join(Environment.NewLine, attribs)}
+partial class Build
+{{
+}}";
+        }
+
+        private bool TryGetActionNameToken(SyntaxNode parsedCopy, out SyntaxToken nameToken)
+        {
+            var nameArgumentSyntax = parsedCopy
+                .GetChildNode<GlobalStatementSyntax>()
+                ?.GetChildNode<ExpressionStatementSyntax>()
+                ?.GetChildNode<InvocationExpressionSyntax>()
+                ?.GetChildNode<ArgumentListSyntax>()
+                ?.GetChildNode<ArgumentSyntax>(x => x.Expression is LiteralExpressionSyntax);
+
+            if (nameArgumentSyntax is null)
+            {
+                nameToken = SyntaxFactory.MissingToken(SyntaxKind.StringLiteralToken);
+                return false;
+            }
+
+            nameToken = ((LiteralExpressionSyntax)nameArgumentSyntax.Expression).Token;
+            return true;
         }
     }
 }

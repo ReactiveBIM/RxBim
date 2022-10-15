@@ -1,8 +1,10 @@
 ﻿namespace RxBim.Nuke.Generators
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Constants;
 
@@ -11,6 +13,45 @@
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Returns parsed copy of <see cref="SyntaxNode"/> object.
+        /// </summary>
+        /// <param name="node"><see cref="SyntaxNode"/> object.</param>
+        public static SyntaxNode GetNodeParsedCopy(this SyntaxNode node)
+        {
+            var text = node.GetText();
+            var syntaxTree = CSharpSyntaxTree.ParseText(text);
+            return syntaxTree.GetRoot();
+        }
+
+        /// <summary>
+        /// Returns child node.
+        /// </summary>
+        /// <param name="node"><see cref="SyntaxNode"/> object.</param>
+        /// <param name="predicate">Child node check predicate.</param>
+        /// <typeparam name="T">Child node type.</typeparam>
+        public static T? GetChildNode<T>(this SyntaxNode node, Predicate<T>? predicate = null)
+            where T : SyntaxNode
+        {
+            var syntaxNodes = node
+                .ChildNodes()
+                .OfType<T>();
+
+            return predicate is null
+                ? syntaxNodes.FirstOrDefault()
+                : syntaxNodes.FirstOrDefault(x => predicate(x));
+        }
+
+        /// <summary>
+        /// Returns using directive lines from <see cref="SyntaxNode"/> object.
+        /// </summary>
+        /// <param name="rootNode"><see cref="SyntaxNode"/> object.</param>
+        public static string GetUsingLines(this SyntaxNode rootNode)
+        {
+            return string.Join(string.Empty,
+                rootNode.ChildNodes().OfType<UsingDirectiveSyntax>().Select(x => x.GetText().ToString()));
+        }
+
         /// <summary>
         /// Returns true if the symbol is in context assembly. Otherwise, returns false.
         /// </summary>
@@ -43,7 +84,7 @@
                 .Where(x => x.IsStatic && x.Kind is SymbolKind.Field)
                 .Cast<IFieldSymbol>();
 
-            versionNumbers = appVersionValues.Select(x => x.Name.Substring(Version.Length)).ToList();
+            versionNumbers = appVersionValues.Select(x => x.Name.Substring(Constants.Version.Length)).ToList();
             return true;
         }
 

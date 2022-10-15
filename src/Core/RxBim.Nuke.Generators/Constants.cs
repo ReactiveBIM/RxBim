@@ -10,5 +10,7 @@ namespace RxBim.Nuke.Generators
         public const string AppVersionNumber = nameof(AppVersionNumber);
 
         public const string VersionsNamespace = "RxBim.Nuke.Versions";
+
+        public const string SetupEnv = nameof(SetupEnv);
     }
 }
