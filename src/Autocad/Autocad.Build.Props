@@ -7,6 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup Condition="!Exists('.\RxBim.Build.Props') And '$(NotRefenceApi)' != 'true'">
-        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime"/>
+        <PackageReference Include="AutoCAD.NET" Version="23.0.0" ExcludeAssets="build; runtime"/>
     </ItemGroup>
 </Project>

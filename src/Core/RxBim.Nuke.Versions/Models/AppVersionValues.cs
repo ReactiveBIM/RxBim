@@ -21,7 +21,7 @@ namespace RxBim.Nuke.Versions
             AppType.Autocad,
             new ApplicationVersion("2019"),
             new TargetFramework("net472"),
-            new RuntimePackageReference("AutoCAD2019.Base", "1.0.3"),
+            new RuntimePackageReference("AutoCAD.NET", "23.0.0"),
             new DefineConstants("ACAD2019"));
 
         public static AppVersion Revit2020 = new(
@@ -37,7 +37,7 @@ namespace RxBim.Nuke.Versions
             AppType.Autocad,
             new ApplicationVersion("2020"),
             new TargetFramework("net472"),
-            new RuntimePackageReference("AutoCAD2020.Base", "1.0.0"),
+            new RuntimePackageReference("AutoCAD.NET", "23.1.0"),
             new DefineConstants("ACAD2020"));
 
         public static AppVersion Revit2021 = new(
@@ -53,7 +53,7 @@ namespace RxBim.Nuke.Versions
             AppType.Autocad,
             new ApplicationVersion("2021"),
             new TargetFramework("net48"),
-            new RuntimePackageReference("AutoCAD2021.Base", "1.0.0"),
+            new RuntimePackageReference("AutoCAD.NET", "24.0.0"),
             new DefineConstants("ACAD2021"));
 
         public static AppVersion Revit2022 = new(
@@ -69,7 +69,7 @@ namespace RxBim.Nuke.Versions
             AppType.Autocad,
             new ApplicationVersion("2022"),
             new TargetFramework("net48"),
-            new RuntimePackageReference("AutoCAD2021.Base", "1.0.0"),
+            new RuntimePackageReference("AutoCAD.NET", "24.1.51000"),
             new DefineConstants("ACAD2022"));
 
         public static AppVersion Revit2023 = new(
@@ -85,7 +85,7 @@ namespace RxBim.Nuke.Versions
             AppType.Autocad,
             new ApplicationVersion("2023"),
             new TargetFramework("net48"),
-            new RuntimePackageReference("AutoCAD2021.Base", "1.0.0"),
+            new RuntimePackageReference("AutoCAD.NET", "24.2.0"),
             new DefineConstants("ACAD2023"));
 
         /// <summary>
