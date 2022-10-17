@@ -7,5 +7,5 @@ namespace RxBim.Nuke.Versions
     /// <param name="Version">Package version.</param>
     public record PackageReference(string Name, string Version)
         : ProjectSetting(nameof(PackageReference), string.Empty, SettingType.Item, new("Include", Name),
-            new SettingAttribute(nameof(Version), Version));
+            new ProjectSettingAttribute(nameof(Version), Version));
 }

@@ -1,6 +1,9 @@
 ﻿namespace RxBim.Nuke.Versions
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
     using global::Nuke.Common.Tooling;
 
     /// <summary>
@@ -24,5 +27,15 @@
 
         /// <summary>Settings collection.</summary>
         public ProjectSetting[] Settings { get; }
+
+        /// <summary>
+        /// Returns all members of the enumeration.
+        /// </summary>
+        public static IEnumerable<AppVersion> GetAll() =>
+            typeof(AppVersion).GetFields(BindingFlags.Public |
+                                         BindingFlags.Static |
+                                         BindingFlags.DeclaredOnly)
+                .Select(f => f.GetValue(null))
+                .Cast<AppVersion>();
     }
 }

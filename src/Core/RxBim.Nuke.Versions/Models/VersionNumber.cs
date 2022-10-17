@@ -4,9 +4,9 @@ namespace RxBim.Nuke.Versions
 {
     using global::Nuke.Common.Tooling;
 
-    public partial class AppVersionNumber : Enumeration
+    public partial class VersionNumber : Enumeration
     {
-        public static implicit operator string(AppVersionNumber number)
+        public static implicit operator string(VersionNumber number)
         {
             return number.Value;
         }

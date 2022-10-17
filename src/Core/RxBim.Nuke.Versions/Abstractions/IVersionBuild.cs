@@ -12,8 +12,8 @@ namespace RxBim.Nuke.Versions
     {
         Target SetupEnv => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
-            .Requires(() => AppVersionNumber)
-            .Executes(() => this.SetupEnvironment(AppVersionNumber));
+            .Requires(() => VersionNumber)
+            .Executes(() => this.SetupEnvironment(VersionNumber));
 
         Target SetupEnvForApp => _ => _
             .Description("Configures the solution to work with a specific version of a specific CAD/BIM application.")
@@ -36,6 +36,6 @@ namespace RxBim.Nuke.Versions
 
         AppVersion AppVersion { get; set; }
 
-        AppVersionNumber AppVersionNumber { get; set; }
+        VersionNumber VersionNumber { get; set; }
     }
 }

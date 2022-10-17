@@ -4,7 +4,6 @@
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using static Constants;
 
     /// <summary>
     /// Extensions for <see cref="GeneratorExecutionContext"/>.
@@ -22,17 +21,17 @@
         }
 
         /// <summary>
-        /// Gets applications versions.
+        /// Gets applications versions numbers.
         /// </summary>
         /// <param name="context">Generator context.</param>
         /// <param name="versionNumbers">Applications versions.</param>
         /// <returns>True if application versions are collected successfully. Otherwise, false.</returns>
-        public static bool TryGetVersionNumbersFromExternalAssembly(
+        public static bool TryGetVersionNumbersFromReferencedAssembly(
             this GeneratorExecutionContext context,
             out IReadOnlyCollection<string> versionNumbers)
         {
             var appVersionNumber =
-                context.Compilation.GetTypeByMetadataName($"{VersionsNamespace}.{AppVersionNumber}");
+                context.Compilation.GetTypeByMetadataName($"{Constants.VersionsNamespace}.{Constants.VersionNumber}");
             if (appVersionNumber is null)
             {
                 versionNumbers = null!;
