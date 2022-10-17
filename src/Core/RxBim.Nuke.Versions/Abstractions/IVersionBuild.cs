@@ -8,7 +8,7 @@ namespace RxBim.Nuke.Versions
     using global::Nuke.Common.Utilities.Collections;
     using static global::Nuke.Common.IO.FileSystemTasks;
 
-    public partial interface IVersionBuild : IPublish
+    public interface IVersionBuild : IPublish
     {
         Target SetupEnv => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")

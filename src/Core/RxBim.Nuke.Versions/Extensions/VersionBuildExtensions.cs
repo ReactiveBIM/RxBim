@@ -12,7 +12,7 @@
     /// <summary>
     /// Extensions for <see cref="IVersionBuild"/>.
     /// </summary>
-    internal static class VersionBuildExtensions
+    public static class VersionBuildExtensions
     {
         /// <summary>
         /// Returns <see cref="INukeBuild"/>-based interface from <see cref="IVersionBuild"/> object.
