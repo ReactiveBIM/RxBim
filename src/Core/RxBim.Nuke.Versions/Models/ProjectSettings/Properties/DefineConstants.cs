@@ -6,5 +6,5 @@
     /// <param name="Value">Property value.</param>
     public record DefineConstants(string Value) : ProjectSetting(nameof(DefineConstants),
         Value,
-        SettingType.Property);
+        ProjectSettingType.Property);
 }

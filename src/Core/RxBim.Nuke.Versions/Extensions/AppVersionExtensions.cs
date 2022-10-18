@@ -42,8 +42,8 @@
         private static XmlElement GenerateProjectElement(this AppVersion appVersion, XmlDocument doc)
         {
             var projectElement = doc.CreateElement("Project");
-            projectElement.AddGroup(appVersion, doc, "PropertyGroup", SettingType.Property);
-            projectElement.AddGroup(appVersion, doc, "ItemGroup", SettingType.Item);
+            projectElement.AddGroup(appVersion, doc, "PropertyGroup", ProjectSettingType.Property);
+            projectElement.AddGroup(appVersion, doc, "ItemGroup", ProjectSettingType.Item);
             return projectElement;
         }
 
@@ -52,7 +52,7 @@
             AppVersion appVersion,
             XmlDocument doc,
             string groupName,
-            SettingType type)
+            ProjectSettingType type)
         {
             var group = doc.CreateElement(groupName);
 

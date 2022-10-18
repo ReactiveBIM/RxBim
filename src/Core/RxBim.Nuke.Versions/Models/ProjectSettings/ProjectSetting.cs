@@ -10,6 +10,6 @@
     public record ProjectSetting(
         string Name,
         string Value,
-        SettingType Type,
+        ProjectSettingType Type,
         params ProjectSettingAttribute[] Attributes);
 }

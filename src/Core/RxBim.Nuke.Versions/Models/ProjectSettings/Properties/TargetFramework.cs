@@ -6,5 +6,5 @@ namespace RxBim.Nuke.Versions
     /// <param name="Value">Property value.</param>
     public record TargetFramework(string Value) : ProjectSetting(nameof(TargetFramework),
         Value,
-        SettingType.Property);
+        ProjectSettingType.Property);
 }

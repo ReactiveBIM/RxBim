@@ -3,7 +3,7 @@
     /// <summary>
     /// Project setting type.
     /// </summary>
-    public enum SettingType
+    public enum ProjectSettingType
     {
         /// <summary>
         /// Project item.
