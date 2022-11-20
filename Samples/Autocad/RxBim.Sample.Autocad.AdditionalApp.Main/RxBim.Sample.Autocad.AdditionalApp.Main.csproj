@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\RxBim.Sample.Autocad.AdditionalApp.Additional\RxBim.Sample.Autocad.AdditionalApp.Additional.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageGuid>d9a681da-febb-4bf9-a4c9-4d06681c86c8</PackageGuid>
+    <UpgradeCode>645d267b-2990-4aba-9b56-1ccd450f34aa</UpgradeCode>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectsAddingToManifest>RxBim.Sample.Autocad.AdditionalApp</ProjectsAddingToManifest>
+  </PropertyGroup>
+</Project>

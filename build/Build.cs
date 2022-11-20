@@ -62,7 +62,7 @@ partial class Build : NukeBuild
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
 
-    [Parameter] public bool AttachDebugger;
+    [Parameter] public bool AttachDebugger = false;
 
     /// <summary>
     /// Example target. Runs local only....
