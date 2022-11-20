@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">  
+  <PropertyGroup>
+    <PackageGuid>52a97f0d-a404-46e6-b28f-1fd5f5073ece</PackageGuid>
+    <UpgradeCode>685c7269-6dc2-4b74-9acb-16563930b80b</UpgradeCode>
+    <RootNamespace>RxBim.Sample.Autocad.AdditionalApp</RootNamespace>
+  </PropertyGroup>  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+  </ItemGroup>
+</Project>

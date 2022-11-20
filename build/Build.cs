@@ -50,8 +50,7 @@ using Enumeration = Versions.Enumeration;
     {
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
-partial class Build : NukeBuild,
-    IPublish
+partial class Build : NukeBuild, IPublish
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
