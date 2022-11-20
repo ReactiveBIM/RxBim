@@ -1,10 +1,10 @@
 ﻿using Autodesk.AutoCAD.Runtime;
-using RxBim.Sample.Autocad.MainApp;
+using RxBim.Sample.Autocad.AdditionalApp.Main;
 
 // You must explicitly specify the application class using this attribute.
 [assembly: ExtensionApplication(typeof(App))]
 
-namespace RxBim.Sample.Autocad.MainApp
+namespace RxBim.Sample.Autocad.AdditionalApp.Main
 {
     using System.Reflection;
     using Application.Autocad;

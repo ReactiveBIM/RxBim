@@ -1,4 +1,4 @@
-﻿namespace RxBim.Sample.Autocad.MainApp
+﻿namespace RxBim.Sample.Autocad.AdditionalApp.Main
 {
     using Di;
 
