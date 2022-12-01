@@ -8,6 +8,6 @@
     <UpgradeCode>645d267b-2990-4aba-9b56-1ccd450f34aa</UpgradeCode>
   </PropertyGroup>
   <PropertyGroup>
-    <ProjectsAddingToManifest>RxBim.Sample.Autocad.AdditionalApp</ProjectsAddingToManifest>
+    <ProjectsAddingToManifest>RxBim.Sample.Autocad.AdditionalApp.Additional</ProjectsAddingToManifest>
   </PropertyGroup>
 </Project>
