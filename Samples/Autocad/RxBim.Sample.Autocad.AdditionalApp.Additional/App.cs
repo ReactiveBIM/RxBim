@@ -1,28 +1,27 @@
 ﻿using Autodesk.AutoCAD.Runtime;
-using RxBim.Application.Autocad.Example;
+using RxBim.Sample.Autocad.AdditionalApp.Additional;
 
 // You must explicitly specify the application class using this attribute.
 [assembly: ExtensionApplication(typeof(App))]
 
-namespace RxBim.Application.Autocad.Example
+namespace RxBim.Sample.Autocad.AdditionalApp.Additional
 {
-    using Abstractions;
+    using System.Reflection;
+    using Application.Autocad;
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using JetBrains.Annotations;
     using Shared;
 
     /// <inheritdoc />
-    [PublicAPI]
     public class App : RxBimApplication
     {
+        private readonly string _name = Assembly.GetExecutingAssembly().GetName().Name;
+
         /// <summary>
         /// This method is run when AutoCAD enters the first idle state after the application is loaded.
         /// </summary>
-        /// <param name="service"><see cref="IInfoService"/> instance.</param>
-        public PluginResult Start(IInfoService service)
+        public PluginResult Start()
         {
-            Application.ShowAlertDialog("RxBimApplication example started!");
-            service.ShowAutocadVersion();
+            Application.ShowAlertDialog($"{_name} started!");
             return PluginResult.Succeeded;
         }
 
@@ -31,7 +30,7 @@ namespace RxBim.Application.Autocad.Example
         /// </summary>
         public PluginResult Shutdown()
         {
-            Application.ShowAlertDialog("RxBimApplication example finished!");
+            Application.ShowAlertDialog($"{_name} finished!");
             return PluginResult.Succeeded;
         }
     }

@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
         <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
