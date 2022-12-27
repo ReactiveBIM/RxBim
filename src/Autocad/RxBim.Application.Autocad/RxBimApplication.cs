@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Autocad
 {
     using System;
+    using System.IO;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Runtime;
     using Di;
@@ -37,6 +38,12 @@
                     var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
                 }
+            }
+            catch (FileNotFoundException ex) when (ex.FileName.StartsWith("AeccDbMgd"))
+            {
+                // Приложение для Civil запускается в AutoCAD
+                Application.Idle -= ApplicationOnIdle;
+                _diConfigurator = null;
             }
             catch (Exception exception)
             {
