@@ -2,8 +2,10 @@
 {
     using System;
     using System.IO;
+    using Autodesk.AutoCAD.AcInfoCenterConn;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Runtime;
+    using Autodesk.Internal.InfoCenter;
     using Di;
     using Shared;
     using Exception = System.Exception;
@@ -44,6 +46,15 @@
                 // Приложение для Civil запускается в AutoCAD
                 Application.Idle -= ApplicationOnIdle;
                 _diConfigurator = null;
+
+                var resultItem = new ResultItem
+                {
+                    Title = $"Приложение {GetType().Assembly.GetName().Name} работает, только в Civil 3D.",
+                    Type = ResultType.Error
+                };
+                resultItem.ResultClicked += (_, _) => Application.ShowAlertDialog(ex.ToString());
+
+                new InfoCenterManager().PaletteManager.ShowBalloon(resultItem);
             }
             catch (Exception exception)
             {
