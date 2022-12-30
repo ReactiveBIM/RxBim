@@ -2,6 +2,7 @@
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Command.Autocad;
+    using Command.Autocad.Base;
     using Shared;
 
     /// <inheritdoc />

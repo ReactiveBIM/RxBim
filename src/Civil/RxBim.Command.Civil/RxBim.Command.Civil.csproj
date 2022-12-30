@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">    
+
+    <PropertyGroup>
+        <Description>RxBim Command api Library for Civil</Description>
+        <PackageId>RxBim.Command.Civil</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
+    </ItemGroup>
+
+</Project>
