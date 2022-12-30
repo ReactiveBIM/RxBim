@@ -25,12 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="TestHelpers\Result.cshtml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="Directory.Build.Props" />
     </ItemGroup>
 
