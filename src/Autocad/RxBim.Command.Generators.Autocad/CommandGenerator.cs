@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    //// using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using Extensions;
@@ -22,9 +23,7 @@
         /// <inheritdoc/>
         public void Initialize(GeneratorInitializationContext context)
         {
-/*#if DEBUG
-             Debugger.Launch();
-#endif*/
+             // Debugger.Launch();
         }
 
         /// <inheritdoc/>
@@ -88,16 +87,11 @@
         }
 
         private List<(string Namespace, string CommandClass, string CommandName, string CommandFlags)> GetCommands(
-            INamedTypeSymbol? attributeSymbol)
+            ISymbol? attributeSymbol)
         {
             return _context.Compilation.SyntaxTrees.SelectMany(tree => tree.GetRoot().DescendantNodes())
                 .OfType<ClassDeclarationSyntax>()
-                .Where(
-                    declarationSyntax => declarationSyntax.BaseList != null && declarationSyntax.BaseList.Types.Any(
-                        baseTypeSyntax =>
-                            baseTypeSyntax.Type is
-                                IdentifierNameSyntax { Identifier: { Text: BaseCommandClassName } } or
-                                QualifiedNameSyntax { Right: { Identifier: { Text: BaseCommandClassName } } }))
+                .Where(CheckForCommandType)
                 .Select(
                     s =>
                     {
@@ -109,6 +103,22 @@
                             tokens.ReadCommandFlags());
                     })
                 .ToList();
+        }
+
+        private bool CheckForCommandType(BaseTypeDeclarationSyntax typeDeclarationSyntax)
+        {
+            var semanticModel = _context.Compilation.GetSemanticModel(typeDeclarationSyntax.SyntaxTree);
+            var declaredSymbol = semanticModel.GetDeclaredSymbol(typeDeclarationSyntax);
+
+            while (declaredSymbol != null)
+            {
+                if (declaredSymbol.Name == BaseCommandClassName)
+                    return true;
+
+                declaredSymbol = declaredSymbol.BaseType;
+            }
+
+            return false;
         }
 
         private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol? attributeSymbol)
