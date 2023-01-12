@@ -6,15 +6,13 @@
     using Autodesk.Internal.InfoCenter;
     using Command.Civil;
 
-    public delegate void CivilNotSupportedEventHandler(object sender, CivilNotSupportedEventHandlerArgs args);
-
     /// <inheritdoc />
     public abstract class RxBimApplication : RxBimApplicationBase
     {
         /// <summary>
         /// Civil is not supported.
         /// </summary>
-        public event CivilNotSupportedEventHandler? NotSupportedDetected;
+        public event EventHandler<CivilNotSupportedEventHandlerArgs>? CivilNotSupported;
 
         /// <inheritdoc />
         public override void Initialize()
@@ -26,7 +24,7 @@
                     Message = $"Application {GetType().Assembly.GetName().Name} runs only in Civil 3D."
                 };
 
-                NotSupportedDetected?.Invoke(this, args);
+                CivilNotSupported?.Invoke(this, args);
 
                 if (!args.ShowMessage)
                     return;

@@ -6,8 +6,16 @@
     </PropertyGroup>    
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Autocad\RxBim.Application.Autocad.Base\RxBim.Application.Autocad.Base.csproj" />
-      <ProjectReference Include="..\RxBim.Command.Civil\RxBim.Command.Civil.csproj" />
+      <ProjectReference Include="..\..\Autocad\RxBim.Application.Autocad.Base\RxBim.Application.Autocad.Base.csproj" />      
+    </ItemGroup>    
+
+    <ItemGroup>
+      <Compile Include="..\RxBim.Command.Civil\CivilNotSupportedEventHandlerArgs.cs">
+        <Link>CivilNotSupportedEventHandlerArgs.cs</Link>
+      </Compile>
+      <Compile Include="..\RxBim.Command.Civil\CivilUtils.cs">
+        <Link>CivilUtils.cs</Link>
+      </Compile>
     </ItemGroup>    
 
 </Project>
