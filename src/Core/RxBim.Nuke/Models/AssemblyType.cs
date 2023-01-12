@@ -1,5 +1,8 @@
 ﻿namespace RxBim.Nuke.Models
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Specifies the type from an assembly.
     /// </summary>
@@ -9,13 +12,13 @@
         /// Initialize a new instance of the <see cref="AssemblyType"/> class.
         /// </summary>
         /// <param name="assemblyName">The assembly name.</param>
-        /// <param name="fullName">The assembly full name.</param>
-        /// <param name="baseTypeName">The assembly base type name.</param>
-        public AssemblyType(string assemblyName, string fullName, string? baseTypeName)
+        /// <param name="fullName">The assembly type full name.</param>
+        /// <param name="baseTypeNames">The assembly type base types names.</param>
+        public AssemblyType(string assemblyName, string fullName, IEnumerable<string> baseTypeNames)
         {
             AssemblyName = assemblyName;
             FullName = fullName;
-            BaseTypeName = baseTypeName;
+            BaseTypeNames = baseTypeNames.ToList();
         }
 
         /// <summary>
@@ -31,12 +34,12 @@
         /// <summary>
         /// The assembly base type name.
         /// </summary>
-        public string? BaseTypeName { get; }
+        public List<string> BaseTypeNames { get; }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{FullName} : {BaseTypeName}";
+            return $"{FullName} : {BaseTypeNames.FirstOrDefault()}";
         }
     }
 }
