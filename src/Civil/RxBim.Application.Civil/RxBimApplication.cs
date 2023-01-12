@@ -1,13 +1,12 @@
 ﻿namespace RxBim.Application.Civil
 {
     using System;
-    using Autocad.Base;
     using Autodesk.AutoCAD.AcInfoCenterConn;
     using Autodesk.Internal.InfoCenter;
     using Command.Civil;
 
     /// <inheritdoc />
-    public abstract class RxBimApplication : RxBimApplicationBase
+    public abstract class RxBimApplication : RxBim.Application.Autocad.RxBimApplication
     {
         /// <summary>
         /// Civil is not supported.

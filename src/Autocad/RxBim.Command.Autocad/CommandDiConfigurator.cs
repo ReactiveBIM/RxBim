@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.Autocad.Base
+﻿namespace RxBim.Command.Autocad
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Di;

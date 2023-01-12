@@ -22,9 +22,9 @@
         /// <inheritdoc/>
         public void Initialize(GeneratorInitializationContext context)
         {
-// #if DEBUG
-//             Debugger.Launch();
-// #endif
+/*#if DEBUG
+             Debugger.Launch();
+#endif*/
         }
 
         /// <inheritdoc/>
@@ -35,7 +35,7 @@
             AddCommands(attributeSymbol);
         }
 
-        private INamedTypeSymbol? GetAttribute()
+        private INamedTypeSymbol GetAttribute()
         {
             return _context.Compilation.GetTypeByMetadataName(CommandClassAttributeTypeFullName)!;
         }
@@ -43,9 +43,9 @@
         private void AddCommands(INamedTypeSymbol? attributeSymbol)
         {
             var commands = GetCommands(attributeSymbol);
-            foreach (var (ns, command, commandName, flags) in commands)
+            foreach (var (ns, commandClass, commandName, flags) in commands)
             {
-                AddCommand(ns, command, commandName, flags);
+                AddCommand(ns, commandClass, commandName, flags);
             }
         }
 
@@ -87,7 +87,7 @@
             _context.AddSource($"{commandClass}{Generated}", classSource);
         }
 
-        private List<(string Namespace, string Command, string CommandName, string CommandFlags)> GetCommands(
+        private List<(string Namespace, string CommandClass, string CommandName, string CommandFlags)> GetCommands(
             INamedTypeSymbol? attributeSymbol)
         {
             return _context.Compilation.SyntaxTrees.SelectMany(tree => tree.GetRoot().DescendantNodes())
@@ -95,15 +95,20 @@
                 .Where(
                     declarationSyntax => declarationSyntax.BaseList != null && declarationSyntax.BaseList.Types.Any(
                         baseTypeSyntax =>
-                            baseTypeSyntax.Type is IdentifierNameSyntax { Identifier: { Text: BaseCommandClassName } }))
+                            baseTypeSyntax.Type is
+                                IdentifierNameSyntax { Identifier: { Text: BaseCommandClassName } } or
+                                QualifiedNameSyntax { Right: { Identifier: { Text: BaseCommandClassName } } }))
                 .Select(
                     s =>
                     {
                         var tokens = GetAttributeTokens(s, attributeSymbol);
-                        return (((NamespaceDeclarationSyntax)s.Parent!)?.Name.ToString(), s.Identifier.Text,
-                            tokens.ReadCommandName(), tokens.ReadCommandFlags());
+                        return (
+                            ((NamespaceDeclarationSyntax)s.Parent!).Name.ToString(),
+                            s.Identifier.Text,
+                            tokens.ReadCommandName(),
+                            tokens.ReadCommandFlags());
                     })
-                .ToList()!;
+                .ToList();
         }
 
         private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol? attributeSymbol)

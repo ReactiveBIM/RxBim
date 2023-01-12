@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Menu.Fluent.Autocad.Sample.Commands
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using Command.Autocad.Base;
     using RxBim.Command.Autocad;
     using Shared;
 

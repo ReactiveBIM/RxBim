@@ -1,6 +1,6 @@
 namespace RxBim.Command.Civil.Example
 {
-    using Autocad.Base;
+    using Autocad;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Shared;
 
@@ -8,7 +8,7 @@ namespace RxBim.Command.Civil.Example
     /// Command.
     /// </summary>
     [RxBimCommandClass("RxBimExampleCivilHello")]
-    public class Command : RxBimCommand
+    public class Command : RxBim.Command.Civil.RxBimCommand
     {
         /// <summary>
         /// Executes command.

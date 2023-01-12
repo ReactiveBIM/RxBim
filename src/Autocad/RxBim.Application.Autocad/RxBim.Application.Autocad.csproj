@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Application.Autocad.Base\RxBim.Application.Autocad.Base.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

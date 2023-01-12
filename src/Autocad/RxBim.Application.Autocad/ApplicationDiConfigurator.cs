@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Autocad.Base
+﻿namespace RxBim.Application.Autocad
 {
     using System.Reflection;
     using Autodesk.AutoCAD.ApplicationServices.Core;

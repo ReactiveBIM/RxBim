@@ -7,7 +7,6 @@ using RxBim.Application.Civil.Example;
 namespace RxBim.Application.Civil.Example
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
-    using Civil;
     using JetBrains.Annotations;
     using Shared;
 

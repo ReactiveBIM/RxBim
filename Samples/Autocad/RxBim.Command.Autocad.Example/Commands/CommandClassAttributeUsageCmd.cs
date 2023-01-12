@@ -2,7 +2,6 @@
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Runtime;
-    using Base;
     using JetBrains.Annotations;
     using Shared;
 
