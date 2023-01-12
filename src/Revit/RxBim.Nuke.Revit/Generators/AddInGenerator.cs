@@ -6,10 +6,9 @@
     using System.Linq;
     using Extensions;
     using global::Nuke.Common.ProjectModel;
-    using Helpers;
     using Models;
-    using RxBim.Nuke.Extensions;
-    using RxBim.Nuke.Models;
+    using Nuke.Extensions;
+    using Nuke.Models;
     using static Constants;
 
     /// <summary>
@@ -59,7 +58,7 @@
                     $"{rootProjectName}/{project.Name}.dll",
                     guid.ToString(),
                     assemblyType.FullName,
-                    assemblyType.BaseTypeName.Ensure().ToPluginType()));
+                    assemblyType.ToPluginType()));
             }
 
             var revitAddIns = new RevitAddIns
