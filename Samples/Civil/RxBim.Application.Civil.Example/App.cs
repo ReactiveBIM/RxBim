@@ -15,6 +15,18 @@ namespace RxBim.Application.Civil.Example
     public class App : RxBimApplication
     {
         /// <summary>
+        /// Constructor
+        /// </summary>
+        public App()
+        {
+            CivilNotSupported += (_, args) =>
+            {
+                args.ShowMessage = false;
+                Application.ShowAlertDialog("Is not Civil 3D!");
+            };
+        }
+
+        /// <summary>
         /// This method is run when AutoCAD enters the first idle state after the application is loaded.
         /// </summary>
         public PluginResult Start()

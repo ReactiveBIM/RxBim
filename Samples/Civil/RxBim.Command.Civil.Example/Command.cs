@@ -11,6 +11,17 @@ namespace RxBim.Command.Civil.Example
     public class Command : RxBim.Command.Civil.RxBimCommand
     {
         /// <summary>
+        /// Constructor
+        /// </summary>
+        protected Command()
+        {
+            CivilNotSupported += (_, args) =>
+            {
+                args.Message = "Your message";
+            };
+        }
+
+        /// <summary>
         /// Executes command.
         /// </summary>
         public PluginResult ExecuteCommand()
