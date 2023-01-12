@@ -100,8 +100,19 @@
                     s =>
                     {
                         var tokens = GetAttributeTokens(s, attributeSymbol);
-                        return (((NamespaceDeclarationSyntax)s.Parent!)?.Name.ToString(), s.Identifier.Text,
-                            tokens.ReadCommandName(), tokens.ReadCommandFlags());
+
+                        var commandNamespace = s.Parent switch
+                        {
+                            NamespaceDeclarationSyntax nameDeclaration => nameDeclaration.Name.ToString(),
+                            FileScopedNamespaceDeclarationSyntax fileDeclaration => fileDeclaration.Name.ToString(),
+                            _ => throw new ArgumentOutOfRangeException()
+                        };
+
+                        return (
+                            commandNamespace,
+                            s.Identifier.Text,
+                            tokens.ReadCommandName(),
+                            tokens.ReadCommandFlags());
                     })
                 .ToList()!;
         }
