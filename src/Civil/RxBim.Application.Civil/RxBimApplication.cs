@@ -16,30 +16,29 @@
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (!CivilUtils.IsCivilSupported())
+            if (CivilUtils.IsCivilSupported())
             {
-                var args = new CivilNotSupportedEventHandlerArgs
-                {
-                    Message = $"Application {GetType().Assembly.GetName().Name} runs only in Civil 3D."
-                };
-
-                CivilNotSupported?.Invoke(this, args);
-
-                if (!args.ShowMessage)
-                    return;
-
-                var resultItem = new ResultItem
-                {
-                    Title = args.Message,
-                    Type = ResultType.Error
-                };
-
-                new InfoCenterManager().PaletteManager.ShowBalloon(resultItem);
-
+                base.Initialize();
                 return;
             }
 
-            base.Initialize();
+            var args = new CivilNotSupportedEventHandlerArgs
+            {
+                Message = $"Application {GetType().Assembly.GetName().Name} runs only in Civil 3D."
+            };
+
+            CivilNotSupported?.Invoke(this, args);
+
+            if (!args.ShowMessage)
+                return;
+
+            var resultItem = new ResultItem
+            {
+                Title = args.Message,
+                Type = ResultType.Error
+            };
+
+            new InfoCenterManager().PaletteManager.ShowBalloon(resultItem);
         }
     }
 }

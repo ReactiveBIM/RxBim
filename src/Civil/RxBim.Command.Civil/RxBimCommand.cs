@@ -17,22 +17,21 @@ namespace RxBim.Command.Civil
         /// <inheritdoc />
         public override void Execute()
         {
-            if (!CivilUtils.IsCivilSupported())
+            if (CivilUtils.IsCivilSupported())
             {
-                var args = new CivilNotSupportedEventHandlerArgs
-                {
-                    Message = "The command can only be executed in Civil 3D!"
-                };
-
-                CivilNotSupported?.Invoke(this, args);
-
-                if (args.ShowMessage)
-                    Application.ShowAlertDialog(args.Message);
-
+                base.Execute();
                 return;
             }
 
-            base.Execute();
+            var args = new CivilNotSupportedEventHandlerArgs
+            {
+                Message = "The command can only be executed in Civil 3D!"
+            };
+
+            CivilNotSupported?.Invoke(this, args);
+
+            if (args.ShowMessage)
+                Application.ShowAlertDialog(args.Message);
         }
     }
 }
