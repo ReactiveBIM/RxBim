@@ -1,14 +1,14 @@
 namespace RxBim.Command.Civil.Example
 {
-    using Autocad;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Shared;
+    using Shared.Autocad;
 
     /// <summary>
     /// Command.
     /// </summary>
     [RxBimCommandClass("RxBimExampleCivilHello")]
-    public class Command : RxBim.Command.Civil.RxBimCommand
+    public class Command : RxBimCommand
     {
         /// <summary>
         /// Constructor
@@ -17,7 +17,8 @@ namespace RxBim.Command.Civil.Example
         {
             CivilNotSupported += (_, args) =>
             {
-                args.Message = "Your message";
+                args.Message = "This is not a Civil 3D, but the command will continue.";
+                args.StopExecution = false;
             };
         }
 

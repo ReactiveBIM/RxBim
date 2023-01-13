@@ -10,8 +10,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\RxBim.Command.Civil\CivilNotSupportedEventHandlerArgs.cs">
-        <Link>CivilNotSupportedEventHandlerArgs.cs</Link>
+      <Compile Include="..\RxBim.Command.Civil\CivilNotSupportedEventArgs.cs">
+        <Link>CivilNotSupportedEventArgs.cs</Link>
       </Compile>
       <Compile Include="..\RxBim.Command.Civil\CivilUtils.cs">
         <Link>CivilUtils.cs</Link>

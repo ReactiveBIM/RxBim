@@ -7,6 +7,7 @@
     /// Contains a command metadata.
     /// </summary>
     [PublicAPI]
+    [AttributeUsage(AttributeTargets.Class)]
     public class RxBimCommandAttribute : Attribute
     {
         /// <summary>

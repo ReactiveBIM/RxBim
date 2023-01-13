@@ -1,37 +1,37 @@
 namespace RxBim.Command.Civil
 {
     using System;
-    using Application.Civil;
     using Autodesk.AutoCAD.ApplicationServices.Core;
+    using Shared.Civil;
 
     /// <summary>
     /// Civil command.
     /// </summary>
-    public class RxBimCommand : RxBim.Command.Autocad.RxBimCommand
+    public class RxBimCommand : Autocad.RxBimCommand
     {
         /// <summary>
         /// Civil is not supported.
         /// </summary>
-        public event EventHandler<CivilNotSupportedEventHandlerArgs>? CivilNotSupported;
+        public event EventHandler<CivilNotSupportedEventArgs>? CivilNotSupported;
 
         /// <inheritdoc />
         public override void Execute()
         {
-            if (CivilUtils.IsCivilSupported())
+            if (!CivilUtils.IsCivilSupported())
             {
-                base.Execute();
-                return;
+                var args = new CivilNotSupportedEventArgs
+                    { Message = "The command can only be executed in Civil 3D!" };
+
+                CivilNotSupported?.Invoke(this, args);
+
+                if (args.ShowMessage)
+                    Application.ShowAlertDialog(args.Message);
+
+                if (args.StopExecution)
+                    return;
             }
 
-            var args = new CivilNotSupportedEventHandlerArgs
-            {
-                Message = "The command can only be executed in Civil 3D!"
-            };
-
-            CivilNotSupported?.Invoke(this, args);
-
-            if (args.ShowMessage)
-                Application.ShowAlertDialog(args.Message);
+            base.Execute();
         }
     }
 }

@@ -3,12 +3,12 @@
     using Autodesk.AutoCAD.Runtime;
 
     /// <summary>
-    /// Generated Command
+    /// Generated Command.
     /// </summary>
     public class $CLASS$$GENERATED$ : $CLASS$
     {
         /// <summary>
-        /// Autocad command execute
+        /// Command execute.
         /// </summary>
         [CommandMethod("$COMMAND$", $FLAGS$)]
         public void $CLASS$Execute()

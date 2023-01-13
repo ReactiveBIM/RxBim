@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.Civil;
+﻿namespace RxBim.Shared.Civil;
 
 using System;
 using System.Linq;

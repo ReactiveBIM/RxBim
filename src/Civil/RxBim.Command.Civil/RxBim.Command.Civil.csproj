@@ -3,10 +3,10 @@
     <PropertyGroup>
         <Description>RxBim Command api Library for Civil</Description>
         <PackageId>RxBim.Command.Civil</PackageId>
-    </PropertyGroup>
+    </PropertyGroup>    
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
+      <ProjectReference Include="..\..\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
     </ItemGroup>
 
 </Project>
