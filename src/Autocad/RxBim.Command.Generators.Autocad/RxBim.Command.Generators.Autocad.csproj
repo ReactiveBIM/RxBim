@@ -3,9 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
-        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -15,21 +13,19 @@
 
     <ItemGroup>
         <!-- Package the generator in the analyzer directory of the nuget package -->
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all"/>
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Sources\CommandClass.source" />
+        <EmbeddedResource Include="Sources\CommandClass.source"/>
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
-         <Description>RxBim Command generation Library for AutoCAD</Description>
-        <PackageId>RxBim.Command.Generators.Autocad</PackageId>
+        <Description>RxBim Command generation Library for AutoCAD</Description>
     </PropertyGroup>
 </Project>

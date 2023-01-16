@@ -47,7 +47,6 @@
     <EmbeddedResource Include="img\num3_32_light.jpg" />
     <EmbeddedResource Include="img\num3_32_light.png" />
   </ItemGroup>
-  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
   <PropertyGroup>
     <PackageGuid>f8530b97-cafd-439f-b44d-e9c8ee9fdd8b</PackageGuid>
     <UpgradeCode>189d840e-3ff6-4abe-bfa8-ddcca17e4a2a</UpgradeCode>

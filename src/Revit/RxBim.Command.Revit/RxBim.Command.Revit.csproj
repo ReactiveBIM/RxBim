@@ -12,7 +12,6 @@
 
     <PropertyGroup>
         <Description>RxBim Command api Library</Description>
-        <PackageId>RxBim.Command.Revit</PackageId>
     </PropertyGroup>
 
 </Project>

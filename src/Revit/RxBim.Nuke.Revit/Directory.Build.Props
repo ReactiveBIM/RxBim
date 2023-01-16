@@ -1,7 +1,8 @@
 ﻿<Project>
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
-    
     <PropertyGroup>
-        <Version>2.2.2</Version>
+        <NotRefenceApi>true</NotRefenceApi>
+        <Version>2.2.3-dev001</Version>
     </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
 </Project>

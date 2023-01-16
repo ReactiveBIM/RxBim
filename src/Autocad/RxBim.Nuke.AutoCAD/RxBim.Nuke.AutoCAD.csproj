@@ -3,17 +3,16 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <Configurations>Debug;Release</Configurations>
-        <NotRefenceApi>true</NotRefenceApi>
+        <Configurations>Debug;Release</Configurations>      
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj"/>
+        <ProjectReference Include="..\..\Core\RxBim.Nuke.Versions\RxBim.Nuke.Versions.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
         <Description>RxBim nuke plugin for building MSI for AutoCAD</Description>
-        <PackageId>RxBim.Nuke.AutoCAD</PackageId>
     </PropertyGroup>
 
 </Project>
