@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    //// using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using Extensions;
@@ -22,9 +23,7 @@
         /// <inheritdoc/>
         public void Initialize(GeneratorInitializationContext context)
         {
-// #if DEBUG
-//             Debugger.Launch();
-// #endif
+            // Debugger.Launch();
         }
 
         /// <inheritdoc/>
@@ -35,7 +34,7 @@
             AddCommands(attributeSymbol);
         }
 
-        private INamedTypeSymbol? GetAttribute()
+        private INamedTypeSymbol GetAttribute()
         {
             return _context.Compilation.GetTypeByMetadataName(CommandClassAttributeTypeFullName)!;
         }
@@ -101,20 +100,13 @@
                     {
                         var tokens = GetAttributeTokens(s, attributeSymbol);
 
-                        var commandNamespace = s.Parent switch
-                        {
-                            NamespaceDeclarationSyntax nameDeclaration => nameDeclaration.Name.ToString(),
-                            FileScopedNamespaceDeclarationSyntax fileDeclaration => fileDeclaration.Name.ToString(),
-                            _ => throw new ArgumentOutOfRangeException()
-                        };
-
                         return (
-                            commandNamespace,
+                            ((BaseNamespaceDeclarationSyntax)s.Parent!).Name.ToString(),
                             s.Identifier.Text,
                             tokens.ReadCommandName(),
                             tokens.ReadCommandFlags());
                     })
-                .ToList()!;
+                .ToList();
         }
 
         private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol? attributeSymbol)
