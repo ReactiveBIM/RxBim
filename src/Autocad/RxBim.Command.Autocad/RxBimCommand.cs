@@ -12,7 +12,7 @@
         /// <summary>
         /// Executes a command.
         /// </summary>
-        public void Execute()
+        public virtual void Execute()
         {
             var assembly = GetType().Assembly;
             var di = Configure(assembly);

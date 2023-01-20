@@ -25,38 +25,48 @@
             // ignore
         }
 
+        /// <summary>
+        /// If it returns true, the application will run. Otherwise, the application will not run.
+        /// </summary>
+        protected virtual bool CanBeStarted() => true;
+
         private void ApplicationOnIdle(object sender, EventArgs e)
         {
+            Application.Idle -= ApplicationOnIdle;
+
             try
             {
-                if (_diConfigurator == null)
-                {
-                    _diConfigurator = new ApplicationDiConfigurator(this);
-                    _diConfigurator.Configure(GetType().Assembly);
+                if (_diConfigurator is not null || !CanBeStarted())
+                    return;
 
-                    var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
-                }
+                _diConfigurator = new ApplicationDiConfigurator(this);
+                _diConfigurator.Configure(GetType().Assembly);
+
+                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
             }
             catch (Exception exception)
             {
                 Application.ShowAlertDialog($"Error: {exception}");
             }
-            finally
-            {
-                Application.Idle -= ApplicationOnIdle;
-            }
         }
 
         private void ApplicationOnQuitWillStart(object sender, EventArgs e)
         {
-            if (_diConfigurator == null)
-            {
-                return;
-            }
+            Application.QuitWillStart -= ApplicationOnQuitWillStart;
 
-            var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+            if (_diConfigurator is null)
+                return;
+
+            try
+            {
+                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+            }
+            catch (Exception exception)
+            {
+                Application.ShowAlertDialog($"Error: {exception}");
+            }
         }
     }
 }
