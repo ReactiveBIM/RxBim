@@ -9,7 +9,7 @@
         /// Full name of the command class attribute type.
         /// </summary>
         public const string CommandClassAttributeTypeFullName =
-            "RxBim.Command.Autocad.RxBimCommandClassAttribute";
+            "RxBim.Shared.Autocad.RxBimCommandClassAttribute";
 
         /// <summary>
         /// Base command class name.

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">    
+
+    <PropertyGroup>
+        <Description>RxBim Application api Library for Civil 3D</Description>
+        <PackageId>RxBim.Application.Civil</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\RxBim.Command.Civil\CivilNotSupportedEventArgs.cs">
+        <Link>CivilNotSupportedEventArgs.cs</Link>
+      </Compile>
+      <Compile Include="..\RxBim.Command.Civil\CivilUtils.cs">
+        <Link>CivilUtils.cs</Link>
+      </Compile>
+    </ItemGroup>    
+
+</Project>

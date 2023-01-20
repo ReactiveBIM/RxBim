@@ -12,11 +12,11 @@ namespace RxBim.Nuke.Builds
     using nc::Nuke.Common.Utilities;
 
     /// <content>
-    /// Расширение Build-скрипта для сборки MSI. Параметры.
+    /// Build-script extension for installer. Parameters.
     /// </content>
-    public abstract partial class RxBimBuild<TWix, TPackGen, TPropGen>
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen>
     {
-        private readonly TWix _wix;
+        private readonly TBuilder _builder;
         private string? _project;
         private Regex? _releaseBranchRegex;
         private string? _outputTmpDir;

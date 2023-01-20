@@ -6,7 +6,7 @@
 
     /// <inheritdoc />
     public class AutocadRxBimBuild : RxBimBuild<
-        WixBuilder<AutocadPackageContentsGenerator>,
+        InstallerBuilder<AutocadPackageContentsGenerator>,
         AutocadPackageContentsGenerator,
         ProjectPropertiesGenerator>
     {

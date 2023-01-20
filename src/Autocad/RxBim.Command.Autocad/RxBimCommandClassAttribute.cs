@@ -1,4 +1,5 @@
-﻿namespace RxBim.Command.Autocad
+﻿// ReSharper disable once CheckNamespace
+namespace RxBim.Shared.Autocad
 {
     using Autodesk.AutoCAD.Runtime;
     using Shared;
