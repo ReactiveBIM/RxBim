@@ -2,7 +2,8 @@
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using RxBim.Command.Autocad;
-    using RxBim.Shared;
+    using Shared;
+    using Shared.Autocad;
 
     /// <inheritdoc />
     [RxBimCommandClass("HelloCmd3Example",

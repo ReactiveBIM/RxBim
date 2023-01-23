@@ -3,7 +3,7 @@
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
     using RxBim.Command.Revit;
-    using RxBim.Shared;
+    using Shared;
 
     /// <inheritdoc />
     [Transaction(TransactionMode.Manual)]

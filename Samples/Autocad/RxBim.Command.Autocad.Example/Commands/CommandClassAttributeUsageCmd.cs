@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.Runtime;
 using JetBrains.Annotations;
 using Shared;
+using Shared.Autocad;
 
 /// <summary>
 /// Command for an example of using the command class attribute.
