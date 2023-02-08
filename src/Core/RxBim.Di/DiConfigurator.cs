@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Extensions;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -101,10 +102,12 @@
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
         {
             var basePath = Path.GetDirectoryName(assembly.Location);
+            var configFile = $"appsettings.{assembly.GetName().Name}.json";
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
-                .AddJsonFile($"appsettings.{assembly.GetName().Name}.json", true);
+                .AddJsonFile(configFile, true)
+                .AddRxBimEnvironment(basePath!, configFile);
         }
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
