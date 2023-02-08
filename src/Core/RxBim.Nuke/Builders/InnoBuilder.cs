@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.Builders
 {
     extern alias nc;
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Text;
@@ -91,6 +92,19 @@
         public InnoBuilder AddUninstallScript()
         {
             Code.CreateEntry(EmbeddedResourceExtensions.ReadResource("uninstall.pas"));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds environment variable.
+        /// </summary>
+        /// <param name="environment">Environment value.</param>
+        public InnoBuilder AddRxBimEnvironment(string environment)
+        {
+            Registry.CreateEntry(RegistryKeys.HKCU, @$"{Options.RxBimEnvironmentRegPath}\{{{_options.PackageGuid}}}")
+                .ValueName(Options.EnvironmentRegKeyName)
+                .ValueData(environment);
+                
             return this;
         }
 

@@ -30,6 +30,12 @@ namespace RxBim.Nuke.Builds
         public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
         /// <summary>
+        /// Environment variable.
+        /// </summary>
+        [Parameter("Environment variable")]
+        public string RxBimEnvironment { get; set; } = "Testing";
+        
+        /// <summary>
         /// Certificate path.
         /// </summary>
         [Parameter("Certificate path")]

@@ -23,10 +23,10 @@ namespace RxBim.MsiBuilder
             var project = new ManagedProject(
                 productProjectName,
                 new Dir(installDir,
-                    FillEntities(null, new[] { options.BundleDir }, false)
+                    FillEntities(null!, new[] { options.BundleDir }!, false)
                         .Concat(new[]
                         {
-                            new Dir(projectName, FillEntities(null, new[] { sourceDir }).ToArray())
+                            new Dir(projectName, FillEntities(null!, new[] { sourceDir }!).ToArray())
                         }).ToArray()))
             {
                 Description = options.Description,
@@ -35,8 +35,8 @@ namespace RxBim.MsiBuilder
                     AttributesDefinition =
                         $"AdminImage=yes; Comments={options.Comments}; Description={options.Description ?? options.ProjectName}"
                 },
-                GUID = new Guid(options.PackageGuid),
-                UpgradeCode = new Guid(options.UpgradeCode),
+                GUID = new Guid(options.PackageGuid!),
+                UpgradeCode = new Guid(options.UpgradeCode!),
                 MajorUpgradeStrategy = new MajorUpgradeStrategy
                 {
                     UpgradeVersions = VersionRange.ThisAndOlder,
@@ -44,14 +44,22 @@ namespace RxBim.MsiBuilder
                     NewerProductInstalledErrorMessage = "Newer version already installed",
                     RemoveExistingProductAfter = Step.InstallInitialize
                 },
-                Version = new Version(options.Version),
+                Version = new Version(options.Version!),
                 UI = WUI.WixUI_ProgressOnly,
                 InstallScope = InstallScope.perUser,
                 ControlPanelInfo = { Manufacturer = "PIK" },
                 Encoding = Encoding.UTF8,
                 Codepage = "1251",
                 OutDir = options.OutDir,
-                OutFileName = options.OutFileName + "_" + options.Version
+                OutFileName = options.OutFileName + "_" + options.Version,
+                RegValues = new[]
+                {
+                    new RegValue(
+                        RegistryHive.CurrentUser,
+                        @$"{Options.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}",
+                        Options.EnvironmentRegKeyName,
+                        options.Environment)
+                }
             };
 
             project.AddAction(

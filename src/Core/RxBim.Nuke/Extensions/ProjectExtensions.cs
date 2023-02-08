@@ -32,11 +32,13 @@
         /// <param name="installDir">Install directory.</param>
         /// <param name="sourceDir">Source build directory.</param>
         /// <param name="configuration">Configuration.</param>
+        /// <param name="environment">Environment variable.</param>
         public static Options GetSetupOptions(
             this Project project,
             string installDir,
             string sourceDir,
-            string configuration)
+            string configuration,
+            string environment)
         {
             var productVersion = project.GetProperty(nameof(Options.ProductVersion));
             if (string.IsNullOrWhiteSpace(productVersion)
@@ -86,8 +88,10 @@
                 ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
                     ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
                 SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
-                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon))
+                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon)),
+                Environment = environment
             };
+            
             return options;
         }
 

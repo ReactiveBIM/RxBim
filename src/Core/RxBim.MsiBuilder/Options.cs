@@ -7,9 +7,12 @@ namespace RxBim.MsiBuilder
     using System.Reflection;
     using System.Text;
     using CommandLine;
-
+    
     public class Options
     {
+        public const string RxBimEnvironmentRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\RxBimEnvironments";
+        public const string EnvironmentRegKeyName = "Environment";
+        
         [Option('p', "project", Required = true, HelpText = "Set project name.")]
         public string? ProjectName { get; set; }
 
@@ -69,6 +72,9 @@ namespace RxBim.MsiBuilder
 
         [Option('l', "uninstallIcon", Required = false, HelpText = "Set uninstall icon file.")]
         public string? UninstallIcon { get; set; }
+
+        [Option('e', "environment", Required = false, HelpText = "Set environment.")]
+        public string? Environment { get; set; }
 
         public override string ToString()
         {
