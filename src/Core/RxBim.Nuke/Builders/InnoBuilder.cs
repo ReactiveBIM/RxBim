@@ -101,9 +101,8 @@
         /// <param name="environment">Environment value.</param>
         public InnoBuilder AddRxBimEnvironment(string environment)
         {
-            Registry.CreateEntry(RegistryKeys.HKCU, @$"{Options.RxBimEnvironmentRegPath}\{{{{_options.PackageGuid}}}}")
-                .ValueName(Options.EnvironmentRegKeyName)
-                .ValueData(environment);
+            Registry.CreateEntry(RegistryKeys.HKCU, @$"{Options.RxBimEnvironmentRegPath}\{{{{{_options.PackageGuid}}}}}")
+                .Parameter(Options.EnvironmentRegKeyName, environment);
                 
             return this;
         }
