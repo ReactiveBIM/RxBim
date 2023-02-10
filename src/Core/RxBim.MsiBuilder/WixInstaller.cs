@@ -47,7 +47,7 @@ namespace RxBim.MsiBuilder
                 Version = new Version(options.Version!),
                 UI = WUI.WixUI_ProgressOnly,
                 InstallScope = InstallScope.perUser,
-                ControlPanelInfo = { Manufacturer = "PIK" },
+                ControlPanelInfo = { Manufacturer = "ReactiveBIM" },
                 Encoding = Encoding.UTF8,
                 Codepage = "1251",
                 OutDir = options.OutDir,
