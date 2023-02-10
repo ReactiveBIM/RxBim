@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="basePath">Base location.</param>
         /// <param name="configFile">Configuration JSON file.</param>
-        internal EnvironmentConfigurationSource(
+        public EnvironmentConfigurationSource(
             string basePath,
             string configFile)
         {
@@ -65,9 +65,7 @@
                 }
             }
 
-            Path = System.IO.Path.Combine(
-                _basePath,
-                $"{System.IO.Path.GetFileNameWithoutExtension(_configFile)}.{environment}.json");
+            Path = $"{System.IO.Path.GetFileNameWithoutExtension(_configFile)}.{environment}.json";
             Optional = true;
             
             return base.Build(builder);
