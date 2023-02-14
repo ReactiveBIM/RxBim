@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageGuid>AFEFCD19-AD5A-4686-93CA-7071ACB511BB</PackageGuid>
+        <UpgradeCode>C305D6A5-68A7-4369-96E0-E751DCF17C34</UpgradeCode>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
+      <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
+    </ItemGroup>
+
+</Project>
