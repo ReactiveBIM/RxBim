@@ -10,4 +10,16 @@
       <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="appsettings.RxBim.Sample.Command.Revit.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.RxBim.Sample.Command.Revit.Production.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.RxBim.Sample.Command.Revit.Testing.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
