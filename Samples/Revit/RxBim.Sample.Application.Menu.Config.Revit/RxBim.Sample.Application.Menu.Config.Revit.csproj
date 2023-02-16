@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <None Update="appsettings.RxBim.Application.Menu.Config.Revit.Sample.json">
+    <None Update="appsettings.RxBim.Sample.Application.Menu.Config.Revit.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="img\num1_16.png">

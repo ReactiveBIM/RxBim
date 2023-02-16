@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <None Update="appsettings.RxBim.Application.Autocad.Example.json">
+    <None Update="appsettings.RxBim.Sample.Application.Autocad.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

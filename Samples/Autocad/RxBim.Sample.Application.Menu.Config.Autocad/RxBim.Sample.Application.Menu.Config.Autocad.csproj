@@ -11,7 +11,7 @@
     <None Update="img\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.RxBim.Application.Menu.Config.Autocad.Sample.json">
+    <None Update="appsettings.RxBim.Sample.Application.Menu.Config.Autocad.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

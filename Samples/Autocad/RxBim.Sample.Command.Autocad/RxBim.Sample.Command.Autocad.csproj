@@ -14,8 +14,14 @@
         <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     </ItemGroup>
     <ItemGroup>
-        <None Update="appsettings.RxBim.Command.Autocad.Example.json">
+        <None Update="appsettings.RxBim.Sample.Command.Autocad.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.RxBim.Sample.Command.Autocad.Production.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.RxBim.Sample.Command.Autocad.Testing.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <PropertyGroup>
