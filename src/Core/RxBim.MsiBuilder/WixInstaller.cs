@@ -6,6 +6,7 @@ namespace RxBim.MsiBuilder
     using System.IO;
     using System.Linq;
     using System.Text;
+    using Nuke;
     using WixSharp;
     using WixSharp.CommonTasks;
     using File = WixSharp.File;
@@ -19,6 +20,7 @@ namespace RxBim.MsiBuilder
             var installDir = options.InstallDir;
 
             var sourceDir = options.SourceDir;
+            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}";
 
             var project = new ManagedProject(
                 productProjectName,
@@ -56,9 +58,14 @@ namespace RxBim.MsiBuilder
                 {
                     new RegValue(
                         RegistryHive.CurrentUser,
-                        @$"{Options.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}",
-                        Options.EnvironmentRegKeyName,
-                        options.Environment)
+                        environmentRegKey,
+                        EnvironmentRegistryConstants.EnvironmentRegKeyName,
+                        options.Environment),
+                    new RegValue(
+                        RegistryHive.CurrentUser,
+                        environmentRegKey,
+                        EnvironmentRegistryConstants.PluginNameRegKeyName,
+                        options.ProductProjectName)
                 }
             };
 
