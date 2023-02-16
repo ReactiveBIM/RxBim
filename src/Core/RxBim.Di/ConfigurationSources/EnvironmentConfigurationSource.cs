@@ -5,6 +5,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Configuration.Json;
     using Microsoft.Win32;
+    using Nuke;
 
     /// <summary>
     /// Provider configuration JSON file by Environment.
@@ -12,11 +13,6 @@
     internal class EnvironmentConfigurationSource : JsonConfigurationSource
     {
         private const string PackageContentsFileName = "PackageContents.xml";
-        
-        private const string RxBimEnvironmentRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\RxBimEnvironments";
-        private const string EnvironmentRegKeyName = "Environment";
-        
-        private const string TestingEnvironment = "Testing";
 
         private readonly string _basePath;
         private readonly string _configFile;
@@ -38,7 +34,7 @@
         public override IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             var packageContentsFileDir = Directory.GetParent(_basePath);
-            var environment = TestingEnvironment;
+            var environment = EnvironmentRegistryConstants.DefaultEnvironment;
 
             if (packageContentsFileDir is not null)
             {
@@ -58,9 +54,9 @@
                     if (!string.IsNullOrWhiteSpace(productCode))
                     {
                         environment = Registry.CurrentUser
-                            .OpenSubKey($"{RxBimEnvironmentRegPath}\\{productCode}")
-                            ?.GetValue(EnvironmentRegKeyName)
-                            ?.ToString() ?? TestingEnvironment;
+                            .OpenSubKey($"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\\{productCode}")
+                            ?.GetValue(EnvironmentRegistryConstants.EnvironmentRegKeyName)
+                            ?.ToString() ?? EnvironmentRegistryConstants.DefaultEnvironment;
                     }
                 }
             }

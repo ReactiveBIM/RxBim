@@ -13,7 +13,7 @@
         /// <param name="configurationBuilder"><see cref="IConfigurationBuilder"/>.</param>
         /// <param name="basePath">Base location.</param>
         /// <param name="configFile">Configuration JSON file.</param>
-        public static IConfigurationBuilder AddRxBimEnvironment(
+        public static IConfigurationBuilder AddEnvironmentJsonFile(
             this IConfigurationBuilder configurationBuilder,
             string basePath,
             string configFile)

@@ -101,13 +101,13 @@
 
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
         {
-            var basePath = Path.GetDirectoryName(assembly.Location);
+            var basePath = Path.GetDirectoryName(assembly.Location)!;
             var configFile = $"appsettings.{assembly.GetName().Name}.json";
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
                 .AddJsonFile(configFile, true)
-                .AddRxBimEnvironment(basePath!, configFile);
+                .AddEnvironmentJsonFile(basePath, configFile);
         }
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)

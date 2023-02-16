@@ -8,7 +8,6 @@
     using System.Xml.Linq;
     using Builds;
     using Models;
-    using MsiBuilder;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
     using nc::Nuke.Common.Tooling;
@@ -48,7 +47,7 @@
                     $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
             }
 
-            var msiFilePrefix = project.GetProperty(nameof(Options.MsiFilePrefix));
+            var msiFilePrefix = project.GetProperty(nameof(Options.InstallFilePrefix));
             var outputFileName = $"{msiFilePrefix}{project.Name}";
 
             if (!string.IsNullOrWhiteSpace(productVersion))

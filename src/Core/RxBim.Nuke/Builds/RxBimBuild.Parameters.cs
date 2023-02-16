@@ -33,7 +33,7 @@ namespace RxBim.Nuke.Builds
         /// Environment variable.
         /// </summary>
         [Parameter("Environment variable")]
-        public string RxBimEnvironment { get; set; } = "Testing";
+        public string RxBimEnvironment { get; set; } = EnvironmentRegistryConstants.DefaultEnvironment;
         
         /// <summary>
         /// Certificate path.
