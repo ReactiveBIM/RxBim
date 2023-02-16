@@ -101,8 +101,11 @@
 
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
         {
-            var basePath = Path.GetDirectoryName(assembly.Location)!;
+            var basePath = Path.GetDirectoryName(assembly.Location)
+                           ?? throw new InvalidOperationException(
+                               $"Can't find directory for assembly '{assembly.FullName}'!");
             var configFile = $"appsettings.{assembly.GetName().Name}.json";
+            
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
