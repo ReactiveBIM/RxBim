@@ -25,6 +25,12 @@
         <ProjectReference Include="..\RxBim.Analyzers\RxBim.Analyzers.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Include="..\RxBim.Nuke\EnvironmentRegistryConstants.cs">
+        <Link>EnvironmentRegistryConstants.cs</Link>
+      </Compile>
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>RxBim DI Library</Description>

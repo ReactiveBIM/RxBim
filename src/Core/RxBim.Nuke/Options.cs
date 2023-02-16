@@ -1,5 +1,6 @@
-﻿#pragma warning disable SA1600,1591
-namespace RxBim.MsiBuilder
+﻿// ReSharper disable All
+#pragma warning disable SA1600,1591
+namespace RxBim.Nuke
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -7,12 +8,12 @@ namespace RxBim.MsiBuilder
     using System.Reflection;
     using System.Text;
     using CommandLine;
-    
+
+    /// <summary>
+    /// Installation package options.
+    /// </summary>
     public class Options
     {
-        public const string RxBimEnvironmentRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\RxBimEnvironments";
-        public const string EnvironmentRegKeyName = "Environment";
-        
         [Option('p', "project", Required = true, HelpText = "Set project name.")]
         public string? ProjectName { get; set; }
 
@@ -52,20 +53,17 @@ namespace RxBim.MsiBuilder
         [Option('o', "outDir", Required = true, HelpText = "Set output directory.")]
         public string? OutDir { get; set; }
 
-        [Option('f', "fileName", Required = true, HelpText = "Set msi file name.")]
+        [Option('f', "fileName", Required = true, HelpText = "Set install file name.")]
         public string? OutFileName { get; set; }
 
-        [Option('a',
-            "addAllAppToManifest",
-            Required = false,
-            HelpText = "Set need add all Application from output to manifest.")]
+        [Option('a', "addAllAppToManifest", Required = false, HelpText = "Set need add all Application from output to manifest.")]
         public bool AddAllAppToManifest { get; set; }
 
         [Option('t', "projectAddingToManifest", Required = false, HelpText = "Set projects adding to manifest.")]
         public IEnumerable<string>? ProjectsAddingToManifest { get; set; }
 
-        [Option('x', "msiFilePrefix", Required = false, HelpText = "Set msi file prefix.")]
-        public string? MsiFilePrefix { get; set; }
+        [Option('x', "msiFilePrefix", Required = false, HelpText = "Set install file prefix.")]
+        public string? InstallFilePrefix { get; set; }
 
         [Option('n', "setupIcon", Required = false, HelpText = "Set setup icon file.")]
         public string? SetupIcon { get; set; }
