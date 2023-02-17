@@ -6,6 +6,7 @@ namespace RxBim.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Di;
     using Models;
     using nc::Nuke.Common;
     using nc::Nuke.Common.ProjectModel;

@@ -6,6 +6,7 @@ namespace RxBim.MsiBuilder
     using System.IO;
     using System.Linq;
     using System.Text;
+    using Di;
     using Nuke;
     using WixSharp;
     using WixSharp.CommonTasks;

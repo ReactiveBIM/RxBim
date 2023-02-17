@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\RxBim.Nuke\EnvironmentRegistryConstants.cs">
+      <Compile Include="..\RxBim.Di\EnvironmentRegistryConstants.cs">
         <Link>EnvironmentRegistryConstants.cs</Link>
       </Compile>
       <Compile Include="..\RxBim.Nuke\Options.cs">

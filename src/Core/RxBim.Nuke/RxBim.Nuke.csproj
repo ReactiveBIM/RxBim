@@ -33,6 +33,12 @@
       <Content Include="Directory.Build.Props" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Include="..\RxBim.Di\EnvironmentRegistryConstants.cs">
+        <Link>EnvironmentRegistryConstants.cs</Link>
+      </Compile>
+    </ItemGroup>
+
     <PropertyGroup>
         <Version>$(ApiVersion)</Version>
         <Description>RxBim nuke plugin for building MSI</Description>

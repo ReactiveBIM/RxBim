@@ -1,4 +1,4 @@
-﻿namespace RxBim.Nuke
+﻿namespace RxBim.Di
 {
     /// <summary>
     /// Constants for environment registry.

@@ -5,7 +5,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Configuration.Json;
     using Microsoft.Win32;
-    using Nuke;
 
     /// <summary>
     /// Provider configuration JSON file by Environment.
