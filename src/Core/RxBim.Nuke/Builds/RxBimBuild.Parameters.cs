@@ -6,6 +6,7 @@ namespace RxBim.Nuke.Builds
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Di;
     using Models;
     using nc::Nuke.Common;
     using nc::Nuke.Common.ProjectModel;
@@ -29,6 +30,12 @@ namespace RxBim.Nuke.Builds
         [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
         public Configuration Configuration { get; set; } = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+        /// <summary>
+        /// Environment variable.
+        /// </summary>
+        [Parameter("Environment variable")]
+        public string RxBimEnvironment { get; set; } = EnvironmentRegistryConstants.DefaultEnvironment;
+        
         /// <summary>
         /// Certificate path.
         /// </summary>

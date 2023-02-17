@@ -7,7 +7,6 @@
     using Extensions;
     using Generators;
     using Models;
-    using MsiBuilder;
     using nc::Nuke.Common.ProjectModel;
 
     /// <summary>
@@ -25,16 +24,18 @@
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="outputDir">Output directory path.</param>
         /// <param name="outputBinDir">Output assemblies directory path.</param>
+        /// <param name="environment">Environment variable.</param>
         public void BuildMsi(
             Project project,
             string configuration,
             string outputDir,
-            string outputBinDir)
+            string outputBinDir,
+            string environment)
         {
             if (!Directory.Exists(outputBinDir))
                 return;
 
-            var options = GetBuildMsiOptions(project, outputDir, configuration);
+            var options = GetBuildMsiOptions(project, outputDir, configuration, environment);
             const string toolPath = "rxbim.msi.builder";
 
             project.BuildMsiWithTool(toolPath, options);
@@ -46,13 +47,16 @@
         /// <param name="project">Selected Project.</param>
         /// <param name="outputDir">Output directory path.</param>
         /// <param name="configuration">Selected configuration.</param>
+        /// <param name="environment">Environment variable.</param>
         public Options GetBuildMsiOptions(
             Project project,
             string outputDir,
-            string configuration)
+            string configuration,
+            string environment)
         {
             return _options ??=
-                project.GetSetupOptions(GetInstallDir(project, configuration), outputDir, configuration);
+                project.GetSetupOptions(
+                    GetInstallDir(project, configuration), outputDir, configuration, environment);
         }
 
         /// <summary>

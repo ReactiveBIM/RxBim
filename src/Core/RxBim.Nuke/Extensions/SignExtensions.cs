@@ -29,18 +29,6 @@
             string digestAlgorithm,
             string timestampServerUrl)
         {
-            cert = cert ??
-                   throw new ArgumentException("Certificate is not set");
-
-            keyContainer = keyContainer ??
-                           throw new ArgumentException("Didn't set private key container");
-            csp = csp ??
-                  throw new ArgumentException("Didn't set CSP containing");
-            digestAlgorithm = digestAlgorithm ??
-                              throw new ArgumentException("Didn't set digest algorithm");
-            timestampServerUrl = timestampServerUrl ??
-                                 throw new ArgumentException("Didn't set timestamp server URL");
-
             var settings = new SignToolSettings()
                 .SetCsp(csp)
                 .SetKeyContainer(keyContainer)

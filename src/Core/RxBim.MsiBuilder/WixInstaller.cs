@@ -6,6 +6,8 @@ namespace RxBim.MsiBuilder
     using System.IO;
     using System.Linq;
     using System.Text;
+    using Di;
+    using Nuke;
     using WixSharp;
     using WixSharp.CommonTasks;
     using File = WixSharp.File;
@@ -19,6 +21,8 @@ namespace RxBim.MsiBuilder
             var installDir = options.InstallDir;
 
             var sourceDir = options.SourceDir;
+            var version = options.Version is null ? new Version() : new Version(options.Version); 
+            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}";
 
             var project = new ManagedProject(
                 productProjectName,
@@ -35,8 +39,8 @@ namespace RxBim.MsiBuilder
                     AttributesDefinition =
                         $"AdminImage=yes; Comments={options.Comments}; Description={options.Description ?? options.ProjectName}"
                 },
-                GUID = new Guid(options.PackageGuid),
-                UpgradeCode = new Guid(options.UpgradeCode),
+                GUID = options.PackageGuid is null ? null : new Guid(options.PackageGuid),
+                UpgradeCode = options.UpgradeCode is null ? null : new Guid(options.UpgradeCode),
                 MajorUpgradeStrategy = new MajorUpgradeStrategy
                 {
                     UpgradeVersions = VersionRange.ThisAndOlder,
@@ -44,14 +48,27 @@ namespace RxBim.MsiBuilder
                     NewerProductInstalledErrorMessage = "Newer version already installed",
                     RemoveExistingProductAfter = Step.InstallInitialize
                 },
-                Version = new Version(options.Version),
+                Version = version,
                 UI = WUI.WixUI_ProgressOnly,
                 InstallScope = InstallScope.perUser,
-                ControlPanelInfo = { Manufacturer = "PIK" },
+                ControlPanelInfo = { Manufacturer = "ReactiveBIM" },
                 Encoding = Encoding.UTF8,
                 Codepage = "1251",
                 OutDir = options.OutDir,
-                OutFileName = options.OutFileName + "_" + options.Version
+                OutFileName = $"{options.OutFileName}_{version}",
+                RegValues = new[]
+                {
+                    new RegValue(
+                        RegistryHive.CurrentUser,
+                        environmentRegKey,
+                        EnvironmentRegistryConstants.EnvironmentRegKeyName,
+                        options.Environment),
+                    new RegValue(
+                        RegistryHive.CurrentUser,
+                        environmentRegKey,
+                        EnvironmentRegistryConstants.PluginNameRegKeyName,
+                        options.ProductProjectName)
+                }
             };
 
             project.AddAction(
@@ -75,8 +92,8 @@ namespace RxBim.MsiBuilder
         }
 
         private IEnumerable<WixEntity> FillEntities(
-            Dir parent,
-            IEnumerable<string> paths,
+            Dir? parent,
+            IEnumerable<string?> paths,
             bool withSubDirectories = true)
         {
             var added = new List<string>();
@@ -85,6 +102,9 @@ namespace RxBim.MsiBuilder
 
             foreach (var path in paths)
             {
+                if (path is null)
+                    continue;
+                
                 foreach (var file in Directory.EnumerateFiles(path, "*"))
                 {
                     var info = new FileInfo(file);

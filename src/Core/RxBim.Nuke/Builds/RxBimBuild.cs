@@ -133,14 +133,15 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                if (Configuration != Configuration.Release)
+                if (!CheckSignAvailable())
                     return;
 
                 var types = GetAssemblyTypes(
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration);
+                    Configuration, 
+                    RxBimEnvironment);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -164,7 +165,8 @@
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration);
+                    Configuration, 
+                    RxBimEnvironment);
 
                 _builder.GenerateAdditionalFiles(
                     ProjectForMsiBuild.Name,
@@ -186,7 +188,8 @@
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration);
+                    Configuration, 
+                    RxBimEnvironment);
 
                 _builder.GeneratePackageContentsFile(
                     ProjectForMsiBuild,
@@ -210,7 +213,8 @@
                 project,
                 configuration,
                 OutputTmpDir,
-                OutputTmpDirBin);
+                OutputTmpDirBin, 
+                RxBimEnvironment);
 
             DeleteDirectory(OutputTmpDir);
         }
@@ -220,7 +224,7 @@
             string configuration)
         {
             var iss = TemporaryDirectory / "package.iss";
-            var options = _builder.GetBuildMsiOptions(project, OutputTmpDir, configuration);
+            var options = _builder.GetBuildMsiOptions(project, OutputTmpDir, configuration, RxBimEnvironment);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder
@@ -232,6 +236,7 @@
                 .AddIcons()
                 .AddFonts()
                 .AddUninstallScript()
+                .AddRxBimEnvironment(RxBimEnvironment)
                 .Build(iss);
 
             var outDir = project.Solution.Directory / "out";
@@ -246,7 +251,7 @@
 
         private void SignSetupFile(string filePath)
         {
-            if (Configuration != Configuration.Release)
+            if (!CheckSignAvailable())
                 return;
 
             filePath.SignFile(
@@ -257,6 +262,15 @@
                 ServerUrl.Ensure());
         }
 
+        private bool CheckSignAvailable()
+        {
+            return !string.IsNullOrWhiteSpace(Cert) 
+                   && !string.IsNullOrWhiteSpace(PrivateKey) 
+                   && !string.IsNullOrWhiteSpace(Csp) 
+                   && !string.IsNullOrWhiteSpace(Algorithm) 
+                   && !string.IsNullOrWhiteSpace(ServerUrl);
+        }
+
         /// <summary>
         /// Gets assembly types.
         /// </summary>
@@ -264,14 +278,17 @@
         /// <param name="outputBinDir">Output assembly directory.</param>
         /// <param name="outputDir">Output directory.</param>
         /// <param name="configuration">Selected configuration.</param>
+        /// <param name="environment">Environment variable.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,
             string outputDir,
-            string configuration)
+            string configuration,
+            string environment)
         {
             return _types ??=
-                project.GetAssemblyTypes(outputBinDir, _builder.GetBuildMsiOptions(project, outputDir, configuration));
+                project.GetAssemblyTypes(
+                    outputBinDir, _builder.GetBuildMsiOptions(project, outputDir, configuration, environment));
         }
     }
 }
