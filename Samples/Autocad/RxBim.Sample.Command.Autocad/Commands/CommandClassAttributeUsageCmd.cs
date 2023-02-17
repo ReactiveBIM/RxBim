@@ -1,11 +1,11 @@
-﻿namespace RxBim.Sample.Command.Autocad.Commands
+﻿namespace RxBim.Sample.Command.Autocad.Commands;
 
 using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.Runtime;
 using JetBrains.Annotations;
 using RxBim.Command.Autocad;
+using RxBim.Shared.Autocad;
 using Shared;
-using Shared.Autocad;
 
 /// <summary>
 /// Command for an example of using the command class attribute.
