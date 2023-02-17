@@ -306,7 +306,7 @@
             string[] typeNames)
         {
             return Scan(file)
-                .Where(x => typeNames.Contains(x.BaseTypeName))
+                .Where(x => typeNames.Intersect(x.BaseTypeNames).Any())
                 .ToList();
         }
     }
