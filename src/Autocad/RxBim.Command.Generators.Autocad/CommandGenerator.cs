@@ -97,7 +97,7 @@
                     {
                         var tokens = GetAttributeTokens(s, attributeSymbol);
                         return (
-                            ((NamespaceDeclarationSyntax)s.Parent!).Name.ToString(),
+                            ((BaseNamespaceDeclarationSyntax)s.Parent!).Name.ToString(),
                             s.Identifier.Text,
                             tokens.ReadCommandName(),
                             tokens.ReadCommandFlags());

@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
     extern alias nc;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Models;
@@ -51,20 +52,34 @@
         /// <param name="type">The <see cref="AssemblyType"/>.</param>
         public static bool IsPluginType(this AssemblyType type)
         {
-            return type.BaseTypeName == RxBimCommand ||
-                   type.BaseTypeName == RxBimApplication;
+            return type.BaseTypeNames.Contains(RxBimCommand) ||
+                   type.BaseTypeNames.Contains(RxBimApplication);
         }
 
         /// <summary>
         /// Gets <see cref="AssemblyType"/> from build path.
         /// </summary>
         /// <param name="binPath">Build path.</param>
-        public static List<AssemblyType> GetPluginTypes(this AbsolutePath binPath)
+        public static IEnumerable<AssemblyType> GetPluginTypes(this AbsolutePath binPath)
         {
-            var assemblyTypes = Scan(binPath)
+            return Scan(binPath)
                 .Where(x => x.IsPluginType())
                 .ToList();
-            return assemblyTypes;
+        }
+
+        /// <summary>
+        /// Gets type name of a <see cref="PluginType"/>.
+        /// </summary>
+        /// <param name="type">The plugin type.</param>
+        public static PluginType ToPluginType(this AssemblyType type)
+        {
+            if (type.BaseTypeNames.Contains(RxBimCommand))
+                return PluginType.Command;
+
+            if (type.BaseTypeNames.Contains(RxBimApplication))
+                return PluginType.Application;
+
+            throw new NotSupportedException();
         }
     }
 }
