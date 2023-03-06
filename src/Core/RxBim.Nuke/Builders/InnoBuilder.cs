@@ -7,10 +7,10 @@
     using System.IO;
     using System.Linq;
     using System.Runtime.InteropServices;
+    using Di;
     using Extensions;
     using Helpers;
     using InnoSetup.ScriptBuilder;
-    using MsiBuilder;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.Utilities.Collections;
 
@@ -91,6 +91,28 @@
         public InnoBuilder AddUninstallScript()
         {
             Code.CreateEntry(EmbeddedResourceExtensions.ReadResource("uninstall.pas"));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds environment variable.
+        /// </summary>
+        /// <param name="environment">Environment value.</param>
+        public InnoBuilder AddRxBimEnvironment(string environment)
+        {
+            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{{{_options.PackageGuid}}}";
+            
+            Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
+                .ValueName(EnvironmentRegistryConstants.EnvironmentRegKeyName)
+                .ValueType(ValueTypes.String)
+                .ValueData(environment)
+                .Flags(RegistryFlags.UninsDeleteEntireKey);
+            Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
+                .ValueName(EnvironmentRegistryConstants.PluginNameRegKeyName)
+                .ValueType(ValueTypes.String)
+                .ValueData(_options.ProductProjectName)
+                .Flags(RegistryFlags.UninsDeleteEntireKey);
+                
             return this;
         }
 

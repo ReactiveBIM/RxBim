@@ -5,6 +5,7 @@ namespace RxBim.MsiBuilder.Bin
     using CommandLine;
     using Figgle;
     using Microsoft.Win32;
+    using Nuke;
     using WixSharp;
 
     public static class Program

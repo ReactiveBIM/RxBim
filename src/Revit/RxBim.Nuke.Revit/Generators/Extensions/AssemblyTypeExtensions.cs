@@ -14,7 +14,7 @@
         /// <param name="type">The <see cref="AssemblyType"/>.</param>
         public static string ToPropertyName(this AssemblyType type)
         {
-            return $"{type.BaseTypeName!.ToPluginType()}__{type.FullName.ToPropertyName()}";
+            return $"{type.ToPluginType()}__{type.FullName.ToPropertyName()}";
         }
 
         /// <summary>

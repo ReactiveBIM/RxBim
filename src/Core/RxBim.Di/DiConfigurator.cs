@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Extensions;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -100,11 +101,16 @@
 
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
         {
-            var basePath = Path.GetDirectoryName(assembly.Location);
+            var basePath = Path.GetDirectoryName(assembly.Location)
+                           ?? throw new InvalidOperationException(
+                               $"Can't find directory for assembly '{assembly.FullName}'!");
+            var configFile = $"appsettings.{assembly.GetName().Name}.json";
+            
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
-                .AddJsonFile($"appsettings.{assembly.GetName().Name}.json", true);
+                .AddJsonFile(configFile, true)
+                .AddEnvironmentJsonFile(basePath, configFile);
         }
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)

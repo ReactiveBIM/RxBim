@@ -6,7 +6,7 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>rxbim.msi.builder</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
-        <NoWarn>NU1702</NoWarn>
+        <NoWarn>NU1702;NU1701</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
