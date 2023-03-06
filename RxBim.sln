@@ -58,6 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		stylecop.ruleset = stylecop.ruleset
 		stylecopTests.ruleset = stylecopTests.ruleset
 		Directory.Build.Props = Directory.Build.Props
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Di.SimpleInjector", "src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj", "{B639A396-924A-4E4B-ABF7-9A27A8B3C998}"
