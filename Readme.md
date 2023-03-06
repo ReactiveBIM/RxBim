@@ -1,3 +1,9 @@
+# RxBim
+
+Core part of the framework for developing plugins for CAD/BIM software.
+
+For more information go to [Wiki](https://github.com/ReactiveBIM/RxBim/wiki).
+
 # RxBim packages
 
 [![CI](https://github.com/ReactiveBIM/RxBim/actions/workflows/CI.yml/badge.svg)](https://github.com/ReactiveBIM/RxBim/actions)
