@@ -40,7 +40,7 @@ using Enumeration = Versions.Enumeration;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        MasterBranch, "release/**"
+        MasterBranch, "release/**", "hotfix/**"
     },
     InvokedTargets = new[]
     {
