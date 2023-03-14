@@ -102,16 +102,15 @@
         {
             var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{{{_options.PackageGuid}}}";
             
+            // TODO: add .Flags(RegistryFlags.UninsDeleteKey)
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.EnvironmentRegKeyName)
                 .ValueType(ValueTypes.String)
-                .ValueData(environment)
-                .Flags(RegistryFlags.UninsDeleteEntireKey);
+                .ValueData(environment);
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.PluginNameRegKeyName)
                 .ValueType(ValueTypes.String)
-                .ValueData(_options.ProductProjectName)
-                .Flags(RegistryFlags.UninsDeleteEntireKey);
+                .ValueData(_options.ProductProjectName);
                 
             return this;
         }
