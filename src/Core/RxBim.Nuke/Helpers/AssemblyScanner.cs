@@ -19,12 +19,14 @@
         /// <param name="assemblyFilePath">The assembly file path.</param>
         public static IEnumerable<AssemblyType> Scan(string assemblyFilePath)
         {
+            var list = new List<AssemblyType>();
+            
             if (!File.Exists(assemblyFilePath))
-                yield break;
+                return list;
 
             var assembliesDir = Path.GetDirectoryName(assemblyFilePath);
             if (assembliesDir is null)
-                yield break;
+                return list;
 
             using var fileStream =
                 new FileStream(assemblyFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -41,8 +43,11 @@
                 if (string.IsNullOrEmpty(fullName))
                     continue;
 
-                yield return new AssemblyType(Path.GetFileNameWithoutExtension(assemblyFilePath), fullName, types);
+                list.Add(new AssemblyType(
+                    Path.GetFileNameWithoutExtension(assemblyFilePath), fullName, types));
             }
+
+            return list;
         }
 
         private static string? GetFullName(MetadataReader metadataReader, TypeDefinition typeDefinition)
