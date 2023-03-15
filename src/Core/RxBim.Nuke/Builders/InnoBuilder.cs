@@ -52,7 +52,7 @@
             Files
                 .CreateEntry(
                     outputProjBinDir / "*",
-                    InnoConstants.App)
+                    InnoConstants.Directories.App)
                 .Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
             Files
                 .CreateEntry(outputProjDir / "*", installDir);
