@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Company>pik-group.com</Company>
+        <Company>Reactive BIM</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
         <Copyright>Copyright ©2021 Reactive BIM</Copyright>
