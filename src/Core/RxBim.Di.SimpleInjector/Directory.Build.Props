@@ -1,6 +1,6 @@
 ﻿<Project>
     <PropertyGroup>
-        <ApiVersion>1.1.2-rc003</ApiVersion>
+        <ApiVersion>1.1.2-rc004</ApiVersion>
     </PropertyGroup>
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
