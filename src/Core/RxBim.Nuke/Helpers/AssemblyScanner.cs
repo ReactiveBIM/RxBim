@@ -103,13 +103,16 @@
             MetadataReader metadataReader,
             string assembliesDir)
         {
+            var list = new List<string>();
+            
             var typeDefinition = metadataReader.GetTypeDefinition(definitionHandle);
             var typeName = metadataReader.GetString(typeDefinition.Name);
 
-            yield return typeName;
+            list.Add(typeName);
 
-            foreach (var name in GetBaseTypesNames(typeDefinition, metadataReader, assembliesDir))
-                yield return name;
+            list.AddRange(GetBaseTypesNames(typeDefinition, metadataReader, assembliesDir));
+
+            return list;
         }
 
         private static IEnumerable<string> GetTypesFromTypeReference(
@@ -117,23 +120,26 @@
             MetadataReader metadataReader,
             string assembliesDir)
         {
+            var list = new List<string>();
+            
             var typeReference = metadataReader.GetTypeReference(referenceHandle);
             var typeName = metadataReader.GetString(typeReference.Name);
             var typeNameSpace = metadataReader.GetString(typeReference.Namespace);
 
-            yield return typeName;
+            list.Add(typeName);
 
             if (typeReference.ResolutionScope.Kind is not HandleKind.AssemblyReference)
-                yield break;
+                return list;
 
             var assemblyReference =
                 metadataReader.GetAssemblyReference((AssemblyReferenceHandle)typeReference.ResolutionScope);
             var assemblyName = assemblyReference.GetAssemblyName().Name;
             if (assemblyName is null)
-                yield break;
+                return list;
 
-            foreach (var name in GetBaseTypesForExternalType(typeName, typeNameSpace, assemblyName, assembliesDir))
-                yield return name;
+            list.AddRange(GetBaseTypesForExternalType(typeName, typeNameSpace, assemblyName, assembliesDir));
+
+            return list;
         }
 
         private static IEnumerable<string> GetBaseTypesForExternalType(
