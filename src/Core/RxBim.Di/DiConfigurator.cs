@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using Extensions;
     using Microsoft.Extensions.Configuration;
 
@@ -13,6 +14,8 @@
     public abstract class DiConfigurator<TConfiguration> : IDiConfigurator<TConfiguration>
         where TConfiguration : IPluginConfiguration
     {
+        private readonly ManualResetEvent _assemblyLoadedResetEvent = new(false);
+
         /// <summary>
         /// DI Container.
         /// </summary>
@@ -72,7 +75,27 @@
             var assemblyName = Path.GetFileNameWithoutExtension(pathToDllFile);
             var loadedAssembly = AppDomain.CurrentDomain.GetAssemblies()
                 .FirstOrDefault(x => x.FullName.StartsWith($"{assemblyName},"));
-            return loadedAssembly ?? Assembly.LoadFrom(pathToDllFile);
+
+            if (loadedAssembly is null)
+            {
+                var assemblyLoadedResetEvent = new ManualResetEvent(false);
+
+                void CurrentDomainOnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+                {
+                    if (args.LoadedAssembly.FullName.StartsWith($"{assemblyName},"))
+                        assemblyLoadedResetEvent.Set();
+                }
+
+                AppDomain.CurrentDomain.AssemblyLoad += CurrentDomainOnAssemblyLoad;
+                assemblyLoadedResetEvent.Reset();
+
+                loadedAssembly = Assembly.LoadFrom(pathToDllFile);
+
+                assemblyLoadedResetEvent.WaitOne();
+                AppDomain.CurrentDomain.AssemblyLoad -= CurrentDomainOnAssemblyLoad;
+            }
+
+            return loadedAssembly;
         }
 
         private void ConfigureAdditionalDependencies(Assembly assembly)
@@ -105,7 +128,7 @@
                            ?? throw new InvalidOperationException(
                                $"Can't find directory for assembly '{assembly.FullName}'!");
             var configFile = $"appsettings.{assembly.GetName().Name}.json";
-            
+
             return new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .SetFileLoadExceptionHandler(ctx => ctx.Ignore = true)
