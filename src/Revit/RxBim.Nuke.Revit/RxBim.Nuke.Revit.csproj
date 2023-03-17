@@ -34,6 +34,28 @@
         <Content Include="Directory.Build.Props" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="RevitTestFrameworkConsole" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="RevitTestFrameworkConsole\RevitAddInUtility.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="RevitTestFrameworkConsole\RTFRevit.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="RevitTestFrameworkConsole\Runner.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
     <PropertyGroup>
         <Description>RxBim nuke plugin for automation of building for Revit</Description>
         <PackageId>RxBim.Nuke.Revit</PackageId>
