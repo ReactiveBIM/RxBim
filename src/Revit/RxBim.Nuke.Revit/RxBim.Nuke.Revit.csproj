@@ -25,6 +25,46 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\RevitAddInUtility.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\RTFRevit.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\Runner.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
         <EmbeddedResource Include="TestHelpers\Result.cshtml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
@@ -36,24 +76,6 @@
 
     <ItemGroup>
       <Folder Include="RevitTestFrameworkConsole" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="RevitTestFrameworkConsole\RevitAddInUtility.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="RevitTestFrameworkConsole\RTFRevit.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="RevitTestFrameworkConsole\Runner.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
     <PropertyGroup>
