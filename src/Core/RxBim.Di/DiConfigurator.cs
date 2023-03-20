@@ -14,8 +14,6 @@
     public abstract class DiConfigurator<TConfiguration> : IDiConfigurator<TConfiguration>
         where TConfiguration : IPluginConfiguration
     {
-        private readonly ManualResetEvent _assemblyLoadedResetEvent = new(false);
-
         /// <summary>
         /// DI Container.
         /// </summary>
@@ -76,24 +74,28 @@
             var loadedAssembly = AppDomain.CurrentDomain.GetAssemblies()
                 .FirstOrDefault(x => x.FullName.StartsWith($"{assemblyName},"));
 
-            if (loadedAssembly is null)
+            return loadedAssembly
+                   ?? LoadAssembly(assemblyName, pathToDllFile);
+        }
+
+        private Assembly LoadAssembly(string assemblyName, string pathToDllFile)
+        {
+            using var assemblyLoadedResetEvent = new ManualResetEvent(false);
+
+            void CurrentDomainOnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
             {
-                var assemblyLoadedResetEvent = new ManualResetEvent(false);
-
-                void CurrentDomainOnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
-                {
-                    if (args.LoadedAssembly.FullName.StartsWith($"{assemblyName},"))
-                        assemblyLoadedResetEvent.Set();
-                }
-
-                AppDomain.CurrentDomain.AssemblyLoad += CurrentDomainOnAssemblyLoad;
-                assemblyLoadedResetEvent.Reset();
-
-                loadedAssembly = Assembly.LoadFrom(pathToDllFile);
-
-                assemblyLoadedResetEvent.WaitOne();
-                AppDomain.CurrentDomain.AssemblyLoad -= CurrentDomainOnAssemblyLoad;
+                if (args.LoadedAssembly.FullName.StartsWith($"{assemblyName},"))
+                    //// ReSharper disable once AccessToDisposedClosure
+                    assemblyLoadedResetEvent.Set();
             }
+
+            AppDomain.CurrentDomain.AssemblyLoad += CurrentDomainOnAssemblyLoad;
+            assemblyLoadedResetEvent.Reset();
+
+            var loadedAssembly = Assembly.LoadFrom(pathToDllFile);
+
+            assemblyLoadedResetEvent.WaitOne();
+            AppDomain.CurrentDomain.AssemblyLoad -= CurrentDomainOnAssemblyLoad;
 
             return loadedAssembly;
         }
