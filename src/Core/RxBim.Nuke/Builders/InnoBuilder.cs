@@ -52,7 +52,7 @@
             Files
                 .CreateEntry(
                     outputProjBinDir / "*",
-                    InnoConstants.App)
+                    InnoConstants.Directories.App)
                 .Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
             Files
                 .CreateEntry(outputProjDir / "*", installDir);
@@ -106,12 +106,12 @@
                 .ValueName(EnvironmentRegistryConstants.EnvironmentRegKeyName)
                 .ValueType(ValueTypes.String)
                 .ValueData(environment)
-                .Flags(RegistryFlags.UninsDeleteEntireKey);
+                .Flags(RegistryFlags.UninsDeleteKey);
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.PluginNameRegKeyName)
                 .ValueType(ValueTypes.String)
                 .ValueData(_options.ProductProjectName)
-                .Flags(RegistryFlags.UninsDeleteEntireKey);
+                .Flags(RegistryFlags.UninsDeleteKey);
                 
             return this;
         }
