@@ -52,11 +52,11 @@
         /// <summary>
         /// Vendor id.
         /// </summary>
-        public string VendorId { get; set; } = "PIK";
+        public string VendorId { get; set; } = "ReactiveBIM";
 
         /// <summary>
         /// Vendor description.
         /// </summary>
-        public string VendorDescription { get; set; } = "PIK, http://pik.ru";
+        public string VendorDescription { get; set; } = "ReactiveBIM, https://github.com/ReactiveBIM";
     }
 }
