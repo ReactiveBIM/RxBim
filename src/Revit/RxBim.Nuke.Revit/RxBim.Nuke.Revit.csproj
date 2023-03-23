@@ -25,38 +25,31 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="RevitTestFrameworkConsole\empty.rfa">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
         <Content Include="RevitTestFrameworkConsole\RevitAddInUtility.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="RevitTestFrameworkConsole\RTFRevit.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="RevitTestFrameworkConsole\Runner.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
@@ -72,10 +65,6 @@
 
     <ItemGroup>
         <Content Include="Directory.Build.Props" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="RevitTestFrameworkConsole" />
     </ItemGroup>
 
     <PropertyGroup>
