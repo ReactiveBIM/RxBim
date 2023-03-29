@@ -23,7 +23,7 @@ namespace RxBim.Nuke.Builds
         private string? _outputTmpDir;
         private string? _outputTmpDirBin;
         private List<AssemblyType>? _types;
-        private bool _addInstallerTimestamp;
+        private bool _timestampRevisionVersion;
 
         /// <summary>
         /// Configuration to build - Default is 'Debug' (local) or 'Release' (server).
@@ -95,13 +95,13 @@ namespace RxBim.Nuke.Builds
         }
 
         /// <summary>
-        /// Add installer timestamp.
+        /// Add timestamp revision version.
         /// </summary>
-        [Parameter("Adds timestamp to installer name")]
-        public bool AddInstallerTimestamp
+        [Parameter("Adds timestamp revision version")]
+        public bool TimestampRevisionVersion
         {
-            get => Configuration == Configuration.Debug || _addInstallerTimestamp;
-            set => _addInstallerTimestamp = value;
+            get => Configuration == Configuration.Debug || _timestampRevisionVersion;
+            set => _timestampRevisionVersion = value;
         }
 
         /// <summary>

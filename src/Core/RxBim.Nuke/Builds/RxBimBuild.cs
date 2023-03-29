@@ -142,7 +142,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    AddInstallerTimestamp);
+                    TimestampRevisionVersion);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -168,7 +168,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    AddInstallerTimestamp);
+                    TimestampRevisionVersion);
 
                 _builder.GenerateAdditionalFiles(
                     ProjectForMsiBuild.Name,
@@ -192,7 +192,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    AddInstallerTimestamp);
+                    TimestampRevisionVersion);
 
                 _builder.GeneratePackageContentsFile(
                     ProjectForMsiBuild,
@@ -218,7 +218,7 @@
                 OutputTmpDir,
                 OutputTmpDirBin,
                 RxBimEnvironment,
-                AddInstallerTimestamp);
+                TimestampRevisionVersion);
 
             DeleteDirectory(OutputTmpDir);
         }
@@ -229,7 +229,7 @@
         {
             var iss = TemporaryDirectory / "package.iss";
             var options = _builder.GetBuildMsiOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, AddInstallerTimestamp);
+                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder
@@ -284,19 +284,19 @@
         /// <param name="outputDir">Output directory.</param>
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
-        /// <param name="addInstallerTimestamp">Add installer timestamp.</param>
+        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,
             string outputDir,
             string configuration,
             string environment,
-            bool addInstallerTimestamp)
+            bool timestampRevisionVersion)
         {
             return _types ??=
                 project.GetAssemblyTypes(
                     outputBinDir,
-                    _builder.GetBuildMsiOptions(project, outputDir, configuration, environment, addInstallerTimestamp));
+                    _builder.GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion));
         }
     }
 }
