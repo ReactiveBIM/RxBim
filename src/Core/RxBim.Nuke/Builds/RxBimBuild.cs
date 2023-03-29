@@ -140,8 +140,9 @@
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration, 
-                    RxBimEnvironment);
+                    Configuration,
+                    RxBimEnvironment,
+                    AddInstallerTimestamp);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -165,8 +166,9 @@
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration, 
-                    RxBimEnvironment);
+                    Configuration,
+                    RxBimEnvironment,
+                    AddInstallerTimestamp);
 
                 _builder.GenerateAdditionalFiles(
                     ProjectForMsiBuild.Name,
@@ -188,8 +190,9 @@
                     ProjectForMsiBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
-                    Configuration, 
-                    RxBimEnvironment);
+                    Configuration,
+                    RxBimEnvironment,
+                    AddInstallerTimestamp);
 
                 _builder.GeneratePackageContentsFile(
                     ProjectForMsiBuild,
@@ -213,8 +216,9 @@
                 project,
                 configuration,
                 OutputTmpDir,
-                OutputTmpDirBin, 
-                RxBimEnvironment);
+                OutputTmpDirBin,
+                RxBimEnvironment,
+                AddInstallerTimestamp);
 
             DeleteDirectory(OutputTmpDir);
         }
@@ -224,7 +228,8 @@
             string configuration)
         {
             var iss = TemporaryDirectory / "package.iss";
-            var options = _builder.GetBuildMsiOptions(project, OutputTmpDir, configuration, RxBimEnvironment);
+            var options = _builder.GetBuildMsiOptions(
+                project, OutputTmpDir, configuration, RxBimEnvironment, AddInstallerTimestamp);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder
@@ -264,10 +269,10 @@
 
         private bool CheckSignAvailable()
         {
-            return !string.IsNullOrWhiteSpace(Cert) 
-                   && !string.IsNullOrWhiteSpace(PrivateKey) 
-                   && !string.IsNullOrWhiteSpace(Csp) 
-                   && !string.IsNullOrWhiteSpace(Algorithm) 
+            return !string.IsNullOrWhiteSpace(Cert)
+                   && !string.IsNullOrWhiteSpace(PrivateKey)
+                   && !string.IsNullOrWhiteSpace(Csp)
+                   && !string.IsNullOrWhiteSpace(Algorithm)
                    && !string.IsNullOrWhiteSpace(ServerUrl);
         }
 
@@ -279,16 +284,19 @@
         /// <param name="outputDir">Output directory.</param>
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
+        /// <param name="addInstallerTimestamp">Add installer timestamp.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,
             string outputDir,
             string configuration,
-            string environment)
+            string environment,
+            bool addInstallerTimestamp)
         {
             return _types ??=
                 project.GetAssemblyTypes(
-                    outputBinDir, _builder.GetBuildMsiOptions(project, outputDir, configuration, environment));
+                    outputBinDir,
+                    _builder.GetBuildMsiOptions(project, outputDir, configuration, environment, addInstallerTimestamp));
         }
     }
 }
