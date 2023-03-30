@@ -32,12 +32,14 @@
         /// <param name="sourceDir">Source build directory.</param>
         /// <param name="configuration">Configuration.</param>
         /// <param name="environment">Environment variable.</param>
+        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
         public static Options GetSetupOptions(
             this Project project,
             string installDir,
             string sourceDir,
             string configuration,
-            string environment)
+            string environment,
+            bool timestampRevisionVersion)
         {
             var productVersion = project.GetProperty(nameof(Options.ProductVersion));
             if (string.IsNullOrWhiteSpace(productVersion)
@@ -57,7 +59,7 @@
                           throw new ArgumentException(
                               $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
 
-            if (configuration == Configuration.Debug)
+            if (timestampRevisionVersion && version.Split(".").Length <= 3)
             {
                 var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 version += $".{unixTimestamp}";
@@ -90,7 +92,7 @@
                 UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon)),
                 Environment = environment
             };
-            
+
             return options;
         }
 

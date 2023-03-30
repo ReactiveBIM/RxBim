@@ -25,17 +25,19 @@
         /// <param name="outputDir">Output directory path.</param>
         /// <param name="outputBinDir">Output assemblies directory path.</param>
         /// <param name="environment">Environment variable.</param>
+        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
         public void BuildMsi(
             Project project,
             string configuration,
             string outputDir,
             string outputBinDir,
-            string environment)
+            string environment,
+            bool timestampRevisionVersion)
         {
             if (!Directory.Exists(outputBinDir))
                 return;
 
-            var options = GetBuildMsiOptions(project, outputDir, configuration, environment);
+            var options = GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion);
             const string toolPath = "rxbim.msi.builder";
 
             project.BuildMsiWithTool(toolPath, options);
@@ -48,15 +50,17 @@
         /// <param name="outputDir">Output directory path.</param>
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
+        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
         public Options GetBuildMsiOptions(
             Project project,
             string outputDir,
             string configuration,
-            string environment)
+            string environment,
+            bool timestampRevisionVersion)
         {
             return _options ??=
                 project.GetSetupOptions(
-                    GetInstallDir(project, configuration), outputDir, configuration, environment);
+                    GetInstallDir(project, configuration), outputDir, configuration, environment, timestampRevisionVersion);
         }
 
         /// <summary>
