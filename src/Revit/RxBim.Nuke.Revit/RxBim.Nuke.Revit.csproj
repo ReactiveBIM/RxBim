@@ -35,6 +35,7 @@
             <Pack>true</Pack>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
+        <!-- In this version, an error when setting a timeout for tests is fixed -->
         <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
