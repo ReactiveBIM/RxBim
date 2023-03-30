@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 /// <summary>
@@ -27,9 +28,12 @@ public static partial class RevitTestTasks
     /// <summary>
     ///   Path to the RevitTest executable.
     /// </summary>
-    public static string RevitTestPath =>
-        ToolPathResolver.TryGetEnvironmentExecutable("REVITTEST_EXE") ??
-        ToolPathResolver.GetPackageExecutable("RevitTestFramework", "RevitTestFrameworkConsole.exe");
+    public static string RevitTestPath => Directory
+        .GetFiles(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            "RevitTestFrameworkConsoleFixed.exe",
+            SearchOption.AllDirectories)
+        .First();
     public static Action<OutputType, string> RevitTestLogger { get; set; } = ProcessTasks.DefaultLogger;
     /// <summary>
     ///   <p>The Revit Test Framework (RTF) allows you to conduct remote unit testing on Revit. RTF takes care of creating a journal file for running revit which can specify a model to start Revit, and a specific test or fixture of tests to run. You can even specify a model to open before testing and RTF will do that as well.</p>
