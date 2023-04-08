@@ -12,16 +12,16 @@ namespace RxBim.Nuke.Versions
     {
         Target SetupEnv => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
-            .Requires(() => VersionNumber)
-            .Executes(() => this.SetupEnvironment(VersionNumber));
+            .Requires(() => CurrentAppVersionNumber)
+            .Executes(this.SetupEnvironment);
 
         Target SetupEnvForApp => _ => _
             .Description("Configures the solution to work with a specific version of a specific CAD/BIM application.")
-            .Requires(() => AppVersion)
+            .Requires(() => CurrentAppVersion)
             .Executes(() =>
             {
                 var appVersion = AppVersion.GetAll()
-                    .SingleOrError(x => x.Description == AppVersion.Description, "Selected version not found");
+                    .SingleOrError(x => x.Description == CurrentAppVersion.Description, "Selected version not found");
                 this.SetupEnvironment(appVersion!);
             });
 
@@ -34,8 +34,8 @@ namespace RxBim.Nuke.Versions
                     .ForEach(DeleteFile);
             });
 
-        AppVersion AppVersion { get; set; }
+        AppVersion CurrentAppVersion { get; set; }
 
-        VersionNumber VersionNumber { get; set; }
+        VersionNumber CurrentAppVersionNumber { get; set; }
     }
 }

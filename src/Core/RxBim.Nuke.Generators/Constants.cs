@@ -9,7 +9,11 @@ namespace RxBim.Nuke.Generators
 
         public const string AppVersion = nameof(AppVersion);
 
+        public const string CurrentAppVersion = nameof(CurrentAppVersion);
+
         public const string VersionNumber = nameof(VersionNumber);
+
+        public const string CurrentAppVersionNumber = nameof(CurrentAppVersionNumber);
 
         public const string SetupEnv = nameof(SetupEnv);
 

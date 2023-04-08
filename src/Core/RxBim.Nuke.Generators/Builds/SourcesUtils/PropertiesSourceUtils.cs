@@ -23,11 +23,11 @@ partial class Build : IVersionBuild
 {{
     /// <inheritdoc />
     [Parameter]
-    public {AppVersion} {AppVersion} {{ get; set; }}
+    public {AppVersion} {CurrentAppVersion} {{ get; set; }}
 
     /// <inheritdoc />
     [Parameter]
-    public {VersionNumber} {VersionNumber} {{ get; set; }}
+    public {VersionNumber} {CurrentAppVersionNumber} {{ get; set; }}
 }}";
         }
     }

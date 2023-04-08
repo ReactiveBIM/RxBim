@@ -59,7 +59,7 @@ partial class Build : NukeBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<ICompile>().Compile);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Publish);
 
     Target Clean => _ => _
         .Before<IRestore>()
@@ -118,30 +118,6 @@ partial class Build : NukeBuild
             await new ResultConverter()
                 .Convert(results, resultPath);
         });
-
-    Target Prerelease2019 => _ => _
-        .DependsOn(SetupEnv2019)
-        .Triggers(From<IPublish>().Prerelease);
-    
-    Target Prerelease2020 => _ => _
-        .DependsOn(Prerelease2019)
-        .DependsOn(SetupEnv2020)
-        .Triggers(From<IPublish>().Prerelease);
-    
-    Target Prerelease2021 => _ => _
-        .DependsOn(Prerelease2020)
-        .DependsOn(SetupEnv2021)
-        .Triggers(From<IPublish>().Prerelease);
-    
-    Target Prerelease2022 => _ => _
-        .DependsOn(Prerelease2021)
-        .DependsOn(SetupEnv2022)
-        .Triggers(From<IPublish>().Prerelease);
-    
-    Target Prerelease2023 => _ => _
-        .DependsOn(Prerelease2022)
-        .DependsOn(SetupEnv2023)
-        .Triggers(From<IPublish>().Prerelease);
 
     T From<T>()
         where T : INukeBuild

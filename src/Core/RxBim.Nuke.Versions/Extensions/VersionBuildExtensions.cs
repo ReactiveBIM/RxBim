@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Versions
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -27,12 +28,15 @@
         /// Sets up the build for the specified version.
         /// </summary>
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
-        /// <param name="appVersionNumber">Application version number.</param>
-        public static void SetupEnvironment(this IVersionBuild versionBuild, string appVersionNumber)
+        public static void SetupEnvironment(this IVersionBuild versionBuild)
         {
+            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
+                throw new InvalidOperationException("CurrentAppVersionNumber must be set!");
+
             foreach (var appVersion in AppVersion.GetAll()
                          .GroupBy(x => x.Type)
-                         .Select(x => x.FirstOrDefault(av => av.Settings.ContainsAppVersionSetting(appVersionNumber))))
+                         .Select(x =>
+                             x.FirstOrDefault(av => av.Settings.ContainsAppVersionSetting(versionBuild.CurrentAppVersionNumber))))
             {
                 if (appVersion is null)
                     continue;
@@ -45,9 +49,31 @@
         /// Sets up the build for the specified version.
         /// </summary>
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
+        /// <param name="appVersionNumber">Application version number.</param>
+        public static void SetupEnvironment(this IVersionBuild versionBuild, string appVersionNumber)
+        {
+            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
+            {
+                var versionNumber = VersionNumber.GetAll()
+                    .FirstOrDefault(x => appVersionNumber.Equals(x, StringComparison.Ordinal));
+
+                if (versionNumber is not null)
+                    versionBuild.CurrentAppVersionNumber = versionNumber;
+            }
+
+            versionBuild.SetupEnvironment();
+        }
+
+        /// <summary>
+        /// Sets up the build for the specified version.
+        /// </summary>
+        /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
         /// <param name="appVersion"><see cref="AppVersion"/> object.</param>
         public static void SetupEnvironment(this IVersionBuild versionBuild, AppVersion appVersion)
         {
+            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersion))
+                versionBuild.CurrentAppVersion = appVersion;
+
             versionBuild.From<IHazSolution>()
                 .Solution.AllProjects
                 .Where(appVersion.IsApplicableFor)
