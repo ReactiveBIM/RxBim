@@ -125,7 +125,9 @@ partial class Build
             .Append(@$"\.{Regex.Escape(tagInfo.Version)}(\.0){{0,3}}");
 
         if (!string.IsNullOrEmpty(tagInfo.VersionSuffix))
-            patternBuilder.Append(@$"-{Regex.Escape(tagInfo.VersionSuffix)}$");
+            patternBuilder.Append(@$"-{Regex.Escape(tagInfo.VersionSuffix)}");
+
+        patternBuilder.Append('$');
 
         return patternBuilder.ToString();
     }
