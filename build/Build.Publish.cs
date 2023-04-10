@@ -24,15 +24,14 @@ partial class Build
         .After(From<IPublish>().Prerelease)
         .Executes(() =>
         {
-            var publishTags = GetPublishTags();
-
-            if (!publishTags.Any())
+            var tags = GetCurrentTags();
+            if (!tags.Any())
             {
-                Log.Information("No publish tags, exit.");
+                Log.Information("No tags, exit.");
                 return;
             }
 
-            var publishNames = GetPublishPackagesNames(publishTags);
+            var publishNames = GetPackageFileNames(tags);
 
             publishNames
                 .ForEach(x => PackageExtensions.PushPackage(From<IPack>().PackagesDirectory, x,
@@ -83,20 +82,10 @@ partial class Build
                 throw new InvalidOperationException("No develop (-dev) packages to publish found");
         }
 
-        p.ForEach(x => TagPackage(From<IHazSolution>().Solution, x));
+        p.ForEach(project => TagPackage(From<IHazSolution>().Solution, GetPackageTag(project)));
     }
 
-    List<ProjectTagInfo> GetPublishTags()
-    {
-        return GitTasks
-            .Git($"tag --points-at {From<IHazGitRepository>().GitRepository.Commit}")
-            .Select(x => x.Text)
-            .Where(x => x.StartsWith(RxBimProjectNamePrefix) && ProjectTagInfo.IsCompatibleTag(x))
-            .Select(x => new ProjectTagInfo(x))
-            .ToList();
-    }
-
-    List<string> GetPublishPackagesNames(List<ProjectTagInfo> publishTags)
+    List<string> GetPackageFileNames(List<string> tags)
     {
         var appVersion = string.IsNullOrEmpty(CurrentAppVersionNumber)
             ? VersionNumber.GetAll().OrderBy(x => (string)x).First()
@@ -107,16 +96,17 @@ partial class Build
             .Select(x => x.NameWithoutExtension)
             .ToList();
 
+        var packNamePatterns = tags
+            .Where(x => x.StartsWith(RxBimProjectNamePrefix) && ProjectTagInfo.IsCompatibleTag(x))
+            .Select(x => GetPackageNamePattern(new ProjectTagInfo(x), appVersion))
+            .ToList();
+
         return allPackagesNames
-            .Where(name => publishTags.Any(tag =>
-            {
-                var pattern = GetPackageNamePattern(tag, appVersion);
-                return Regex.IsMatch(name, pattern);
-            }))
+            .Where(name => packNamePatterns.Any(pattern => Regex.IsMatch(name, pattern)))
             .ToList();
     }
-    
-    public static string GetPackageNamePattern(ProjectTagInfo tagInfo, VersionNumber appVersion)
+
+    static string GetPackageNamePattern(ProjectTagInfo tagInfo, VersionNumber appVersion)
     {
         var patternBuilder = new StringBuilder()
             .Append('^')
@@ -133,13 +123,24 @@ partial class Build
     }
 
     /// <summary>
-    /// Makes a git tag according the package version.
+    /// Returns a tag for the project.
     /// </summary>
-    /// <param name="solution">Solution</param>
     /// <param name="project">Project</param>
-    static void TagPackage(Solution solution, ProjectInfo project)
+    static string GetPackageTag(ProjectInfo project)
     {
-        var tag = new ProjectTagInfo(project).ToString();
-        GitTasks.Git($"tag {tag}", solution.Directory);
+        return new ProjectTagInfo(project).ToString();
+    }
+
+    static void TagPackage(Solution solution, string tagValue)
+    {
+        GitTasks.Git($"tag {tagValue}", solution.Directory);
+    }
+
+    List<string> GetCurrentTags()
+    {
+        return GitTasks
+            .Git($"tag --points-at {From<IHazGitRepository>().GitRepository.Commit}")
+            .Select(x => x.Text)
+            .ToList();
     }
 }
