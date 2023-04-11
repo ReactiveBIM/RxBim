@@ -98,7 +98,7 @@
 
             var appVerArgCreation = fieldDeclarationSyntax.DescendantNodes()
                 .OfType<ObjectCreationExpressionSyntax>()
-                .FirstOrDefault(x => x.Type is IdentifierNameSyntax { Identifier: { Text: "ApplicationVersion" } });
+                .FirstOrDefault(x => x.Type is IdentifierNameSyntax { Identifier.Text: "ApplicationVersion" });
 
             var arg = appVerArgCreation?.ArgumentList?.Arguments.FirstOrDefault();
             if (arg?.Expression is not LiteralExpressionSyntax expressionSyntax)
