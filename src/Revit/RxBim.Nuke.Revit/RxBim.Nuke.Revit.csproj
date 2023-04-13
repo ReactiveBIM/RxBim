@@ -25,13 +25,43 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="TestHelpers\Result.cshtml">
+        <Content Include="RevitTestFrameworkConsole\empty.rfa">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </EmbeddedResource>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+        <Content Include="RevitTestFrameworkConsole\RevitAddInUtility.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+        <!-- In this version, an error when setting a timeout for tests is fixed -->
+        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+        <Content Include="RevitTestFrameworkConsole\RTFRevit.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+        <Content Include="RevitTestFrameworkConsole\Runner.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Directory.Build.Props" />
+        <EmbeddedResource Include="TestHelpers\Result.cshtml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
     <PropertyGroup>
