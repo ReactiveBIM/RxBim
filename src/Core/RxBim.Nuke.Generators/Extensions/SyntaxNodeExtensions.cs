@@ -32,7 +32,7 @@
         /// Returns using directive lines from <see cref="SyntaxNode"/> object.
         /// </summary>
         /// <param name="rootNode"><see cref="SyntaxNode"/> object.</param>
-        public static string GetUsingLines(this SyntaxNode rootNode)
+        public static string GetUsingDirectives(this SyntaxNode rootNode)
         {
             return string.Join(string.Empty,
                 rootNode.ChildNodes().OfType<UsingDirectiveSyntax>().Select(x => x.GetText().ToString()));

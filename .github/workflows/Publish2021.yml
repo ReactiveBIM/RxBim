@@ -38,8 +38,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd SetupEnv2021 Test Publish'
-        run: ./build.cmd SetupEnv2021 Test Publish
+      - name: Run './build.cmd SetVersion2021 Test Publish'
+        run: ./build.cmd SetVersion2021 Test Publish
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PACKAGES: ${{ secrets.ALL_PACKAGES }}

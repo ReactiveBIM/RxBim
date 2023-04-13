@@ -31,7 +31,7 @@
 
             var rootNode = syntaxReference.SyntaxTree.GetRoot();
 
-            var usingLines = rootNode.GetUsingLines();
+            var usingLines = rootNode.GetUsingDirectives();
 
             var sourceSpan = syntaxReference.Span;
             var attNode = rootNode.FindNode(sourceSpan);
@@ -94,7 +94,7 @@
             InitializerExpressionSyntax initializer,
             string versionNumber)
         {
-            var valueText = $"{SetupEnv}{versionNumber}";
+            var valueText = $"{SetVersion}{versionNumber}";
             var text = $"\"{valueText}\"";
 
             var newExpr = initializer.Expressions

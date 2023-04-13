@@ -22,13 +22,13 @@
             var values = string.Join($"{Environment.NewLine}{Environment.NewLine}",
                 versionNumbers.Select(x =>
                     $"""
-                            Target {SetupEnv}{x} => _ => _
+                            Target {SetVersion}{x} => _ => _
                                 .Before<IPublish>(x => x.Publish, x => x.Prerelease, x => x.Release, x => x.List)
                                 .Before<IPack>(x => x.Pack)
                                 .Before<ICompile>(x => x.Compile)
                                 .Before<IRestore>(x => x.Restore)
                                 .Before({string.Join(", ", buildDeclaredTargets)})
-                                .Executes(() => this.SetupEnvironment("{x}"));
+                                .Executes(() => this.SetVersion("{x}"));
                         """));
 
             return $$"""
