@@ -59,7 +59,7 @@ partial class Build : NukeBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().Publish);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Compile);
 
     Target Clean => _ => _
         .Before<IRestore>()
