@@ -121,6 +121,9 @@ namespace RxBim.Nuke.Builds
         /// </summary>
         protected virtual string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
 
-        private Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == _project);
+        /// <summary>
+        /// Selected project.
+        /// </summary>
+        protected virtual Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == Project);
     }
 }
