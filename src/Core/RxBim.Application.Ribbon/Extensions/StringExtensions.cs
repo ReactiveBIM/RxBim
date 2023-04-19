@@ -3,7 +3,7 @@ namespace RxBim.Application.Ribbon;
 using System;
 
 /// <summary>
-/// Расширения для строк.
+/// Extensions for the <see cref="string"/>.
 /// </summary>
 internal static class StringExtensions
 {
