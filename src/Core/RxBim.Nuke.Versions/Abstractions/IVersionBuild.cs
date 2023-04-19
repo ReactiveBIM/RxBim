@@ -71,47 +71,38 @@ namespace RxBim.Nuke.Versions
         /// <summary>
         /// Sets git tags for given packages.
         /// </summary>
-        /// <param name="projectNames">Project names collection.</param>
+        /// <param name="projects">Project names collection.</param>
         /// <param name="release">If true, tags are used for "release" version of packages.</param>
-        void IPublish.TagPackages(string[] projectNames, bool release)
+        void IPublish.TagPackages(string[] projects, bool release)
         {
-            List<ProjectInfo>? p;
+            List<ProjectInfo>? packages;
 
             if (GitRepository.IsOnReleaseBranch() || GitRepository.IsOnHotfixBranch())
             {
                 if (release) //// RELEASE
                 {
-                    var pattern = new Regex(@"\d+(\.\d+)*");
-
-                    p = PackageInfoProvider.GetSelectedProjects(projectNames)
-                        .Where(x => pattern.IsMatch(x.Version!)).ToList();
-
-                    if (!p.Any())
-                        throw new InvalidOperationException("No release (-rc) packages to publish found");
+                    packages = GetPackages(
+                        projects,
+                        @"\d+(\.\d+)*",
+                        "No release packages to publish found");
                 }
                 else //// RELEASE CANDIDATE
                 {
-                    var pattern = new Regex(@"\d+(\.\d+)*-rc\d*");
-
-                    p = PackageInfoProvider.GetSelectedProjects(projectNames)
-                        .Where(x => pattern.IsMatch(x.Version!)).ToList();
-
-                    if (!p.Any())
-                        throw new InvalidOperationException("No release candidate (-rc) packages to publish found");
+                    packages = GetPackages(
+                        projects,
+                        @"\d+(\.\d+)*-rc\d*",
+                        "No release candidate (-rc) packages to publish found");
                 }
             }
             else //// DEVELOP
             {
-                var pattern = new Regex(@"\d+(\.\d+)*-dev\d*");
-
-                p = PackageInfoProvider.GetSelectedProjects(projectNames)
-                    .Where(x => pattern.IsMatch(x.Version!)).ToList();
-
-                if (!p.Any())
-                    throw new InvalidOperationException("No develop (-dev) packages to publish found");
+                packages = GetPackages(
+                    projects,
+                    @"\d+(\.\d+)*-dev\d*",
+                    "No develop (-dev) packages to publish found");
             }
 
-            p.ForEach(project => TagPackage(Solution, GetPackageTag(project)));
+            packages.ForEach(project => TagPackage(Solution, GetPackageTag(project)));
         }
 
         List<string> GetPackageFileNames(List<string> tags)
@@ -168,6 +159,26 @@ namespace RxBim.Nuke.Versions
                 .Git($"tag --points-at {GitRepository.Commit}")
                 .Select(x => x.Text)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Returns the projects packages whose version matches the specified pattern.
+        /// </summary>
+        /// <param name="projects">Projects packages.</param>
+        /// <param name="pattern">Package version template pattern.</param>
+        /// <param name="errorMsg">The exception message that is thrown if '<paramref name="projects"/>' does not contain any matching packages.</param>
+        /// <exception cref="InvalidOperationException">If '<paramref name="projects"/>' does not contain any matching packages.</exception>
+        private List<ProjectInfo> GetPackages(string[] projects, string pattern, string errorMsg)
+        {
+            var packages = PackageInfoProvider
+                .GetSelectedProjects(projects)
+                .Where(x => x.Version is not null && Regex.IsMatch(x.Version, pattern))
+                .ToList();
+
+            if (packages.Count == 0)
+                throw new InvalidOperationException(errorMsg);
+
+            return packages;
         }
     }
 }
