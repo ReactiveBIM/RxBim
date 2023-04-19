@@ -20,23 +20,23 @@ namespace RxBim.Nuke.Versions
 
     public interface IVersionBuild : IPublish
     {
-        Target SetupEnv => _ => _
+        Target SetVersion => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
             .Requires(() => CurrentAppVersionNumber)
-            .Executes(this.SetVersion);
+            .Executes(this.SetBuildVersion);
 
-        Target SetupEnvForApp => _ => _
+        Target SetVersionForApp => _ => _
             .Description("Configures the solution to work with a specific version of a specific CAD/BIM application.")
             .Requires(() => CurrentAppVersion)
             .Executes(() =>
             {
                 var appVersion = AppVersion.GetAll()
                     .SingleOrError(x => x.Description == CurrentAppVersion.Description, "Selected version not found");
-                this.SetVersion(appVersion!);
+                this.SetBuildVersion(appVersion!);
             });
 
-        Target ResetEnv => _ => _
-            .Description("Resets the solution to its defaults.")
+        Target ResetVersion => _ => _
+            .Description("Resets the solution to its default version value.")
             .Executes(() =>
             {
                 this.From<IHazSolution>()

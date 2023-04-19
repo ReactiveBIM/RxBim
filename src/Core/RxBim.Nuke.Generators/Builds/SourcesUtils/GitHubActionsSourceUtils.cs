@@ -51,7 +51,7 @@
             var attLines = versionNumbers
                 .Select(versionNumber => attNode.ReplaceSyntax(
                     new[] { targetsInitializerNode },
-                    (_, _) => AddSetEnvTargetToInitializer(targetsInitializerNode, versionNumber),
+                    (_, _) => AddSetVersionTargetToInitializer(targetsInitializerNode, versionNumber),
                     new[] { nameToken },
                     (_, _) => CreateTokenForNameWithVersion(nameToken, versionNumber),
                     null,
@@ -90,7 +90,7 @@
             return (argumentSyntax?.Expression as ImplicitArrayCreationExpressionSyntax)?.Initializer;
         }
 
-        private static SyntaxNode AddSetEnvTargetToInitializer(
+        private static SyntaxNode AddSetVersionTargetToInitializer(
             InitializerExpressionSyntax initializer,
             string versionNumber)
         {

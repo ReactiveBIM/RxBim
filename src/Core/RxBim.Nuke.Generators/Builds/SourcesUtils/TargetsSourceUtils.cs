@@ -28,7 +28,7 @@
                                 .Before<ICompile>(x => x.Compile)
                                 .Before<IRestore>(x => x.Restore)
                                 .Before({string.Join(", ", buildDeclaredTargets)})
-                                .Executes(() => this.SetVersion("{x}"));
+                                .Executes(() => this.SetBuildVersion("{x}"));
                         """));
 
             return $$"""

@@ -28,7 +28,7 @@
         /// Sets up the build for the specified version.
         /// </summary>
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
-        public static void SetVersion(this IVersionBuild versionBuild)
+        public static void SetBuildVersion(this IVersionBuild versionBuild)
         {
             if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
                 throw new InvalidOperationException("CurrentAppVersionNumber must be set!");
@@ -42,7 +42,7 @@
                 if (appVersion is null)
                     continue;
 
-                versionBuild.SetVersion(appVersion);
+                SetBuildVersion(versionBuild, appVersion);
             }
         }
 
@@ -51,7 +51,7 @@
         /// </summary>
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
         /// <param name="appVersionNumber">Application version number.</param>
-        public static void SetVersion(this IVersionBuild versionBuild, string appVersionNumber)
+        public static void SetBuildVersion(this IVersionBuild versionBuild, string appVersionNumber)
         {
             if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
             {
@@ -62,7 +62,7 @@
                     versionBuild.CurrentAppVersionNumber = versionNumber;
             }
 
-            versionBuild.SetVersion();
+            SetBuildVersion(versionBuild);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
         /// <param name="appVersion"><see cref="AppVersion"/> object.</param>
-        public static void SetVersion(this IVersionBuild versionBuild, AppVersion appVersion)
+        public static void SetBuildVersion(this IVersionBuild versionBuild, AppVersion appVersion)
         {
             if (string.IsNullOrEmpty(versionBuild.CurrentAppVersion))
                 versionBuild.CurrentAppVersion = appVersion;
