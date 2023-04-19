@@ -22,16 +22,16 @@ namespace RxBim.Nuke.Versions
     {
         Target SetVersion => _ => _
             .Description("Configures the solution to work with a specific version of all CAD/BIM applications.")
-            .Requires(() => CurrentAppVersionNumber)
+            .Requires(() => VersionNumber)
             .Executes(this.SetBuildVersion);
 
         Target SetVersionForApp => _ => _
             .Description("Configures the solution to work with a specific version of a specific CAD/BIM application.")
-            .Requires(() => CurrentAppVersion)
+            .Requires(() => AppVersion)
             .Executes(() =>
             {
                 var appVersion = AppVersion.GetAll()
-                    .SingleOrError(x => x.Description == CurrentAppVersion.Description, "Selected version not found");
+                    .SingleOrError(x => x.Description == AppVersion.Description, "Selected version not found");
                 this.SetBuildVersion(appVersion!);
             });
 
@@ -44,9 +44,9 @@ namespace RxBim.Nuke.Versions
                     .ForEach(DeleteFile);
             });
 
-        AppVersion CurrentAppVersion { get; set; }
+        AppVersion AppVersion { get; set; }
 
-        VersionNumber CurrentAppVersionNumber { get; set; }
+        VersionNumber VersionNumber { get; set; }
 
         Target IPublish.Publish => _ => _
             .Description("Publishes packages based on current commit tags.")
@@ -116,9 +116,9 @@ namespace RxBim.Nuke.Versions
 
         List<string> GetPackageFileNames(List<string> tags)
         {
-            var appVersion = string.IsNullOrEmpty(CurrentAppVersionNumber)
+            var appVersion = string.IsNullOrEmpty(VersionNumber)
                 ? VersionNumber.GetAll().OrderBy(x => (string)x).First()
-                : CurrentAppVersionNumber;
+                : VersionNumber;
 
             const string projectNamePrefix = "RxBim.";
 

@@ -23,12 +23,12 @@
                 partial class Build : IVersionBuild
                 {
                     /// <inheritdoc />
-                    [Parameter]
-                    public {{AppVersion}} {{CurrentAppVersion}} { get; set; }
+                    [Parameter("Version for one type of CAD application: 'Autocad2023', 'Revit2022' etc.")]
+                    public {{AppVersion}} {{AppVersion}} { get; set; }
                 
                     /// <inheritdoc />
-                    [Parameter]
-                    public {{VersionNumber}} {{CurrentAppVersionNumber}} { get; set; }
+                    [Parameter("Version number for all types of CAD applications: '2022', '2023' etc.")]
+                    public {{VersionNumber}} {{VersionNumber}} { get; set; }
                 }
                 """;
         }

@@ -30,14 +30,14 @@
         /// <param name="versionBuild"><see cref="IVersionBuild"/> object.</param>
         public static void SetBuildVersion(this IVersionBuild versionBuild)
         {
-            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
-                throw new InvalidOperationException("CurrentAppVersionNumber must be set!");
+            if (string.IsNullOrEmpty(versionBuild.VersionNumber))
+                throw new InvalidOperationException($"{nameof(IVersionBuild.VersionNumber)} must be set!");
 
             foreach (var appVersion in AppVersion.GetAll()
                          .GroupBy(x => x.Type)
                          .Select(x =>
                              x.FirstOrDefault(av =>
-                                 av.Settings.ContainsAppVersionSetting(versionBuild.CurrentAppVersionNumber))))
+                                 av.Settings.ContainsAppVersionSetting(versionBuild.VersionNumber))))
             {
                 if (appVersion is null)
                     continue;
@@ -53,13 +53,13 @@
         /// <param name="appVersionNumber">Application version number.</param>
         public static void SetBuildVersion(this IVersionBuild versionBuild, string appVersionNumber)
         {
-            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersionNumber))
+            if (string.IsNullOrEmpty(versionBuild.VersionNumber))
             {
                 var versionNumber = VersionNumber.GetAll()
                     .FirstOrDefault(x => appVersionNumber.Equals(x, StringComparison.Ordinal));
 
                 if (versionNumber is not null)
-                    versionBuild.CurrentAppVersionNumber = versionNumber;
+                    versionBuild.VersionNumber = versionNumber;
             }
 
             SetBuildVersion(versionBuild);
@@ -72,8 +72,8 @@
         /// <param name="appVersion"><see cref="AppVersion"/> object.</param>
         public static void SetBuildVersion(this IVersionBuild versionBuild, AppVersion appVersion)
         {
-            if (string.IsNullOrEmpty(versionBuild.CurrentAppVersion))
-                versionBuild.CurrentAppVersion = appVersion;
+            if (string.IsNullOrEmpty(versionBuild.AppVersion))
+                versionBuild.AppVersion = appVersion;
 
             versionBuild.From<IHazSolution>()
                 .Solution.AllProjects
