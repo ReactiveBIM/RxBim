@@ -2,21 +2,16 @@
 
 namespace RxBim.Nuke.Versions
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
+    using Bimlab.Nuke;
     using Bimlab.Nuke.Components;
-    using Bimlab.Nuke.Nuget;
     using global::Nuke.Common;
-    using global::Nuke.Common.Git;
     using global::Nuke.Common.IO;
-    using global::Nuke.Common.ProjectModel;
-    using global::Nuke.Common.Tools.Git;
     using global::Nuke.Common.Utilities.Collections;
-    using Serilog;
     using static global::Nuke.Common.IO.FileSystemTasks;
+    using static PublishTagService;
 
     public interface IVersionBuild : IPublish
     {
@@ -30,8 +25,8 @@ namespace RxBim.Nuke.Versions
             .Requires(() => AppVersion)
             .Executes(() =>
             {
-                var appVersion = AppVersion.GetAll()
-                    .SingleOrError(x => x.Description == AppVersion.Description, "Selected version not found");
+                var appVersion = AppVersion.GetAll().SingleOrError(x => x.Description == AppVersion.Description,
+                    (string)"Selected version not found");
                 this.SetBuildVersion(appVersion!);
             });
 
@@ -39,73 +34,14 @@ namespace RxBim.Nuke.Versions
             .Description("Resets the solution to its default version value.")
             .Executes(() =>
             {
-                this.From<IHazSolution>()
-                    .Solution.Directory.GlobFiles("**/RxBim.Build.Props")
-                    .ForEach(DeleteFile);
+                this.From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props").ForEach(DeleteFile);
             });
 
         AppVersion AppVersion { get; set; }
 
         VersionNumber VersionNumber { get; set; }
 
-        Target IPublish.Publish => _ => _
-            .Description("Publishes packages based on current commit tags.")
-            .Requires(() => NugetApiKey, () => NugetSource)
-            .DependsOn<IPack>(x => x.Pack)
-            .After(Prerelease)
-            .Executes(() =>
-            {
-                var tags = GetCurrentTags();
-                if (!tags.Any())
-                {
-                    Log.Information("No tags, exit.");
-                    return;
-                }
-
-                var publishNames = GetPackageFileNames(tags);
-
-                publishNames.ForEach(x =>
-                    PackageExtensions.PushPackage(PackagesDirectory, x, NugetApiKey, NugetSource));
-            });
-
-        /// <summary>
-        /// Sets git tags for given packages.
-        /// </summary>
-        /// <param name="projects">Project names collection.</param>
-        /// <param name="release">If true, tags are used for "release" version of packages.</param>
-        void IPublish.TagPackages(string[] projects, bool release)
-        {
-            List<ProjectInfo>? packages;
-
-            if (GitRepository.IsOnReleaseBranch() || GitRepository.IsOnHotfixBranch())
-            {
-                if (release) //// RELEASE
-                {
-                    packages = GetPackages(
-                        projects,
-                        @"\d+(\.\d+)*",
-                        "No release packages to publish found");
-                }
-                else //// RELEASE CANDIDATE
-                {
-                    packages = GetPackages(
-                        projects,
-                        @"\d+(\.\d+)*-rc\d*",
-                        "No release candidate (-rc) packages to publish found");
-                }
-            }
-            else //// DEVELOP
-            {
-                packages = GetPackages(
-                    projects,
-                    @"\d+(\.\d+)*-dev\d*",
-                    "No develop (-dev) packages to publish found");
-            }
-
-            packages.ForEach(project => TagPackage(Solution, GetPackageTag(project)));
-        }
-
-        List<string> GetPackageFileNames(List<string> tags)
+        IEnumerable<string> IPublish.GetPackageFileNames(IEnumerable<string> tags)
         {
             var appVersion = string.IsNullOrEmpty(VersionNumber)
                 ? VersionNumber.GetAll().OrderBy(x => (string)x).First()
@@ -119,8 +55,8 @@ namespace RxBim.Nuke.Versions
                 .ToList();
 
             var packNamePatterns = tags
-                .Where(x => x.StartsWith(projectNamePrefix) && ProjectTagInfo.IsCompatibleTag(x))
-                .Select(x => GetPackageNamePattern(new ProjectTagInfo(x), appVersion))
+                .Where(x => x.StartsWith(projectNamePrefix) && IsCompatibleTag(x))
+                .Select(x => GetPackageNamePattern(x, appVersion))
                 .ToList();
 
             return allPackagesNames
@@ -128,57 +64,13 @@ namespace RxBim.Nuke.Versions
                 .ToList();
         }
 
-        static string GetPackageNamePattern(ProjectTagInfo tagInfo, VersionNumber appVersion)
-        {
-            var patternBuilder = new StringBuilder()
-                .Append('^')
-                .Append(Regex.Escape(tagInfo.Name))
-                .Append(@$"(\.{appVersion})?\.{Regex.Escape(tagInfo.Version)}")
-                .Append('$');
-
-            return patternBuilder.ToString();
-        }
-
         /// <summary>
         /// Returns a tag for the project.
         /// </summary>
         /// <param name="project">Project</param>
-        static string GetPackageTag(ProjectInfo project)
+        string IPublish.GetPackageTag(ProjectInfo project)
         {
-            return new ProjectTagInfo(project).ToString();
-        }
-
-        static void TagPackage(Solution solution, string tagValue)
-        {
-            GitTasks.Git($"tag {tagValue}", solution.Directory);
-        }
-
-        List<string> GetCurrentTags()
-        {
-            return GitTasks
-                .Git($"tag --points-at {GitRepository.Commit}")
-                .Select(x => x.Text)
-                .ToList();
-        }
-
-        /// <summary>
-        /// Returns the projects packages whose version matches the specified pattern.
-        /// </summary>
-        /// <param name="projects">Projects packages.</param>
-        /// <param name="pattern">Package version template pattern.</param>
-        /// <param name="errorMsg">The exception message that is thrown if '<paramref name="projects"/>' does not contain any matching packages.</param>
-        /// <exception cref="InvalidOperationException">If '<paramref name="projects"/>' does not contain any matching packages.</exception>
-        private List<ProjectInfo> GetPackages(string[] projects, string pattern, string errorMsg)
-        {
-            var packages = PackageInfoProvider
-                .GetSelectedProjects(projects)
-                .Where(x => x.Version is not null && Regex.IsMatch(x.Version, pattern))
-                .ToList();
-
-            if (packages.Count == 0)
-                throw new InvalidOperationException(errorMsg);
-
-            return packages;
+            return GetTagValue(project);
         }
     }
 }

@@ -8,10 +8,7 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Utilities.Collections;
 using RxBim.Nuke.Revit.TestHelpers;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [UnsetVisualStudioEnvironmentVariables]
@@ -61,17 +58,8 @@ partial class Build : NukeBuild
 
     public static int Main() => Execute<Build>(x => x.From<IPublish>().Compile);
 
-    Target Clean => _ => _
-        .Before<IRestore>()
-        .Executes(() =>
-        {
-            GlobDirectories(From<IHazSolution>().Solution.Directory, "**/bin", "**/obj")
-                .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
-                .ForEach(DeleteDirectory);
-        });
-
     public Target Test => _ => _
-        .Before(Clean)
+        .Before<IClean>()
         .Before<IRestore>()
         .Executes(() =>
         {
