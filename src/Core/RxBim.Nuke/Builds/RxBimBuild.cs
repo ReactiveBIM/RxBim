@@ -57,7 +57,7 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildMsiInstaller(ProjectForMsiBuild, Configuration);
+                BuildMsiInstaller(ProjectForInstallBuild, Configuration);
             });
 
         /// <summary>
@@ -71,7 +71,7 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildInnoInstaller(ProjectForMsiBuild, Configuration);
+                BuildInnoInstaller(ProjectForInstallBuild, Configuration);
             });
 
         /// <summary>
@@ -116,7 +116,7 @@
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)
-            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Configuration));
+            .Executes(() => new TPropGen().GenerateProperties(ProjectForInstallBuild, Configuration));
 
         /// <summary>
         /// Installs WixSharp.
@@ -137,7 +137,7 @@
                     return;
 
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
+                    ProjectForInstallBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
                     Configuration,
@@ -163,7 +163,7 @@
             .Executes(() =>
             {
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
+                    ProjectForInstallBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
                     Configuration,
@@ -171,7 +171,7 @@
                     TimestampRevisionVersion);
 
                 _builder.GenerateAdditionalFiles(
-                    ProjectForMsiBuild.Name,
+                    ProjectForInstallBuild.Name,
                     Solution.AllProjects,
                     types,
                     OutputTmpDir);
@@ -187,7 +187,7 @@
             .Executes(() =>
             {
                 var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
+                    ProjectForInstallBuild,
                     OutputTmpDirBin,
                     OutputTmpDir,
                     Configuration,
@@ -195,7 +195,7 @@
                     TimestampRevisionVersion);
 
                 _builder.GeneratePackageContentsFile(
-                    ProjectForMsiBuild,
+                    ProjectForInstallBuild,
                     Configuration,
                     types,
                     OutputTmpDir);

@@ -124,6 +124,6 @@ namespace RxBim.Nuke.Builds
         /// <summary>
         /// Selected project.
         /// </summary>
-        protected virtual Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == Project);
+        protected virtual Project ProjectForInstallBuild => Solution.AllProjects.First(x => x.Name == Project);
     }
 }

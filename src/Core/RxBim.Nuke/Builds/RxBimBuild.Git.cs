@@ -38,7 +38,7 @@
             {
                 var gitCurrentBranch = GitTasks.GitCurrentBranch();
                 var gitVersion = _releaseBranchRegex.Ensure().Match(gitCurrentBranch).Groups["version"].Value;
-                var projectVersion = ProjectForMsiBuild.GetProperty("Version");
+                var projectVersion = ProjectForInstallBuild.GetProperty("Version");
                 if (gitVersion != projectVersion)
                 {
                     throw new ArgumentException("Project version is not equals git version!!!");
@@ -92,7 +92,7 @@
                     throw new InvalidDataException("Tag hash != current commit hash");
                 }
 
-                var projectVersion = ProjectForMsiBuild.GetProperty("Version");
+                var projectVersion = ProjectForInstallBuild.GetProperty("Version");
                 if (tagValue != projectVersion)
                 {
                     throw new ArgumentException("Project version is not equals git version!!!");
