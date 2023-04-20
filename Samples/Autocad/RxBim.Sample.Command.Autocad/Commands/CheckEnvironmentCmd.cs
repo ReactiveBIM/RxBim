@@ -22,7 +22,7 @@
         {
             Application.ShowAlertDialog(
                 $"Current environment variable = {settings.EnvironmentVariable}");
-            
+
             return PluginResult.Succeeded;
         }
     }

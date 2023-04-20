@@ -3,6 +3,7 @@
     extern alias nc;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
@@ -142,19 +143,19 @@
         /// <param name="properties">Properties via <see cref="XElement"/> collection.</param>
         public static void AddPropertiesToProject(this Project project, IReadOnlyCollection<XElement> properties)
         {
-            if (properties.Any())
-            {
-                var projectXml = XElement.Load(project.Path);
+            if (!properties.Any())
+                return;
 
-                projectXml.Add(new XElement("PropertyGroup", properties));
-                projectXml.Save(project.Path);
+            var projectXml = XElement.Load(project.Path);
 
-                Log.Information("Properties {Properties} for {ProjectName} project added\"",
-                    properties.Select(x => x.Name.ToString()).ToList().JoinComma(),
-                    project.Name);
+            projectXml.Add(new XElement("PropertyGroup", properties));
+            projectXml.Save(project.Path);
 
-                project.CommitChanges();
-            }
+            Log.Information("Properties {Properties} for {ProjectName} project added\"",
+                properties.Select(x => x.Name.ToString()).ToList().JoinComma(),
+                project.Name);
+
+            project.CommitChanges();
         }
 
         /// <summary>
@@ -164,14 +165,10 @@
         public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
         {
             if (project.GetProperty(nameof(Options.PackageGuid)) == null)
-            {
                 yield return new XElement(nameof(Options.PackageGuid), Guid.NewGuid());
-            }
 
             if (project.GetProperty(nameof(Options.UpgradeCode)) == null)
-            {
                 yield return new XElement(nameof(Options.UpgradeCode), Guid.NewGuid());
-            }
         }
 
         /// <summary>
@@ -260,6 +257,33 @@
                 UpgradeCode = project.GetProperty("UpgradeCode"),
                 Components = components
             };
+        }
+
+        /// <summary>
+        /// Tries to get the major version name of the CAD application for plugin.
+        /// </summary>
+        /// <param name="project">The plugin project.</param>
+        /// <param name="versionNumber">The returned version name.</param>
+        /// <returns>True if the version name is found. Otherwise, returns false.</returns>
+        public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
+        {
+            var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
+            var output = outputs.FirstOrDefault(x => x.Text.StartsWithAny("RxBim.Command.", "RxBim.Application."));
+            if (!string.IsNullOrEmpty(output.Text))
+            {
+                var part = output.Text
+                    .Split(' ', 4, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
+                var number = part.Split('-', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .First();
+                if (Version.TryParse(number, out var version))
+                {
+                    versionNumber = version.Major.ToString(CultureInfo.InvariantCulture);
+                    return true;
+                }
+            }
+
+            versionNumber = string.Empty;
+            return false;
         }
 
         /// <summary>

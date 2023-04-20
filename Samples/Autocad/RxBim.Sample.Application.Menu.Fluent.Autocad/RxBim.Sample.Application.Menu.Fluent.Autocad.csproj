@@ -68,7 +68,6 @@
     <None Remove="img\num3_16.jpg" />
     <EmbeddedResource Include="img\num3_16.jpg" />
   </ItemGroup>
-  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
   <PropertyGroup>
     <PackageGuid>309697fd-ffff-43b8-a369-f353e424b1ca</PackageGuid>
     <UpgradeCode>3e27aaad-fb16-4ca2-8f9b-b4d6fdfe6d10</UpgradeCode>
