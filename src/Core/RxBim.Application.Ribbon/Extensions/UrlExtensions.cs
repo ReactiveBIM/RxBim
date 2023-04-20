@@ -3,7 +3,7 @@ namespace RxBim.Application.Ribbon;
 using System;
 
 /// <summary>
-/// Extensions for the <see cref="string"/>.
+/// Extensions for the Url.
 /// </summary>
 internal static class UrlExtensions
 {
