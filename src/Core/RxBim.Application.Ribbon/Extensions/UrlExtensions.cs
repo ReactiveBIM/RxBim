@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// Extensions for the <see cref="string"/>.
 /// </summary>
-internal static class StringExtensions
+internal static class UrlExtensions
 {
     /// <summary>
     /// Returns the absolute address.
