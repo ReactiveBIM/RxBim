@@ -26,6 +26,20 @@
         }
 
         /// <summary>
+        /// Adds a new push button to the panel, with button name of the command type full name.
+        /// </summary>
+        /// <param name="parent">A panel builder.</param>
+        /// <param name="builder">The button builder.</param>
+        /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
+        /// This command will be execute when user push the button.</typeparam>
+        public static IPanelBuilder CommandButton<TCommand>(
+            this IPanelBuilder parent,
+            Action<ICommandButtonBuilder>? builder = null)
+        {
+            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
+        }
+
+        /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
         /// <param name="parent">A panel builder.</param>
@@ -42,6 +56,20 @@
         }
 
         /// <summary>
+        /// Adds a new push button to the panel, with button name of the command type full name.
+        /// </summary>
+        /// <param name="parent">A panel builder.</param>
+        /// <param name="builder">The button builder.</param>
+        /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
+        /// This command will be execute when user push the button.</typeparam>
+        public static IPulldownButtonBuilder CommandButton<TCommand>(
+            this IPulldownButtonBuilder parent,
+            Action<ICommandButtonBuilder>? builder = null)
+        {
+            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
+        }
+
+        /// <summary>
         /// Adds a new push button to the panel.
         /// </summary>
         /// <param name="parent">A panel builder.</param>
@@ -55,6 +83,20 @@
             Action<ICommandButtonBuilder>? builder = null)
         {
             return parent.CommandButton(name, typeof(TCommand), builder);
+        }
+
+        /// <summary>
+        /// Adds a new push button to the panel, with button name of the command type full name.
+        /// </summary>
+        /// <param name="parent">A panel builder.</param>
+        /// <param name="builder">The button builder.</param>
+        /// <typeparam name="TCommand">TClass which implements IExternalCommand interface.
+        /// This command will be execute when user push the button.</typeparam>
+        public static IStackedItemsBuilder CommandButton<TCommand>(
+            this IStackedItemsBuilder parent,
+            Action<ICommandButtonBuilder>? builder = null)
+        {
+            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
         }
 
         /// <summary>
