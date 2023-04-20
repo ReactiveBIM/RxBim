@@ -6,7 +6,6 @@
 
     <PropertyGroup>
         <Description>RxBim transactions API Library for AutoCAD</Description>
-        <PackageId>RxBim.Transactions.Autocad</PackageId>
     </PropertyGroup>
 
 </Project>

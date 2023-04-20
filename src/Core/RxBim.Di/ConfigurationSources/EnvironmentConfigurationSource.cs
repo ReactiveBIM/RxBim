@@ -38,8 +38,9 @@
             if (packageContentsFileDir is not null)
             {
                 var packageContentsFile = System.IO.Path.Combine(
-                    packageContentsFileDir.FullName, PackageContentsFileName);
-                
+                    packageContentsFileDir.FullName,
+                    PackageContentsFileName);
+
                 if (File.Exists(packageContentsFile))
                 {
                     var xmlDoc = new XmlDocument();
@@ -62,7 +63,7 @@
 
             Path = $"{System.IO.Path.GetFileNameWithoutExtension(_configFile)}.{environment}.json";
             Optional = true;
-            
+
             return base.Build(builder);
         }
     }

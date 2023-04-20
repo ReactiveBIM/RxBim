@@ -7,7 +7,6 @@
 
     <PropertyGroup>
         <Description>RxBim Testing Library</Description>
-        <PackageId>RxBim.Di.Testing.Revit</PackageId>
     </PropertyGroup>
 
 </Project>

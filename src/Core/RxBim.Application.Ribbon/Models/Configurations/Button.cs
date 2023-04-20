@@ -5,6 +5,8 @@
     /// </summary>
     public abstract class Button : IRibbonPanelItem
     {
+        private string? _helpUrl;
+
         /// <summary>
         /// The button name.
         /// </summary>
@@ -48,6 +50,10 @@
         /// <summary>
         /// The help url for the button.
         /// </summary>
-        public string? HelpUrl { get; set; }
+        public string? HelpUrl
+        {
+            get => _helpUrl;
+            set => _helpUrl = value.GetAbsoluteUrl();
+        }
     }
 }

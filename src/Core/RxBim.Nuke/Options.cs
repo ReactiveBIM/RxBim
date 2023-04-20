@@ -1,4 +1,4 @@
-﻿// ReSharper disable All
+// ReSharper disable All
 #pragma warning disable SA1600,1591
 namespace RxBim.Nuke
 {

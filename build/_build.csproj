@@ -1,58 +1,54 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <RootNamespace></RootNamespace>
-    <NoWarn>CS0649;CS0169;NU1701</NoWarn>
-    <LangVersion>latest</LangVersion>
-    <IsPackable>false</IsPackable>
-    <NukeTelemetryVersion>1</NukeTelemetryVersion>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <RootNamespace></RootNamespace>
+        <NoWarn>CS0649;CS0169;NU1701</NoWarn>
+        <LangVersion>latest</LangVersion>
+        <IsPackable>false</IsPackable>
+        <NukeTelemetryVersion>1</NukeTelemetryVersion>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BimLab.Nuke" Version="2022.2.0" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.4.0-dev001" />
-    <PackageReference Include="NuGet.CommandLine" Version="6.4.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="6.1.2" />
-    <PackageReference Include="RazorLight" Version="2.0.0" />
-    <PackageReference Include="RevitTestFramework" Version="1.19.23">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NuGet.CommandLine" Version="6.4.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
-    <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
-    <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+    <ItemGroup>
+        <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
+        <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
+        <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+        <!-- Common build related files -->
 
-    <!-- Common build related files -->
-    <None Include="..\build.ps1" />
-    <None Include="..\build.sh" />
+        <None Include="..\.nuke" LinkBase="config" />
+        
+        <None Include="..\build.sh" LinkBase="scripts" />
+        <None Include="..\build.ps1" LinkBase="scripts" />
 
-    <None Include="..\.nuke" LinkBase="config" />
-    <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
-    <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
+        <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
+        <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
 
-    <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
-    <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
-    <None Include="..\azure-pipelines.yml" LinkBase="ci" Condition="Exists('..\azure-pipelines.yml')" />
-    <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
-    <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
-    <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
-  </ItemGroup>
+        <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
+        <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
+        <None Include="..\azure-pipelines.yml" LinkBase="ci" Condition="Exists('..\azure-pipelines.yml')" />
+        <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
+        <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
+        <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\src\Revit\RxBim.Nuke.Revit\RxBim.Nuke.Revit.csproj" />
-    <ProjectReference Include="..\src\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\src\Core\RxBim.Nuke.Versions\RxBim.Nuke.Versions.csproj" />
+        <ProjectReference Include="..\src\Revit\RxBim.Nuke.Revit\RxBim.Nuke.Revit.csproj" />
+        <ProjectReference Include="..\src\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
+        <ProjectReference Include="..\src\Core\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
 
 </Project>

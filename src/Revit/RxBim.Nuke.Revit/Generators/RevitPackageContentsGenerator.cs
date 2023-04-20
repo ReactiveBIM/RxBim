@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Nuke.Revit.Generators
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using global::Nuke.Common.ProjectModel;
     using Models;
+    using Nuke.Extensions;
+    using Nuke.Generators;
     using Nuke.Models;
-    using RxBim.Nuke.Generators;
 
     /// <summary>
     /// Generates PackageContents.xml file for Revit plugin.
@@ -15,9 +16,9 @@
         /// <inheritdoc/>
         protected override IEnumerable<Components> GetComponents(Project project, IEnumerable<string> assembliesNames)
         {
-            var revitVersions = Enumerable.Range(2017, 4);
-            return revitVersions
-                .Select(revitVersion => new RevitComponents
+            if (project.TryGetAppVersionNumber(out var revitVersion))
+            {
+                yield return new RevitComponents
                 {
                     Description = $"Revit {revitVersion} part",
                     Platform = "Revit",
@@ -25,7 +26,13 @@
                     OS = "Win64",
                     SeriesMax = $"R{revitVersion}",
                     SeriesMin = $"R{revitVersion}",
-                });
+                };
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Revit version number not found for project: {project.Name}");
+            }
         }
     }
 }
