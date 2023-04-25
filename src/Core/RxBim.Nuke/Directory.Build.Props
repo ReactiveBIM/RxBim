@@ -1,6 +1,6 @@
 ﻿<Project>
     <PropertyGroup>
-        <Version>2.3.2-dev002</Version>
+        <Version>2.3.3-dev001</Version>
         <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
