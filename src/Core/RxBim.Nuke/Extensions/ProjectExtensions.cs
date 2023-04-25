@@ -6,6 +6,7 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Xml.Linq;
     using Builds;
     using Models;
@@ -267,8 +268,9 @@
         /// <returns>True if the version name is found. Otherwise, returns false.</returns>
         public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
         {
+            var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
-            var output = outputs.FirstOrDefault(x => x.Text.StartsWithAny("RxBim.Command.", "RxBim.Application."));
+            var output = outputs.FirstOrDefault(x => reg.IsMatch(x.Text));
             if (!string.IsNullOrEmpty(output.Text))
             {
                 var part = output.Text
