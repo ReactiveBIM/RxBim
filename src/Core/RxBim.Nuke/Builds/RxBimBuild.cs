@@ -142,7 +142,8 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion);
+                    TimestampRevisionVersion,
+                    VersionFromTag);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -168,7 +169,8 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion);
+                    TimestampRevisionVersion,
+                    VersionFromTag);
 
                 _builder.GenerateAdditionalFiles(
                     ProjectForInstallBuild.Name,
@@ -192,7 +194,8 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion);
+                    TimestampRevisionVersion,
+                    VersionFromTag);
 
                 _builder.GeneratePackageContentsFile(
                     ProjectForInstallBuild,
@@ -218,7 +221,8 @@
                 OutputTmpDir,
                 OutputTmpDirBin,
                 RxBimEnvironment,
-                TimestampRevisionVersion);
+                TimestampRevisionVersion,
+                VersionFromTag);
 
             DeleteDirectory(OutputTmpDir);
         }
@@ -229,7 +233,7 @@
         {
             var iss = TemporaryDirectory / "package.iss";
             var options = _builder.GetBuildMsiOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
+                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion, VersionFromTag);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder
@@ -285,18 +289,21 @@
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
         /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
+        /// <param name="versionFromTag">Adds version from last tag.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,
             string outputDir,
             string configuration,
             string environment,
-            bool timestampRevisionVersion)
+            bool timestampRevisionVersion,
+            bool versionFromTag)
         {
             return _types ??=
                 project.GetAssemblyTypes(
                     outputBinDir,
-                    _builder.GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion));
+                    _builder.GetBuildMsiOptions(
+                        project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag));
         }
     }
 }

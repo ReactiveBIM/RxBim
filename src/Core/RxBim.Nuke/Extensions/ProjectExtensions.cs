@@ -35,13 +35,15 @@
         /// <param name="configuration">Configuration.</param>
         /// <param name="environment">Environment variable.</param>
         /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
+        /// <param name="versionFromTag">Adds version from last tag.</param>
         public static Options GetSetupOptions(
             this Project project,
             string installDir,
             string sourceDir,
             string configuration,
             string environment,
-            bool timestampRevisionVersion)
+            bool timestampRevisionVersion,
+            bool versionFromTag)
         {
             var productVersion = project.GetProperty(nameof(Options.ProductVersion));
             if (string.IsNullOrWhiteSpace(productVersion)
@@ -57,9 +59,17 @@
             if (!string.IsNullOrWhiteSpace(productVersion))
                 outputFileName += $"_{productVersion}";
 
-            var version = project.GetProperty(nameof(Options.Version)) ??
+            string? version;
+            if (versionFromTag)
+            {
+                version = GetProjectVersionFromTag(project);
+            }
+            else
+            {
+                version = project.GetProperty(nameof(Options.Version)) ??
                           throw new ArgumentException(
                               $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
+            }
 
             if (timestampRevisionVersion && version.Split(".").Length <= 3)
             {
@@ -120,6 +130,36 @@
             {
                 throw new ApplicationException("Building MSI package failed!!!");
             }
+        }
+
+        /// <summary>
+        /// Gets project version from tag.
+        /// </summary>
+        /// <remarks>Tag should match pattern: (ProjectName);(ProjectVersion)</remarks>
+        /// <param name="project">Project.</param>
+        public static string GetProjectVersionFromTag(this Project project)
+        {
+            var lastTag = GitTasks.Git("tag --points-at HEAD")
+                .FirstOrDefault()
+                .Text;
+            if (string.IsNullOrWhiteSpace(lastTag))
+            {
+                throw new ArgumentException("Tag with project name and version doesn't exist!");
+            }
+
+            var projectName = lastTag.Split(";").FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(lastTag) || projectName != project.Name)
+            {
+                throw new ArgumentException("Tag should contain project name equals to selected project!");
+            }
+
+            var projectVersion = lastTag.Split(";").LastOrDefault();
+            if (string.IsNullOrWhiteSpace(projectVersion))
+            {
+                throw new ArgumentException("Tag should contain project version!");
+            }
+
+            return projectVersion;
         }
 
         /// <summary>
