@@ -108,7 +108,7 @@ namespace RxBim.Nuke.Builds
         /// Add timestamp revision version.
         /// </summary>
         [Parameter("Adds version from last tag")]
-        public bool VersionFromTag { get; set; }
+        public virtual bool VersionFromTag { get; set; }
 
         /// <summary>
         /// Solution.
