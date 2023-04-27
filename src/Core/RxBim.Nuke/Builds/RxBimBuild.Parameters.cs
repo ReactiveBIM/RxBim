@@ -105,6 +105,12 @@ namespace RxBim.Nuke.Builds
         }
 
         /// <summary>
+        /// Add project version from last tag.
+        /// </summary>
+        [Parameter("Adds project version from last tag")]
+        public virtual bool VersionFromTag { get; set; }
+
+        /// <summary>
         /// Solution.
         /// </summary>
         [Solution]
@@ -120,11 +126,6 @@ namespace RxBim.Nuke.Builds
         /// Output "bin" temp directory path.
         /// </summary>
         protected virtual string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
-
-        /// <summary>
-        /// Add project version from last tag.
-        /// </summary>
-        protected virtual bool VersionFromTag { get; set; }
 
         /// <summary>
         /// Selected project.
