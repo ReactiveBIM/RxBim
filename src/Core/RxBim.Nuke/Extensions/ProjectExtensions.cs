@@ -9,6 +9,7 @@
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
     using Builds;
+    using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
@@ -58,6 +59,12 @@
 
             if (!string.IsNullOrWhiteSpace(productVersion))
                 outputFileName += $"_{productVersion}";
+
+            if (timestampRevisionVersion && versionFromTag)
+            {
+                throw new ArgumentException(
+                    $"You should set to 'true' only one parameter between {nameof(timestampRevisionVersion)} and {nameof(versionFromTag)}!");
+            }
 
             string? version;
             if (versionFromTag)
@@ -137,10 +144,11 @@
         /// </summary>
         /// <remarks>Tag should match pattern: (ProjectName);(ProjectVersion)</remarks>
         /// <param name="project">Project.</param>
+        [UsedImplicitly]
         public static string GetProjectVersionFromTag(this Project project)
         {
             var lastTag = GitTasks.Git("tag --points-at HEAD")
-                .FirstOrDefault()
+                .FirstOrDefault(t => t.Text.StartsWith(project.Name))
                 .Text;
             if (string.IsNullOrWhiteSpace(lastTag))
             {
