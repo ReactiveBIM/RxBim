@@ -148,7 +148,7 @@
             }
 
             var projectName = lastTag.Split(";").FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(lastTag) || projectName != project.Name)
+            if (string.IsNullOrWhiteSpace(projectName) || projectName != project.Name)
             {
                 throw new ArgumentException("Tag should contain project name equals to selected project!");
             }
