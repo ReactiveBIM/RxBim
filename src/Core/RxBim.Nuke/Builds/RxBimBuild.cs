@@ -10,16 +10,13 @@
     using Extensions;
     using Generators;
     using Helpers;
-    using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tooling;
     using nc::Nuke.Common.Tools.DotNet;
     using nc::Nuke.Common.Tools.Git;
-    using nc::Nuke.Common.Tools.InnoSetup;
     using static Helpers.WixHelper;
     using static nc::Nuke.Common.IO.FileSystemTasks;
     using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -194,38 +191,19 @@
 
         private void BuildMsiInstaller(Project project, string configuration)
         {
-            var options = GetBuildOptions();
+            var options = GetBuildOptions(project, configuration);
             _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
             DeleteDirectory(OutputTmpDir);
         }
 
         private void BuildInnoInstaller(Project project, string configuration)
         {
-            var options = GetBuildOptions();
-            var iss = TemporaryDirectory / "package.iss";
+            var options = GetBuildOptions(project, configuration);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             _builder.BuildInno(ProjectForInstallBuild, TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
-            InnoBuilder
-                .Create(
-                    options,
-                    (AbsolutePath)OutputTmpDir,
-                    (AbsolutePath)OutputTmpDirBin,
-                    setupFileName)
-                .AddIcons()
-                .AddFonts()
-                .AddUninstallScript()
-                .AddRxBimEnvironment(RxBimEnvironment)
-                .Build(iss);
-
-            var outDir = project.Solution.Directory / "out";
-            InnoSetupTasks.InnoSetup(config => config
-                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
-                .SetScriptFile(iss)
-                .SetOutputDir(outDir));
-
             DeleteDirectory(OutputTmpDir);
-            SignSetupFile(outDir / $"{setupFileName}.exe");
+            SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
         }
 
         private void SignSetupFile(string filePath)
@@ -255,19 +233,17 @@
         /// </summary>
         private List<AssemblyType> GetAssemblyTypes()
         {
-            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin, GetBuildOptions());
+            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
+                GetBuildOptions(ProjectForInstallBuild, Configuration));
         }
 
-        /// <summary>
-        /// Gets build options.
-        /// </summary>
-        private Options GetBuildOptions()
+        private Options GetBuildOptions(Project project, string configuration)
         {
             var optionsBuilder = new TOptsBuilder();
             optionsBuilder
-                .AddDefaultSettings(ProjectForInstallBuild)
-                .AddDirectorySettings(_builder.GetInstallDir(ProjectForInstallBuild, Configuration), OutputTmpDir)
-                .AddProductVersion(ProjectForInstallBuild, Configuration)
+                .AddDefaultSettings(project)
+                .AddDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
+                .AddProductVersion(project, configuration)
                 .AddEnvironment(RxBimEnvironment);
 
             if (TimestampRevisionVersion && VersionFromTag)
@@ -277,9 +253,9 @@
             }
 
             if (VersionFromTag)
-                optionsBuilder.AddVersionFromTag(ProjectForInstallBuild);
+                optionsBuilder.AddVersionFromTag(project);
             else
-                optionsBuilder.AddVersion(ProjectForInstallBuild);
+                optionsBuilder.AddVersion(project);
 
             if (TimestampRevisionVersion)
                 optionsBuilder.AddTimestampRevisionVersion();

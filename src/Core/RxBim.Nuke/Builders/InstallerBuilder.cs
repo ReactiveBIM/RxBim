@@ -65,11 +65,10 @@
                 .AddRxBimEnvironment(options.Environment ?? string.Empty)
                 .Build(iss);
 
-            var outDir = project.Solution.Directory / "out";
             InnoSetupTasks.InnoSetup(config => config
                 .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
                 .SetScriptFile(iss)
-                .SetOutputDir(outDir));
+                .SetOutputDir(options.OutDir));
         }
 
         /// <summary>
