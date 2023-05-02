@@ -39,7 +39,7 @@
             if (!Directory.Exists(outputBinDir))
                 return;
 
-            var options = GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag);
+            var options = GetBuildOptions(project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag);
             const string toolPath = "rxbim.msi.builder";
 
             project.BuildMsiWithTool(toolPath, options);
@@ -54,7 +54,7 @@
         /// <param name="environment">Environment variable.</param>
         /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
         /// <param name="versionFromTag">Adds version from last tag.</param>
-        public Options GetBuildMsiOptions(
+        public Options GetBuildOptions(
             Project project,
             string outputDir,
             string configuration,

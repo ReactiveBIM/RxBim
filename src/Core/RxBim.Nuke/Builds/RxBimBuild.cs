@@ -232,7 +232,7 @@
             string configuration)
         {
             var iss = TemporaryDirectory / "package.iss";
-            var options = _builder.GetBuildMsiOptions(
+            var options = _builder.GetBuildOptions(
                 project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion, VersionFromTag);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
@@ -302,7 +302,7 @@
             return _types ??=
                 project.GetAssemblyTypes(
                     outputBinDir,
-                    _builder.GetBuildMsiOptions(
+                    _builder.GetBuildOptions(
                         project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag));
         }
     }
