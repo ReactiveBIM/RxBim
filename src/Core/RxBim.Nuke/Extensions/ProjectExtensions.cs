@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
-    using Builds;
     using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common.IO;
@@ -27,94 +26,6 @@
     /// </summary>
     public static class ProjectExtensions
     {
-        /// <summary>
-        /// Gets setup options.
-        /// </summary>
-        /// <param name="project">Project.</param>
-        /// <param name="installDir">Install directory.</param>
-        /// <param name="sourceDir">Source build directory.</param>
-        /// <param name="configuration">Configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        /// <param name="versionFromTag">Adds version from last tag.</param>
-        public static Options GetSetupOptions(
-            this Project project,
-            string installDir,
-            string sourceDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion,
-            bool versionFromTag)
-        {
-            var productVersion = project.GetProperty(nameof(Options.ProductVersion));
-            if (string.IsNullOrWhiteSpace(productVersion)
-                && configuration.Equals(Configuration.Release))
-            {
-                throw new ArgumentException(
-                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
-            }
-
-            var msiFilePrefix = project.GetProperty(nameof(Options.InstallFilePrefix));
-            var outputFileName = $"{msiFilePrefix}{project.Name}";
-
-            if (!string.IsNullOrWhiteSpace(productVersion))
-                outputFileName += $"_{productVersion}";
-
-            if (timestampRevisionVersion && versionFromTag)
-            {
-                throw new ArgumentException(
-                    $"You should set to 'true' only one parameter between {nameof(timestampRevisionVersion)} and {nameof(versionFromTag)}!");
-            }
-
-            string? version;
-            if (versionFromTag)
-            {
-                version = GetProjectVersionFromTag(project);
-            }
-            else
-            {
-                version = project.GetProperty(nameof(Options.Version)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
-            }
-
-            if (timestampRevisionVersion && version.Split(".").Length <= 3)
-            {
-                var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                version += $".{unixTimestamp}";
-            }
-
-            var options = new Options
-            {
-                Comments = project.GetProperty(nameof(Options.Comments)),
-                Description = project.GetProperty(nameof(Options.Description)),
-                Version = version,
-                ProductVersion = productVersion,
-                BundleDir = sourceDir,
-                InstallDir = installDir,
-                ManifestDir = sourceDir,
-                OutDir = project.Solution.Directory / "out",
-                PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!"),
-                UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!"),
-                ProjectName = project.Name,
-                ProductProjectName = outputFileName,
-                SourceDir = Path.Combine(sourceDir, "bin"),
-                OutFileName = outputFileName,
-                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
-                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
-                SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
-                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon)),
-                Environment = environment
-            };
-
-            return options;
-        }
-
         /// <summary>
         /// Builds Msi.
         /// </summary>
