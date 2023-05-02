@@ -12,7 +12,7 @@
     /// <content>
     /// Common build targets.
     /// </content>
-    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen>
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder>
     {
         /// <summary>
         /// Cleans bin/, obj/ directories in solution.

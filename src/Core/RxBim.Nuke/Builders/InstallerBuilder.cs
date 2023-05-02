@@ -3,47 +3,19 @@
     extern alias nc;
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using Extensions;
     using Generators;
+    using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common.ProjectModel;
 
     /// <summary>
     /// Builder for installer.
     /// </summary>
-    public class InstallerBuilder<T>
-        where T : PackageContentsGenerator, new()
+    public class InstallerBuilder<TPackGen, TOptsBuilder>
+        where TPackGen : PackageContentsGenerator, new()
+        where TOptsBuilder : OptionsBuilder, new()
     {
         private Options? _options;
-
-        /// <summary>
-        /// Builds MSI.
-        /// </summary>
-        /// <param name="project">Selected project.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        /// <param name="outputDir">Output directory path.</param>
-        /// <param name="outputBinDir">Output assemblies directory path.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        /// <param name="versionFromTag">Adds version from last tag.</param>
-        public void BuildMsi(
-            Project project,
-            string configuration,
-            string outputDir,
-            string outputBinDir,
-            string environment,
-            bool timestampRevisionVersion,
-            bool versionFromTag)
-        {
-            if (!Directory.Exists(outputBinDir))
-                return;
-
-            var options = GetBuildOptions(project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag);
-            const string toolPath = "rxbim.msi.builder";
-
-            project.BuildMsiWithTool(toolPath, options);
-        }
 
         /// <summary>
         /// Gets build MSI options.
@@ -53,23 +25,25 @@
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
         /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        /// <param name="versionFromTag">Adds version from last tag.</param>
         public Options GetBuildOptions(
             Project project,
             string outputDir,
             string configuration,
             string environment,
-            bool timestampRevisionVersion,
-            bool versionFromTag)
+            bool timestampRevisionVersion)
         {
-            return _options ??=
-                project.GetSetupOptions(
-                    GetInstallDir(project, configuration),
-                    outputDir,
-                    configuration,
-                    environment,
-                    timestampRevisionVersion,
-                    versionFromTag);
+            var optionsBuilder = new TOptsBuilder();
+            optionsBuilder
+                .AddDefaultSettings(project)
+                .AddDirectorySettings(GetInstallDir(project, configuration), outputDir)
+                .AddProductVersion(project, configuration)
+                .AddEnvironment(environment)
+                .AddVersion(project);
+
+            if (timestampRevisionVersion)
+                optionsBuilder.AddTimestampRevisionVersion();
+
+            return _options ??= optionsBuilder.Build(GetOptionsModification());
         }
 
         /// <summary>
@@ -103,7 +77,7 @@
             if (!NeedGeneratePackageContents(configuration))
                 return;
 
-            var packageContentsGenerator = new T();
+            var packageContentsGenerator = new TPackGen();
             packageContentsGenerator.Generate(project, outputDir, allAssembliesTypes);
         }
 
@@ -112,6 +86,12 @@
         /// </summary>
         /// <param name="configuration">Selected configuration.</param>
         protected virtual bool NeedGeneratePackageContents(string configuration) => true;
+
+        /// <summary>
+        /// Returns action for modification <see cref="Options"/>.
+        /// </summary>
+        [UsedImplicitly]
+        protected virtual Action<Options>? GetOptionsModification() => null;
 
         /// <summary>
         /// Gets Debug configuration install directory.

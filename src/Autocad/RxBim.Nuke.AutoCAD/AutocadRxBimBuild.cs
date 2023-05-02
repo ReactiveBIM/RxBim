@@ -6,9 +6,10 @@
 
     /// <inheritdoc />
     public class AutocadRxBimBuild : RxBimBuild<
-        InstallerBuilder<AutocadPackageContentsGenerator>,
+        InstallerBuilder<AutocadPackageContentsGenerator, OptionsBuilder>,
         AutocadPackageContentsGenerator,
-        ProjectPropertiesGenerator>
+        ProjectPropertiesGenerator,
+        OptionsBuilder>
     {
     }
 }

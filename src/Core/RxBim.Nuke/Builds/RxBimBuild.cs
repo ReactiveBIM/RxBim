@@ -29,11 +29,13 @@
     /// <typeparam name="TBuilder">WIX-builder.</typeparam>
     /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
     /// <typeparam name="TPropGen">Project properties generator.</typeparam>
+    /// <typeparam name="TOptsBuilder">Builder for <see cref="Options"/>.</typeparam>
     [PublicAPI]
-    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen> : NukeBuild
-        where TBuilder : InstallerBuilder<TPackGen>, new()
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder> : NukeBuild
+        where TBuilder : InstallerBuilder<TPackGen, TOptsBuilder>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()
+        where TOptsBuilder : OptionsBuilder, new()
     {
         /// <summary>
         /// ctor.
@@ -142,8 +144,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion,
-                    VersionFromTag);
+                    TimestampRevisionVersion);
 
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
@@ -169,8 +170,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion,
-                    VersionFromTag);
+                    TimestampRevisionVersion);
 
                 _builder.GenerateAdditionalFiles(
                     ProjectForInstallBuild.Name,
@@ -194,8 +194,7 @@
                     OutputTmpDir,
                     Configuration,
                     RxBimEnvironment,
-                    TimestampRevisionVersion,
-                    VersionFromTag);
+                    TimestampRevisionVersion);
 
                 _builder.GeneratePackageContentsFile(
                     ProjectForInstallBuild,
@@ -215,25 +214,22 @@
             Project project,
             string configuration)
         {
-            _builder.BuildMsi(
-                project,
-                configuration,
-                OutputTmpDir,
-                OutputTmpDirBin,
-                RxBimEnvironment,
-                TimestampRevisionVersion,
-                VersionFromTag);
+            if (!Directory.Exists(OutputTmpDirBin))
+                return;
 
+            var options = _builder.GetBuildOptions(
+                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
+            const string toolPath = "rxbim.msi.builder";
+
+            project.BuildMsiWithTool(toolPath, options);
             DeleteDirectory(OutputTmpDir);
         }
 
-        private void BuildInnoInstaller(
-            Project project,
-            string configuration)
+        private void BuildInnoInstaller(Project project, string configuration)
         {
             var iss = TemporaryDirectory / "package.iss";
             var options = _builder.GetBuildOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion, VersionFromTag);
+                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             InnoBuilder
@@ -289,21 +285,19 @@
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="environment">Environment variable.</param>
         /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        /// <param name="versionFromTag">Adds version from last tag.</param>
         private List<AssemblyType> GetAssemblyTypes(
             Project project,
             string outputBinDir,
             string outputDir,
             string configuration,
             string environment,
-            bool timestampRevisionVersion,
-            bool versionFromTag)
+            bool timestampRevisionVersion)
         {
             return _types ??=
                 project.GetAssemblyTypes(
                     outputBinDir,
                     _builder.GetBuildOptions(
-                        project, outputDir, configuration, environment, timestampRevisionVersion, versionFromTag));
+                        project, outputDir, configuration, environment, timestampRevisionVersion));
         }
     }
 }
