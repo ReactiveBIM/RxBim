@@ -9,7 +9,7 @@
     using Models;
 
     /// <inheritdoc />
-    public class RevitInstallerBuilder : InstallerBuilder<RevitPackageContentsGenerator, OptionsBuilder>
+    public class RevitInstallerBuilder : InstallerBuilder<RevitPackageContentsGenerator>
     {
         /// <inheritdoc />
         public override void GenerateAdditionalFiles(

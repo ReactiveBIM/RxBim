@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Nuke.Builds
 {
     extern alias nc;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -32,11 +33,13 @@
     /// <typeparam name="TOptsBuilder">Builder for <see cref="Options"/>.</typeparam>
     [PublicAPI]
     public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder> : NukeBuild
-        where TBuilder : InstallerBuilder<TPackGen, TOptsBuilder>, new()
+        where TBuilder : InstallerBuilder<TPackGen>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()
         where TOptsBuilder : OptionsBuilder, new()
     {
+        private Options? _options;
+
         /// <summary>
         /// ctor.
         /// </summary>
@@ -138,14 +141,7 @@
                 if (!CheckSignAvailable())
                     return;
 
-                var types = GetAssemblyTypes(
-                    ProjectForInstallBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
                     (AbsolutePath)Cert,
@@ -164,14 +160,7 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = GetAssemblyTypes(
-                    ProjectForInstallBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 _builder.GenerateAdditionalFiles(
                     ProjectForInstallBuild.Name,
                     Solution.AllProjects,
@@ -188,14 +177,7 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = GetAssemblyTypes(
-                    ProjectForInstallBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 _builder.GeneratePackageContentsFile(
                     ProjectForInstallBuild,
                     Configuration,
@@ -210,28 +192,20 @@
                 Directory.CreateDirectory(outDir!);
         }
 
-        private void BuildMsiInstaller(
-            Project project,
-            string configuration)
+        private void BuildMsiInstaller(Project project, string configuration)
         {
-            if (!Directory.Exists(OutputTmpDirBin))
-                return;
-
-            var options = _builder.GetBuildOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
-            const string toolPath = "rxbim.msi.builder";
-
-            project.BuildMsiWithTool(toolPath, options);
+            var options = GetBuildOptions();
+            _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
             DeleteDirectory(OutputTmpDir);
         }
 
         private void BuildInnoInstaller(Project project, string configuration)
         {
+            var options = GetBuildOptions();
             var iss = TemporaryDirectory / "package.iss";
-            var options = _builder.GetBuildOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
+            _builder.BuildInno(ProjectForInstallBuild, TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
             InnoBuilder
                 .Create(
                     options,
@@ -279,25 +253,38 @@
         /// <summary>
         /// Gets assembly types.
         /// </summary>
-        /// <param name="project">Selected Project.</param>
-        /// <param name="outputBinDir">Output assembly directory.</param>
-        /// <param name="outputDir">Output directory.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        private List<AssemblyType> GetAssemblyTypes(
-            Project project,
-            string outputBinDir,
-            string outputDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion)
+        private List<AssemblyType> GetAssemblyTypes()
         {
-            return _types ??=
-                project.GetAssemblyTypes(
-                    outputBinDir,
-                    _builder.GetBuildOptions(
-                        project, outputDir, configuration, environment, timestampRevisionVersion));
+            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin, GetBuildOptions());
+        }
+
+        /// <summary>
+        /// Gets build options.
+        /// </summary>
+        private Options GetBuildOptions()
+        {
+            var optionsBuilder = new TOptsBuilder();
+            optionsBuilder
+                .AddDefaultSettings(ProjectForInstallBuild)
+                .AddDirectorySettings(_builder.GetInstallDir(ProjectForInstallBuild, Configuration), OutputTmpDir)
+                .AddProductVersion(ProjectForInstallBuild, Configuration)
+                .AddEnvironment(RxBimEnvironment);
+
+            if (TimestampRevisionVersion && VersionFromTag)
+            {
+                throw new ArgumentException(
+                    $"You should set to 'true' only one parameter between {nameof(TimestampRevisionVersion)} and {nameof(VersionFromTag)}!");
+            }
+
+            if (VersionFromTag)
+                optionsBuilder.AddVersionFromTag(ProjectForInstallBuild);
+            else
+                optionsBuilder.AddVersion(ProjectForInstallBuild);
+
+            if (TimestampRevisionVersion)
+                optionsBuilder.AddTimestampRevisionVersion();
+
+            return _options ??= optionsBuilder.Build();
         }
     }
 }

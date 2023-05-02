@@ -5,6 +5,7 @@ extern alias nc;
 using System;
 using System.IO;
 using Builds;
+using Extensions;
 using JetBrains.Annotations;
 using nc::Nuke.Common.ProjectModel;
 
@@ -22,12 +23,16 @@ public class OptionsBuilder
     /// <summary>
     /// Builds <see cref="Options"/>.
     /// </summary>
-    /// <param name="optionsModifyAction">Action for options modification.</param>
-    public Options Build(Action<Options>? optionsModifyAction)
+    public Options Build()
     {
-        optionsModifyAction?.Invoke(Options);
+        GetOptionsModifyAction()?.Invoke(Options);
         return Options;
     }
+
+    /// <summary>
+    /// Returns action for <see cref="Options"/> modification.
+    /// </summary>
+    public virtual Action<Options>? GetOptionsModifyAction() => null;
 
     /// <summary>
     /// Adds default settings.
@@ -117,6 +122,16 @@ public class OptionsBuilder
                           throw new ArgumentException(
                               $"Project {project.Name} should contain '{nameof(Options.Version)}'" +
                               " property with valid version value!");
+        return this;
+    }
+
+    /// <summary>
+    /// Adds version from last tag.
+    /// </summary>
+    /// <param name="project">Selected Project.</param>
+    public virtual OptionsBuilder AddVersionFromTag(Project project)
+    {
+        Options.Version = project.GetProjectVersionFromTag();
         return this;
     }
 
