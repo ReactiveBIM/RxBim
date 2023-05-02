@@ -43,6 +43,7 @@
         protected RxBimBuild()
         {
             _builder = new TBuilder();
+            OptionsBuilder = new TOptsBuilder();
         }
 
         /// <summary>
@@ -182,6 +183,37 @@
                     OutputTmpDir);
             });
 
+        /// <summary>
+        /// Returns <see cref="Options"/>.
+        /// </summary>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Configuration.</param>
+        protected virtual Options GetBuildOptions(Project project, string configuration)
+        {
+            var optionsBuilder = new TOptsBuilder();
+            optionsBuilder
+                .AddDefaultSettings(project)
+                .AddDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
+                .AddProductVersion(project, configuration)
+                .AddEnvironment(RxBimEnvironment);
+
+            if (TimestampRevisionVersion && VersionFromTag)
+            {
+                throw new ArgumentException(
+                    $"You should set to 'true' only one parameter between {nameof(TimestampRevisionVersion)} and {nameof(VersionFromTag)}!");
+            }
+
+            if (VersionFromTag)
+                optionsBuilder.AddVersionFromTag(project);
+            else
+                optionsBuilder.AddVersion(project);
+
+            if (TimestampRevisionVersion)
+                optionsBuilder.AddTimestampRevisionVersion();
+
+            return _options ??= optionsBuilder.Build();
+        }
+
         private void CreateOutDirectory()
         {
             var outDir = Solution.Directory / "out";
@@ -235,32 +267,6 @@
         {
             return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
                 GetBuildOptions(ProjectForInstallBuild, Configuration));
-        }
-
-        private Options GetBuildOptions(Project project, string configuration)
-        {
-            var optionsBuilder = new TOptsBuilder();
-            optionsBuilder
-                .AddDefaultSettings(project)
-                .AddDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
-                .AddProductVersion(project, configuration)
-                .AddEnvironment(RxBimEnvironment);
-
-            if (TimestampRevisionVersion && VersionFromTag)
-            {
-                throw new ArgumentException(
-                    $"You should set to 'true' only one parameter between {nameof(TimestampRevisionVersion)} and {nameof(VersionFromTag)}!");
-            }
-
-            if (VersionFromTag)
-                optionsBuilder.AddVersionFromTag(project);
-            else
-                optionsBuilder.AddVersion(project);
-
-            if (TimestampRevisionVersion)
-                optionsBuilder.AddTimestampRevisionVersion();
-
-            return _options ??= optionsBuilder.Build();
         }
     }
 }
