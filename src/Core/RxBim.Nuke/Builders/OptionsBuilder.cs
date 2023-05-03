@@ -5,7 +5,6 @@ extern alias nc;
 using System;
 using System.IO;
 using Builds;
-using Extensions;
 using JetBrains.Annotations;
 using nc::Nuke.Common.ProjectModel;
 
@@ -122,16 +121,6 @@ public class OptionsBuilder
                           throw new ArgumentException(
                               $"Project {project.Name} should contain '{nameof(Options.Version)}'" +
                               " property with valid version value!");
-        return this;
-    }
-
-    /// <summary>
-    /// Adds version from last tag.
-    /// </summary>
-    /// <param name="project">Selected Project.</param>
-    public virtual OptionsBuilder AddVersionFromTag(Project project)
-    {
-        Options.Version = project.GetProjectVersionFromTag();
         return this;
     }
 

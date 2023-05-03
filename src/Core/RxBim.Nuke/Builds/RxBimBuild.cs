@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Nuke.Builds
 {
     extern alias nc;
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -35,8 +34,6 @@
         where TPropGen : ProjectPropertiesGenerator, new()
         where TOptsBuilder : OptionsBuilder, new()
     {
-        private Options? _options;
-
         /// <summary>
         /// ctor.
         /// </summary>
@@ -195,23 +192,13 @@
                 .AddDefaultSettings(project)
                 .AddDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
                 .AddProductVersion(project, configuration)
-                .AddEnvironment(RxBimEnvironment);
-
-            if (TimestampRevisionVersion && VersionFromTag)
-            {
-                throw new ArgumentException(
-                    $"You should set to 'true' only one parameter between {nameof(TimestampRevisionVersion)} and {nameof(VersionFromTag)}!");
-            }
-
-            if (VersionFromTag)
-                optionsBuilder.AddVersionFromTag(project);
-            else
-                optionsBuilder.AddVersion(project);
+                .AddEnvironment(RxBimEnvironment)
+                .AddVersion(project);
 
             if (TimestampRevisionVersion)
                 optionsBuilder.AddTimestampRevisionVersion();
 
-            return _options ??= optionsBuilder.Build();
+            return optionsBuilder.Build();
         }
 
         private void CreateOutDirectory()

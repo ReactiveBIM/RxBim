@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
-    using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
@@ -48,37 +47,6 @@
             {
                 throw new ApplicationException("Building MSI package failed!!!");
             }
-        }
-
-        /// <summary>
-        /// Gets project version from tag.
-        /// </summary>
-        /// <remarks>Tag should match pattern: (ProjectName);(ProjectVersion)</remarks>
-        /// <param name="project">Project.</param>
-        [UsedImplicitly]
-        public static string GetProjectVersionFromTag(this Project project)
-        {
-            var lastTag = GitTasks.Git("tag --points-at HEAD")
-                .FirstOrDefault(t => t.Text.StartsWith(project.Name))
-                .Text;
-            if (string.IsNullOrWhiteSpace(lastTag))
-            {
-                throw new ArgumentException("Tag with project name and version doesn't exist!");
-            }
-
-            var projectName = lastTag.Split(";").FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(projectName) || projectName != project.Name)
-            {
-                throw new ArgumentException("Tag should contain project name equals to selected project!");
-            }
-
-            var projectVersion = lastTag.Split(";").LastOrDefault();
-            if (string.IsNullOrWhiteSpace(projectVersion))
-            {
-                throw new ArgumentException("Tag should contain project version!");
-            }
-
-            return projectVersion;
         }
 
         /// <summary>

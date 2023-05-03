@@ -105,12 +105,6 @@ namespace RxBim.Nuke.Builds
         }
 
         /// <summary>
-        /// Add project version from last tag.
-        /// </summary>
-        [Parameter("Adds project version from last tag")]
-        public virtual bool VersionFromTag { get; set; }
-
-        /// <summary>
         /// Solution.
         /// </summary>
         [Solution]
