@@ -220,7 +220,7 @@
             var options = GetBuildOptions(project, configuration);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
-            _builder.BuildInno(ProjectForInstallBuild, TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
+            _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
             DeleteDirectory(OutputTmpDir);
             SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
         }

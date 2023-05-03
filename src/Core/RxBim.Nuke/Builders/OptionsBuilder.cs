@@ -98,6 +98,7 @@ public class OptionsBuilder
 
         Options.ProductVersion = productVersion;
         Options.OutFileName = outputFileName;
+        Options.ProductProjectName = outputFileName;
         return this;
     }
 

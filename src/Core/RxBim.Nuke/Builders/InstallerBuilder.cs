@@ -38,13 +38,11 @@
         /// <summary>
         /// Builds inno exe.
         /// </summary>
-        /// <param name="project">Selected project.</param>
         /// <param name="temporaryDirectory">Temp directory.</param>
         /// <param name="outputDir">Output directory.</param>
         /// <param name="outputBinDir">Output assembly directory.</param>
         /// <param name="options">Options.</param>
         public void BuildInno(
-            Project project,
             AbsolutePath temporaryDirectory,
             string outputDir,
             string outputBinDir,
