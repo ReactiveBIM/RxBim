@@ -68,7 +68,12 @@
                 var doc = di.Container.GetService<Document>();
                 foreach (var id in commandResult.ElementIds)
                 {
-                    var element = doc.GetElement(new ElementId(id));
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
+                    var elementId = new ElementId((int)id);
+#else
+                    var elementId = new ElementId(id);
+#endif
+                    var element = doc.GetElement(elementId);
                     elements.Insert(element);
                 }
             }
