@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Shared
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Specifies the result of a plugin.
@@ -26,17 +25,6 @@
         {
             Message = message;
             ElementIds = elementIds;
-        }
-
-        /// <summary>
-        /// ctor.
-        /// </summary>
-        /// <param name="message">A message.</param>
-        /// <param name="elementIds">An element ids.</param>
-        public PluginResult(string message, List<int> elementIds)
-        {
-            Message = message;
-            ElementIds = elementIds.Select(x => (long)x).ToList();
         }
 
         private PluginResult(Result result)
@@ -68,11 +56,6 @@
         /// Element ids.
         /// </summary>
         public List<long> ElementIds { get; set; } = new();
-
-        /// <summary>
-        /// Old element ids.
-        /// </summary>
-        public List<int> OldElementIds => ElementIds.Select(x => (int)x).ToList();
 
         /// <summary>
         /// The result.
