@@ -33,7 +33,7 @@ public class OptionsBuilder
         var resultOptions = new Options();
         while (OptionsModifyQueue.Any())
         {
-            OptionsModifyQueue.Dequeue()?.Invoke(resultOptions);
+            OptionsModifyQueue.Dequeue().Invoke(resultOptions);
         }
 
         return resultOptions;
