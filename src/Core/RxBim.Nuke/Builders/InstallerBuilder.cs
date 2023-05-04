@@ -128,12 +128,6 @@
         protected virtual bool NeedGeneratePackageContents(string configuration) => true;
 
         /// <summary>
-        /// Returns action for modification <see cref="Options"/>.
-        /// </summary>
-        [UsedImplicitly]
-        protected virtual Action<Options>? GetOptionsModification() => null;
-
-        /// <summary>
         /// Gets Debug configuration install directory.
         /// </summary>
         /// <param name="project">Selected project.</param>
