@@ -40,7 +40,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds default settings.
+    /// Sets default settings.
     /// </summary>
     /// <param name="project">Selected Project.</param>
     public virtual OptionsBuilder SetDefaultSettings(Project project)
@@ -68,7 +68,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds directory settings.
+    /// Sets directory settings.
     /// </summary>
     /// <param name="installDirectory">Install directory.</param>
     /// <param name="sourceDirectory">Source build directory.</param>
@@ -86,7 +86,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds product version.
+    /// Sets product version.
     /// </summary>
     /// <param name="project">Selected Project.</param>
     /// <param name="configuration">Configuration.</param>
@@ -117,7 +117,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds environment variable.
+    /// Sets environment variable.
     /// </summary>
     /// <param name="environment">Environment variable.</param>
     public virtual OptionsBuilder SetEnvironment(string environment)
@@ -131,7 +131,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds version.
+    /// Sets version.
     /// </summary>
     /// <param name="project">Selected Project.</param>
     public virtual OptionsBuilder SetVersion(Project project)
@@ -148,7 +148,7 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds timestamp revision version.
+    /// Sets timestamp revision version.
     /// </summary>
     public virtual OptionsBuilder SetTimestampRevisionVersion()
     {
