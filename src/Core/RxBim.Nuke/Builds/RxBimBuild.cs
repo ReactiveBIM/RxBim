@@ -189,14 +189,14 @@
         {
             var optionsBuilder = new TOptsBuilder();
             optionsBuilder
-                .AddDefaultSettings(project)
-                .AddDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
-                .AddProductVersion(project, configuration)
-                .AddEnvironment(RxBimEnvironment)
-                .AddVersion(project);
+                .SetDefaultSettings(project)
+                .SetDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
+                .SetProductVersion(project, configuration)
+                .SetEnvironment(RxBimEnvironment)
+                .SetVersion(project);
 
             if (TimestampRevisionVersion)
-                optionsBuilder.AddTimestampRevisionVersion();
+                optionsBuilder.SetTimestampRevisionVersion();
 
             return optionsBuilder.Build();
         }

@@ -3,7 +3,9 @@
 extern alias nc;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Builds;
 using JetBrains.Annotations;
 using nc::Nuke.Common.ProjectModel;
@@ -15,48 +17,52 @@ using nc::Nuke.Common.ProjectModel;
 public class OptionsBuilder
 {
     /// <summary>
-    /// <see cref="Options"/>.
+    /// Queue for <see cref="Options"/> modification.
     /// </summary>
-    protected Options Options { get; set; } = new();
+    protected Queue<Action<Options>> OptionsModifyQueue { get; set; } = new();
 
     /// <summary>
     /// Builds <see cref="Options"/>.
     /// </summary>
     public Options Build()
     {
-        GetOptionsModifyAction()?.Invoke(Options);
-        return Options;
-    }
+        var customModification = GetOptionsModifyAction();
+        if (customModification != null)
+            OptionsModifyQueue.Enqueue(customModification);
 
-    /// <summary>
-    /// Returns action for <see cref="Options"/> modification.
-    /// </summary>
-    public virtual Action<Options>? GetOptionsModifyAction() => null;
+        var resultOptions = new Options();
+        while (OptionsModifyQueue.Any())
+        {
+            OptionsModifyQueue.Dequeue()?.Invoke(resultOptions);
+        }
+
+        return resultOptions;
+    }
 
     /// <summary>
     /// Adds default settings.
     /// </summary>
     /// <param name="project">Selected Project.</param>
-    public virtual OptionsBuilder AddDefaultSettings(Project project)
+    public virtual OptionsBuilder SetDefaultSettings(Project project)
     {
-        Options = new Options
+        OptionsModifyQueue.Enqueue(opts =>
         {
-            Comments = project.GetProperty(nameof(Options.Comments)),
-            Description = project.GetProperty(nameof(Options.Description)),
-            OutDir = project.Solution.Directory / "out",
-            PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!"),
-            UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!"),
-            ProjectName = project.Name,
-            AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
-            ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
-            SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
-            UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon))
-        };
+            opts.Comments = project.GetProperty(nameof(Options.Comments));
+            opts.Description = project.GetProperty(nameof(Options.Description));
+            opts.OutDir = project.Solution.Directory / "out";
+            opts.PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
+                               throw new ArgumentException(
+                                   $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!");
+            opts.UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
+                               throw new ArgumentException(
+                                   $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!");
+            opts.ProjectName = project.Name;
+            opts.AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest)));
+            opts.ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
+                ?.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            opts.SetupIcon = project.GetProperty(nameof(Options.SetupIcon));
+            opts.UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon));
+        });
 
         return this;
     }
@@ -66,12 +72,16 @@ public class OptionsBuilder
     /// </summary>
     /// <param name="installDirectory">Install directory.</param>
     /// <param name="sourceDirectory">Source build directory.</param>
-    public virtual OptionsBuilder AddDirectorySettings(string installDirectory, string sourceDirectory)
+    public virtual OptionsBuilder SetDirectorySettings(string installDirectory, string sourceDirectory)
     {
-        Options.InstallDir = installDirectory;
-        Options.BundleDir = sourceDirectory;
-        Options.ManifestDir = sourceDirectory;
-        Options.SourceDir = Path.Combine(sourceDirectory, "bin");
+        OptionsModifyQueue.Enqueue(opts =>
+        {
+            opts.InstallDir = installDirectory;
+            opts.BundleDir = sourceDirectory;
+            opts.ManifestDir = sourceDirectory;
+            opts.SourceDir = Path.Combine(sourceDirectory, "bin");
+        });
+
         return this;
     }
 
@@ -80,7 +90,7 @@ public class OptionsBuilder
     /// </summary>
     /// <param name="project">Selected Project.</param>
     /// <param name="configuration">Configuration.</param>
-    public virtual OptionsBuilder AddProductVersion(Project project, string configuration)
+    public virtual OptionsBuilder SetProductVersion(Project project, string configuration)
     {
         var productVersion = project.GetProperty(nameof(Options.ProductVersion));
         if (string.IsNullOrWhiteSpace(productVersion)
@@ -96,9 +106,13 @@ public class OptionsBuilder
         if (!string.IsNullOrWhiteSpace(productVersion))
             outputFileName += $"_{productVersion}";
 
-        Options.ProductVersion = productVersion;
-        Options.OutFileName = outputFileName;
-        Options.ProductProjectName = outputFileName;
+        OptionsModifyQueue.Enqueue(opts =>
+        {
+            opts.ProductVersion = productVersion;
+            opts.OutFileName = outputFileName;
+            opts.ProductProjectName = outputFileName;
+        });
+
         return this;
     }
 
@@ -106,9 +120,13 @@ public class OptionsBuilder
     /// Adds environment variable.
     /// </summary>
     /// <param name="environment">Environment variable.</param>
-    public virtual OptionsBuilder AddEnvironment(string environment)
+    public virtual OptionsBuilder SetEnvironment(string environment)
     {
-        Options.Environment = environment;
+        OptionsModifyQueue.Enqueue(opts =>
+        {
+            opts.Environment = environment;
+        });
+
         return this;
     }
 
@@ -116,26 +134,38 @@ public class OptionsBuilder
     /// Adds version.
     /// </summary>
     /// <param name="project">Selected Project.</param>
-    public virtual OptionsBuilder AddVersion(Project project)
+    public virtual OptionsBuilder SetVersion(Project project)
     {
-        Options.Version = project.GetProperty(nameof(Options.Version)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.Version)}'" +
-                              " property with valid version value!");
+        OptionsModifyQueue.Enqueue(opts =>
+        {
+            opts.Version = project.GetProperty(nameof(Options.Version)) ??
+                           throw new ArgumentException(
+                               $"Project {project.Name} should contain '{nameof(Options.Version)}'" +
+                               " property with valid version value!");
+        });
+
         return this;
     }
 
     /// <summary>
     /// Adds timestamp revision version.
     /// </summary>
-    public virtual OptionsBuilder AddTimestampRevisionVersion()
+    public virtual OptionsBuilder SetTimestampRevisionVersion()
     {
-        if (Options.Version != null && Options.Version.Split(".").Length <= 3)
+        OptionsModifyQueue.Enqueue(opts =>
         {
-            var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            Options.Version += $".{unixTimestamp}";
-        }
+            if (opts.Version != null && opts.Version.Split(".").Length <= 3)
+            {
+                var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                opts.Version += $".{unixTimestamp}";
+            }
+        });
 
         return this;
     }
+
+    /// <summary>
+    /// Returns action for <see cref="Options"/> modification.
+    /// </summary>
+    protected virtual Action<Options>? GetOptionsModifyAction() => null;
 }
