@@ -7,7 +7,6 @@
     using Extensions;
     using Generators;
     using InnoSetup.ScriptBuilder;
-    using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
