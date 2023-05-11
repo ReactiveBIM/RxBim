@@ -9,16 +9,13 @@
     using Extensions;
     using Generators;
     using Helpers;
-    using InnoSetup.ScriptBuilder;
     using JetBrains.Annotations;
     using Models;
     using nc::Nuke.Common;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tooling;
     using nc::Nuke.Common.Tools.DotNet;
     using nc::Nuke.Common.Tools.Git;
-    using nc::Nuke.Common.Tools.InnoSetup;
     using static Helpers.WixHelper;
     using static nc::Nuke.Common.IO.FileSystemTasks;
     using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -29,11 +26,13 @@
     /// <typeparam name="TBuilder">WIX-builder.</typeparam>
     /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
     /// <typeparam name="TPropGen">Project properties generator.</typeparam>
+    /// <typeparam name="TOptsBuilder">Builder for <see cref="Options"/>.</typeparam>
     [PublicAPI]
-    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen> : NukeBuild
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder> : NukeBuild
         where TBuilder : InstallerBuilder<TPackGen>, new()
         where TPackGen : PackageContentsGenerator, new()
         where TPropGen : ProjectPropertiesGenerator, new()
+        where TOptsBuilder : OptionsBuilder, new()
     {
         /// <summary>
         /// ctor.
@@ -41,6 +40,7 @@
         protected RxBimBuild()
         {
             _builder = new TBuilder();
+            OptionsBuilder = new TOptsBuilder();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildMsiInstaller(ProjectForMsiBuild, Configuration);
+                BuildMsiInstaller(ProjectForInstallBuild, Configuration);
             });
 
         /// <summary>
@@ -71,7 +71,7 @@
             .Executes(() =>
             {
                 CreateOutDirectory();
-                BuildInnoInstaller(ProjectForMsiBuild, Configuration);
+                BuildInnoInstaller(ProjectForInstallBuild, Configuration);
             });
 
         /// <summary>
@@ -116,7 +116,7 @@
         public Target GenerateProjectProps => _ => _
             .Requires(() => Project)
             .Requires(() => Configuration)
-            .Executes(() => new TPropGen().GenerateProperties(ProjectForMsiBuild, Configuration));
+            .Executes(() => new TPropGen().GenerateProperties(ProjectForInstallBuild, Configuration));
 
         /// <summary>
         /// Installs WixSharp.
@@ -136,14 +136,7 @@
                 if (!CheckSignAvailable())
                     return;
 
-                var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 types.SignAssemblies(
                     (AbsolutePath)OutputTmpDirBin,
                     (AbsolutePath)Cert,
@@ -162,16 +155,9 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 _builder.GenerateAdditionalFiles(
-                    ProjectForMsiBuild.Name,
+                    ProjectForInstallBuild.Name,
                     Solution.AllProjects,
                     types,
                     OutputTmpDir);
@@ -186,20 +172,34 @@
             .DependsOn(CompileToTemp)
             .Executes(() =>
             {
-                var types = GetAssemblyTypes(
-                    ProjectForMsiBuild,
-                    OutputTmpDirBin,
-                    OutputTmpDir,
-                    Configuration,
-                    RxBimEnvironment,
-                    TimestampRevisionVersion);
-
+                var types = GetAssemblyTypes();
                 _builder.GeneratePackageContentsFile(
-                    ProjectForMsiBuild,
+                    ProjectForInstallBuild,
                     Configuration,
                     types,
                     OutputTmpDir);
             });
+
+        /// <summary>
+        /// Returns <see cref="Options"/>.
+        /// </summary>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Configuration.</param>
+        protected virtual Options GetBuildOptions(Project project, string configuration)
+        {
+            var optionsBuilder = new TOptsBuilder();
+            optionsBuilder
+                .SetDefaultSettings(project)
+                .SetDirectorySettings(_builder.GetInstallDir(project, configuration), OutputTmpDir)
+                .SetProductVersion(project, configuration)
+                .SetEnvironment(RxBimEnvironment)
+                .SetVersion(project);
+
+            if (TimestampRevisionVersion)
+                optionsBuilder.SetTimestampRevisionVersion();
+
+            return optionsBuilder.Build();
+        }
 
         private void CreateOutDirectory()
         {
@@ -208,50 +208,21 @@
                 Directory.CreateDirectory(outDir!);
         }
 
-        private void BuildMsiInstaller(
-            Project project,
-            string configuration)
+        private void BuildMsiInstaller(Project project, string configuration)
         {
-            _builder.BuildMsi(
-                project,
-                configuration,
-                OutputTmpDir,
-                OutputTmpDirBin,
-                RxBimEnvironment,
-                TimestampRevisionVersion);
-
+            var options = GetBuildOptions(project, configuration);
+            _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
             DeleteDirectory(OutputTmpDir);
         }
 
-        private void BuildInnoInstaller(
-            Project project,
-            string configuration)
+        private void BuildInnoInstaller(Project project, string configuration)
         {
-            var iss = TemporaryDirectory / "package.iss";
-            var options = _builder.GetBuildMsiOptions(
-                project, OutputTmpDir, configuration, RxBimEnvironment, TimestampRevisionVersion);
+            var options = GetBuildOptions(project, configuration);
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
-            InnoBuilder
-                .Create(
-                    options,
-                    (AbsolutePath)OutputTmpDir,
-                    (AbsolutePath)OutputTmpDirBin,
-                    setupFileName)
-                .AddIcons()
-                .AddFonts()
-                .AddUninstallScript()
-                .AddRxBimEnvironment(RxBimEnvironment)
-                .Build(iss);
-
-            var outDir = project.Solution.Directory / "out";
-            InnoSetupTasks.InnoSetup(config => config
-                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
-                .SetScriptFile(iss)
-                .SetOutputDir(outDir));
-
+            _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
             DeleteDirectory(OutputTmpDir);
-            SignSetupFile(outDir / $"{setupFileName}.exe");
+            SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
         }
 
         private void SignSetupFile(string filePath)
@@ -279,24 +250,10 @@
         /// <summary>
         /// Gets assembly types.
         /// </summary>
-        /// <param name="project">Selected Project.</param>
-        /// <param name="outputBinDir">Output assembly directory.</param>
-        /// <param name="outputDir">Output directory.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        private List<AssemblyType> GetAssemblyTypes(
-            Project project,
-            string outputBinDir,
-            string outputDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion)
+        private List<AssemblyType> GetAssemblyTypes()
         {
-            return _types ??=
-                project.GetAssemblyTypes(
-                    outputBinDir,
-                    _builder.GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion));
+            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
+                GetBuildOptions(ProjectForInstallBuild, Configuration));
         }
     }
 }

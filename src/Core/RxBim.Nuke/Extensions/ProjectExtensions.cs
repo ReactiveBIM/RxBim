@@ -6,8 +6,8 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Xml.Linq;
-    using Builds;
     using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
@@ -25,78 +25,6 @@
     /// </summary>
     public static class ProjectExtensions
     {
-        /// <summary>
-        /// Gets setup options.
-        /// </summary>
-        /// <param name="project">Project.</param>
-        /// <param name="installDir">Install directory.</param>
-        /// <param name="sourceDir">Source build directory.</param>
-        /// <param name="configuration">Configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        public static Options GetSetupOptions(
-            this Project project,
-            string installDir,
-            string sourceDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion)
-        {
-            var productVersion = project.GetProperty(nameof(Options.ProductVersion));
-            if (string.IsNullOrWhiteSpace(productVersion)
-                && configuration.Equals(Configuration.Release))
-            {
-                throw new ArgumentException(
-                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
-            }
-
-            var msiFilePrefix = project.GetProperty(nameof(Options.InstallFilePrefix));
-            var outputFileName = $"{msiFilePrefix}{project.Name}";
-
-            if (!string.IsNullOrWhiteSpace(productVersion))
-                outputFileName += $"_{productVersion}";
-
-            var version = project.GetProperty(nameof(Options.Version)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
-
-            if (timestampRevisionVersion && version.Split(".").Length <= 3)
-            {
-                var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                version += $".{unixTimestamp}";
-            }
-
-            var options = new Options
-            {
-                Comments = project.GetProperty(nameof(Options.Comments)),
-                Description = project.GetProperty(nameof(Options.Description)),
-                Version = version,
-                ProductVersion = productVersion,
-                BundleDir = sourceDir,
-                InstallDir = installDir,
-                ManifestDir = sourceDir,
-                OutDir = project.Solution.Directory / "out",
-                PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!"),
-                UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!"),
-                ProjectName = project.Name,
-                ProductProjectName = outputFileName,
-                SourceDir = Path.Combine(sourceDir, "bin"),
-                OutFileName = outputFileName,
-                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
-                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
-                SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
-                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon)),
-                Environment = environment
-            };
-
-            return options;
-        }
-
         /// <summary>
         /// Builds Msi.
         /// </summary>
@@ -267,8 +195,9 @@
         /// <returns>True if the version name is found. Otherwise, returns false.</returns>
         public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
         {
+            var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
-            var output = outputs.FirstOrDefault(x => x.Text.StartsWithAny("RxBim.Command.", "RxBim.Application."));
+            var output = outputs.FirstOrDefault(x => reg.IsMatch(x.Text));
             if (!string.IsNullOrEmpty(output.Text))
             {
                 var part = output.Text

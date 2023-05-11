@@ -8,7 +8,8 @@
     public class AutocadRxBimBuild : RxBimBuild<
         InstallerBuilder<AutocadPackageContentsGenerator>,
         AutocadPackageContentsGenerator,
-        ProjectPropertiesGenerator>
+        ProjectPropertiesGenerator,
+        OptionsBuilder>
     {
     }
 }

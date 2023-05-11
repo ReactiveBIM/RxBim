@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
+    using Builders;
     using Builds;
     using Extensions;
     using Generators;
@@ -16,7 +17,7 @@
     /// <inheritdoc />
     [PublicAPI]
     public abstract class RevitRxBimBuild
-        : RxBimBuild<RevitInstallerBuilder, RevitPackageContentsGenerator, RevitProjectPropertiesGenerator>
+        : RxBimBuild<RevitInstallerBuilder, RevitPackageContentsGenerator, RevitProjectPropertiesGenerator, OptionsBuilder>
     {
         /// <summary>
         /// Revit Version.
