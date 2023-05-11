@@ -10,7 +10,8 @@ public partial class AppVersion
         new ApplicationVersion("2019"),
         new TargetFramework("net472"),
         new RuntimePackageReference("AutoCAD.NET", "23.0.0"),
-        new DefineConstants("ACAD2019"));
+        new RuntimePackageReference("Civil3D2019.Base", "1.0.0"),
+        new DefineConstants("ACAD2019;CIVIL2019"));
 
     public static AppVersion Civil2020 = new(
         "Autodesk Civil 2020",
@@ -19,7 +20,8 @@ public partial class AppVersion
         new ApplicationVersion("2020"),
         new TargetFramework("net472"),
         new RuntimePackageReference("AutoCAD.NET", "23.1.0"),
-        new DefineConstants("ACAD2020"));
+        new RuntimePackageReference("Civil3D2020.Base", "1.0.0"),
+        new DefineConstants("ACAD2020;CIVIL2020"));
 
     public static AppVersion Civil2021 = new(
         "Autodesk Civil 2021",
@@ -28,7 +30,8 @@ public partial class AppVersion
         new ApplicationVersion("2021"),
         new TargetFramework("net48"),
         new RuntimePackageReference("AutoCAD.NET", "24.0.0"),
-        new DefineConstants("ACAD2021"));
+        new RuntimePackageReference("Civil3D2021.Base", "1.0.0"),
+        new DefineConstants("ACAD2021;CIVIL2021"));
 
     public static AppVersion Civil2022 = new(
         "Autodesk Civil 2022",
@@ -37,7 +40,8 @@ public partial class AppVersion
         new ApplicationVersion("2022"),
         new TargetFramework("net48"),
         new RuntimePackageReference("AutoCAD.NET", "24.1.51000"),
-        new DefineConstants("ACAD2022"));
+        new RuntimePackageReference("Civil3D2022.Base", "1.0.0"),
+        new DefineConstants("ACAD2022;CIVIL2022"));
 
     public static AppVersion Civil2023 = new(
         "Autodesk Civil 2023",
@@ -46,5 +50,16 @@ public partial class AppVersion
         new ApplicationVersion("2023"),
         new TargetFramework("net48"),
         new RuntimePackageReference("AutoCAD.NET", "24.2.0"),
-        new DefineConstants("ACAD2023"));
+        new RuntimePackageReference("Civil3D2023.Base", "1.0.0"),
+        new DefineConstants("ACAD2023;CIVIL2023"));
+
+    public static AppVersion Civil2024 = new(
+        "Autodesk Civil 2024",
+        AppType.Civil,
+        new RuntimeVersion("24.3"),
+        new ApplicationVersion("2024"),
+        new TargetFramework("net48"),
+        new RuntimePackageReference("AutoCAD.NET", "24.3.0"),
+        new RuntimePackageReference("Civil3D2024.Base", "1.0.0"),
+        new DefineConstants("ACAD2024;CIVIL2024"));
 }

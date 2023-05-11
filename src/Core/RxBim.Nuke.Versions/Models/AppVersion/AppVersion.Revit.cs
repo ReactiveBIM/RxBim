@@ -43,5 +43,13 @@ namespace RxBim.Nuke.Versions
             new TargetFramework("net48"),
             new RuntimePackageReference("Revit_All_Main_Versions_API_x64", "2023.0.0"),
             new DefineConstants("RVT2023"));
+
+        public static AppVersion Revit2024 = new(
+            "Autodesk Revit 2024",
+            AppType.Revit,
+            new ApplicationVersion("2024"),
+            new TargetFramework("net48"),
+            new RuntimePackageReference("Revit_All_Main_Versions_API_x64", "2024.0.0"),
+            new DefineConstants("RVT2024"));
     }
 }
