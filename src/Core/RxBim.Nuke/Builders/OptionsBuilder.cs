@@ -26,10 +26,6 @@ public class OptionsBuilder
     /// </summary>
     public Options Build()
     {
-        var customModification = GetOptionsModifyAction();
-        if (customModification != null)
-            OptionsModifyQueue.Enqueue(customModification);
-
         var resultOptions = new Options();
         while (OptionsModifyQueue.Any())
         {
@@ -37,6 +33,15 @@ public class OptionsBuilder
         }
 
         return resultOptions;
+    }
+
+    /// <summary>
+    /// Adds action in <see cref="Options"/> build queue.
+    /// </summary>
+    /// <param name="optionsModification">Custom action for <see cref="Options"/> modification.</param>
+    public void AddOptionsModifyAction(Action<Options> optionsModification)
+    {
+        OptionsModifyQueue.Enqueue(optionsModification);
     }
 
     /// <summary>
@@ -163,9 +168,4 @@ public class OptionsBuilder
 
         return this;
     }
-
-    /// <summary>
-    /// Returns action for <see cref="Options"/> modification.
-    /// </summary>
-    protected virtual Action<Options>? GetOptionsModifyAction() => null;
 }
