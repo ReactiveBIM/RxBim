@@ -39,9 +39,10 @@ public class OptionsBuilder
     /// Adds action in <see cref="Options"/> build queue.
     /// </summary>
     /// <param name="optionsModification">Custom action for <see cref="Options"/> modification.</param>
-    public void AddOptionsModifyAction(Action<Options> optionsModification)
+    public OptionsBuilder AddOptionsModifyAction(Action<Options> optionsModification)
     {
         OptionsModifyQueue.Enqueue(optionsModification);
+        return this;
     }
 
     /// <summary>
