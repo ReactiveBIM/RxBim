@@ -9,6 +9,7 @@ using Nuke.Common.Execution;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using RxBim.Nuke.Revit.TestHelpers;
+using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [UnsetVisualStudioEnvironmentVariables]
@@ -110,4 +111,6 @@ partial class Build : NukeBuild
     T From<T>()
         where T : INukeBuild
         => (T)(object)this;
+
+    string IVersionBuild.ProjectNamePrefix => "RxBim.";
 }

@@ -41,21 +41,21 @@ namespace RxBim.Nuke.Versions
 
         VersionNumber VersionNumber { get; set; }
 
+        string ProjectNamePrefix => string.Empty;
+
         IEnumerable<string> IPublish.GetPackageFileNames(IEnumerable<string> tags)
         {
             var appVersion = string.IsNullOrEmpty(VersionNumber)
                 ? VersionNumber.GetAll().OrderBy(x => (string)x).First()
                 : VersionNumber;
 
-            const string projectNamePrefix = "RxBim.";
-
             var allPackagesNames = PackagesDirectory
-                .GlobFiles($"{projectNamePrefix}*.nupkg")
+                .GlobFiles($"{ProjectNamePrefix}*.nupkg")
                 .Select(x => x.NameWithoutExtension)
                 .ToList();
 
             var packNamePatterns = tags
-                .Where(x => x.StartsWith(projectNamePrefix) && IsCompatibleTag(x))
+                .Where(x => x.StartsWith(ProjectNamePrefix) && IsCompatibleTag(x))
                 .Select(x => GetPackageNamePattern(x, appVersion))
                 .ToList();
 
