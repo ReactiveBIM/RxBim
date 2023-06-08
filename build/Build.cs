@@ -9,6 +9,7 @@ using Nuke.Common.Execution;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using RxBim.Nuke.Revit.TestHelpers;
+using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [UnsetVisualStudioEnvironmentVariables]
@@ -64,8 +65,8 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             DotNetTest(settings => settings
-                .SetProjectFile(From<IHazSolution>().Solution.Path)
-                .SetConfiguration(From<IHazConfiguration>().Configuration)
+                .SetProjectFile(this.From<IHazSolution>().Solution.Path)
+                .SetConfiguration(this.From<IHazConfiguration>().Configuration)
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
 
@@ -77,9 +78,9 @@ partial class Build : NukeBuild
     Target IntegrationTests => _ => _
         .Executes(async () =>
         {
-            var solution = From<IHazSolution>().Solution;
+            var solution = this.From<IHazSolution>().Solution;
 
-            var testProjectName = "RxBim.Transactions.Revit.IntegrationsTests";
+            const string testProjectName = "RxBim.Transactions.Revit.IntegrationsTests";
             var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
                           throw new ArgumentException("project not found");
 
@@ -89,7 +90,7 @@ partial class Build : NukeBuild
                 .SetConfiguration(Configuration.Debug)
                 .SetOutputDirectory(outputDirectory));
 
-            var assemblyName = testProjectName + ".dll";
+            const string assemblyName = testProjectName + ".dll";
             var assemblyPath = outputDirectory / assemblyName;
 
             var results = outputDirectory / "result.xml";
@@ -107,7 +108,5 @@ partial class Build : NukeBuild
                 .Convert(results, resultPath);
         });
 
-    T From<T>()
-        where T : INukeBuild
-        => (T)(object)this;
+    string IVersionBuild.ProjectNamePrefix => "RxBim.";
 }
