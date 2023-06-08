@@ -6,61 +6,66 @@
     using System.IO;
     using Extensions;
     using Generators;
+    using InnoSetup.ScriptBuilder;
     using Models;
+    using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
+    using nc::Nuke.Common.Tooling;
+    using nc::Nuke.Common.Tools.InnoSetup;
 
     /// <summary>
     /// Builder for installer.
     /// </summary>
-    public class InstallerBuilder<T>
-        where T : PackageContentsGenerator, new()
+    public class InstallerBuilder<TPackGen>
+        where TPackGen : PackageContentsGenerator, new()
     {
-        private Options? _options;
-
         /// <summary>
         /// Builds MSI.
         /// </summary>
         /// <param name="project">Selected project.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        /// <param name="outputDir">Output directory path.</param>
         /// <param name="outputBinDir">Output assemblies directory path.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        public void BuildMsi(
-            Project project,
-            string configuration,
-            string outputDir,
-            string outputBinDir,
-            string environment,
-            bool timestampRevisionVersion)
+        /// <param name="options">Options.</param>
+        public void BuildMsi(Project project, string outputBinDir, Options options)
         {
             if (!Directory.Exists(outputBinDir))
                 return;
 
-            var options = GetBuildMsiOptions(project, outputDir, configuration, environment, timestampRevisionVersion);
             const string toolPath = "rxbim.msi.builder";
-
             project.BuildMsiWithTool(toolPath, options);
         }
 
         /// <summary>
-        /// Gets build MSI options.
+        /// Builds inno exe.
         /// </summary>
-        /// <param name="project">Selected Project.</param>
-        /// <param name="outputDir">Output directory path.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        public Options GetBuildMsiOptions(
-            Project project,
+        /// <param name="temporaryDirectory">Temp directory.</param>
+        /// <param name="outputDir">Output directory.</param>
+        /// <param name="outputBinDir">Output assembly directory.</param>
+        /// <param name="options">Options.</param>
+        public void BuildInno(
+            AbsolutePath temporaryDirectory,
             string outputDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion)
+            string outputBinDir,
+            Options options)
         {
-            return _options ??=
-                project.GetSetupOptions(
-                    GetInstallDir(project, configuration), outputDir, configuration, environment, timestampRevisionVersion);
+            var iss = temporaryDirectory / "package.iss";
+            var setupFileName = $"{options.OutFileName}_{options.Version}";
+
+            InnoBuilder
+                .Create(
+                    options,
+                    (AbsolutePath)outputDir,
+                    (AbsolutePath)outputBinDir,
+                    setupFileName)
+                .AddIcons()
+                .AddFonts()
+                .AddUninstallScript()
+                .AddRxBimEnvironment(options.Environment ?? string.Empty)
+                .Build(iss);
+
+            InnoSetupTasks.InnoSetup(config => config
+                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
+                .SetScriptFile(iss)
+                .SetOutputDir(options.OutDir));
         }
 
         /// <summary>
@@ -94,8 +99,25 @@
             if (!NeedGeneratePackageContents(configuration))
                 return;
 
-            var packageContentsGenerator = new T();
+            var packageContentsGenerator = new TPackGen();
             packageContentsGenerator.Generate(project, outputDir, allAssembliesTypes);
+        }
+
+        /// <summary>
+        /// Gets installation directory.
+        /// </summary>
+        /// <param name="project">Selected project.</param>
+        /// <param name="configuration">Selected configuration.</param>
+        public string GetInstallDir(
+            Project project,
+            string configuration)
+        {
+            return configuration switch
+            {
+                "Debug" => GetDebugInstallDir(project),
+                "Release" => GetReleaseInstallDir(project),
+                _ => throw new ArgumentException("Configuration not set!")
+            };
         }
 
         /// <summary>
@@ -111,23 +133,6 @@
         protected virtual string GetDebugInstallDir(Project project)
         {
             return GetReleaseInstallDir(project);
-        }
-
-        /// <summary>
-        /// Gets installation directory.
-        /// </summary>
-        /// <param name="project">Selected project.</param>
-        /// <param name="configuration">Selected configuration.</param>
-        private string GetInstallDir(
-            Project project,
-            string configuration)
-        {
-            return configuration switch
-            {
-                "Debug" => GetDebugInstallDir(project),
-                "Release" => GetReleaseInstallDir(project),
-                _ => throw new ArgumentException("Configuration not set!")
-            };
         }
 
         /// <summary>

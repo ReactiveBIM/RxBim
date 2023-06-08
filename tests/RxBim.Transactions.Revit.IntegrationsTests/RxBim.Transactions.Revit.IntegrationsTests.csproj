@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
         <NoWarn>CS1591</NoWarn>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))"/>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
@@ -27,7 +27,5 @@
         <ProjectReference Include="..\..\src\Revit\RxBim.Di.Testing.Revit\RxBim.Di.Testing.Revit.csproj" />
         <ProjectReference Include="..\..\src\Revit\RxBim.Transactions.Revit\RxBim.Transactions.Revit.csproj" />
     </ItemGroup>
-
-    <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
 
 </Project>

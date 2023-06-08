@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BimLab.Nuke" Version="2023.1.0-dev06" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Directory.Build.Props" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+</Project>

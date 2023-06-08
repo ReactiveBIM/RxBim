@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <Description>RxBim Command api Library for Civil</Description>
-        <PackageId>RxBim.Command.Civil</PackageId>
     </PropertyGroup>    
 
     <ItemGroup>

@@ -15,7 +15,7 @@ namespace RxBim.Nuke.Builds
     /// <content>
     /// Build-script extension for installer. Parameters.
     /// </content>
-    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen>
+    public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder>
     {
         private readonly TBuilder _builder;
         private string? _project;
@@ -121,6 +121,14 @@ namespace RxBim.Nuke.Builds
         /// </summary>
         protected virtual string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
 
-        private Project ProjectForMsiBuild => Solution.AllProjects.First(x => x.Name == _project);
+        /// <summary>
+        /// Selected project.
+        /// </summary>
+        protected virtual Project ProjectForInstallBuild => Solution.AllProjects.First(x => x.Name == Project);
+
+        /// <summary>
+        /// Builder for <see cref="Options"/>.
+        /// </summary>
+        protected TOptsBuilder OptionsBuilder { get; set; }
     }
 }

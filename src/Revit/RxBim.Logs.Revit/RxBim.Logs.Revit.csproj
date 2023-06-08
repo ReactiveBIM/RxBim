@@ -6,7 +6,6 @@
 
     <PropertyGroup>
         <Description>RxBim logs Library for Revit</Description>
-        <PackageId>RxBim.Logs.Revit</PackageId>
     </PropertyGroup>
 
 </Project>

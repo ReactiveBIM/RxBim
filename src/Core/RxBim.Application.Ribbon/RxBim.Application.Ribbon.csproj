@@ -3,14 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="BimLab.Revit.AdWindows.2019" Version="1.0.1" ExcludeAssets="runtime" />
-        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
-    </ItemGroup>
 
     <ItemGroup>
         <Reference Include="PresentationCore" />
@@ -19,14 +13,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim Application UI api Library</Description>
-        <PackageId>RxBim.Application.Ribbon</PackageId>
     </PropertyGroup>
 
 </Project>

@@ -39,7 +39,6 @@
     <None Remove="img\command_32.ico" />
     <EmbeddedResource Include="img\command_32.ico" />
   </ItemGroup>
-  <Import Project=".\RxBim.Build.Props" Condition="Exists('.\RxBim.Build.Props')" />
   <PropertyGroup>
     <PackageGuid>dd8e4558-cde8-431f-a621-4cb25304bfce</PackageGuid>
     <UpgradeCode>09f0658d-e4c2-4725-a50a-98b6dbd15fa9</UpgradeCode>

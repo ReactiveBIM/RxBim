@@ -2,7 +2,6 @@
     <PropertyGroup>
         <RootNamespace>RxBim.Di</RootNamespace>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
@@ -16,9 +15,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim DI Library</Description>
-        <PackageId>RxBim.Di.SimpleInjector</PackageId>
     </PropertyGroup>
 
 </Project>

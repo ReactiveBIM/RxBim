@@ -3,10 +3,11 @@
     extern alias nc;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Xml.Linq;
-    using Builds;
     using Models;
     using nc::Nuke.Common.IO;
     using nc::Nuke.Common.ProjectModel;
@@ -24,78 +25,6 @@
     /// </summary>
     public static class ProjectExtensions
     {
-        /// <summary>
-        /// Gets setup options.
-        /// </summary>
-        /// <param name="project">Project.</param>
-        /// <param name="installDir">Install directory.</param>
-        /// <param name="sourceDir">Source build directory.</param>
-        /// <param name="configuration">Configuration.</param>
-        /// <param name="environment">Environment variable.</param>
-        /// <param name="timestampRevisionVersion">Add timestamp revision version.</param>
-        public static Options GetSetupOptions(
-            this Project project,
-            string installDir,
-            string sourceDir,
-            string configuration,
-            string environment,
-            bool timestampRevisionVersion)
-        {
-            var productVersion = project.GetProperty(nameof(Options.ProductVersion));
-            if (string.IsNullOrWhiteSpace(productVersion)
-                && configuration.Equals(Configuration.Release))
-            {
-                throw new ArgumentException(
-                    $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
-            }
-
-            var msiFilePrefix = project.GetProperty(nameof(Options.InstallFilePrefix));
-            var outputFileName = $"{msiFilePrefix}{project.Name}";
-
-            if (!string.IsNullOrWhiteSpace(productVersion))
-                outputFileName += $"_{productVersion}";
-
-            var version = project.GetProperty(nameof(Options.Version)) ??
-                          throw new ArgumentException(
-                              $"Project {project.Name} should contain '{nameof(Options.Version)}' property with valid version value!");
-
-            if (timestampRevisionVersion && version.Split(".").Length <= 3)
-            {
-                var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                version += $".{unixTimestamp}";
-            }
-
-            var options = new Options
-            {
-                Comments = project.GetProperty(nameof(Options.Comments)),
-                Description = project.GetProperty(nameof(Options.Description)),
-                Version = version,
-                ProductVersion = productVersion,
-                BundleDir = sourceDir,
-                InstallDir = installDir,
-                ManifestDir = sourceDir,
-                OutDir = project.Solution.Directory / "out",
-                PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!"),
-                UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
-                              throw new ArgumentException(
-                                  $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!"),
-                ProjectName = project.Name,
-                ProductProjectName = outputFileName,
-                SourceDir = Path.Combine(sourceDir, "bin"),
-                OutFileName = outputFileName,
-                AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest))),
-                ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
-                    ?.Split(',', StringSplitOptions.RemoveEmptyEntries),
-                SetupIcon = project.GetProperty(nameof(Options.SetupIcon)),
-                UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon)),
-                Environment = environment
-            };
-
-            return options;
-        }
-
         /// <summary>
         /// Builds Msi.
         /// </summary>
@@ -142,19 +71,19 @@
         /// <param name="properties">Properties via <see cref="XElement"/> collection.</param>
         public static void AddPropertiesToProject(this Project project, IReadOnlyCollection<XElement> properties)
         {
-            if (properties.Any())
-            {
-                var projectXml = XElement.Load(project.Path);
+            if (!properties.Any())
+                return;
 
-                projectXml.Add(new XElement("PropertyGroup", properties));
-                projectXml.Save(project.Path);
+            var projectXml = XElement.Load(project.Path);
 
-                Log.Information("Properties {Properties} for {ProjectName} project added\"",
-                    properties.Select(x => x.Name.ToString()).ToList().JoinComma(),
-                    project.Name);
+            projectXml.Add(new XElement("PropertyGroup", properties));
+            projectXml.Save(project.Path);
 
-                project.CommitChanges();
-            }
+            Log.Information("Properties {Properties} for {ProjectName} project added\"",
+                properties.Select(x => x.Name.ToString()).ToList().JoinComma(),
+                project.Name);
+
+            project.CommitChanges();
         }
 
         /// <summary>
@@ -164,14 +93,10 @@
         public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
         {
             if (project.GetProperty(nameof(Options.PackageGuid)) == null)
-            {
                 yield return new XElement(nameof(Options.PackageGuid), Guid.NewGuid());
-            }
 
             if (project.GetProperty(nameof(Options.UpgradeCode)) == null)
-            {
                 yield return new XElement(nameof(Options.UpgradeCode), Guid.NewGuid());
-            }
         }
 
         /// <summary>
@@ -260,6 +185,34 @@
                 UpgradeCode = project.GetProperty("UpgradeCode"),
                 Components = components
             };
+        }
+
+        /// <summary>
+        /// Tries to get the major version name of the CAD application for plugin.
+        /// </summary>
+        /// <param name="project">The plugin project.</param>
+        /// <param name="versionNumber">The returned version name.</param>
+        /// <returns>True if the version name is found. Otherwise, returns false.</returns>
+        public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
+        {
+            var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
+            var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
+            var output = outputs.FirstOrDefault(x => reg.IsMatch(x.Text));
+            if (!string.IsNullOrEmpty(output.Text))
+            {
+                var part = output.Text
+                    .Split(' ', 4, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
+                var number = part.Split('-', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .First();
+                if (Version.TryParse(number, out var version))
+                {
+                    versionNumber = version.Major.ToString(CultureInfo.InvariantCulture);
+                    return true;
+                }
+            }
+
+            versionNumber = string.Empty;
+            return false;
         }
 
         /// <summary>

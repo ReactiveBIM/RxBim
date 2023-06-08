@@ -1,7 +1,8 @@
 <Project>
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Common.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
     
     <PropertyGroup>
-        <GlobalToolVersion>2.0.1</GlobalToolVersion>
+        <GlobalToolVersion>2.0.2</GlobalToolVersion>
+        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 </Project>
