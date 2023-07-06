@@ -215,7 +215,7 @@
                 var number = part
                     .Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     .Last();
-                if (!string.IsNullOrEmpty(number))
+                if (int.TryParse(number, out _))
                 {
                     versionNumber = number;
                     return true;
