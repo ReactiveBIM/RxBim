@@ -3,7 +3,6 @@
     extern alias nc;
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -197,16 +196,28 @@
         {
             var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
-            var output = outputs.FirstOrDefault(x => reg.IsMatch(x.Text));
-            if (!string.IsNullOrEmpty(output.Text))
+            
+            var outputStr = string.Empty;
+            foreach (var output in outputs)
             {
-                var part = output.Text
-                    .Split(' ', 4, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
-                var number = part.Split('-', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                    .First();
-                if (Version.TryParse(number, out var version))
+                var match = reg.Match(output.Text);
+                if (match.Success)
                 {
-                    versionNumber = version.Major.ToString(CultureInfo.InvariantCulture);
+                    outputStr = match.Groups.Values.FirstOrDefault()?.Value;
+                }
+            }
+            
+            if (!string.IsNullOrEmpty(outputStr))
+            {
+                var part = outputStr
+                    .Split(' ', 4, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .First();
+                var number = part
+                    .Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Last();
+                if (int.TryParse(number, out _))
+                {
+                    versionNumber = number;
                     return true;
                 }
             }
@@ -214,7 +225,7 @@
             versionNumber = string.Empty;
             return false;
         }
-
+        
         /// <summary>
         /// Commits changes to GIT.
         /// </summary>
