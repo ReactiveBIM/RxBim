@@ -3,6 +3,7 @@
     <PropertyGroup>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <UseWpf>true</UseWpf>
+        <Version>1.2.3.4</Version>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
