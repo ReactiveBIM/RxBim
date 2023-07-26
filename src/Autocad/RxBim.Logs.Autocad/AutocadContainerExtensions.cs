@@ -14,12 +14,12 @@
         /// Adds logger into a container.
         /// </summary>
         /// <param name="container">The DI container.</param>
-        /// <param name="cfg">The configuration.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
+        /// <param name="cfg">The configuration.</param>
         public static void AddLogs(
             this IContainer container,
-            IConfiguration? cfg = null,
-            Assembly? pluginAssembly = null)
+            Assembly? pluginAssembly = null,
+            IConfiguration? cfg = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
             container.AddLogs(cfg, (_, configuration) => EnrichWithAutocadData(configuration, pluginAssembly));
