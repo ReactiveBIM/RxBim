@@ -24,6 +24,7 @@ public abstract class PluginEnricher : ILogEventEnricher
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
         AddPluginVersion(logEvent, propertyFactory);
+        AddProperties(logEvent, propertyFactory);
     }
 
     /// <summary>
