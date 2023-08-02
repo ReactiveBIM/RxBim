@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Transactions.Extensions
 {
+    using System.Linq;
     using Abstractions;
     using Castle.DynamicProxy;
     using Di.Exceptions;
@@ -16,16 +17,7 @@
         /// <param name="services">The DI container.</param>
         public static IServiceCollection SetupProxy(this IServiceCollection services)
         {
-            if (services is ITransactionProxyProvider proxyProvider)
-            {
-                proxyProvider.SetupContainerForProxyGeneration();
-            }
-            else
-            {
-                throw new RegistrationException(
-                    "Current container configuration doesn't implement transaction proxy functionality!");
-            }
-
+            services.SetupContainerForProxyGeneration();
             return services.AddTransactionInterceptor();
         }
 
@@ -36,6 +28,12 @@
         private static IServiceCollection AddTransactionInterceptor(this IServiceCollection services)
         {
             return services.AddTransient<IInterceptor, TransactionInterceptor>();
+        }
+
+        private static void SetupContainerForProxyGeneration(this IServiceCollection services)
+        {
+            services.ExpressionBuilding += ContainerOnExpressionBuilding;
+            _container.ExpressionBuilt += ContainerOnExpressionBuilt;
         }
     }
 }
