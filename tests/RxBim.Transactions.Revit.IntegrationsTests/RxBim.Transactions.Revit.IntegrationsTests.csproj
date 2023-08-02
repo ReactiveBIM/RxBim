@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
         <ProjectReference Include="..\..\src\Revit\RxBim.Di.Testing.Revit\RxBim.Di.Testing.Revit.csproj" />
         <ProjectReference Include="..\..\src\Revit\RxBim.Transactions.Revit\RxBim.Transactions.Revit.csproj" />
     </ItemGroup>

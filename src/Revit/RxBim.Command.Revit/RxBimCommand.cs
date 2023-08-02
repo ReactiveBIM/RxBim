@@ -47,8 +47,8 @@
 
         private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
+            var methodCaller = di.Services.GetService<IMethodCaller<PluginResult>>();
+            var commandResult = methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
             return commandResult;
         }
 
@@ -65,7 +65,7 @@
 
             if (commandResult.ElementIds.Any())
             {
-                var doc = di.Container.GetService<Document>();
+                var doc = di.Services.GetService<Document>();
                 foreach (var id in commandResult.ElementIds)
                 {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023

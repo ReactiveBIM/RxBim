@@ -3,7 +3,6 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.DB;
-    using Di;
     using Di.Testing.Revit;
     using NUnit.Framework;
     using RTF.Applications;
@@ -20,7 +19,7 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
         {
             var testingDiConfigurator = new TestingDiConfigurator(RevitTestExecutive.CommandData);
             testingDiConfigurator.Configure(Assembly.GetExecutingAssembly());
-            _container = testingDiConfigurator.Container;
+            _container = testingDiConfigurator.Services;
         }
 
         [Test]

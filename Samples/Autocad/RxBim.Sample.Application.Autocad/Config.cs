@@ -3,13 +3,14 @@
     using Abstractions;
     using Di;
     using Logs.Autocad;
+    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
     {
         /// <inheritdoc/>
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection container)
         {
             container.AddTransient<IInfoService, InfoService>();
             container.AddAutocadLogs();

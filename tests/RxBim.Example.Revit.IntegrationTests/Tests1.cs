@@ -3,7 +3,6 @@ namespace RxBim.Example.Revit.IntegrationTests
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.DB;
-    using Di;
     using Di.Testing.Revit;
     using NUnit.Framework;
     using RTF.Applications;
@@ -31,7 +30,7 @@ namespace RxBim.Example.Revit.IntegrationTests
              if are using real configuration from the application.
              */
 
-            _container = testingDiConfigurator.Container;
+            _container = testingDiConfigurator.Services;
         }
 
         [Test]

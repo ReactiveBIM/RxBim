@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Di
 {
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// A DI container resolver abstraction.
     /// </summary>
@@ -9,6 +11,6 @@
         /// Resolves a container.
         /// </summary>
         /// <returns>The DI container.</returns>
-        IContainer Resolve();
+        IServiceCollection Resolve();
     }
 }
