@@ -1,9 +1,10 @@
 ﻿namespace RxBim.Logs.Revit
 {
+    using System;
     using System.Reflection;
     using Autodesk.Revit.UI;
-    using Di;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
     /// <summary>
@@ -14,27 +15,27 @@
         /// <summary>
         /// Adds logs into a DI container.
         /// </summary>
-        /// <param name="container">The DI container.</param>
+        /// <param name="services">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
         public static void AddRevitLogs(
-            this IContainer container,
+            this IServiceCollection services,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            container.AddLogs(cfg,
-                (container1, configuration) => EnrichWithRevitData(container1, configuration, pluginAssembly));
+            services.AddLogs(cfg,
+                (provider, configuration) => EnrichWithRevitData(provider, configuration, pluginAssembly));
         }
 
         private static void EnrichWithRevitData(
-            IContainer container,
+            IServiceProvider provider,
             LoggerConfiguration config,
             Assembly pluginAssembly)
         {
             try
             {
-                var uiApp = container.GetService<UIApplication>();
+                var uiApp = provider.GetRequiredService<UIApplication>();
                 config.Enrich.With(new RevitEnricher(uiApp, pluginAssembly));
             }
             catch

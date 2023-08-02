@@ -34,16 +34,16 @@
         private Assembly? CurrentDomainOnAssemblyResolve(object o, ResolveEventArgs args)
         {
             var dll = _dlls.FirstOrDefault(f => f.IsResolve(args.Name));
-            if (dll != null)
+            if (dll == null)
+                return null;
+
+            try
             {
-                try
-                {
-                    return dll.LoadAssembly();
-                }
-                catch
-                {
-                    // ignored
-                }
+                return dll.LoadAssembly();
+            }
+            catch
+            {
+                // ignored
             }
 
             return null;
@@ -51,10 +51,9 @@
 
         private IEnumerable<Dll> GetDlls(string dllFolder, SearchOption mode)
         {
-            foreach (var dllFile in Directory.EnumerateFiles(dllFolder, "*.dll", mode))
-            {
-                yield return new Dll(dllFile);
-            }
+            return Directory
+                .EnumerateFiles(dllFolder, "*.dll", mode)
+                .Select(dllFile => new Dll(dllFile));
         }
 
         private class Dll
@@ -65,9 +64,9 @@
                 DllName = Path.GetFileNameWithoutExtension(dllFile);
             }
 
-            public string DllFile { get; }
+            private string DllFile { get; }
 
-            public string DllName { get; }
+            private string DllName { get; }
 
             public bool IsResolve(string dllRequest)
             {

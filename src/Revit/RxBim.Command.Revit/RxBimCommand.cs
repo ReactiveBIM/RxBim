@@ -6,6 +6,7 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -47,8 +48,8 @@
 
         private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Services.GetService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
+            var methodCaller = di.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            var commandResult = methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
             return commandResult;
         }
 
@@ -63,19 +64,19 @@
                 message = commandResult.Message;
             }
 
-            if (commandResult.ElementIds.Any())
+            if (!commandResult.ElementIds.Any())
+                return;
+
+            var doc = di.Container.ServiceProvider.GetRequiredService<Document>();
+            foreach (var id in commandResult.ElementIds)
             {
-                var doc = di.Services.GetService<Document>();
-                foreach (var id in commandResult.ElementIds)
-                {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
-                    var elementId = new ElementId((int)id);
+                var elementId = new ElementId((int)id);
 #else
-                    var elementId = new ElementId(id);
+                var elementId = new ElementId(id);
 #endif
-                    var element = doc.GetElement(elementId);
-                    elements.Insert(element);
-                }
+                var element = doc.GetElement(elementId);
+                elements.Insert(element);
             }
         }
     }

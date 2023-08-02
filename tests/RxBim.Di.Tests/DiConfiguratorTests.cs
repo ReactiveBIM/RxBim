@@ -1,38 +1,39 @@
-﻿namespace RxBim.Di.Tests
+﻿namespace RxBim.Di.Tests;
+
+extern alias msdi;
+using System;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using TestDependencies;
+using TestObjects;
+using Xunit;
+
+public class DiConfiguratorTests
 {
-    using System;
-    using FluentAssertions;
-    using TestDependencies;
-    using TestObjects;
-    using Xunit;
-
-    public class DiConfiguratorTests
+    [Fact]
+    public void AllDependenciesShouldBeResolved()
     {
-        [Fact]
-        public void AllDependenciesShouldBeResolved()
+        var testDiConfigurator = new TestDiConfigurator();
+        testDiConfigurator.Configure(GetType().Assembly);
+        var act = () =>
         {
-            var testDiConfigurator = new TestDiConfigurator();
-            testDiConfigurator.Configure(GetType().Assembly);
-            Action act = () =>
-            {
-                testDiConfigurator.Services.GetService<IBaseService>();
-                testDiConfigurator.Services.GetService<IPluginService>();
-            };
-            act.Should().NotThrow();
-        }
+            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IBaseService>();
+            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IPluginService>();
+        };
+        act.Should().NotThrow();
+    }
 
-        [Fact]
-        public void AllDependenciesShouldBeInjected()
-        {
-            var testDiConfigurator = new TestDiConfigurator();
-            testDiConfigurator.Configure(GetType().Assembly);
-            var methodCaller = new MethodCaller<int>(new ObjectWithDependencies());
+    [Fact]
+    public void AllDependenciesShouldBeInjected()
+    {
+        var testDiConfigurator = new TestDiConfigurator();
+        testDiConfigurator.Configure(GetType().Assembly);
+        var methodCaller = new MethodCaller<int>(new ObjectWithDependencies());
 
-            int result = 0;
-            Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Services, "Execute");
+        var result = 0;
+        Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Container, "Execute");
 
-            act.Should().NotThrow();
-            result.Should().Be(100);
-        }
+        act.Should().NotThrow();
+        result.Should().Be(100);
     }
 }

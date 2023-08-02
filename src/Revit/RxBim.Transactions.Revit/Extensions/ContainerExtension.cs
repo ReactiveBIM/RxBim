@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Transactions.Revit.Extensions
 {
     using Abstractions;
-    using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Transactions.Extensions;
 
     /// <summary>
@@ -12,10 +12,10 @@
         /// <summary>
         /// Adds transaction factory in DI container
         /// </summary>
-        /// <param name="container">DI container</param>
-        public static IContainer AddTransactions(this IContainer container)
+        /// <param name="services">DI container</param>
+        public static IServiceCollection AddTransactions(this IServiceCollection services)
         {
-            return container
+            return services
                 .SetupProxy()
                 .AddTransient<ITransactionFactory, RevitTransactionFactory>();
         }
