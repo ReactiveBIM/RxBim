@@ -3,6 +3,8 @@
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
+    using Di.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -36,7 +38,7 @@
             base.Configure(assembly);
 
             Services
-                .AddTransient(() => new AssemblyResolver(assembly))
+                .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
         }
 
@@ -47,9 +49,9 @@
                 .AddInstance(_uiControlledApp)
                 .AddInstance(_uiApp)
                 .AddInstance(_uiApp.Application)
-                .AddTransient(() => _uiApp.ActiveUIDocument)
-                .AddTransient(() => _uiApp.ActiveUIDocument?.Document!)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
+                .AddTransient(_ => _uiApp.ActiveUIDocument)
+                .AddTransient(_ => _uiApp.ActiveUIDocument?.Document!)
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

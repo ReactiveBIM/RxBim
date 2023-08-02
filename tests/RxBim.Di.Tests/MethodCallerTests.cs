@@ -1,53 +1,49 @@
 namespace RxBim.Di.Tests
 {
+    extern alias msdi;
     using System;
-    using System.Collections.Generic;
     using FluentAssertions;
     using Shared;
     using TestObjects;
     using Xunit;
+    using msdi::Microsoft.Extensions.DependencyInjection;
 
     public class MethodCallerTests
     {
-        public static IEnumerable<object[]> GetContainers()
-        {
-            yield return new object[] { new SimpleInjectorContainer() };
-            yield return new object[] { new ServiceProviderContainer() };
-        }
-
-        [Theory]
-        [MemberData(nameof(GetContainers))]
-        public void CallerShouldThrowExceptionOnBadMethodName(IContainer container)
+        [Fact]
+        public void CallerShouldThrowExceptionOnBadMethodName()
         {
             var badObject = new BadMethodNameObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeMethod(container, "Execute");
+            var services = new ServiceCollection();
+            Action act = () => methodCaller.InvokeMethod(services, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
 
-        [Theory]
-        [MemberData(nameof(GetContainers))]
-        public void CallerShouldThrowExceptionOnBadReturnType(IContainer container)
+        [Fact]
+        public void CallerShouldThrowExceptionOnBadReturnType()
         {
             var badObject = new BadReturnTypeObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            Action act = () => methodCaller.InvokeMethod(container, "Execute");
+            
+            var services = new ServiceCollection();
+            Action act = () => methodCaller.InvokeMethod(services, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
 
-        [Theory]
-        [MemberData(nameof(GetContainers))]
-        public void CallerShouldReturnCorrectData(IContainer container)
+        [Fact]
+        public void CallerShouldReturnCorrectData()
         {
             var testObject = new TestObject();
 
             var methodCaller = new MethodCaller<int>(testObject);
-            int result = 0;
-            Action act = () => result = methodCaller.InvokeMethod(container, "Execute");
+            var result = 0;
+            var services = new ServiceCollection();
+            Action act = () => result = methodCaller.InvokeMethod(services, "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

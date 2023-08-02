@@ -2,6 +2,7 @@
 {
     using System.Reflection;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -28,7 +29,8 @@
 
         private void CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Services.GetService<IMethodCaller<PluginResult>>();
+            using var provider = di.Services.BuildServiceProvider(false);
+            var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
             methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
         }
     }

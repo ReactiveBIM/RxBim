@@ -1,11 +1,13 @@
 ﻿namespace RxBim.Command.Revit
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -26,9 +28,10 @@
 
             var di = Configure(commandData, assembly);
 
-            var commandResult = CallCommandMethod(di);
+            using var provider = di.Services.BuildServiceProvider(false);
+            var commandResult = CallCommandMethod(di, provider);
 
-            SetMessageAndElements(ref message, elements, commandResult, di);
+            SetMessageAndElements(ref message, elements, commandResult, provider);
             return commandResult.MapResultToRevitResult();
         }
 
@@ -45,9 +48,9 @@
             return di;
         }
 
-        private PluginResult CallCommandMethod(CommandDiConfigurator di)
+        private PluginResult CallCommandMethod(CommandDiConfigurator di, IServiceProvider provider)
         {
-            var methodCaller = di.Services.GetService<IMethodCaller<PluginResult>>();
+            var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
             var commandResult = methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
             return commandResult;
         }
@@ -56,26 +59,26 @@
             ref string? message,
             ElementSet elements,
             PluginResult commandResult,
-            CommandDiConfigurator di)
+            IServiceProvider provider)
         {
             if (!string.IsNullOrEmpty(commandResult.Message))
             {
                 message = commandResult.Message;
             }
 
-            if (commandResult.ElementIds.Any())
+            if (!commandResult.ElementIds.Any())
+                return;
+
+            var doc = provider.GetRequiredService<Document>();
+            foreach (var id in commandResult.ElementIds)
             {
-                var doc = di.Services.GetService<Document>();
-                foreach (var id in commandResult.ElementIds)
-                {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
-                    var elementId = new ElementId((int)id);
+                var elementId = new ElementId((int)id);
 #else
-                    var elementId = new ElementId(id);
+                var elementId = new ElementId(id);
 #endif
-                    var element = doc.GetElement(elementId);
-                    elements.Insert(element);
-                }
+                var element = doc.GetElement(elementId);
+                elements.Insert(element);
             }
         }
     }

@@ -4,6 +4,7 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Runtime;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Exception = System.Exception;
 
@@ -42,7 +43,8 @@
                 _diConfigurator = new ApplicationDiConfigurator(this);
                 _diConfigurator.Configure(GetType().Assembly);
 
-                var methodCaller = _diConfigurator.Services.GetService<IMethodCaller<PluginResult>>();
+                using var provider = _diConfigurator.Services.BuildServiceProvider(false);
+                var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_diConfigurator.Services, Constants.StartMethodName);
             }
             catch (Exception exception)
@@ -60,7 +62,8 @@
 
             try
             {
-                var methodCaller = _diConfigurator.Services.GetService<IMethodCaller<PluginResult>>();
+                using var provider = _diConfigurator.Services.BuildServiceProvider(false);
+                var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_diConfigurator.Services, Constants.ShutdownMethodName);
             }
             catch (Exception exception)

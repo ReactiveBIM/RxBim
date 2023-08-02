@@ -2,8 +2,8 @@
 {
     using System.Reflection;
     using Autodesk.Revit.UI;
-    using Di;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
     /// <summary>
@@ -14,27 +14,28 @@
         /// <summary>
         /// Adds logs into a DI container.
         /// </summary>
-        /// <param name="container">The DI container.</param>
+        /// <param name="services">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
         public static void AddRevitLogs(
-            this IContainer container,
+            this IServiceCollection services,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            container.AddLogs(cfg,
+            services.AddLogs(cfg,
                 (container1, configuration) => EnrichWithRevitData(container1, configuration, pluginAssembly));
         }
 
         private static void EnrichWithRevitData(
-            IContainer container,
+            IServiceCollection services,
             LoggerConfiguration config,
             Assembly pluginAssembly)
         {
             try
             {
-                var uiApp = container.GetService<UIApplication>();
+                using var provider = services.BuildServiceProvider(false);
+                var uiApp = provider.GetRequiredService<UIApplication>();
                 config.Enrich.With(new RevitEnricher(uiApp, pluginAssembly));
             }
             catch

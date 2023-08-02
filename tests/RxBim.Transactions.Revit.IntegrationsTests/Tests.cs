@@ -4,6 +4,7 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
     using System.Reflection;
     using Autodesk.Revit.DB;
     using Di.Testing.Revit;
+    using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
     using RTF.Applications;
     using RTF.Framework;
@@ -12,22 +13,23 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
     [TestFixture]
     public class Tests
     {
-        private IContainer _container = null!;
+        private IServiceCollection _services = null!;
 
         [SetUp]
         public void Setup()
         {
             var testingDiConfigurator = new TestingDiConfigurator(RevitTestExecutive.CommandData);
             testingDiConfigurator.Configure(Assembly.GetExecutingAssembly());
-            _container = testingDiConfigurator.Services;
+            _services = testingDiConfigurator.Services;
         }
 
         [Test]
         [TestModel("./model.rvt")]
         public void CommentShouldBeSetAndNotThrowsException()
         {
-            var testService = _container.GetService<ITestService>();
-            var element = new FilteredElementCollector(_container.GetService<Document>())
+            using var provider = _services.BuildServiceProvider(false);
+            var testService = provider.GetRequiredService<ITestService>();
+            var element = new FilteredElementCollector(provider.GetRequiredService<Document>())
                 .WhereElementIsNotElementType()
                 .OfClass(typeof(Wall))
                 .FirstOrDefault();

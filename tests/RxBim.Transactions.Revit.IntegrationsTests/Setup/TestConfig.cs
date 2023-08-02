@@ -1,16 +1,17 @@
 ﻿namespace RxBim.Transactions.Revit.IntegrationsTests.Setup
 {
     using Di.Testing.Revit;
-    using Revit.Extensions;
+    using Extensions;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class TestConfig : ITestConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection services)
         {
-            container.AddTransient<ITestService, TestService>();
-            container.AddTransactions();
+            services.AddTransient<ITestService, TestService>();
+            services.AddTransactions();
         }
     }
 }
