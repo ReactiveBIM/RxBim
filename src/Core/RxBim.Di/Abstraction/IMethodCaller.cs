@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Di
 {
     using System;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A method caller. Calls wrapped method.
@@ -16,8 +17,8 @@
         /// <summary>
         /// Returns the result of a method call.
         /// </summary>
-        /// <param name="container">A DI container.</param>
+        /// <param name="services">A DI container.</param>
         /// <param name="methodName">The method name.</param>
-        T InvokeMethod(IContainer container, string methodName);
+        T InvokeMethod(IServiceCollection services, string methodName);
     }
 }

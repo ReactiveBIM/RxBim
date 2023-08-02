@@ -5,17 +5,19 @@
     using System.Reflection;
     using ConfigurationBuilders;
     using Di;
+    using Di.Extensions;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Contains DI Container Extensions for Ribbon Menu.
+    /// <see cref="IServiceCollection"/> Extensions for Ribbon Menu.
     /// </summary>
-    public static class ContainerExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Adds a plugin ribbon menu from an action.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="builder">The ribbon menu builder.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
@@ -23,25 +25,25 @@
         /// and to define the root directory for relative icon paths.
         /// </param>
         public static void AddMenu<TBuilder>(
-            this IContainer container,
+            this IServiceCollection services,
             Action<IRibbonBuilder> builder,
             Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<TBuilder>(assembly);
-            container.AddSingleton(() =>
+            services.AddBuilder<TBuilder>(assembly);
+            services.AddSingleton(() =>
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
                 return ribbon.Build();
             });
-            container.DecorateContainer();
+            services.DecorateContainer();
         }
 
         /// <summary>
         /// Adds a plugin ribbon menu from configuration.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="config">Plugin configuration.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
@@ -49,37 +51,36 @@
         /// and to define the root directory for relative icon paths.
         /// </param>
         public static void AddMenu<TBuilder>(
-            this IContainer container,
+            this IServiceCollection services,
             IConfiguration? config,
             Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<TBuilder>(assembly);
-            container.AddSingleton(() => GetMenuConfiguration(container, config));
-            container.DecorateContainer();
+            services.AddBuilder<TBuilder>(assembly);
+            services.AddSingleton(provider => GetMenuConfiguration(provider, config));
+            services.DecorateContainer();
         }
 
-        private static void AddBuilder<T>(this IContainer container, Assembly assembly)
+        private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {
             var thisAssembly = Assembly.GetExecutingAssembly();
-            container
+            services
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
-                .RegisterTypes<IItemFromConfigStrategy>(Lifetime.Singleton, thisAssembly)
-                .RegisterTypes<IItemStrategy>(Lifetime.Singleton, thisAssembly)
+                .RegisterTypes<IItemFromConfigStrategy>(ServiceLifetime.Singleton, thisAssembly)
+                .RegisterTypes<IItemStrategy>(ServiceLifetime.Singleton, thisAssembly)
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 
-        private static void DecorateContainer(this IContainer container)
+        private static void DecorateContainer(this IServiceCollection services)
         {
-            container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            services.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
-        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
+        private static Ribbon GetMenuConfiguration(IServiceProvider provider, IConfiguration? cfg)
         {
-            cfg ??= container.GetService<IConfiguration>();
-            var serviceLocator = container.GetService<IServiceLocator>();
-            var strategies = serviceLocator.GetServicesAssignableTo<IItemFromConfigStrategy>().ToList();
+            cfg ??= provider.GetRequiredService<IConfiguration>();
+            var strategies = provider.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);

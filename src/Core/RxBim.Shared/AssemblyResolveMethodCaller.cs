@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Shared
 {
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class AssemblyResolveMethodCaller : MethodCallerDecorator<PluginResult>
@@ -15,9 +16,9 @@
         }
 
         /// <inheritdoc />
-        public override PluginResult InvokeMethod(IContainer container, string methodName)
+        public override PluginResult InvokeMethod(IServiceCollection services, string methodName)
         {
-            var result = Decorated.InvokeMethod(container, methodName);
+            var result = Decorated.InvokeMethod(services, methodName);
 
             if (methodName == Constants.ShutdownMethodName)
             {

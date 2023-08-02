@@ -35,7 +35,7 @@
         {
             base.Configure(assembly);
 
-            Container
+            Services
                 .AddTransient(() => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
         }
@@ -43,7 +43,7 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container
+            Services
                 .AddInstance(_uiControlledApp)
                 .AddInstance(_uiApp)
                 .AddInstance(_uiApp.Application)

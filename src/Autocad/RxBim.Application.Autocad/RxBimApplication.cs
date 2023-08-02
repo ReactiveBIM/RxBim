@@ -42,8 +42,8 @@
                 _diConfigurator = new ApplicationDiConfigurator(this);
                 _diConfigurator.Configure(GetType().Assembly);
 
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
+                var methodCaller = _diConfigurator.Services.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_diConfigurator.Services, Constants.StartMethodName);
             }
             catch (Exception exception)
             {
@@ -60,8 +60,8 @@
 
             try
             {
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+                var methodCaller = _diConfigurator.Services.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_diConfigurator.Services, Constants.ShutdownMethodName);
             }
             catch (Exception exception)
             {

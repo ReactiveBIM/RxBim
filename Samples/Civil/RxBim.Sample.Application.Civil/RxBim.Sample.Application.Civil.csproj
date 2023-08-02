@@ -3,7 +3,6 @@
     <ItemGroup> 
         <ProjectReference Include="..\..\..\src\Civil\RxBim.Application.Civil\RxBim.Application.Civil.csproj" />
         <ProjectReference Include="..\..\..\src\Autocad\RxBim.Logs.Autocad\RxBim.Logs.Autocad.csproj" />
-        <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />        
     </ItemGroup>
     
     <PropertyGroup>

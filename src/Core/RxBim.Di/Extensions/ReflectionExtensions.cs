@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Reflection extensions.
@@ -14,12 +15,13 @@
         /// Returns method parameters from a DI container.
         /// </summary>
         /// <param name="methodInfo">A method info.</param>
-        /// <param name="container">A DI container.</param>
+        /// <param name="services">A service provider.</param>
         /// <returns>The list of dependency objects of the requested object.</returns>
-        public static List<object> GetMethodParameters(this MethodBase methodInfo, IContainer container)
+        public static List<object> GetMethodParameters(this MethodBase methodInfo, IServiceCollection services)
         {
+            using var provider = services.BuildServiceProvider();
             return methodInfo.GetParameters()
-                .Select(parameterInfo => container.GetService(parameterInfo.ParameterType))
+                .Select(parameterInfo => provider.GetService(parameterInfo.ParameterType))
                 .ToList();
         }
 

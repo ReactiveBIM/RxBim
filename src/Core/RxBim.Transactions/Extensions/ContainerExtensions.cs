@@ -2,21 +2,21 @@
 {
     using Abstractions;
     using Castle.DynamicProxy;
-    using Di;
     using Di.Exceptions;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Extensions for <see cref="IContainer"/>
+    /// Extensions for <see cref="IServiceCollection"/>
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
         /// Adds transaction proxies to a DI container.
         /// </summary>
-        /// <param name="container">The DI container.</param>
-        public static IContainer SetupProxy(this IContainer container)
+        /// <param name="services">The DI container.</param>
+        public static IServiceCollection SetupProxy(this IServiceCollection services)
         {
-            if (container is ITransactionProxyProvider proxyProvider)
+            if (services is ITransactionProxyProvider proxyProvider)
             {
                 proxyProvider.SetupContainerForProxyGeneration();
             }
@@ -26,16 +26,16 @@
                     "Current container configuration doesn't implement transaction proxy functionality!");
             }
 
-            return container.AddTransactionInterceptor();
+            return services.AddTransactionInterceptor();
         }
 
         /// <summary>
         /// Adds transaction interceptors into a DI container.
         /// </summary>
-        /// <param name="container">The DI container.</param>
-        private static IContainer AddTransactionInterceptor(this IContainer container)
+        /// <param name="services">The DI container.</param>
+        private static IServiceCollection AddTransactionInterceptor(this IServiceCollection services)
         {
-            return container.AddTransient<IInterceptor, TransactionInterceptor>();
+            return services.AddTransient<IInterceptor, TransactionInterceptor>();
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
     /// <inheritdoc />
@@ -21,12 +22,12 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeMethod(IContainer container, string methodName)
+        public override T InvokeMethod(IServiceCollection services, string methodName)
         {
             T result;
             try
             {
-                result = Decorated.InvokeMethod(container, methodName);
+                result = Decorated.InvokeMethod(services, methodName);
             }
             catch (Exception e)
             {

@@ -5,7 +5,6 @@
     <UpgradeCode>C305D6A5-68A7-4369-96E0-E751DCF17C34</UpgradeCode>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
   </ItemGroup>
   <ItemGroup>
