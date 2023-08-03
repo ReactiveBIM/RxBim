@@ -6,6 +6,7 @@ namespace RxBim.MsiBuilder
     using System.IO;
     using System.Linq;
     using System.Management.Automation;
+    using System.Text;
     using Microsoft.Deployment.WindowsInstaller;
     using WixSharp;
 
@@ -14,33 +15,29 @@ namespace RxBim.MsiBuilder
         [CustomAction]
         public static ActionResult InstallFonts(Session session)
         {
-            var script =
-                "$FONTS = 0x14"
-                + Environment.NewLine
-                + "$objShell = New-Object -ComObject Shell.Application"
-                + Environment.NewLine
-                + "$objFolder = $objShell.Namespace($FONTS)";
+            var notInstalledFontFiles = GetFontFiles(session["INSTALLDIR"])
+                .Where(fontPath => !IsFontInstalled(fontPath))
+                .ToList();
 
-            if (FillFonts(session["INSTALLDIR"])
-                .Where(fontPath =>
-                {
-                    if (IsFontInstalled(fontPath))
-                        return false;
+            if (!notInstalledFontFiles.Any())
+                return ActionResult.Success;
 
-                    script +=
-                        Environment.NewLine
-                        + $"$objFolder.CopyHere(\"{fontPath}\")";
-                    return true;
-                }).ToArray().Any())
-            {
-                var powershell = PowerShell.Create().AddScript(script);
-                powershell.Invoke<User>();
-            }
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder
+                .Append("$FONTS = 0x14")
+                .AppendLine("$objShell = New-Object -ComObject Shell.Application")
+                .AppendLine("$objFolder = $objShell.Namespace($FONTS)");
+
+            foreach (var fontPath in notInstalledFontFiles)
+                scriptBuilder.AppendLine($"$objFolder.CopyHere(\"{fontPath}\")");
+
+            var powershell = PowerShell.Create().AddScript(scriptBuilder.ToString());
+            powershell.Invoke<User>();
 
             return ActionResult.Success;
         }
 
-        public static bool IsFontInstalled(string fontPath)
+        private static bool IsFontInstalled(string fontPath)
         {
             var fontCol = new System.Drawing.Text.PrivateFontCollection();
             fontCol.AddFontFile(fontPath);
@@ -48,14 +45,13 @@ namespace RxBim.MsiBuilder
             if (string.IsNullOrEmpty(fontName))
                 return false;
 
-            using (var testFont = new System.Drawing.Font(fontName, 8))
-                return string.Compare(fontName, testFont.Name, StringComparison.InvariantCultureIgnoreCase) == 0;
+            using var testFont = new System.Drawing.Font(fontName, 8);
+            return string.Compare(fontName, testFont.Name, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        private static IEnumerable<string> FillFonts(string path)
+        private static IEnumerable<string> GetFontFiles(string rootDirPath)
         {
-            foreach (var file in Directory.EnumerateFiles(path, "*.ttf", SearchOption.AllDirectories))
-                yield return file;
+            return Directory.EnumerateFiles(rootDirPath, "*.ttf", SearchOption.AllDirectories);
         }
     }
 }
