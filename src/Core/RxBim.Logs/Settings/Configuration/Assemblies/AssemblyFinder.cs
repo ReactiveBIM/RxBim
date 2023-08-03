@@ -39,7 +39,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
 
         protected static bool IsCaseInsensitiveMatch(string text, string textToFind)
         {
-            return text != null && text.ToLowerInvariant().Contains(textToFind.ToLowerInvariant());
+            return text.ToLowerInvariant().Contains(textToFind.ToLowerInvariant());
         }
     }
 }

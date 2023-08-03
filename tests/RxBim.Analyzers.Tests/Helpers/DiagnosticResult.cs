@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using System;
 #pragma warning disable 1591
 
+// ReSharper disable once CheckNamespace
 namespace TestHelper
 {
     /// <summary>

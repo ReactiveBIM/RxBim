@@ -8,13 +8,11 @@
     /// </summary>
     public class CommandButtonStrategy : ItemStrategyBase<CommandButton>
     {
-        private readonly MenuData _menuData;
         private readonly IRibbonPanelItemService _ribbonPanelItemService;
 
         /// <inheritdoc />
-        public CommandButtonStrategy(MenuData menuData, IRibbonPanelItemService ribbonPanelItemService)
+        public CommandButtonStrategy(IRibbonPanelItemService ribbonPanelItemService)
         {
-            _menuData = menuData;
             _ribbonPanelItemService = ribbonPanelItemService;
         }
 

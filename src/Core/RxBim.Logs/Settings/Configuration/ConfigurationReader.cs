@@ -57,25 +57,27 @@ namespace RxBim.Logs.Settings.Configuration
             ApplySinks(loggerConfiguration);
             ApplyAuditSinks(loggerConfiguration);
         }
-        
+
         void IConfigurationReader.ApplyEnrichment(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration)
         {
             var methodCalls = GetMethodCalls(_section);
-            CallConfigurationMethods(methodCalls, FindEventEnricherConfigurationMethods(_configurationAssemblies), loggerEnrichmentConfiguration);
+            CallConfigurationMethods(methodCalls,
+                FindEventEnricherConfigurationMethods(_configurationAssemblies),
+                loggerEnrichmentConfiguration);
         }
 
         void IConfigurationReader.ApplySinks(LoggerSinkConfiguration loggerSinkConfiguration)
         {
             var methodCalls = GetMethodCalls(_section);
-            CallConfigurationMethods(methodCalls, FindSinkConfigurationMethods(_configurationAssemblies), loggerSinkConfiguration);
+            CallConfigurationMethods(methodCalls,
+                FindSinkConfigurationMethods(_configurationAssemblies),
+                loggerSinkConfiguration);
         }
 
         internal static IConfigurationArgumentValue GetArgumentValue(
             IConfigurationSection? argumentSection,
             IReadOnlyCollection<Assembly> configurationAssemblies)
         {
-            IConfigurationArgumentValue argumentValue;
-
             // Reject configurations where an element has both scalar and complex
             // values as a result of reading multiple configuration sources.
             if (argumentSection?.Value != null && argumentSection.GetChildren().Any())
@@ -87,19 +89,14 @@ namespace RxBim.Logs.Settings.Configuration
                     "POCO, etc.) type for this argument value.");
             }
 
-            if (argumentSection?.Value != null)
-            {
-                argumentValue = new StringArgumentValue(argumentSection.Value);
-            }
-            else
-            {
-                argumentValue = new ObjectArgumentValue(argumentSection, configurationAssemblies);
-            }
+            IConfigurationArgumentValue argumentValue = argumentSection?.Value != null
+                ? new StringArgumentValue(argumentSection.Value)
+                : new ObjectArgumentValue(argumentSection, configurationAssemblies);
 
             return argumentValue;
         }
 
-        internal static MethodInfo? SelectConfigurationMethod(
+        private static MethodInfo? SelectConfigurationMethod(
             IEnumerable<MethodInfo> candidateMethods,
             string name,
             IEnumerable<string> suppliedArgumentNames)
@@ -127,72 +124,37 @@ namespace RxBim.Logs.Settings.Configuration
                 })
                 .FirstOrDefault();
 
-            if (selectedMethod == null)
-            {
-                var methodsByName = candidateMethodsList
-                    .Where(m => m.Name == name)
-                    .Select(m => $"{m.Name}({string.Join(", ", m.GetParameters().Skip(1).Select(p => p.Name))})")
-                    .ToList();
+            if (selectedMethod is not null)
+                return selectedMethod;
 
-                if (!methodsByName.Any())
-                {
-                    SelfLog.WriteLine($"Unable to find a method called {name}. Candidate methods are:{Environment.NewLine}{string.Join(Environment.NewLine, candidateMethodsList)}");
-                }
-                else
-                {
-                    var suppliedArgumentNamesList = suppliedArgumentNames.ToList();
-                    SelfLog.WriteLine($"Unable to find a method called {name} "
-                                      + (suppliedArgumentNamesList.Any()
-                                          ? "for supplied arguments: " + string.Join(", ", suppliedArgumentNamesList)
-                                          : "with no supplied arguments")
-                                      + ". Candidate methods are:"
-                                      + Environment.NewLine
-                                      + string.Join(Environment.NewLine, methodsByName));
-                }
+            var methodsByName = candidateMethodsList
+                .Where(m => m.Name == name)
+                .Select(m => $"{m.Name}({string.Join(", ", m.GetParameters().Skip(1).Select(p => p.Name))})")
+                .ToList();
+
+            if (!methodsByName.Any())
+            {
+                SelfLog.WriteLine(
+                    $"Unable to find a method called {name}. Candidate methods are:{Environment.NewLine}{string.Join(Environment.NewLine, candidateMethodsList)}");
+            }
+            else
+            {
+                var suppliedArgumentNamesList = suppliedArgumentNames.ToList();
+                SelfLog.WriteLine($"Unable to find a method called {name} "
+                                  + (suppliedArgumentNamesList.Any()
+                                      ? "for supplied arguments: " + string.Join(", ", suppliedArgumentNamesList)
+                                      : "with no supplied arguments")
+                                  + ". Candidate methods are:"
+                                  + Environment.NewLine
+                                  + string.Join(Environment.NewLine, methodsByName));
             }
 
             return selectedMethod;
         }
 
-        internal static bool IsValidSwitchName(string input)
+        private static bool IsValidSwitchName(string input)
         {
             return Regex.IsMatch(input, LevelSwitchNameRegex);
-        }
-
-        internal ILookup<string, Dictionary<string, IConfigurationArgumentValue>> GetMethodCalls(
-            IConfigurationSection directive)
-        {
-            var children = directive.GetChildren().ToList();
-
-            var result =
-                (from child in children
-                    where child.Value != null // Plain string
-                    select new { Name = child.Value, Args = new Dictionary<string, IConfigurationArgumentValue>() })
-                .Concat(
-                    (from child in children
-                        where child.Value == null
-                        let name = GetSectionName(child)
-                        let callArgs = (from argument in child.GetSection("Args").GetChildren()
-                            select new
-                            {
-                                Name = argument.Key,
-                                Value = GetArgumentValue(argument, _configurationAssemblies)
-                            }).ToDictionary(p => p.Name, p => p.Value)
-                        select new { Name = name, Args = callArgs }))
-                .ToLookup(p => p.Name, p => p.Args);
-
-            return result;
-
-            static string GetSectionName(IConfigurationSection s)
-            {
-                var name = s.GetSection("Name");
-                if (name.Value == null)
-                {
-                    throw new InvalidOperationException($"The configuration value in {name.Path} has no 'Name' element.");
-                }
-
-                return name.Value;
-            }
         }
 
         private static IReadOnlyCollection<Assembly> LoadConfigurationAssemblies(
@@ -300,13 +262,13 @@ namespace RxBim.Logs.Settings.Configuration
         }
 
         private static List<MethodInfo> FindConfigurationExtensionMethods(
-            IReadOnlyCollection<Assembly> configurationAssemblies,
+            IEnumerable<Assembly> configurationAssemblies,
             Type configType)
         {
             return configurationAssemblies
                 .SelectMany(a => a.ExportedTypes
                     .Select(t => t.GetTypeInfo())
-                    .Where(t => t.IsSealed && t.IsAbstract && !t.IsNested))
+                    .Where(t => t.IsSealed && t is { IsAbstract: true, IsNested: false }))
                 .SelectMany(t => t.DeclaredMethods)
                 .Where(m => m.IsStatic && m.IsPublic && m.IsDefined(typeof(ExtensionAttribute), false))
                 .Where(m => m.GetParameters()[0].ParameterType == configType)
@@ -318,6 +280,43 @@ namespace RxBim.Logs.Settings.Configuration
             if (!Enum.TryParse(value, out LogEventLevel parsedLevel))
                 throw new InvalidOperationException($"The value {value} is not a valid Serilog level.");
             return parsedLevel;
+        }
+
+        private ILookup<string, Dictionary<string, IConfigurationArgumentValue>> GetMethodCalls(
+            IConfiguration directive)
+        {
+            var children = directive.GetChildren().ToList();
+
+            var result =
+                (from child in children
+                    where child.Value != null // Plain string
+                    select new { Name = child.Value, Args = new Dictionary<string, IConfigurationArgumentValue>() })
+                .Concat(
+                    (from child in children
+                        where child.Value == null
+                        let name = GetSectionName(child)
+                        let callArgs = (from argument in child.GetSection("Args").GetChildren()
+                            select new
+                            {
+                                Name = argument.Key,
+                                Value = GetArgumentValue(argument, _configurationAssemblies)
+                            }).ToDictionary(p => p.Name, p => p.Value)
+                        select new { Name = name, Args = callArgs }))
+                .ToLookup(p => p.Name, p => p.Args);
+
+            return result;
+
+            static string GetSectionName(IConfiguration s)
+            {
+                var name = s.GetSection("Name");
+                if (name.Value == null)
+                {
+                    throw new InvalidOperationException(
+                        $"The configuration value in {name.Path} has no 'Name' element.");
+                }
+
+                return name.Value;
+            }
         }
 
         private void ProcessLevelSwitchDeclarations()
@@ -362,7 +361,7 @@ namespace RxBim.Logs.Settings.Configuration
                 : minimumLevelDirective.GetSection("Default");
             if (defaultMinLevelDirective.Value != null)
             {
-                ApplyMinimumLevel(defaultMinLevelDirective,
+                ApplyMinimumLevelFunc(defaultMinLevelDirective,
                     (configuration, levelSwitch) => configuration.ControlledBy(levelSwitch));
             }
 
@@ -383,7 +382,7 @@ namespace RxBim.Logs.Settings.Configuration
                 var overridenLevelOrSwitch = overrideDirective.Value;
                 if (Enum.TryParse(overridenLevelOrSwitch, out LogEventLevel _))
                 {
-                    ApplyMinimumLevel(overrideDirective,
+                    ApplyMinimumLevelFunc(overrideDirective,
                         (configuration, levelSwitch) => configuration.Override(overridePrefix, levelSwitch));
                 }
                 else
@@ -396,7 +395,9 @@ namespace RxBim.Logs.Settings.Configuration
                 }
             }
 
-            void ApplyMinimumLevel(
+            return;
+
+            void ApplyMinimumLevelFunc(
                 IConfigurationSection directive,
                 Action<LoggerMinimumLevelConfiguration, LoggingLevelSwitch> applyConfigAction)
             {
@@ -425,41 +426,49 @@ namespace RxBim.Logs.Settings.Configuration
         private void ApplyFilters(LoggerConfiguration loggerConfiguration)
         {
             var filterDirective = _section.GetSection("Filter");
-            if (filterDirective.GetChildren().Any())
-            {
-                var methodCalls = GetMethodCalls(filterDirective);
-                CallConfigurationMethods(methodCalls, FindFilterConfigurationMethods(_configurationAssemblies), loggerConfiguration.Filter);
-            }
+            if (!filterDirective.GetChildren().Any())
+                return;
+
+            var methodCalls = GetMethodCalls(filterDirective);
+            CallConfigurationMethods(methodCalls,
+                FindFilterConfigurationMethods(_configurationAssemblies),
+                loggerConfiguration.Filter);
         }
 
         private void ApplyDestructuring(LoggerConfiguration loggerConfiguration)
         {
             var destructureDirective = _section.GetSection("Destructure");
-            if (destructureDirective.GetChildren().Any())
-            {
-                var methodCalls = GetMethodCalls(destructureDirective);
-                CallConfigurationMethods(methodCalls, FindDestructureConfigurationMethods(_configurationAssemblies), loggerConfiguration.Destructure);
-            }
+            if (!destructureDirective.GetChildren().Any())
+                return;
+
+            var methodCalls = GetMethodCalls(destructureDirective);
+            CallConfigurationMethods(methodCalls,
+                FindDestructureConfigurationMethods(_configurationAssemblies),
+                loggerConfiguration.Destructure);
         }
 
         private void ApplySinks(LoggerConfiguration loggerConfiguration)
         {
             var writeToDirective = _section.GetSection("WriteTo");
-            if (writeToDirective.GetChildren().Any())
-            {
-                var methodCalls = GetMethodCalls(writeToDirective);
-                CallConfigurationMethods(methodCalls, FindSinkConfigurationMethods(_configurationAssemblies), loggerConfiguration.WriteTo);
-            }
+            if (!writeToDirective.GetChildren().Any())
+                return;
+
+            var methodCalls = GetMethodCalls(writeToDirective);
+            CallConfigurationMethods(methodCalls,
+                FindSinkConfigurationMethods(_configurationAssemblies),
+                loggerConfiguration.WriteTo);
         }
 
         private void ApplyAuditSinks(LoggerConfiguration loggerConfiguration)
         {
             var auditToDirective = _section.GetSection("AuditTo");
-            if (auditToDirective.GetChildren().Any())
-            {
-                var methodCalls = GetMethodCalls(auditToDirective);
-                CallConfigurationMethods(methodCalls, FindAuditSinkConfigurationMethods(_configurationAssemblies), loggerConfiguration.AuditTo);
-            }
+            if (!auditToDirective.GetChildren().Any())
+                return;
+
+            var methodCalls = GetMethodCalls(auditToDirective);
+            CallConfigurationMethods(methodCalls,
+                FindAuditSinkConfigurationMethods(_configurationAssemblies),
+                loggerConfiguration.AuditTo);
         }
 
         private void ApplyEnrichment(LoggerConfiguration loggerConfiguration)
@@ -468,16 +477,18 @@ namespace RxBim.Logs.Settings.Configuration
             if (enrichDirective.GetChildren().Any())
             {
                 var methodCalls = GetMethodCalls(enrichDirective);
-                CallConfigurationMethods(methodCalls, FindEventEnricherConfigurationMethods(_configurationAssemblies), loggerConfiguration.Enrich);
+                CallConfigurationMethods(methodCalls,
+                    FindEventEnricherConfigurationMethods(_configurationAssemblies),
+                    loggerConfiguration.Enrich);
             }
 
             var propertiesDirective = _section.GetSection("Properties");
-            if (propertiesDirective.GetChildren().Any())
+            if (!propertiesDirective.GetChildren().Any())
+                return;
+
+            foreach (var enrichPropertyDirective in propertiesDirective.GetChildren())
             {
-                foreach (var enrichProperyDirective in propertiesDirective.GetChildren())
-                {
-                    loggerConfiguration.Enrich.WithProperty(enrichProperyDirective.Key, enrichProperyDirective.Value);
-                }
+                loggerConfiguration.Enrich.WithProperty(enrichPropertyDirective.Key, enrichPropertyDirective.Value);
             }
         }
 

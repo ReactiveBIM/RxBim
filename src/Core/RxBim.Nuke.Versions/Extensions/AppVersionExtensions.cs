@@ -19,7 +19,8 @@
         public static bool IsApplicableFor(this AppVersion appVersion, Project project)
         {
             var appName = appVersion.Type.ToString();
-            return project.Directory.ToString().Contains(appName) || project.Name.Contains(appName);
+            var directory = project.Directory.ToString();
+            return project.Name.Contains(appName) || (directory is not null && directory.Contains(appName));
         }
 
         /// <summary>

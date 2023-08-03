@@ -11,12 +11,12 @@ namespace RxBim.Logs.Settings.Configuration
     /// </summary>
     internal sealed class ResolutionContext
     {
-        private readonly IDictionary<string?, LoggingLevelSwitch> _declaredLevelSwitches;
+        private readonly IDictionary<string, LoggingLevelSwitch> _declaredLevelSwitches;
         private readonly IConfiguration? _appConfiguration;
 
         public ResolutionContext(IConfiguration? appConfiguration = null)
         {
-            _declaredLevelSwitches = new Dictionary<string?, LoggingLevelSwitch>();
+            _declaredLevelSwitches = new Dictionary<string, LoggingLevelSwitch>();
             _appConfiguration = appConfiguration;
         }
 
@@ -43,23 +43,21 @@ namespace RxBim.Logs.Settings.Configuration
         /// <exception cref="InvalidOperationException">if no switch has been registered with <paramref name="switchName"/>.</exception>
         public LoggingLevelSwitch? LookUpSwitchByName(string? switchName)
         {
-            if (_declaredLevelSwitches.TryGetValue(switchName, out var levelSwitch))
-            {
-                return levelSwitch;
-            }
+            if (switchName is null)
+                return null;
 
-            throw new InvalidOperationException($"No LoggingLevelSwitch has been declared with name \"{switchName}\". You might be missing a section \"LevelSwitches\":{{\"{switchName}\":\"InitialLevel\"}}");
+            return _declaredLevelSwitches.TryGetValue(switchName, out var levelSwitch)
+                ? levelSwitch
+                : throw new InvalidOperationException(
+                    $"No LoggingLevelSwitch has been declared with name \"{switchName}\". You might be missing a section \"LevelSwitches\":{{\"{switchName}\":\"InitialLevel\"}}");
         }
 
         public void AddLevelSwitch(string? levelSwitchName, LoggingLevelSwitch levelSwitch)
         {
-            if (levelSwitchName == null)
+            if (levelSwitchName is null)
                 throw new ArgumentNullException(nameof(levelSwitchName));
 
-            if (levelSwitch == null)
-                throw new ArgumentNullException(nameof(levelSwitch));
-
-            _declaredLevelSwitches[levelSwitchName] = levelSwitch;
+            _declaredLevelSwitches[levelSwitchName] = levelSwitch ?? throw new ArgumentNullException(nameof(levelSwitch));
         }
     }
 }
