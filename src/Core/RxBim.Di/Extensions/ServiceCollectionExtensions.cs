@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Di.Extensions;
 
 using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,16 +74,12 @@ public static class ServiceCollectionExtensions
         Assembly? assembly = null)
     {
         assembly ??= Assembly.GetCallingAssembly();
-        var interfaceType = typeof(T);
-        var types = assembly.GetTypes()
-            .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
-            .ToList();
 
-        foreach (var type in types.Where(type => services.All(x => x.ImplementationType != type)))
-        {
-            services.Add(new ServiceDescriptor(type, type, lifetime));
-        }
-
-        return services;
+        return services.Scan(selector =>
+            selector
+                .FromAssemblies(assembly)
+                .AddClasses(x => x.AssignableTo<T>())
+                .AsSelfWithInterfaces()
+                .WithLifetime(lifetime));
     }
 }
