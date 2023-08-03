@@ -3,7 +3,6 @@
 extern alias msdi;
 using System;
 using FluentAssertions;
-using msdi::Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using TestDependencies;
 using TestObjects;
@@ -16,11 +15,10 @@ public class DiConfiguratorTests
     {
         var testDiConfigurator = new TestDiConfigurator();
         testDiConfigurator.Configure(GetType().Assembly);
-        Action act = () =>
+        var act = () =>
         {
-            using var provider = testDiConfigurator.Services.BuildServiceProvider(false);
-            provider.GetRequiredService<IBaseService>();
-            provider.GetRequiredService<IPluginService>();
+            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IBaseService>();
+            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IPluginService>();
         };
         act.Should().NotThrow();
     }
@@ -33,7 +31,7 @@ public class DiConfiguratorTests
         var methodCaller = new MethodCaller<int>(new ObjectWithDependencies());
 
         var result = 0;
-        Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Services, "Execute");
+        Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Container, "Execute");
 
         act.Should().NotThrow();
         result.Should().Be(100);

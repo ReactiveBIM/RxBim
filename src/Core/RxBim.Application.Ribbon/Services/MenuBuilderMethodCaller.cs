@@ -21,16 +21,15 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeMethod(IServiceCollection services, string methodName)
+        public override T InvokeMethod(IContainer container, string methodName)
         {
             if (methodName != Constants.StartMethodName)
-                return Decorated.InvokeMethod(services, methodName);
+                return Decorated.InvokeMethod(container, methodName);
 
             try
             {
-                using var provider = services.BuildServiceProvider(false);
-                var builder = provider.GetRequiredService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = provider.GetService<Ribbon>();
+                var builder = container.ServiceProvider.GetRequiredService<IRibbonMenuBuilder>();
+                var ribbonConfiguration = container.ServiceProvider.GetService<Ribbon>();
                 builder.BuildRibbonMenu(ribbonConfiguration);
             }
             catch (Exception e)
@@ -38,7 +37,7 @@
                 throw new MethodCallerException("Failed to build ribbon", e);
             }
 
-            return Decorated.InvokeMethod(services, methodName);
+            return Decorated.InvokeMethod(container, methodName);
         }
     }
 }

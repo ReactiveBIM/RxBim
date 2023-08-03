@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Command.Revit
 {
-    using System;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.Attributes;
@@ -28,10 +27,9 @@
 
             var di = Configure(commandData, assembly);
 
-            using var provider = di.Services.BuildServiceProvider(false);
-            var commandResult = CallCommandMethod(di, provider);
+            var commandResult = CallCommandMethod(di);
 
-            SetMessageAndElements(ref message, elements, commandResult, provider);
+            SetMessageAndElements(ref message, elements, commandResult, di);
             return commandResult.MapResultToRevitResult();
         }
 
@@ -48,10 +46,10 @@
             return di;
         }
 
-        private PluginResult CallCommandMethod(CommandDiConfigurator di, IServiceProvider provider)
+        private PluginResult CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
+            var methodCaller = di.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            var commandResult = methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
             return commandResult;
         }
 
@@ -59,7 +57,7 @@
             ref string? message,
             ElementSet elements,
             PluginResult commandResult,
-            IServiceProvider provider)
+            CommandDiConfigurator di)
         {
             if (!string.IsNullOrEmpty(commandResult.Message))
             {
@@ -69,7 +67,7 @@
             if (!commandResult.ElementIds.Any())
                 return;
 
-            var doc = provider.GetRequiredService<Document>();
+            var doc = di.Container.ServiceProvider.GetRequiredService<Document>();
             foreach (var id in commandResult.ElementIds)
             {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023

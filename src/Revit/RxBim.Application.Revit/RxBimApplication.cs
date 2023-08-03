@@ -28,9 +28,9 @@
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-            using var provider = _diConfigurator.Services.BuildServiceProvider(false);
-            var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeMethod(_diConfigurator.Services, Constants.ShutdownMethodName);
+            var methodCaller =
+                _diConfigurator.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            var result = methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
             return result.MapResultToRevitResult();
         }
 
@@ -43,9 +43,9 @@
                     _diConfigurator = new ApplicationDiConfigurator(this, _application, uiApp);
                     _diConfigurator.Configure(GetType().Assembly);
 
-                    using var provider = _diConfigurator.Services.BuildServiceProvider(false);
-                    var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeMethod(_diConfigurator.Services, Constants.StartMethodName);
+                    var methodCaller =
+                        _diConfigurator.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+                    methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
 
                     _contextCreated = true;
                 }

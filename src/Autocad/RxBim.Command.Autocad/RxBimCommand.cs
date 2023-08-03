@@ -13,6 +13,7 @@
         /// <summary>
         /// Executes a command.
         /// </summary>
+        // ReSharper disable once MemberCanBeProtected.Global
         public virtual void Execute()
         {
             var assembly = GetType().Assembly;
@@ -29,9 +30,8 @@
 
         private void CallCommandMethod(CommandDiConfigurator di)
         {
-            using var provider = di.Services.BuildServiceProvider(false);
-            var methodCaller = provider.GetRequiredService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeMethod(di.Services, Constants.ExecuteMethodName);
+            var methodCaller = di.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
         }
     }
 }

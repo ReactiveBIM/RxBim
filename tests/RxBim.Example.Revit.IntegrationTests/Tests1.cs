@@ -31,7 +31,7 @@ namespace RxBim.Example.Revit.IntegrationTests
              if are using real configuration from the application.
              */
 
-            _services = testingDiConfigurator.Services;
+            _services = testingDiConfigurator.Container.Services;
         }
 
         [Test]

@@ -18,7 +18,7 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Services
+            Container.Services
                 .AddInstance(_commandData)
                 .AddInstance(_commandData.Application)
                 .AddInstance(_commandData.Application.Application)

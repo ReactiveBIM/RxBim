@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Logs.Revit
 {
+    using System;
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Microsoft.Extensions.Configuration;
@@ -24,17 +25,16 @@
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
             services.AddLogs(cfg,
-                (container1, configuration) => EnrichWithRevitData(container1, configuration, pluginAssembly));
+                (provider, configuration) => EnrichWithRevitData(provider, configuration, pluginAssembly));
         }
 
         private static void EnrichWithRevitData(
-            IServiceCollection services,
+            IServiceProvider provider,
             LoggerConfiguration config,
             Assembly pluginAssembly)
         {
             try
             {
-                using var provider = services.BuildServiceProvider(false);
                 var uiApp = provider.GetRequiredService<UIApplication>();
                 config.Enrich.With(new RevitEnricher(uiApp, pluginAssembly));
             }

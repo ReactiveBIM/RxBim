@@ -20,7 +20,7 @@ namespace RxBim.Transactions.Revit.IntegrationsTests
         {
             var testingDiConfigurator = new TestingDiConfigurator(RevitTestExecutive.CommandData);
             testingDiConfigurator.Configure(Assembly.GetExecutingAssembly());
-            _services = testingDiConfigurator.Services;
+            _services = testingDiConfigurator.Container.Services;
         }
 
         [Test]

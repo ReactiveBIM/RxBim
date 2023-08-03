@@ -25,7 +25,7 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Services
+            Container.Services
                 .AddInstance(Application.DocumentManager.MdiActiveDocument)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Database)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Editor)

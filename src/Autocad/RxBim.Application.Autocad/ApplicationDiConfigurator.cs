@@ -28,7 +28,7 @@
         {
             base.Configure(assembly);
 
-            Services
+            Container.Services
                 .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
         }
@@ -36,7 +36,7 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Services
+            Container.Services
                 .AddInstance(Application.DocumentManager)
                 .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
         }

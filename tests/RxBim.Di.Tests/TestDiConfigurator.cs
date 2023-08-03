@@ -7,7 +7,7 @@
     {
         protected override void ConfigureBaseDependencies()
         {
-            Services.AddTransient<IBaseService, BaseService>();
+            Container.Services.AddTransient<IBaseService, BaseService>();
         }
     }
 }

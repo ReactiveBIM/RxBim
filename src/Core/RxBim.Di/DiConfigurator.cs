@@ -11,16 +11,16 @@
     /// <summary>
     /// Base DI configurator.
     /// </summary>
-    public abstract class DiConfigurator<TConfiguration> : IDiConfigurator<TConfiguration>
+    public abstract class DiConfigurator<TConfiguration>
         where TConfiguration : IPluginConfiguration
     {
         /// <summary>
-        /// Services collection.
+        /// DI container.
         /// </summary>
-        public IServiceCollection Services { get; } = new ServiceCollection();
+        public IContainer Container { get; } = new DiContainer();
 
         /// <summary>
-        /// Configures dependencies in the <see cref="Services"/>.
+        /// Configures dependencies in the <see cref="DiContainer.Services"/>.
         /// </summary>
         /// <param name="assembly">An assembly for dependency scanning.</param>
         public virtual void Configure(Assembly assembly)
@@ -44,7 +44,7 @@
 
             foreach (var cfg in configs)
             {
-                cfg.Configure(Services);
+                cfg.Configure(Container.Services);
             }
         }
 
@@ -70,7 +70,7 @@
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
         {
-            Services.AddSingleton<IConfiguration>(
+            Container.Services.AddSingleton<IConfiguration>(
                 provider =>
                 {
                     foreach (var addConfig in provider.GetServices<Action<IServiceProvider, IConfigurationBuilder>>())
