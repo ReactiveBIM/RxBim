@@ -20,7 +20,7 @@
         public IContainer Container { get; } = new DiContainer();
 
         /// <summary>
-        /// Configures dependencies in the <see cref="DiContainer.Services"/>.
+        /// Configures dependencies in the <see cref="IContainer.Services"/>.
         /// </summary>
         /// <param name="assembly">An assembly for dependency scanning.</param>
         public virtual void Configure(Assembly assembly)
