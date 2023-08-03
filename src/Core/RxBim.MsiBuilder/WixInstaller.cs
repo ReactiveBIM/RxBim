@@ -21,8 +21,9 @@ namespace RxBim.MsiBuilder
             var installDir = options.InstallDir;
 
             var sourceDir = options.SourceDir;
-            var version = options.Version is null ? new Version() : new Version(options.Version); 
-            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}";
+            var version = options.Version is null ? new Version() : new Version(options.Version);
+            var environmentRegKey =
+                @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}";
 
             var project = new ManagedProject(
                 productProjectName,
@@ -73,7 +74,12 @@ namespace RxBim.MsiBuilder
 
             project.AddAction(
                 new ManagedAction(
-                    CustomActions.InstallFonts, GetType().Assembly.Location, Return.ignore, When.After, Step.InstallFinalize, Condition.Always));
+                    CustomActions.InstallFonts,
+                    GetType().Assembly.Location,
+                    Return.ignore,
+                    When.After,
+                    Step.InstallFinalize,
+                    Condition.Always));
 
             var attributesDefinition = $"AdminImage=yes;";
             if (!string.IsNullOrEmpty(options.Comments))
@@ -104,7 +110,7 @@ namespace RxBim.MsiBuilder
             {
                 if (path is null)
                     continue;
-                
+
                 foreach (var file in Directory.EnumerateFiles(path, "*"))
                 {
                     var info = new FileInfo(file);
