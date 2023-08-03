@@ -47,7 +47,7 @@
                     xmlDoc.Load(packageContentsFile);
                     var productCode = xmlDoc.DocumentElement
                         ?.SelectSingleNode("//ApplicationPackage")
-                        ?.Attributes
+                        ?.Attributes?
                         .GetNamedItem("ProductCode")
                         .Value;
 
