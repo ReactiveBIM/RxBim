@@ -31,7 +31,7 @@
             where TBuilder : class, IRibbonMenuBuilder
         {
             services.AddBuilder<TBuilder>(assembly);
-            services.AddSingleton(() =>
+            services.AddSingleton(_ =>
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
@@ -66,7 +66,7 @@
         {
             var thisAssembly = Assembly.GetExecutingAssembly();
             services
-                .AddSingleton(() => new MenuData { MenuAssembly = assembly })
+                .AddSingleton(_ => new MenuData { MenuAssembly = assembly })
                 .RegisterTypes<IItemFromConfigStrategy>(ServiceLifetime.Singleton, thisAssembly)
                 .RegisterTypes<IItemStrategy>(ServiceLifetime.Singleton, thisAssembly)
                 .AddSingleton<IRibbonMenuBuilder, T>();

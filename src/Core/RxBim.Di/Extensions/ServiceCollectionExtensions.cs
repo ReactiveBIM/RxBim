@@ -79,7 +79,7 @@ public static class ServiceCollectionExtensions
             selector
                 .FromAssemblies(assembly)
                 .AddClasses(x => x.AssignableTo<T>())
-                .AsSelfWithInterfaces()
+                .As<T>()
                 .WithLifetime(lifetime));
     }
 }

@@ -3,19 +3,19 @@
     using Di;
 
     /// <inheritdoc />
-    public class AssemblyResolveMethodCaller : MethodCallerDecorator<PluginResult>
+    public class AssemblyResolveMethodCaller<T> : MethodCallerDecorator<T>
     {
         private readonly AssemblyResolver _resolver;
 
         /// <inheritdoc />
-        public AssemblyResolveMethodCaller(IMethodCaller<PluginResult> decorated, AssemblyResolver resolver)
+        public AssemblyResolveMethodCaller(IMethodCaller<T> decorated, AssemblyResolver resolver)
             : base(decorated)
         {
             _resolver = resolver;
         }
 
         /// <inheritdoc />
-        public override PluginResult InvokeMethod(IContainer container, string methodName)
+        public override T InvokeMethod(IContainer container, string methodName)
         {
             var result = Decorated.InvokeMethod(container, methodName);
 
