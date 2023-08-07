@@ -3,7 +3,6 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Di;
     using Di.Extensions;
-    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -29,7 +28,7 @@
                 .AddInstance(Application.DocumentManager.MdiActiveDocument)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Database)
                 .AddInstance(Application.DocumentManager.MdiActiveDocument.Editor)
-                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_commandObject));
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
         }
     }
 }

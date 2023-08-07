@@ -38,8 +38,8 @@
             base.Configure(assembly);
 
             Container.Services
-                .AddTransient(_ => new AssemblyResolver(assembly))
-                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
+                .AddTransient(() => new AssemblyResolver(assembly))
+                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
         }
 
         /// <inheritdoc />
@@ -49,9 +49,9 @@
                 .AddInstance(_uiControlledApp)
                 .AddInstance(_uiApp)
                 .AddInstance(_uiApp.Application)
-                .AddTransient(_ => _uiApp.ActiveUIDocument)
-                .AddTransient(_ => _uiApp.ActiveUIDocument?.Document!)
-                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
+                .AddTransient(() => _uiApp.ActiveUIDocument)
+                .AddTransient(() => _uiApp.ActiveUIDocument?.Document!)
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

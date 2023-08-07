@@ -11,6 +11,20 @@ using Microsoft.Extensions.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
+    /// Adds a transient service of the type specified in <typeparamref name="T"/> with a factory specified in
+    /// <paramref name="implementationFactory"/> to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="implementationFactory">The factory that creates the service.</param>
+    /// <typeparam name="T">The type of the service to add.</typeparam>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static IServiceCollection AddTransient<T>(this IServiceCollection services, Func<T> implementationFactory)
+        where T : class
+    {
+        return services.AddTransient<T>(_ => implementationFactory());
+    }
+
+    /// <summary>
     /// Adds a single instance that will be returned when an instance of type
     /// <paramref name="serviceType" /> is requested. This <paramref name="implementationInstance" />
     /// must be thread-safe when working in a multi-threaded environment.
@@ -58,7 +72,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<IServiceProvider, IConfigurationBuilder> action)
     {
-        services.AddTransient(_ => action);
+        services.AddTransient(() => action);
     }
 
     /// <summary>
