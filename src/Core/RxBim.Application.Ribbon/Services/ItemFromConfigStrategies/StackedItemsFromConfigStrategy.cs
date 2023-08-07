@@ -5,21 +5,23 @@
     using System.Linq;
     using ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The strategy for getting a <see cref="StackedItems"/> from a configuration section.
     /// </summary>
     public class StackedItemsFromConfigStrategy : IItemFromConfigStrategy
     {
-        private readonly List<IItemFromConfigStrategy> _itemFromConfigStrategies;
+        private readonly Lazy<List<IItemFromConfigStrategy>> _itemFromConfigStrategies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedItemsFromConfigStrategy"/> class.
         /// </summary>
-        /// <param name="itemFromConfigStrategies">Collection of <see cref="IItemFromConfigStrategy"/>.</param>
-        public StackedItemsFromConfigStrategy(IEnumerable<IItemFromConfigStrategy> itemFromConfigStrategies)
+        /// <param name="serviceProvider"><see cref="IServiceProvider"/> object.</param>
+        public StackedItemsFromConfigStrategy(IServiceProvider serviceProvider)
         {
-            _itemFromConfigStrategies = itemFromConfigStrategies.ToList();
+            _itemFromConfigStrategies = new Lazy<List<IItemFromConfigStrategy>>(() =>
+                serviceProvider.GetServices<IItemFromConfigStrategy>().ToList());
         }
 
         /// <inheritdoc />
@@ -39,7 +41,7 @@
 
             foreach (var child in itemsSection.GetChildren())
             {
-                var strategy = _itemFromConfigStrategies.FirstOrDefault(x => x.IsApplicable(child));
+                var strategy = _itemFromConfigStrategies.Value.FirstOrDefault(x => x.IsApplicable(child));
                 if (strategy is null)
                     throw new InvalidOperationException($"Not found strategy for: {child.Value}");
                 stackedItems.AddItem(strategy.CreateForStack(child));

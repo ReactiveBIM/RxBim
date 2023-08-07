@@ -29,7 +29,7 @@
             base.Configure(assembly);
 
             Container.Services
-                .AddTransient(() => new AssemblyResolver(assembly))
+                .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
         }
 
@@ -38,7 +38,7 @@
         {
             Container.Services
                 .AddInstance(Application.DocumentManager)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

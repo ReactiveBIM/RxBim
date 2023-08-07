@@ -3,6 +3,7 @@
     using Autodesk.Revit.UI;
     using Di;
     using Di.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -31,9 +32,9 @@
                 .AddInstance(_commandData)
                 .AddInstance(_commandData.Application)
                 .AddInstance(_commandData.Application.Application)
-                .AddTransient(() => _commandData.Application.ActiveUIDocument)
-                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document!)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
+                .AddTransient(_ => _commandData.Application.ActiveUIDocument)
+                .AddTransient(_ => _commandData.Application.ActiveUIDocument?.Document!)
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_commandObject));
         }
     }
 }
