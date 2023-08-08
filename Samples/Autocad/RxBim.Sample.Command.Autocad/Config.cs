@@ -18,7 +18,7 @@
             container.AddTransient<ISomeService, SomeService>();
             container.AddTransient<SomeWindow>();
             container.AddTransient<SomeViewModel>();
-            container.AddLogs();
+            container.AddAutocadLogs();
 
             container.AddSingleton(() => container.GetService<IConfiguration>()
                 .GetSection(nameof(PluginSettings))

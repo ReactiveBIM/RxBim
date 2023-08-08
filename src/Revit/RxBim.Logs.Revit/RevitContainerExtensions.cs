@@ -17,7 +17,7 @@
         /// <param name="container">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
-        public static void AddLogs(
+        public static void AddRevitLogs(
             this IContainer container,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null)

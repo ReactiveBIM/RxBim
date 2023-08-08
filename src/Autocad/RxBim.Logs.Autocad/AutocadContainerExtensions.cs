@@ -6,7 +6,7 @@
     using Serilog;
 
     /// <summary>
-    /// The DI container extensions. 
+    /// The DI container extensions.
     /// </summary>
     public static class AutocadContainerExtensions
     {
@@ -16,7 +16,7 @@
         /// <param name="container">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
-        public static void AddLogs(
+        public static void AddAutocadLogs(
             this IContainer container,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null)

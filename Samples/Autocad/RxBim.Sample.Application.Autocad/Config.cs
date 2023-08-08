@@ -12,7 +12,7 @@
         public void Configure(IContainer container)
         {
             container.AddTransient<IInfoService, InfoService>();
-            container.AddLogs();
+            container.AddAutocadLogs();
         }
     }
 }
