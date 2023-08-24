@@ -4,7 +4,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Service locator
+    /// Service locator.
     /// </summary>
     public interface IServiceLocator
     {
