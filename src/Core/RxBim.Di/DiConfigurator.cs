@@ -4,7 +4,6 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -44,7 +43,7 @@
 
             foreach (var cfg in configs)
             {
-                cfg.Configure(Container.Services);
+                cfg.Configure(Container);
             }
         }
 

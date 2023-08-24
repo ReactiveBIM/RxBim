@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Extensions;
 
     /// <inheritdoc />
     public class MethodCaller<T> : IMethodCaller<T>

@@ -3,7 +3,6 @@
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
-    using Di.Extensions;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
@@ -45,13 +44,13 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container.Services
+            Container
                 .AddInstance(_uiControlledApp)
                 .AddInstance(_uiApp)
                 .AddInstance(_uiApp.Application)
-                .AddTransient(_ => _uiApp.ActiveUIDocument)
-                .AddTransient(_ => _uiApp.ActiveUIDocument?.Document!)
-                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
+                .AddTransient(() => _uiApp.ActiveUIDocument)
+                .AddTransient(() => _uiApp.ActiveUIDocument?.Document!)
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

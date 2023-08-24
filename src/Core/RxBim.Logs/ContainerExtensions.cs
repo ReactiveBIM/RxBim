@@ -12,29 +12,29 @@
     /// <summary>
     /// A DI container extensions.
     /// </summary>
-    public static class ServiceCollectionExtensions
+    public static class ContainerExtensions
     {
         /// <summary>
-        /// Adds logs in a <paramref name="services"/>.
+        /// Adds logs in a <paramref name="container"/>.
         /// </summary>
-        /// <param name="services">A DI container.</param>
+        /// <param name="container">A DI container.</param>
         /// <param name="cfg">A configuration.</param>
         /// <param name="addEnricher">An action for additional logs configuration.</param>
         public static void AddLogs(
-            this IServiceCollection services,
+            this IContainer container,
             IConfiguration? cfg = null,
             Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
         {
-            RegisterLogger(services, cfg, addEnricher);
-            services.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
+            RegisterLogger(container, cfg, addEnricher);
+            container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
         private static void RegisterLogger(
-            IServiceCollection services,
+            IContainer container,
             IConfiguration? cfg,
             Action<IServiceProvider, LoggerConfiguration>? addEnricher)
         {
-            services.AddSingleton(
+            container.Services.AddSingleton(
                 provider =>
                 {
                     if (cfg == null)

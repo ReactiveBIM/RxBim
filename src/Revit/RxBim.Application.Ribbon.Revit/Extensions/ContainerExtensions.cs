@@ -3,7 +3,7 @@ namespace RxBim.Application.Ribbon
     using System;
     using System.Reflection;
     using Abstractions;
-    using Di.Extensions;
+    using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
@@ -16,16 +16,16 @@ namespace RxBim.Application.Ribbon
         /// <summary>
         /// Adds ribbon menu from action.
         /// </summary>
-        /// <param name="services">DI container.</param>
+        /// <param name="container">DI container.</param>
         /// <param name="builder">The ribbon builder.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddRevitMenu(
-            this IServiceCollection services,
+            this IContainer container,
             Action<IRibbonBuilder> builder,
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            services
+            container
                 .AddServices()
                 .AddMenu<RevitRibbonMenuBuilder>(builder, menuAssembly);
         }
@@ -33,25 +33,27 @@ namespace RxBim.Application.Ribbon
         /// <summary>
         /// Adds ribbon menu from config.
         /// </summary>
-        /// <param name="services">DI container.</param>
+        /// <param name="container">DI container.</param>
         /// <param name="cfg">Configuration.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddRevitMenu(
-            this IServiceCollection services,
+            this IContainer container,
             IConfiguration? cfg = null,
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            services
+            container
                 .AddServices()
                 .AddMenu<RevitRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
-        private static IServiceCollection AddServices(this IServiceCollection container)
+        private static IContainer AddServices(this IContainer container)
         {
-            return container
-                .RegisterTypes<IItemStrategy>(ServiceLifetime.Singleton, Assembly.GetExecutingAssembly())
+            container
+                .RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly())
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
+
+            return container;
         }
     }
 }

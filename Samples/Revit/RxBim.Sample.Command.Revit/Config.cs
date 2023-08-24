@@ -2,16 +2,15 @@
 {
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
     using Models;
 
     /// <inheritdoc />
     public class Config : ICommandConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IServiceCollection container)
+        public void Configure(IContainer container)
         {
-            container.AddSingleton(provider => provider.GetRequiredService<IConfiguration>()
+            container.AddSingleton(() => container.GetService<IConfiguration>()
                     .GetSection(nameof(PluginSettings))
                     .Get<PluginSettings>());
         }

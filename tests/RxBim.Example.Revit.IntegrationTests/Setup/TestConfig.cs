@@ -1,15 +1,15 @@
 ﻿namespace RxBim.Example.Revit.IntegrationTests.Setup
 {
+    using Di;
     using Di.Testing.Revit;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class TestConfig : ITestConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IServiceCollection services)
+        public void Configure(IContainer container)
         {
-            services.AddTransient<ITestService, TestService>();
+            container.AddTransient<ITestService, TestService>();
         }
     }
 }

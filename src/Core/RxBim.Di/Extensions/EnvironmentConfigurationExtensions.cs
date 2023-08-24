@@ -1,4 +1,4 @@
-﻿namespace RxBim.Di.Extensions
+﻿namespace RxBim.Di
 {
     using Microsoft.Extensions.Configuration;
 

@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using Autodesk.Revit.UI;
+    using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
@@ -19,7 +20,7 @@
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
         public static void AddRevitLogs(
-            this IServiceCollection services,
+            this IContainer services,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null)
         {

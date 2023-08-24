@@ -3,7 +3,6 @@
     using System.Reflection;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Di;
-    using Di.Extensions;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
@@ -36,9 +35,9 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container.Services
+            Container
                 .AddInstance(Application.DocumentManager)
-                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
+                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }
