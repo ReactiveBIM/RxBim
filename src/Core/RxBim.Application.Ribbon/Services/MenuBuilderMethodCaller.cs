@@ -2,7 +2,6 @@
 {
     using System;
     using Di;
-    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -23,18 +22,18 @@
         /// <inheritdoc />
         public override T InvokeMethod(IContainer container, string methodName)
         {
-            if (methodName != Constants.StartMethodName)
-                return Decorated.InvokeMethod(container, methodName);
-
-            try
+            if (methodName == Constants.StartMethodName)
             {
-                var builder = container.ServiceProvider.GetRequiredService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = container.ServiceProvider.GetService<Ribbon>();
-                builder.BuildRibbonMenu(ribbonConfiguration);
-            }
-            catch (Exception e)
-            {
-                throw new MethodCallerException("Failed to build ribbon", e);
+                try
+                {
+                    var builder = container.GetService<IRibbonMenuBuilder>();
+                    var ribbonConfiguration = container.GetService<Ribbon>();
+                    builder.BuildRibbonMenu(ribbonConfiguration);
+                }
+                catch (Exception e)
+                {
+                    throw new MethodCallerException("Failed to build ribbon", e);
+                }
             }
 
             return Decorated.InvokeMethod(container, methodName);

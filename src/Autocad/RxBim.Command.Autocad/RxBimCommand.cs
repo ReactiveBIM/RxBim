@@ -2,7 +2,6 @@
 {
     using System.Reflection;
     using Di;
-    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -13,7 +12,6 @@
         /// <summary>
         /// Executes a command.
         /// </summary>
-        // ReSharper disable once MemberCanBeProtected.Global
         public virtual void Execute()
         {
             var assembly = GetType().Assembly;
@@ -30,7 +28,7 @@
 
         private void CallCommandMethod(CommandDiConfigurator di)
         {
-            var methodCaller = di.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
             methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
         }
     }

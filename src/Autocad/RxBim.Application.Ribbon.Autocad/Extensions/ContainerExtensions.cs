@@ -4,11 +4,10 @@
     using System.Reflection;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Extensions for <see cref="IContainer"/>.
     /// </summary>
     public static class ContainerExtensions
     {

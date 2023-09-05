@@ -1,9 +1,7 @@
 ﻿namespace RxBim.Di.Tests;
 
-extern alias msdi;
 using System;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 using TestDependencies;
 using TestObjects;
 using Xunit;
@@ -17,8 +15,8 @@ public class DiConfiguratorTests
         testDiConfigurator.Configure(GetType().Assembly);
         var act = () =>
         {
-            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IBaseService>();
-            testDiConfigurator.Container.ServiceProvider.GetRequiredService<IPluginService>();
+            testDiConfigurator.Container.GetService<IBaseService>();
+            testDiConfigurator.Container.GetService<IPluginService>();
         };
         act.Should().NotThrow();
     }

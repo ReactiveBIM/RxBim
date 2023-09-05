@@ -1,4 +1,4 @@
-﻿namespace RxBim.Di
+﻿namespace RxBim.Di.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -14,12 +14,12 @@
         /// Returns method parameters from a DI container.
         /// </summary>
         /// <param name="methodInfo">A method info.</param>
-        /// <param name="provider">A service provider.</param>
+        /// <param name="container">A DI container.</param>
         /// <returns>The list of dependency objects of the requested object.</returns>
-        public static List<object> GetMethodParameters(this MethodBase methodInfo, IServiceProvider provider)
+        public static List<object> GetMethodParameters(this MethodBase methodInfo, IContainer container)
         {
             return methodInfo.GetParameters()
-                .Select(parameterInfo => provider.GetService(parameterInfo.ParameterType))
+                .Select(parameterInfo => container.GetService(parameterInfo.ParameterType))
                 .ToList();
         }
 

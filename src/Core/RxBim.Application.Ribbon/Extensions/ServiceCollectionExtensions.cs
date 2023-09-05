@@ -6,10 +6,9 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// <see cref="IServiceCollection"/> Extensions for Ribbon Menu.
+    /// Contains DI Container Extensions for Ribbon Menu.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
@@ -30,7 +29,7 @@
             where TBuilder : class, IRibbonMenuBuilder
         {
             container.AddBuilder<TBuilder>(assembly);
-            container.Services.AddSingleton(_ =>
+            container.AddSingleton(() =>
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
@@ -56,7 +55,7 @@
             where TBuilder : class, IRibbonMenuBuilder
         {
             container.AddBuilder<TBuilder>(assembly);
-            container.Services.AddSingleton(provider => GetMenuConfiguration(provider, config));
+            container.AddSingleton(() => GetMenuConfiguration(container, config));
             container.DecorateContainer();
         }
 
@@ -71,15 +70,16 @@
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 
-        private static void DecorateContainer(this IContainer services)
+        private static void DecorateContainer(this IContainer container)
         {
-            services.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
-        private static Ribbon GetMenuConfiguration(IServiceProvider provider, IConfiguration? cfg)
+        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
         {
-            cfg ??= provider.GetRequiredService<IConfiguration>();
-            var strategies = provider.GetServices<IItemFromConfigStrategy>().ToList();
+            cfg ??= container.GetService<IConfiguration>();
+            var serviceLocator = container.GetService<IServiceLocator>();
+            var strategies = serviceLocator.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);

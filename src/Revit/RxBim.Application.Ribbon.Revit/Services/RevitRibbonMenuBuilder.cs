@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using Autodesk.Revit.UI;
+    using Di;
     using UIFramework;
 
     /// <summary>
@@ -16,8 +17,8 @@
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IServiceProvider serviceProvider)
-            : base(menuData, serviceProvider)
+            IServiceLocator serviceLocator)
+            : base(menuData, serviceLocator)
         {
             _application = application;
         }

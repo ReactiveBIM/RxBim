@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
-    using System;
     using Autodesk.Windows;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IRibbonMenuBuilder"/> for AutoCAD.
@@ -27,8 +27,8 @@
             IColorThemeService colorThemeService,
             ITabService tabService,
             MenuData menuData,
-            IServiceProvider serviceProvider)
-            : base(menuData, serviceProvider)
+            IServiceLocator serviceLocator)
+            : base(menuData, serviceLocator)
         {
             _panelService = panelService;
             _buttonService = buttonService;

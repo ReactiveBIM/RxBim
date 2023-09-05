@@ -4,7 +4,6 @@
     using Di;
     using Enrichers;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyModel;
     using Serilog;
     using Serilog.Events;
@@ -23,34 +22,35 @@
         public static void AddLogs(
             this IContainer container,
             IConfiguration? cfg = null,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
+            Action<IContainer, LoggerConfiguration>? addEnricher = null)
         {
             RegisterLogger(container, cfg, addEnricher);
+
             container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
         private static void RegisterLogger(
             IContainer container,
             IConfiguration? cfg,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
-            container.Services.AddSingleton(
-                provider =>
+            container.AddSingleton(
+                () =>
                 {
                     if (cfg == null)
                     {
-                        TryGetConfigurationFromContainer(provider, ref cfg);
+                        TryGetConfigurationFromContainer(container, ref cfg);
                     }
 
-                    return CreateLogger(cfg, provider, addEnricher);
+                    return CreateLogger(cfg, container, addEnricher);
                 });
         }
 
-        private static void TryGetConfigurationFromContainer(IServiceProvider provider, ref IConfiguration? cfg)
+        private static void TryGetConfigurationFromContainer(IContainer container, ref IConfiguration? cfg)
         {
             try
             {
-                cfg = provider.GetService<IConfiguration>();
+                cfg = container.GetService<IConfiguration>();
             }
             catch
             {
@@ -60,8 +60,8 @@
 
         private static ILogger CreateLogger(
             IConfiguration? cfg,
-            IServiceProvider provider,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            IContainer container,
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -76,15 +76,15 @@
                     .WriteTo.File("log.txt", LogEventLevel.Information, fileSizeLimitBytes: 1024 * 10);
             }
 
-            AddLogEnrichers(provider, config, addEnricher);
+            AddLogEnrichers(container, config, addEnricher);
 
             return config.CreateLogger();
         }
 
         private static void AddLogEnrichers(
-            IServiceProvider provider,
+            IContainer container,
             LoggerConfiguration config,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            Action<IContainer, LoggerConfiguration>? addEnricher)
         {
             config
                 .Enrich.FromLogContext()
@@ -93,7 +93,7 @@
                 .Enrich.With<ExceptionEnricher>()
                 .Enrich.With<OsEnricher>();
 
-            addEnricher?.Invoke(provider, config);
+            addEnricher?.Invoke(container, config);
         }
     }
 }

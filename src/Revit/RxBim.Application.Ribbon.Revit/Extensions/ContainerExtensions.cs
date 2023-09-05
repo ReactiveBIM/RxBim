@@ -5,11 +5,10 @@ namespace RxBim.Application.Ribbon
     using Abstractions;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Extensions for <see cref="IContainer"/>.
     /// </summary>
     public static class ContainerExtensions
     {
@@ -49,11 +48,9 @@ namespace RxBim.Application.Ribbon
 
         private static IContainer AddServices(this IContainer container)
         {
-            container
+            return container
                 .RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly())
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
-
-            return container;
         }
     }
 }

@@ -5,23 +5,26 @@
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
-    using Microsoft.Extensions.DependencyInjection;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
+        private readonly IServiceLocator _serviceLocator;
         private readonly IRibbonPanelItemService _ribbonPanelItemService;
-        private readonly Lazy<List<IItemStrategy>> _itemStrategies;
+        private List<IItemStrategy>? _strategies;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IRibbonPanelItemService ribbonPanelItemService, IServiceProvider serviceProvider)
+        public StackedItemsStrategy(IServiceLocator serviceLocator, IRibbonPanelItemService ribbonPanelItemService)
         {
+            _serviceLocator = serviceLocator;
             _ribbonPanelItemService = ribbonPanelItemService;
-            _itemStrategies =
-                new Lazy<List<IItemStrategy>>(() => serviceProvider.GetServices<IItemStrategy>().ToList());
         }
+
+        private IEnumerable<IItemStrategy> Strategies =>
+            _strategies ??= _serviceLocator.GetServices<IItemStrategy>().ToList();
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
@@ -67,7 +70,7 @@
 
         private IItemStrategy GetStrategy(IRibbonPanelItem firstItem)
         {
-            var strategy = _itemStrategies.Value.FirstOrDefault(x => x.IsApplicable(firstItem));
+            var strategy = Strategies.FirstOrDefault(x => x.IsApplicable(firstItem));
             if (strategy is null)
                 throw new InvalidOperationException($"Can't found strategy for: {firstItem.GetType().FullName}");
             return strategy;

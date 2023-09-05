@@ -3,7 +3,6 @@
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
-    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -36,8 +35,8 @@
         {
             base.Configure(assembly);
 
-            Container.Services
-                .AddTransient(_ => new AssemblyResolver(assembly))
+            Container
+                .AddTransient(() => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
         }
 

@@ -324,12 +324,10 @@ public static class ContainerExtensions
     /// <param name="action">The function for creating a configuration.</param>
     public static void AddConfiguration(
         this IContainer container,
-        Func<ConfigurationBuilder, IConfiguration>? action)
+        Action<IContainer, IConfigurationBuilder>? action)
     {
         if (action != null)
-        {
             container.AddInstance(action);
-        }
     }
 
     /// <summary>Gets an instance of type <typeparamref name="TService"/>.</summary>

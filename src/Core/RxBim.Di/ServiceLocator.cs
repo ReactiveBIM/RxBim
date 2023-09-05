@@ -24,16 +24,28 @@
         /// <inheritdoc/>
         public object GetService(Type type) => _container.GetService(type);
 
+        /// <inheritdoc/>
+        public IEnumerable<T> GetServices<T>()
+        {
+            return _container.ServiceProvider.GetServices<T>();
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<object> GetServices(Type type)
+        {
+            return _container.ServiceProvider.GetServices(type);
+        }
+
         /// <inheritdoc />
         public IEnumerable<T> GetServicesAssignableTo<T>()
         {
-            return _container.ServiceProvider.GetServices<T>();
+            return GetServices<T>();
         }
 
         /// <inheritdoc />
         public IEnumerable<object> GetServicesAssignableTo(Type type)
         {
-            return _container.ServiceProvider.GetServices(type);
+            return GetServices(type);
         }
     }
 }

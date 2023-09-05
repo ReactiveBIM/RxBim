@@ -4,8 +4,8 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Extensions;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Base DI configurator.
@@ -75,14 +75,14 @@
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
         {
-            Container.Services.AddSingleton<IConfiguration>(
-                provider =>
-                {
-                    foreach (var addConfig in provider.GetServices<Action<IServiceProvider, IConfigurationBuilder>>())
-                        addConfig(provider, configurationBuilder);
+            Container.AddSingleton<IConfiguration>(() =>
+            {
+                var serviceLocator = Container.GetService<IServiceLocator>();
+                foreach (var addConfig in serviceLocator.GetServices<Action<IContainer, IConfigurationBuilder>>())
+                    addConfig(Container, configurationBuilder);
 
-                    return configurationBuilder.Build();
-                });
+                return configurationBuilder.Build();
+            });
         }
     }
 }

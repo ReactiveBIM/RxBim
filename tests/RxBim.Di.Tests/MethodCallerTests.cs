@@ -1,6 +1,5 @@
 namespace RxBim.Di.Tests
 {
-    extern alias msdi;
     using System;
     using FluentAssertions;
     using Shared;

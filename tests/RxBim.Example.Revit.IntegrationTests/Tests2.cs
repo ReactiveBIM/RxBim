@@ -3,8 +3,8 @@ namespace RxBim.Example.Revit.IntegrationTests
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.DB;
+    using Di;
     using Di.Testing.Revit;
-    using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
     using RTF.Applications;
     using RTF.Framework;
@@ -13,7 +13,7 @@ namespace RxBim.Example.Revit.IntegrationTests
     [TestFixture]
     public class Tests2
     {
-        private IServiceCollection _services = null!;
+        private IContainer _container = null!;
 
         [SetUp]
         public void Setup()
@@ -31,16 +31,15 @@ namespace RxBim.Example.Revit.IntegrationTests
              if are using real configuration from the application.
              */
 
-            _services = testingDiConfigurator.Container.Services;
+            _container = testingDiConfigurator.Container;
         }
 
         [Test]
         [TestModel("./model.rvt")]
         public void CommentShouldBeSetAndNotThrowsException()
         {
-            using var provider = _services.BuildServiceProvider(false);
-            var testService = provider.GetRequiredService<ITestService>();
-            var element = new FilteredElementCollector(provider.GetRequiredService<Document>())
+            var testService = _container.GetService<ITestService>();
+            var element = new FilteredElementCollector(_container.GetService<Document>())
                 .WhereElementIsNotElementType()
                 .OfClass(typeof(Wall))
                 .FirstOrDefault();
@@ -64,8 +63,7 @@ namespace RxBim.Example.Revit.IntegrationTests
         [TestModel("./model.rvt")]
         public void AlwaysFail()
         {
-            using var provider = _services.BuildServiceProvider(false);
-            var testService = provider.GetRequiredService<ITestService>();
+            var testService = _container.GetService<ITestService>();
 
             testService.Throw();
         }

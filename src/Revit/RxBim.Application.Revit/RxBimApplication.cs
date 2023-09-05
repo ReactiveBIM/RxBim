@@ -4,7 +4,6 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
-    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -28,8 +27,7 @@
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-            var methodCaller =
-                _diConfigurator.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+            var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
             var result = methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
             return result.MapResultToRevitResult();
         }
@@ -43,8 +41,7 @@
                     _diConfigurator = new ApplicationDiConfigurator(this, _application, uiApp);
                     _diConfigurator.Configure(GetType().Assembly);
 
-                    var methodCaller =
-                        _diConfigurator.Container.ServiceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+                    var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
 
                     _contextCreated = true;

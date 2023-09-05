@@ -1,27 +1,25 @@
 ﻿namespace RxBim.Application.Ribbon.ItemFromConfigStrategies
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using ConfigurationBuilders;
+    using Di;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The strategy for getting a <see cref="StackedItems"/> from a configuration section.
     /// </summary>
     public class StackedItemsFromConfigStrategy : IItemFromConfigStrategy
     {
-        private readonly Lazy<List<IItemFromConfigStrategy>> _itemFromConfigStrategies;
+        private readonly IServiceLocator _serviceLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedItemsFromConfigStrategy"/> class.
         /// </summary>
-        /// <param name="serviceProvider"><see cref="IServiceProvider"/> object.</param>
-        public StackedItemsFromConfigStrategy(IServiceProvider serviceProvider)
+        /// <param name="serviceLocator"><see cref="IServiceLocator"/>.</param>
+        public StackedItemsFromConfigStrategy(IServiceLocator serviceLocator)
         {
-            _itemFromConfigStrategies = new Lazy<List<IItemFromConfigStrategy>>(() =>
-                serviceProvider.GetServices<IItemFromConfigStrategy>().ToList());
+            _serviceLocator = serviceLocator;
         }
 
         /// <inheritdoc />
@@ -39,9 +37,10 @@
 
             var stackedItems = new StackedItemsBuilder();
 
+            var fromConfigStrategies = _serviceLocator.GetServices<IItemFromConfigStrategy>().ToList();
             foreach (var child in itemsSection.GetChildren())
             {
-                var strategy = _itemFromConfigStrategies.Value.FirstOrDefault(x => x.IsApplicable(child));
+                var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(child));
                 if (strategy is null)
                     throw new InvalidOperationException($"Not found strategy for: {child.Value}");
                 stackedItems.AddItem(strategy.CreateForStack(child));

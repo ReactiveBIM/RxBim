@@ -1,26 +1,23 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Autodesk.Windows;
     using ConfigurationBuilders;
-    using Microsoft.Extensions.DependencyInjection;
+    using Di;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
+        private readonly IServiceLocator _serviceLocator;
         private readonly IPanelService _panelService;
-        private readonly Lazy<List<IItemStrategy>> _itemStrategies;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IPanelService panelService, IServiceProvider serviceProvider)
+        public StackedItemsStrategy(IServiceLocator serviceLocator, IPanelService panelService)
         {
+            _serviceLocator = serviceLocator;
             _panelService = panelService;
-            _itemStrategies =
-                new Lazy<List<IItemStrategy>>(() => serviceProvider.GetServices<IItemStrategy>().ToList());
         }
 
         /// <inheritdoc />
@@ -29,6 +26,8 @@
             var stackSize = stackedItems.Items.Count;
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
+
+            var strategies = _serviceLocator.GetServices<IItemStrategy>().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 
@@ -39,7 +38,7 @@
 
                 var buttonConfig = stackedItems.Items[i];
 
-                var itemStrategy = _itemStrategies.Value.FirstOrDefault(x => x.IsApplicable(buttonConfig));
+                var itemStrategy = strategies.FirstOrDefault(x => x.IsApplicable(buttonConfig));
                 if (itemStrategy is null)
                     continue;
 
