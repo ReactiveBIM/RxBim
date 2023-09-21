@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Logs.Autocad
 {
+    using System.Reflection;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Serilog;
 
     /// <summary>
-    /// The DI container extensions. 
+    /// The DI container extensions.
     /// </summary>
     public static class AutocadContainerExtensions
     {
@@ -13,17 +14,22 @@
         /// Adds logger into a container.
         /// </summary>
         /// <param name="container">The DI container.</param>
+        /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
-        public static void AddLogs(this IContainer container, IConfiguration? cfg = null)
+        public static void AddAutocadLogs(
+            this IContainer container,
+            Assembly? pluginAssembly = null,
+            IConfiguration? cfg = null)
         {
-            container.AddLogs(cfg, EnrichWithAutocadData);
+            pluginAssembly ??= Assembly.GetCallingAssembly();
+            container.AddLogs(cfg, (_, configuration) => EnrichWithAutocadData(configuration, pluginAssembly));
         }
 
-        private static void EnrichWithAutocadData(IContainer container, LoggerConfiguration config)
+        private static void EnrichWithAutocadData(LoggerConfiguration config, Assembly assembly)
         {
             try
             {
-                config.Enrich.With(new AutocadEnricher());
+                config.Enrich.With(new AutocadEnricher(assembly));
             }
             catch
             {

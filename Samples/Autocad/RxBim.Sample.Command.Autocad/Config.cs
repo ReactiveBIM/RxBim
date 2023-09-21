@@ -3,6 +3,8 @@
     using Abstractions;
     using Di;
     using Logs.Autocad;
+    using Microsoft.Extensions.Configuration;
+    using Models;
     using Services;
     using ViewModels;
     using Views;
@@ -16,7 +18,11 @@
             container.AddTransient<ISomeService, SomeService>();
             container.AddTransient<SomeWindow>();
             container.AddTransient<SomeViewModel>();
-            container.AddLogs();
+            container.AddAutocadLogs();
+
+            container.AddSingleton(() => container.GetService<IConfiguration>()
+                .GetSection(nameof(PluginSettings))
+                .Get<PluginSettings>());
         }
     }
 }

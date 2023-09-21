@@ -6,7 +6,7 @@
     public class PluginSettings
     {
         /// <summary>
-        /// Variable via environment 
+        /// Variable via environment.
         /// </summary>
         public string? EnvironmentVariable { get; set; }
     }
