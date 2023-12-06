@@ -384,7 +384,7 @@ public static class ContainerExtensions
             .ToList();
 
         foreach (var type in types)
-            container.Add(type, type, lifetime);
+            container.Add(interfaceType, type, lifetime);
 
         return container;
     }

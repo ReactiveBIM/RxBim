@@ -87,7 +87,7 @@ public class DiContainer : IContainer
     /// <inheritdoc />
     public IEnumerable<Registration> GetCurrentRegistrations()
     {
-        return Services.Select(x => new Registration(x.ServiceType));
+        return _services.Select(x => new Registration(x.ServiceType));
     }
 
     /// <inheritdoc />
