@@ -11,7 +11,7 @@ public interface IMethodCaller<out T>
     /// <summary>
     /// The type of the original object to call the method.
     /// </summary>
-    public Type SourceObjectType { get; }
+    Type SourceObjectType { get; }
 
     /// <summary>
     /// Returns the result of a method call.
