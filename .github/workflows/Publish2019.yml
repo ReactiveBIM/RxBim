@@ -21,6 +21,7 @@ on:
     branches:
       - master
       - 'release/**'
+      - 'feature/**'
       - 'hotfix/**'
 
 jobs:
