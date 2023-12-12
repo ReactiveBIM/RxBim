@@ -36,7 +36,8 @@
             this IPanelBuilder parent,
             Action<ICommandButtonBuilder>? builder = null)
         {
-            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
+            var commandType = typeof(TCommand);
+            return parent.CommandButton(GetDefaultCommandName(commandType), commandType, builder);
         }
 
         /// <summary>
@@ -66,7 +67,8 @@
             this IPulldownButtonBuilder parent,
             Action<ICommandButtonBuilder>? builder = null)
         {
-            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
+            var commandType = typeof(TCommand);
+            return parent.CommandButton(GetDefaultCommandName(commandType), commandType, builder);
         }
 
         /// <summary>
@@ -96,7 +98,8 @@
             this IStackedItemsBuilder parent,
             Action<ICommandButtonBuilder>? builder = null)
         {
-            return parent.CommandButton(typeof(TCommand).FullName, typeof(TCommand), builder);
+            var commandType = typeof(TCommand);
+            return parent.CommandButton(GetDefaultCommandName(commandType), commandType, builder);
         }
 
         /// <summary>
@@ -122,6 +125,11 @@
             button.LargeImage ??= attr.LargeImage;
             button.SmallImageLight ??= attr.SmallImageLight ?? attr.SmallImage;
             button.LargeImageLight ??= attr.LargeImageLight ?? attr.LargeImage;
+        }
+
+        private static string GetDefaultCommandName(Type commandType)
+        {
+            return commandType.FullName ?? commandType.Name;
         }
     }
 }

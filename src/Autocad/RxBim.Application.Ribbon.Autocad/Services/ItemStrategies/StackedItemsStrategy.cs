@@ -27,7 +27,7 @@
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
-            var strategies = _serviceLocator.GetServicesAssignableTo<IItemStrategy>().ToList();
+            var strategies = _serviceLocator.GetServices<IItemStrategy>().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 

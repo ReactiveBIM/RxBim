@@ -5,17 +5,17 @@
     /// <summary>
     /// The ServiceProvider implementation of <see cref="IContainerScope"/>.
     /// </summary>
-    internal class ServiceProviderScope : IContainerScope
+    internal class ContainerScope : IContainerScope
     {
         private readonly IServiceScope _scope;
-        private readonly ServiceProviderContainer _container;
+        private readonly DiContainer _container;
 
         /// <summary>
         /// ctor.
         /// </summary>
         /// <param name="scope">A ServiceProvider scope.</param>
         /// <param name="container">The container that the scope belongs to.</param>
-        public ServiceProviderScope(IServiceScope scope, ServiceProviderContainer container)
+        public ContainerScope(IServiceScope scope, DiContainer container)
         {
             _scope = scope;
             _container = container;

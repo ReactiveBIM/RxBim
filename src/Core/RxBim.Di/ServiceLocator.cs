@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     internal class ServiceLocator : IServiceLocator
@@ -12,7 +12,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceLocator"/> class.
         /// </summary>
-        /// <param name="container">The DI container</param>
+        /// <param name="container">The DI container.</param>
         public ServiceLocator(IContainer container)
         {
             _container = container;
@@ -24,19 +24,28 @@
         /// <inheritdoc/>
         public object GetService(Type type) => _container.GetService(type);
 
+        /// <inheritdoc/>
+        public IEnumerable<T> GetServices<T>()
+        {
+            return _container.ServiceProvider.GetServices<T>();
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<object> GetServices(Type type)
+        {
+            return _container.ServiceProvider.GetServices(type);
+        }
+
         /// <inheritdoc />
         public IEnumerable<T> GetServicesAssignableTo<T>()
         {
-            var type = typeof(T);
-            return GetServicesAssignableTo(type).Cast<T>();
+            return GetServices<T>();
         }
 
         /// <inheritdoc />
         public IEnumerable<object> GetServicesAssignableTo(Type type)
         {
-            return _container.GetCurrentRegistrations()
-                .Where(x => type.IsAssignableFrom(x.ServiceType))
-                .Select(x => _container.GetService(x.ServiceType));
+            return GetServices(type);
         }
     }
 }

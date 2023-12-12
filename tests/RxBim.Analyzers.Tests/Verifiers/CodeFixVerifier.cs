@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace TestHelper
 {
     using System;
@@ -49,8 +50,11 @@ namespace TestHelper
             int? codeFixIndex = null,
             bool allowNewCompilerDiagnostics = false)
         {
-            VerifyFix(LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), GetCSharpCodeFixProvider(), oldSource,
-                newSource, codeFixIndex, allowNewCompilerDiagnostics);
+            VerifyFix(LanguageNames.CSharp,
+                GetCSharpDiagnosticAnalyzer(),
+                GetCSharpCodeFixProvider(),
+                oldSource,
+                allowNewCompilerDiagnostics);
         }
 
         /// <summary>
@@ -66,8 +70,11 @@ namespace TestHelper
             int? codeFixIndex = null,
             bool allowNewCompilerDiagnostics = false)
         {
-            VerifyFix(LanguageNames.VisualBasic, GetBasicDiagnosticAnalyzer(), GetBasicCodeFixProvider(), oldSource,
-                newSource, codeFixIndex, allowNewCompilerDiagnostics);
+            VerifyFix(LanguageNames.VisualBasic,
+                GetBasicDiagnosticAnalyzer(),
+                GetBasicCodeFixProvider(),
+                oldSource,
+                allowNewCompilerDiagnostics);
         }
 
         /// <summary>
@@ -80,27 +87,25 @@ namespace TestHelper
         /// <param name="analyzer">The analyzer to be applied to the source code</param>
         /// <param name="codeFixProvider">The codefix to be applied to the code wherever the relevant Diagnostic is found</param>
         /// <param name="oldSource">A class in the form of a string before the CodeFix was applied to it</param>
-        /// <param name="newSource">A class in the form of a string after the CodeFix was applied to it</param>
-        /// <param name="codeFixIndex">Index determining which codefix to apply if there are multiple</param>
         /// <param name="allowNewCompilerDiagnostics">A bool controlling whether or not the test will fail if the CodeFix introduces other warnings after being applied</param>
         private void VerifyFix(
             string language,
             DiagnosticAnalyzer analyzer,
             CodeFixProvider codeFixProvider,
             string oldSource,
-            string newSource,
-            int? codeFixIndex,
             bool allowNewCompilerDiagnostics)
         {
             var document = CreateDocument(oldSource, language);
             var analyzerDiagnostics = GetSortedDiagnosticsFromDocuments(analyzer, new[] { document });
-            var compilerDiagnostics = GetCompilerDiagnostics(document);
+            var compilerDiagnostics = GetCompilerDiagnostics(document).ToList();
             var attempts = analyzerDiagnostics.Length;
 
-            for (int i = 0; i < attempts; ++i)
+            for (var i = 0; i < attempts; ++i)
             {
                 var actions = new List<CodeAction>();
-                var context = new CodeFixContext(document, analyzerDiagnostics[0], (a, d) => actions.Add(a),
+                var context = new CodeFixContext(document,
+                    analyzerDiagnostics[0],
+                    (a, _) => actions.Add(a),
                     CancellationToken.None);
                 codeFixProvider.RegisterCodeFixesAsync(context).Wait();
 
@@ -114,16 +119,24 @@ namespace TestHelper
 
                 var newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
 
-                if (!allowNewCompilerDiagnostics && newCompilerDiagnostics.Any(x => x.Id != "CS0103" && x.Id != "CS0246"))
+                if (!allowNewCompilerDiagnostics &&
+                    newCompilerDiagnostics.Any(x => x.Id != "CS0103" && x.Id != "CS0246"))
                 {
-                    document = document.WithSyntaxRoot(Formatter.Format(document.GetSyntaxRootAsync().Result,
-                        Formatter.Annotation, document.Project.Solution.Workspace));
-                    newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
+                    var syntaxNode = document.GetSyntaxRootAsync().Result;
 
-                    Assert.IsTrue(false,
-                        string.Format("Fix introduced new compiler diagnostics:\r\n{0}\r\n\r\nNew document:\r\n{1}\r\n",
-                            string.Join("\r\n", newCompilerDiagnostics.Select(d => d.ToString())),
-                            document.GetSyntaxRootAsync().Result.ToFullString()));
+                    if (syntaxNode != null)
+                    {
+                        document = document.WithSyntaxRoot(Formatter.Format(syntaxNode,
+                            Formatter.Annotation,
+                            document.Project.Solution.Workspace));
+                        newCompilerDiagnostics =
+                            GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
+
+                        var join = string.Join("\r\n", newCompilerDiagnostics.Select(d => d.ToString()));
+                        var fullString = syntaxNode.ToFullString();
+                        Assert.IsTrue(false,
+                            $"Fix introduced new compiler diagnostics:\r\n{join}\r\n\r\nNew document:\r\n{fullString}\r\n");
+                    }
                 }
 
                 if (!analyzerDiagnostics.Any())

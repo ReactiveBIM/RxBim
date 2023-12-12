@@ -3,7 +3,7 @@
     /// <summary>
     /// Result template.
     /// </summary>
-    public partial class Result
+    public class Result
     {
     }
 }

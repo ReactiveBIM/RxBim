@@ -35,7 +35,6 @@
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
-    <ProjectReference Include="..\..\..\src\Core\RxBim.Di.SimpleInjector\RxBim.Di.SimpleInjector.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <PackageGuid>fe36e6d8-1d3d-4d84-8fea-dfdc5f28b4cf</PackageGuid>

@@ -28,7 +28,7 @@
 
             Container
                 .AddTransient(() => new AssemblyResolver(assembly))
-                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller));
+                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
         }
 
         /// <inheritdoc />

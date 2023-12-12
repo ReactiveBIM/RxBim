@@ -85,7 +85,7 @@
 
             var panel = GetOrCreatePanel(tab, panelConfig.Name!);
 
-            var addItemStrategies = _serviceLocator.GetServicesAssignableTo<IItemStrategy>().ToList();
+            var addItemStrategies = _serviceLocator.GetServices<IItemStrategy>().ToList();
 
             foreach (var item in panelConfig.Items)
             {
