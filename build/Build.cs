@@ -72,7 +72,7 @@ partial class Build : NukeBuild
     [Parameter] public bool AttachDebugger;
 
     /// <summary>
-    /// Example target. Runs local only....
+    /// Example target. Runs local only...
     /// </summary>
     Target IntegrationTests => _ => _
         .Executes(async () =>
