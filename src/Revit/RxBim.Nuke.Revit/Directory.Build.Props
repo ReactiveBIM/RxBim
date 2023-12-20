@@ -1,7 +1,7 @@
 ﻿<Project>
     <PropertyGroup>
         <NotRefenceApi>true</NotRefenceApi>
-        <Version>2.2.7</Version>
+        <Version>2.2.8-dev001</Version>
     </PropertyGroup>
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
