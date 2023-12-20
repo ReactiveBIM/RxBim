@@ -90,17 +90,19 @@
         /// <param name="configuration">Selected configuration.</param>
         /// <param name="allAssembliesTypes">All assemblies types.</param>
         /// <param name="outputDir">Output directory path.</param>
+        /// <param name="seriesMaxAny">Supports any maximum version of CAD.</param>
         public void GeneratePackageContentsFile(
             Project project,
             string configuration,
             IEnumerable<AssemblyType> allAssembliesTypes,
-            string outputDir)
+            string outputDir,
+            bool seriesMaxAny)
         {
             if (!NeedGeneratePackageContents(configuration))
                 return;
 
             var packageContentsGenerator = new TPackGen();
-            packageContentsGenerator.Generate(project, outputDir, allAssembliesTypes);
+            packageContentsGenerator.Generate(project, outputDir, allAssembliesTypes, seriesMaxAny);
         }
 
         /// <summary>

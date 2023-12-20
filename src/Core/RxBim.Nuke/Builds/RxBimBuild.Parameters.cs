@@ -105,6 +105,12 @@ namespace RxBim.Nuke.Builds
         }
 
         /// <summary>
+        /// Supports any maximum version of CAD.
+        /// </summary>
+        [Parameter("Supports any maximum version of CAD")]
+        public bool SeriesMaxAny { get; set; }
+
+        /// <summary>
         /// Solution.
         /// </summary>
         [Solution]
