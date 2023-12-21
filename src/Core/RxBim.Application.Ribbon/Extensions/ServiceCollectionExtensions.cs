@@ -10,7 +10,7 @@
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
     /// </summary>
-    public static class ContainerExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Adds a plugin ribbon menu from an action.
@@ -79,7 +79,7 @@
         {
             cfg ??= container.GetService<IConfiguration>();
             var serviceLocator = container.GetService<IServiceLocator>();
-            var strategies = serviceLocator.GetServicesAssignableTo<IItemFromConfigStrategy>().ToList();
+            var strategies = serviceLocator.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);

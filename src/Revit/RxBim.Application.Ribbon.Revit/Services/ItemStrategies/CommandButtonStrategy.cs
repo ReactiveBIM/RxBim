@@ -2,19 +2,19 @@
 {
     using Abstractions;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for command button.
     /// </summary>
+    [UsedImplicitly]
     public class CommandButtonStrategy : ItemStrategyBase<CommandButton>
     {
-        private readonly MenuData _menuData;
         private readonly IRibbonPanelItemService _ribbonPanelItemService;
 
         /// <inheritdoc />
         public CommandButtonStrategy(MenuData menuData, IRibbonPanelItemService ribbonPanelItemService)
         {
-            _menuData = menuData;
             _ribbonPanelItemService = ribbonPanelItemService;
         }
 

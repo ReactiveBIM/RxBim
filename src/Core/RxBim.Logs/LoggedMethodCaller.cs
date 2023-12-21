@@ -31,11 +31,15 @@
             catch (Exception e)
             {
                 _logger.Error(e,
-                    $"Error was thrown at execution of method {methodName} of object {SourceObjectType.FullName}.");
+                    "Error was thrown at execution of method {MethodName} of object {TypeName}",
+                    methodName,
+                    SourceObjectType.FullName);
                 throw;
             }
 
-            _logger.Information($"Method {methodName} of object {SourceObjectType.FullName} executed successfully.");
+            _logger.Information("Method {MethodName} of object {TypeName} executed successfully",
+                methodName,
+                SourceObjectType.FullName);
 
             return result;
         }

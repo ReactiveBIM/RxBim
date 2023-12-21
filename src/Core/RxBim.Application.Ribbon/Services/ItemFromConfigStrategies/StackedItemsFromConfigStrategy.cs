@@ -37,7 +37,7 @@
 
             var stackedItems = new StackedItemsBuilder();
 
-            var fromConfigStrategies = _serviceLocator.GetServicesAssignableTo<IItemFromConfigStrategy>().ToList();
+            var fromConfigStrategies = _serviceLocator.GetServices<IItemFromConfigStrategy>().ToList();
             foreach (var child in itemsSection.GetChildren())
             {
                 var strategy = fromConfigStrategies.FirstOrDefault(x => x.IsApplicable(child));

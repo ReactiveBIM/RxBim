@@ -24,7 +24,7 @@
         }
 
         private IEnumerable<IItemStrategy> Strategies =>
-            _strategies ??= _serviceLocator.GetServicesAssignableTo<IItemStrategy>().ToList();
+            _strategies ??= _serviceLocator.GetServices<IItemStrategy>().ToList();
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
