@@ -18,8 +18,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch,
-        FeatureBranches
+        DevelopBranch, FeatureBranches
     },
     InvokedTargets = new[]
     {
