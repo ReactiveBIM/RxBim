@@ -18,11 +18,13 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, FeatureBranches
+        DevelopBranch,
+        FeatureBranches
     },
     InvokedTargets = new[]
     {
-        nameof(Test), nameof(IPublish.Publish)
+        nameof(Test),
+        nameof(IPublish.Publish)
     },
     ImportSecrets = new[]
     {
