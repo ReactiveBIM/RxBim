@@ -1,7 +1,10 @@
 ﻿namespace RxBim.Logs
 {
     using System;
+    using System.IO;
+    using System.Reflection;
     using Di;
+    using Di.Extensions;
     using Enrichers;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyModel;
@@ -24,9 +27,24 @@
             IConfiguration? cfg = null,
             Action<IContainer, LoggerConfiguration>? addEnricher = null)
         {
+            AddGeneralConfiguration(container);
             RegisterLogger(container, cfg, addEnricher);
-
             container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
+        }
+
+        private static void AddGeneralConfiguration(this IContainer container)
+        {
+            const string generalConfigFile = "appsettings.General.json";
+            var assembly = Assembly.GetExecutingAssembly();
+            var basePath = Path.GetDirectoryName(assembly.Location);
+            if (!string.IsNullOrWhiteSpace(basePath))
+            {
+                container.AddConfiguration((_, builder) =>
+                {
+                    builder.AddEnvironmentJsonFile(basePath, generalConfigFile)
+                        .SetFileLoadExceptionHandler(i => i.Ignore = true);
+                });
+            }
         }
 
         private static void RegisterLogger(
