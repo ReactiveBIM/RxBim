@@ -22,7 +22,7 @@
             IConfiguration? cfg = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            container.AddLogs(cfg, (_, configuration) => EnrichWithAutocadData(configuration, pluginAssembly));
+            container.AddLogs(pluginAssembly, cfg, (_, configuration) => EnrichWithAutocadData(configuration, pluginAssembly));
         }
 
         private static void EnrichWithAutocadData(LoggerConfiguration config, Assembly assembly)

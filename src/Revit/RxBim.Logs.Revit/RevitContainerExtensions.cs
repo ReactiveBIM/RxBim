@@ -23,7 +23,9 @@
             IConfiguration? cfg = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            container.AddLogs(cfg,
+            container.AddLogs(
+                pluginAssembly,
+                cfg,
                 (container1, configuration) => EnrichWithRevitData(container1, configuration, pluginAssembly));
         }
 

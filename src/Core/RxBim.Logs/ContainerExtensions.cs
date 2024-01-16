@@ -20,23 +20,25 @@
         /// Adds logs in a <paramref name="container"/>.
         /// </summary>
         /// <param name="container">A DI container.</param>
+        /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">A configuration.</param>
         /// <param name="addEnricher">An action for additional logs configuration.</param>
         public static void AddLogs(
             this IContainer container,
+            Assembly? pluginAssembly = null,
             IConfiguration? cfg = null,
             Action<IContainer, LoggerConfiguration>? addEnricher = null)
         {
-            AddGeneralConfiguration(container);
+            var assembly = pluginAssembly ?? Assembly.GetCallingAssembly();
+            AddGeneralConfiguration(container, assembly);
             RegisterLogger(container, cfg, addEnricher);
             container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
-        private static void AddGeneralConfiguration(this IContainer container)
+        private static void AddGeneralConfiguration(this IContainer container, Assembly pluginAssembly)
         {
             const string generalConfigFile = "appsettings.General.json";
-            var assembly = Assembly.GetExecutingAssembly();
-            var basePath = Path.GetDirectoryName(assembly.Location);
+            var basePath = Path.GetDirectoryName(pluginAssembly.Location);
             if (!string.IsNullOrWhiteSpace(basePath))
             {
                 container.AddConfiguration((_, builder) =>
