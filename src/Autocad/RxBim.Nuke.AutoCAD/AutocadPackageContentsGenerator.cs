@@ -13,7 +13,10 @@
     public class AutocadPackageContentsGenerator : PackageContentsGenerator
     {
         /// <inheritdoc />
-        protected override IEnumerable<Components> GetComponents(Project project, IEnumerable<string> assembliesNames)
+        protected override IEnumerable<Components> GetComponents(
+            Project project,
+            IEnumerable<string> assembliesNames,
+            bool seriesMaxAny)
         {
             var acadVersion = GetAcadRuntimeVersion(project);
 
@@ -26,7 +29,7 @@
                     ModuleName = $"{project.Name}\\{name}.dll",
                     OS = "Win64",
                     SeriesMin = $"R{acadVersion}",
-                    SeriesMax = $"R{acadVersion}"
+                    SeriesMax = seriesMaxAny ? null : $"R{acadVersion}"
                 });
             }
 

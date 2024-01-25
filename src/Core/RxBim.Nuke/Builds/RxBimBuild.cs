@@ -177,7 +177,8 @@
                     ProjectForInstallBuild,
                     Configuration,
                     types,
-                    OutputTmpDir);
+                    OutputTmpDir,
+                    SeriesMaxAny);
             });
 
         /// <summary>

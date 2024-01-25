@@ -19,11 +19,19 @@
         /// <param name="project">The project.</param>
         /// <param name="outputDirectory">The output path.</param>
         /// <param name="allAssembliesTypes">Assemblies types data.</param>
-        public void Generate(Project project, string outputDirectory, IEnumerable<AssemblyType> allAssembliesTypes)
+        /// <param name="seriesMaxAny">Supports any maximum version of CAD.</param>
+        public void Generate(
+            Project project,
+            string outputDirectory,
+            IEnumerable<AssemblyType> allAssembliesTypes,
+            bool seriesMaxAny)
         {
             var outputFilePath = Path.Combine(outputDirectory, "PackageContents.xml");
-            var componentsList =
-                GetComponents(project, allAssembliesTypes.Select(x => x.AssemblyName).Distinct()).ToList();
+            var componentsList = GetComponents(
+                    project,
+                    allAssembliesTypes.Select(x => x.AssemblyName).Distinct(),
+                    seriesMaxAny)
+                .ToList();
             project.ToApplicationPackage(componentsList).ToXElement().Save(outputFilePath);
         }
 
@@ -32,6 +40,10 @@
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="assembliesNames">Assemblies names.</param>
-        protected abstract IEnumerable<Components> GetComponents(Project project, IEnumerable<string> assembliesNames);
+        /// <param name="seriesMaxAny">Supports any maximum version of CAD.</param>
+        protected abstract IEnumerable<Components> GetComponents(
+            Project project,
+            IEnumerable<string> assembliesNames,
+            bool seriesMaxAny);
     }
 }

@@ -14,7 +14,10 @@
     public class RevitPackageContentsGenerator : PackageContentsGenerator
     {
         /// <inheritdoc/>
-        protected override IEnumerable<Components> GetComponents(Project project, IEnumerable<string> assembliesNames)
+        protected override IEnumerable<Components> GetComponents(
+            Project project,
+            IEnumerable<string> assembliesNames,
+            bool seriesMaxAny)
         {
             if (project.TryGetAppVersionNumber(out var revitVersion))
             {
@@ -25,7 +28,7 @@
                     ModuleName = $"{project.Name}.addin",
                     OS = "Win64",
                     SeriesMax = $"R{revitVersion}",
-                    SeriesMin = $"R{revitVersion}",
+                    SeriesMin = seriesMaxAny ? null : $"R{revitVersion}"
                 };
             }
             else
