@@ -25,7 +25,6 @@
             Action<IContainer, LoggerConfiguration>? addEnricher = null)
         {
             RegisterLogger(container, cfg, addEnricher);
-
             container.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
