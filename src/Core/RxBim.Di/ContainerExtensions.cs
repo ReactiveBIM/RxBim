@@ -297,7 +297,7 @@ public static class ContainerExtensions
         TService implementationInstance)
         where TService : class
     {
-        container.Services.AddSingleton(implementationInstance);
+        container.AddInstance(typeof(TService), implementationInstance);
         return container;
     }
 

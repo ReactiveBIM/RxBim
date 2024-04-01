@@ -63,7 +63,6 @@ public interface IContainer : IDisposable
     /// <param name="serviceType">The type of the service to register and the implementation to use.</param>
     /// <param name="implementationInstance">The instance of the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    [Obsolete("Use AddInstance<T> instead.")]
     IContainer AddInstance(Type serviceType, object implementationInstance);
 
     /// <summary>
