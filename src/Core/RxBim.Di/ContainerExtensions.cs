@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extension methods for <see cref="IContainer"/>.
@@ -296,7 +297,7 @@ public static class ContainerExtensions
         TService implementationInstance)
         where TService : class
     {
-        container.AddInstance(typeof(TService), implementationInstance);
+        container.Services.AddSingleton(implementationInstance);
         return container;
     }
 

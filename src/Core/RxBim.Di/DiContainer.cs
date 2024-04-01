@@ -71,6 +71,7 @@ public class DiContainer : IContainer
     }
 
     /// <inheritdoc />
+    [Obsolete]
     public IContainer AddInstance(Type serviceType, object implementationInstance)
     {
         Services.AddSingleton(implementationInstance);
