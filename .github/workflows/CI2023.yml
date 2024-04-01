@@ -20,6 +20,7 @@ on:
   push:
     branches:
       - develop
+      - 'feature/**'
 
 jobs:
   windows-latest:
