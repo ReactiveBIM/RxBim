@@ -23,7 +23,7 @@
                 versionNumbers.Select(x =>
                     $"""
                             Target {SetVersion}{x} => _ => _
-                                .Before<IPublish>(x => x.Publish, x => x.AddPublishTags, x => x.Release)
+                                .Before<IPublish>(x => x.Publish, x => x.AddPublishTags, x => x.Release, x => x.PackagesList)
                                 .Before<IPack>(x => x.Pack)
                                 .Before<ICompile>(x => x.Compile)
                                 .Before<IRestore>(x => x.Restore)
