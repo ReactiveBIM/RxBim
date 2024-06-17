@@ -10,17 +10,6 @@
         <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
-        <PackageReference Include="RazorLight" Version="2.3.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="TestHelpers\Result.cshtml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </EmbeddedResource>
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim nuke plugin for automation of building for Revit</Description>
     </PropertyGroup>
