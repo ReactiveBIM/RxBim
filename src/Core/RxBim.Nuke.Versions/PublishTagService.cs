@@ -30,7 +30,7 @@ public static class PublishTagService
     public static string GetTagValue(ProjectInfo projectInfo)
     {
         var name = projectInfo.ProjectName ?? throw new InvalidOperationException("Project name can't be null!");
-        var version = projectInfo.Version ?? throw new InvalidOperationException("Project version can't be null!");
+        var version = projectInfo.Package.Version ?? throw new InvalidOperationException("Project version can't be null!");
         return $"{name}{TagPartsSeparator}{version}";
     }
 
