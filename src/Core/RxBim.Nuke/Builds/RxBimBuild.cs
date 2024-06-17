@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Nuke.Builds
 {
-    extern alias nc;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -8,17 +7,15 @@
     using Builders;
     using Extensions;
     using Generators;
+    using global::Nuke.Common;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tools.DotNet;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
-    using nc::Nuke.Common;
-    using nc::Nuke.Common.IO;
-    using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tools.DotNet;
-    using nc::Nuke.Common.Tools.Git;
-    using static Helpers.WixHelper;
-    using static nc::Nuke.Common.IO.FileSystemTasks;
-    using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using GitTasks = global::Nuke.Common.Tools.Git.GitTasks;
 
     /// <summary>
     /// Contains tools for MSI packages creating.
@@ -122,7 +119,7 @@
         /// Installs WixSharp.
         /// </summary>
         public Target InstallWixTools => _ => _
-            .Executes(SetupWixTools);
+            .Executes(WixHelper.SetupWixTools);
 
         /// <summary>
         /// Signs assemblies af a given project.
@@ -213,7 +210,7 @@
         {
             var options = GetBuildOptions(project, configuration);
             _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
-            DeleteDirectory(OutputTmpDir);
+            ((AbsolutePath)OutputTmpDir).DeleteDirectory();
         }
 
         private void BuildInnoInstaller(Project project, string configuration)
@@ -222,7 +219,7 @@
             var setupFileName = $"{options.OutFileName}_{options.Version}";
 
             _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
-            DeleteDirectory(OutputTmpDir);
+            ((AbsolutePath)OutputTmpDir).DeleteDirectory();
             SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
         }
 
