@@ -94,13 +94,23 @@
         }
 
         /// <summary>
+        /// Adds sign tool.
+        /// </summary>
+        /// <param name="value">Value of sign tool.</param>
+        public InnoBuilder AddSignTool(string value)
+        {
+            _setupBuilder.SignTool(value);
+            return this;
+        }
+
+        /// <summary>
         /// Adds environment variable.
         /// </summary>
         /// <param name="environment">Environment value.</param>
         public InnoBuilder AddRxBimEnvironment(string environment)
         {
             var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{{{_options.PackageGuid}}}";
-            
+
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.EnvironmentRegKeyName)
                 .ValueType(ValueTypes.String)
@@ -111,7 +121,7 @@
                 .ValueType(ValueTypes.String)
                 .ValueData(_options.ProductProjectName)
                 .Flags(RegistryFlags.UninsDeleteKey);
-                
+
             return this;
         }
 

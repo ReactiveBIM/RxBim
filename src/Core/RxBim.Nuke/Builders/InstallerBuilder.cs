@@ -40,7 +40,7 @@
         /// <param name="outputDir">Output directory.</param>
         /// <param name="outputBinDir">Output assembly directory.</param>
         /// <param name="options">Options.</param>
-        public void BuildInno(
+        public virtual void BuildInno(
             AbsolutePath temporaryDirectory,
             string outputDir,
             string outputBinDir,
