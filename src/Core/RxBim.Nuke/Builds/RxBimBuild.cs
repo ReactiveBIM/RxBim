@@ -199,6 +199,23 @@
             return optionsBuilder.Build();
         }
 
+        /// <summary>
+        /// File sign logic.
+        /// </summary>
+        /// <param name="filePath">Path to file.</param>
+        protected virtual void SignSetupFile(string filePath)
+        {
+            if (!CheckSignAvailable())
+                return;
+
+            filePath.SignFile(
+                (AbsolutePath)Cert,
+                PrivateKey.Ensure(),
+                Csp.Ensure(),
+                Algorithm.Ensure(),
+                ServerUrl.Ensure());
+        }
+
         private void CreateOutDirectory()
         {
             var outDir = Solution.Directory / "out";
@@ -221,19 +238,6 @@
             _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
             ((AbsolutePath)OutputTmpDir).DeleteDirectory();
             SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
-        }
-
-        private void SignSetupFile(string filePath)
-        {
-            if (!CheckSignAvailable())
-                return;
-
-            filePath.SignFile(
-                (AbsolutePath)Cert,
-                PrivateKey.Ensure(),
-                Csp.Ensure(),
-                Algorithm.Ensure(),
-                ServerUrl.Ensure());
         }
 
         private bool CheckSignAvailable()
