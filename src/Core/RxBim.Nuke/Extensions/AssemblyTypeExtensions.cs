@@ -14,35 +14,16 @@
     public static class AssemblyTypeExtensions
     {
         /// <summary>
-        /// Signs assemblies.
+        /// Return dll names of given assemblies.
         /// </summary>
         /// <param name="assemblyTypes">Assembly types.</param>
         /// <param name="outputDirectory">Output directory path.</param>
-        /// <param name="cert">Certificate path.</param>
-        /// <param name="keyContainer">Private key.</param>
-        /// <param name="csp">CSP containing.</param>
-        /// <param name="digestAlgorithm">Digest algorithm.</param>
-        /// <param name="timestampServerUrl">Timestamp server URL.</param>
-        public static void SignAssemblies(
-            this IEnumerable<AssemblyType> assemblyTypes,
-            AbsolutePath outputDirectory,
-            AbsolutePath cert,
-            string keyContainer,
-            string csp,
-            string digestAlgorithm,
-            string timestampServerUrl)
+        public static string[] GetDllNames(this IEnumerable<AssemblyType> assemblyTypes, AbsolutePath outputDirectory)
         {
-            var filesNames = assemblyTypes
+            return assemblyTypes
                 .Select(t => (outputDirectory / $"{t.AssemblyName}.dll").ToString())
                 .Distinct()
                 .ToArray();
-
-            filesNames.SignFiles(
-                cert,
-                keyContainer,
-                csp,
-                digestAlgorithm,
-                timestampServerUrl);
         }
 
         /// <summary>

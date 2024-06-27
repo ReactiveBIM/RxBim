@@ -128,20 +128,7 @@
             .Requires(() => Project)
             .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
-            .Executes(() =>
-            {
-                if (!CheckSignAvailable())
-                    return;
-
-                var types = GetAssemblyTypes();
-                types.SignAssemblies(
-                    (AbsolutePath)OutputTmpDirBin,
-                    (AbsolutePath)Cert,
-                    PrivateKey.Ensure(),
-                    Csp.Ensure(),
-                    Algorithm.Ensure(),
-                    ServerUrl.Ensure());
-            });
+            .Executes(SignAssemblyTypes);
 
         /// <summary>
         /// Generates additional files.
@@ -200,6 +187,24 @@
         }
 
         /// <summary>
+        /// Signs assembly types.
+        /// </summary>
+        protected virtual void SignAssemblyTypes()
+        {
+            if (!CheckSignAvailable())
+                return;
+
+            var types = GetAssemblyTypes();
+            var dllNames = types.GetDllNames((AbsolutePath)OutputTmpDirBin);
+            dllNames.SignFiles(
+                (AbsolutePath)Cert,
+                PrivateKey.Ensure(),
+                Csp.Ensure(),
+                Algorithm.Ensure(),
+                ServerUrl.Ensure());
+        }
+
+        /// <summary>
         /// File sign logic.
         /// </summary>
         /// <param name="filePath">Path to file.</param>
@@ -214,6 +219,15 @@
                 Csp.Ensure(),
                 Algorithm.Ensure(),
                 ServerUrl.Ensure());
+        }
+
+        /// <summary>
+        /// Gets assembly types.
+        /// </summary>
+        private List<AssemblyType> GetAssemblyTypes()
+        {
+            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
+                GetBuildOptions(ProjectForInstallBuild, Configuration));
         }
 
         private void CreateOutDirectory()
@@ -247,15 +261,6 @@
                    && !string.IsNullOrWhiteSpace(Csp)
                    && !string.IsNullOrWhiteSpace(Algorithm)
                    && !string.IsNullOrWhiteSpace(ServerUrl);
-        }
-
-        /// <summary>
-        /// Gets assembly types.
-        /// </summary>
-        private List<AssemblyType> GetAssemblyTypes()
-        {
-            return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
-                GetBuildOptions(ProjectForInstallBuild, Configuration));
         }
     }
 }
