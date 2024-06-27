@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimLab.Nuke" Version="2024.2.0" />
+        <PackageReference Include="BimLab.Nuke" Version="2024.2.1" />
     </ItemGroup>
 
     <ItemGroup>
