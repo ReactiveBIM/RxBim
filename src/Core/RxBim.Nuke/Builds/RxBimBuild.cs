@@ -74,7 +74,7 @@
         /// <summary>
         /// Compiles the project defined in <see cref="Project"/> to temporary path.
         /// </summary>
-        public Target CompileToTemp => _ => _
+        public virtual Target CompileToTemp => _ => _
             .Description("Build project to temp output")
             .Requires(() => Project)
             .DependsOn(Restore)
