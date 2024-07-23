@@ -1,17 +1,16 @@
 ﻿namespace RxBim.Nuke.Builders
 {
-    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using Extensions;
     using Generators;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
+    using global::Nuke.Common.Tools.InnoSetup;
     using InnoSetup.ScriptBuilder;
     using Models;
-    using nc::Nuke.Common.IO;
-    using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tooling;
-    using nc::Nuke.Common.Tools.InnoSetup;
 
     /// <summary>
     /// Builder for installer.
@@ -41,7 +40,7 @@
         /// <param name="outputDir">Output directory.</param>
         /// <param name="outputBinDir">Output assembly directory.</param>
         /// <param name="options">Options.</param>
-        public void BuildInno(
+        public virtual void BuildInno(
             AbsolutePath temporaryDirectory,
             string outputDir,
             string outputBinDir,
@@ -63,7 +62,7 @@
                 .Build(iss);
 
             InnoSetupTasks.InnoSetup(config => config
-                .SetProcessToolPath(ToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
+                .SetProcessToolPath(NuGetToolPathResolver.GetPackageExecutable("Tools.InnoSetup", "ISCC.exe"))
                 .SetScriptFile(iss)
                 .SetOutputDir(options.OutDir));
         }

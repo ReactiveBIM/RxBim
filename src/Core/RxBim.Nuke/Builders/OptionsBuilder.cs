@@ -1,14 +1,12 @@
 ﻿namespace RxBim.Nuke.Builders;
 
-extern alias nc;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Builds;
+using global::Nuke.Common.ProjectModel;
 using JetBrains.Annotations;
-using nc::Nuke.Common.ProjectModel;
 
 /// <summary>
 /// Builder for <see cref="Options"/>.

@@ -1,12 +1,11 @@
 ﻿namespace RxBim.Nuke.Helpers
 {
-    extern alias nc;
     using System;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using nc::Nuke.Common.IO;
+    using global::Nuke.Common.IO;
     using Octokit;
     using SharpCompress.Archives;
     using SharpCompress.Common;
@@ -37,9 +36,9 @@
                 var wixSharp7Z = DownloadWixSharp();
                 using Stream stream = File.OpenRead(wixSharp7Z);
                 var reader = ArchiveFactory.Open(stream);
-                foreach (var entry in reader.Entries.Where(entry => !entry.Key.StartsWith("Samples")))
+                foreach (var entry in reader.Entries.Where(entry => !entry.Key!.StartsWith("Samples")))
                 {
-                    if (entry.IsDirectory || entry.Key.StartsWith("Samples"))
+                    if (entry.IsDirectory || entry.Key!.StartsWith("Samples"))
                         continue;
                     entry.WriteToDirectory(
                         wixSharpBinPath,

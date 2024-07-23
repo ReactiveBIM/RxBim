@@ -1,14 +1,11 @@
 using System;
-using System.Linq;
 using System.Text;
 using Bimlab.Nuke.Components;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using RxBim.Nuke.Revit.TestHelpers;
 using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -18,13 +15,11 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, 
-        FeatureBranches
+        DevelopBranch, FeatureBranches
     },
     InvokedTargets = new[]
     {
-        nameof(Test),
-        nameof(IPublish.Publish)
+        nameof(Test), nameof(IPublish.Publish)
     },
     ImportSecrets = new[]
     {
@@ -50,9 +45,9 @@ partial class Build : NukeBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
-    const string FeatureBranches = "feature/**";
     const string ReleaseBranches = "release/**";
     const string HotfixBranches = "hotfix/**";
+    const string FeatureBranches = "feature/**";
 
     public Build()
     {
@@ -67,47 +62,9 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             DotNetTest(settings => settings
-                .SetProjectFile(this.From<IHazSolution>().Solution.Path)
-                .SetConfiguration(this.From<IHazConfiguration>().Configuration)
+                .SetProjectFile(this.From<IHasSolution>().Solution.Path)
+                .SetConfiguration(this.From<IHasConfiguration>().Configuration)
                 .SetFilter("FullyQualifiedName!~Integration"));
-        });
-
-    [Parameter] public bool AttachDebugger;
-
-    /// <summary>
-    /// Example target. Runs local only..
-    /// </summary>
-    Target IntegrationTests => _ => _
-        .Executes(async () =>
-        {
-            var solution = this.From<IHazSolution>().Solution;
-
-            const string testProjectName = "RxBim.Transactions.Revit.IntegrationsTests";
-            var project = solution.AllProjects.FirstOrDefault(x => x.Name == testProjectName) ??
-                          throw new ArgumentException("project not found");
-
-            var outputDirectory = solution.Directory / "testoutput";
-            DotNetBuild(settings => settings
-                .SetProjectFile(project)
-                .SetConfiguration(Configuration.Debug)
-                .SetOutputDirectory(outputDirectory));
-
-            const string assemblyName = testProjectName + ".dll";
-            var assemblyPath = outputDirectory / assemblyName;
-
-            var results = outputDirectory / "result.xml";
-            RevitTestTasks.RevitTest(settings => settings
-                .SetResults(results)
-                .SetDir(outputDirectory)
-                .SetProcessWorkingDirectory(outputDirectory)
-                .EnableContinuous()
-                .SetDebug(AttachDebugger)
-                .SetAssembly(assemblyPath));
-
-            var resultPath = solution.Directory / "result.html";
-
-            await new ResultConverter()
-                .Convert(results, resultPath);
         });
 
     string IVersionBuild.ProjectNamePrefix => "RxBim.";

@@ -75,7 +75,7 @@
             if (string.IsNullOrEmpty(versionBuild.AppVersion))
                 versionBuild.AppVersion = appVersion;
 
-            versionBuild.From<IHazSolution>()
+            versionBuild.From<IHasSolution>()
                 .Solution.AllProjects
                 .Where(appVersion.IsApplicableFor)
                 .ForEach(p =>
