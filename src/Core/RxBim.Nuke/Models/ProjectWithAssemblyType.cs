@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Nuke.Models
 {
-    extern alias nc;
-    using nc::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.ProjectModel;
 
     /// <summary>
     /// Pair of the <see cref="Project"/> and the <see cref="AssemblyType"/>.

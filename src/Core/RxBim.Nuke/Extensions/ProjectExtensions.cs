@@ -1,23 +1,22 @@
 ﻿namespace RxBim.Nuke.Extensions
 {
-    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Xml.Linq;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
+    using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Tools.Git;
+    using global::Nuke.Common.Utilities;
     using Models;
-    using nc::Nuke.Common.IO;
-    using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tooling;
-    using nc::Nuke.Common.Tools.DotNet;
-    using nc::Nuke.Common.Tools.Git;
-    using nc::Nuke.Common.Utilities;
     using Serilog;
     using static Constants;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
     using static Helpers.AssemblyScanner;
-    using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
 
     /// <summary>
     /// Project extensions.
@@ -196,7 +195,7 @@
         {
             var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
-            
+
             var outputStr = string.Empty;
             foreach (var output in outputs)
             {
@@ -206,7 +205,7 @@
                     outputStr = match.Groups.Values.FirstOrDefault()?.Value;
                 }
             }
-            
+
             if (!string.IsNullOrEmpty(outputStr))
             {
                 var part = outputStr

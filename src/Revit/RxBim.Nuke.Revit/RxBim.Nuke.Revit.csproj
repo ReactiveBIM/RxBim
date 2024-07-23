@@ -10,59 +10,6 @@
         <ProjectReference Include="..\..\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
     </ItemGroup>
 
-    <!--    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">-->
-    <!--        <NukeSpecificationFiles Include="RevitTestFramework.json" />-->
-    <!--    </ItemGroup>-->
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
-        <PackageReference Include="RazorLight" Version="2.1.0" />
-        <PackageReference Include="RevitTestFramework" Version="1.19.23">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="RevitTestFrameworkConsole\empty.rfa">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-        <Content Include="RevitTestFrameworkConsole\RevitAddInUtility.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-        <!-- In this version, an error when setting a timeout for tests is fixed -->
-        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkConsoleFixed.exe">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-        <Content Include="RevitTestFrameworkConsole\RevitTestFrameworkTypes.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-        <Content Include="RevitTestFrameworkConsole\RTFRevit.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-        <Content Include="RevitTestFrameworkConsole\Runner.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="TestHelpers\Result.cshtml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </EmbeddedResource>
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim nuke plugin for automation of building for Revit</Description>
     </PropertyGroup>

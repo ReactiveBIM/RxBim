@@ -1,9 +1,8 @@
 ﻿namespace RxBim.Nuke.Helpers
 {
-    extern alias nc;
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using nc::System.Runtime.CompilerServices;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Contains validation methods.

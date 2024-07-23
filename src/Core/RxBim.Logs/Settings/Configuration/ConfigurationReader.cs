@@ -5,7 +5,6 @@ namespace RxBim.Logs.Settings.Configuration
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using Assemblies;
     using Microsoft.Extensions.Configuration;
@@ -265,13 +264,46 @@ namespace RxBim.Logs.Settings.Configuration
             IEnumerable<Assembly> configurationAssemblies,
             Type configType)
         {
+            // ExtensionAttribute can be polyfilled to support extension methods
+            static bool HasCustomExtensionAttribute(MethodInfo m)
+            {
+                try
+                {
+                    return m.CustomAttributes.Any(a => a.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute");
+                }
+                catch (CustomAttributeFormatException)
+                {
+                    return false;
+                }
+            }
+
             return configurationAssemblies
-                .SelectMany(a => a.ExportedTypes
-                    .Select(t => t.GetTypeInfo())
-                    .Where(t => t.IsSealed && t is { IsAbstract: true, IsNested: false }))
+                .SelectMany(a =>
+                {
+                    try
+                    {
+                        return a.ExportedTypes
+                            .Select(t => t.GetTypeInfo())
+                            .Where(t => t.IsSealed && t is { IsAbstract: true, IsNested: false });
+                    }
+                    catch
+                    {
+                        return Enumerable.Empty<TypeInfo>();
+                    }
+                })
                 .SelectMany(t => t.DeclaredMethods)
-                .Where(m => m.IsStatic && m.IsPublic && m.IsDefined(typeof(ExtensionAttribute), false))
-                .Where(m => m.GetParameters()[0].ParameterType == configType)
+                .Where(m => m.IsStatic && m.IsPublic && HasCustomExtensionAttribute(m))
+                .Where(m =>
+                {
+                    try
+                    {
+                        return m.GetParameters()[0].ParameterType == configType;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                })
                 .ToList();
         }
 
