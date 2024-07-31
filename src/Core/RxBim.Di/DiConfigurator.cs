@@ -7,7 +7,6 @@
     using Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using RxBim.Di.Abstraction;
 
     /// <summary>
     /// Base DI configurator.
@@ -27,9 +26,9 @@
         public void Configure(Assembly assembly)
         {
             ConfigureBaseDependencies();
-            ConfigureAdditionalDependencies(assembly);
             AddConfigurations(assembly);
             AddServiceLocator();
+            ConfigureAdditionalDependencies(assembly);
             InitializeCriticalServices();
         }
 

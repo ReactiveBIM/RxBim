@@ -5,9 +5,9 @@
 
     /// <summary>
     /// Proxy class for adding UIApplication to the container.
-    /// The main reason is that some actions, such as the ribbon creation, must be performed at startup, when UIApplication is not available yet.
+    /// The main reason is that some actions, such as the ribbon creation, must be performed at startup, when Application is not available yet.
     /// </summary>
-    internal class UIApplicationProxy
+    internal class UserInterfaceApplicationProxy
     {
         private UIApplication? _uiApp;
 
@@ -16,8 +16,8 @@
         /// </summary>
         public bool IsInitialized => _uiApp != null;
 
-        /// <inheritdoc cref="Autodesk.Revit.UI.UIApplication"/>
-        public UIApplication UIApplication => _uiApp
+        /// <inheritdoc cref="UIApplication"/>
+        public UIApplication Application => _uiApp
             ?? throw new InvalidOperationException("Revit initialization sequence is in progress. Revit API is not fully available yet.");
 
         /// <summary>

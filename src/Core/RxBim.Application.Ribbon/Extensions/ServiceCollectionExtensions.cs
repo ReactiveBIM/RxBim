@@ -6,7 +6,6 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Di.Abstraction;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -71,13 +70,13 @@
         /// <summary>
         /// Implementation of building plugin ribbon.
         /// </summary>
-        /// <param name="container">DI container.</param>
-        internal static void BuildRibbonMenu(this IContainer container)
+        /// <param name="serviceLocator">Service locator.</param>
+        internal static void BuildRibbonMenu(this IServiceLocator serviceLocator)
         {
             try
             {
-                var builder = container.GetService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = container.GetService<Ribbon>();
+                var builder = serviceLocator.GetService<IRibbonMenuBuilder>();
+                var ribbonConfiguration = serviceLocator.GetService<Ribbon>();
                 builder.BuildRibbonMenu(ribbonConfiguration);
             }
             catch (Exception e)

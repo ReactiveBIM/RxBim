@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon;
 using RxBim.Di;
-using RxBim.Di.Abstraction;
 
 /// <summary>
 /// Service for building ribbon menu at plugin startup.
@@ -8,7 +7,7 @@ using RxBim.Di.Abstraction;
 internal class StartUpMenuBuilder : ICriticalInitializationService
 {
     /// <inheritdoc cref="StartUpMenuBuilder"/>
-    public StartUpMenuBuilder(IContainer container)
+    public StartUpMenuBuilder(IServiceLocator container)
     {
         container.BuildRibbonMenu();
     }

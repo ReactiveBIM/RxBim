@@ -22,7 +22,7 @@
         public override T InvokeMethod(IContainer container, string methodName)
         {
             if (methodName == Constants.StartMethodName)
-                container.BuildRibbonMenu();
+                container.GetRequiredService<IServiceLocator>().BuildRibbonMenu();
 
             return Decorated.InvokeMethod(container, methodName);
         }

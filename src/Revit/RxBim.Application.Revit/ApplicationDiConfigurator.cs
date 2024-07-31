@@ -1,9 +1,7 @@
 ﻿namespace RxBim.Application.Revit
 {
-    using System;
     using System.Reflection;
     using Autodesk.Revit.UI;
-    using Autodesk.Revit.UI.Events;
     using Di;
     using Shared;
 
@@ -14,28 +12,23 @@
     {
         private readonly object _applicationObject;
         private readonly UIControlledApplication _uiControlledApp;
-        private readonly UIApplicationProxy _uIApplicationProxy;
+        private readonly UserInterfaceApplicationProxy _uiApplicationProxy;
 
         /// <summary>
         /// Initialize a new instance of <see cref="ApplicationDiConfigurator"/>.
         /// </summary>
         /// <param name="applicationObject">application object.</param>
         /// <param name="uiControlledApp">Revit ui controlled application.</param>
+        /// <param name="uiApplicationProxy">Proxy for Revit ui application.</param>
         public ApplicationDiConfigurator(
             object applicationObject,
-            UIControlledApplication uiControlledApp)
+            UIControlledApplication uiControlledApp,
+            UserInterfaceApplicationProxy uiApplicationProxy)
         {
             _applicationObject = applicationObject;
             _uiControlledApp = uiControlledApp;
-            _uIApplicationProxy = new();
-
-            uiControlledApp.Idling += ApplicationIdling;
+            _uiApplicationProxy = uiApplicationProxy;
         }
-
-        /// <summary>
-        /// Revit services initialization end event - meaning that the container is ready for operation.
-        /// </summary>
-        public event EventHandler? RevitServicesReady;
 
         /// <inheritdoc/>
         protected override void ConfigureAdditionalDependencies(Assembly assembly)
@@ -52,35 +45,11 @@
         {
             Container
                 .AddInstance(_uiControlledApp)
-                .AddSingleton(() => _uIApplicationProxy.UIApplication)
-                .AddSingleton(() => _uIApplicationProxy.UIApplication.Application)
-                .AddTransient(() => _uIApplicationProxy.UIApplication.ActiveUIDocument)
-                .AddTransient(() => _uIApplicationProxy.UIApplication.ActiveUIDocument?.Document!)
+                .AddSingleton(() => _uiApplicationProxy.Application)
+                .AddSingleton(() => _uiApplicationProxy.Application.Application)
+                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument)
+                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument?.Document!)
                 .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
-        }
-
-        private void ApplicationIdling(object sender, IdlingEventArgs e)
-        {
-            if (sender is UIApplication uiApp)
-            {
-                try
-                {
-                    if (_uIApplicationProxy.IsInitialized)
-                        return;
-
-                    _uIApplicationProxy.Initialize(uiApp);
-                    RevitServicesReady?.Invoke(this, EventArgs.Empty);
-                }
-                catch (Exception exception)
-                {
-                    TaskDialog.Show("Error", exception.ToString());
-                    throw;
-                }
-                finally
-                {
-                    _uiControlledApp.Idling -= ApplicationIdling;
-                }
-            }
         }
     }
 }
