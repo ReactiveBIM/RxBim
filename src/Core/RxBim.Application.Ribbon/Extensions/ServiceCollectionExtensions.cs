@@ -6,6 +6,8 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
+    using RxBim.Application.Ribbon.Services;
+    using RxBim.Di.Abstraction;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -22,10 +24,14 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
+        /// <param name="lazyRibbonCreation">
+        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
+        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddMenu<TBuilder>(
             this IContainer container,
             Action<IRibbonBuilder> builder,
-            Assembly assembly)
+            Assembly assembly,
+            bool lazyRibbonCreation = true)
             where TBuilder : class, IRibbonMenuBuilder
         {
             container.AddBuilder<TBuilder>(assembly);
@@ -35,7 +41,7 @@
                 builder(ribbon);
                 return ribbon.Build();
             });
-            container.DecorateContainer();
+            container.AddMenuBuilder(lazyRibbonCreation);
         }
 
         /// <summary>
@@ -48,15 +54,37 @@
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
+        /// <param name="lazyRibbonCreation">
+        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
+        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddMenu<TBuilder>(
             this IContainer container,
             IConfiguration? config,
-            Assembly assembly)
+            Assembly assembly,
+            bool lazyRibbonCreation = true)
             where TBuilder : class, IRibbonMenuBuilder
         {
             container.AddBuilder<TBuilder>(assembly);
             container.AddSingleton(() => GetMenuConfiguration(container, config));
-            container.DecorateContainer();
+            container.AddMenuBuilder(lazyRibbonCreation);
+        }
+
+        /// <summary>
+        /// Implementation of building plugin ribbon.
+        /// </summary>
+        /// <param name="container">DI container.</param>
+        internal static void BuildRibbonMenu(this IContainer container)
+        {
+            try
+            {
+                var builder = container.GetService<IRibbonMenuBuilder>();
+                var ribbonConfiguration = container.GetService<Ribbon>();
+                builder.BuildRibbonMenu(ribbonConfiguration);
+            }
+            catch (Exception e)
+            {
+                throw new MethodCallerException("Failed to build ribbon", e);
+            }
         }
 
         private static void AddBuilder<T>(this IContainer container, Assembly assembly)
@@ -70,9 +98,12 @@
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 
-        private static void DecorateContainer(this IContainer container)
+        private static void AddMenuBuilder(this IContainer container, bool lazyRibbonCreation)
         {
-            container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            if (lazyRibbonCreation)
+                container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
+            else
+                container.AddSingleton<ICriticalInitializationService, StartUpMenuBuilder>();
         }
 
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)

@@ -1,8 +1,6 @@
 ﻿namespace RxBim.Application.Revit
 {
-    using System;
     using Autodesk.Revit.UI;
-    using Autodesk.Revit.UI.Events;
     using Di;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
@@ -12,50 +10,35 @@
     /// </summary>
     public abstract class RxBimApplication : IExternalApplication
     {
-        private bool _contextCreated;
-        private UIControlledApplication _application = null!;
-        private ApplicationDiConfigurator _diConfigurator = null!;
+        private IContainer _container = null!;
 
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
-            _application = application;
-            application.Idling += ApplicationIdling;
+            var diConfigurator = new ApplicationDiConfigurator(this, application);
+            diConfigurator.RevitServicesReady += OnRevitServicesReady;
+            diConfigurator.Configure(GetType().Assembly);
+            _container = diConfigurator.Container;
             return Result.Succeeded;
         }
 
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-            var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+            var methodCaller = _container.GetService<IMethodCaller<PluginResult>>();
+            var result = methodCaller.InvokeMethod(_container, Constants.ShutdownMethodName);
             return result.MapResultToRevitResult();
         }
 
-        private void ApplicationIdling(object sender, IdlingEventArgs e)
+        private void OnRevitServicesReady(object sender, System.EventArgs e)
         {
-            if (sender is UIApplication uiApp && !_contextCreated)
-            {
-                try
-                {
-                    _diConfigurator = new ApplicationDiConfigurator(this, _application, uiApp);
-                    _diConfigurator.Configure(GetType().Assembly);
+            // Unsubscribe from subsequent calls
+            ((ApplicationDiConfigurator)sender).RevitServicesReady -= OnRevitServicesReady;
 
-                    var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
-
-                    _contextCreated = true;
-                }
-                catch (Exception exception)
-                {
-                    TaskDialog.Show("Error", exception.ToString());
-                    throw;
-                }
-                finally
-                {
-                    _application.Idling -= ApplicationIdling;
-                }
-            }
+            // Launch plugin application
+            _ = _container
+                .GetService<IMethodCaller<PluginResult>>()
+                .InvokeMethod(_container, Constants.StartMethodName);
         }
     }
 }

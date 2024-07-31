@@ -6,6 +6,8 @@
     using System.Reflection;
     using Extensions;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using RxBim.Di.Abstraction;
 
     /// <summary>
     /// Base DI configurator.
@@ -22,12 +24,13 @@
         /// Configures dependencies in the <see cref="IContainer.Services"/>.
         /// </summary>
         /// <param name="assembly">An assembly for dependency scanning.</param>
-        public virtual void Configure(Assembly assembly)
+        public void Configure(Assembly assembly)
         {
             ConfigureBaseDependencies();
             ConfigureAdditionalDependencies(assembly);
             AddConfigurations(assembly);
             AddServiceLocator();
+            InitializeCriticalServices();
         }
 
         /// <summary>
@@ -35,7 +38,11 @@
         /// </summary>
         protected abstract void ConfigureBaseDependencies();
 
-        private void ConfigureAdditionalDependencies(Assembly assembly)
+        /// <summary>
+        /// Configure additional assembly based dependencies.
+        /// </summary>
+        /// <param name="assembly">An assembly for dependency scanning.</param>
+        protected virtual void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
                 .Where(x => x.GetInterface(typeof(TConfiguration).Name) != null)
@@ -83,6 +90,12 @@
 
                 return configurationBuilder.Build();
             });
+        }
+
+        private void InitializeCriticalServices()
+        {
+            // Ensure that critical services that must be launched as soon as possible are created
+            _ = Container.ServiceProvider.GetServices<ICriticalInitializationService>();
         }
     }
 }
