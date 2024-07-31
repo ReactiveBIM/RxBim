@@ -1,4 +1,4 @@
-﻿namespace RxBim.Application.Ribbon.Services;
+﻿namespace RxBim.Application.Ribbon;
 using RxBim.Di;
 using RxBim.Di.Abstraction;
 

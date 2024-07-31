@@ -6,7 +6,6 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
-    using RxBim.Application.Ribbon.Services;
     using RxBim.Di.Abstraction;
 
     /// <summary>
