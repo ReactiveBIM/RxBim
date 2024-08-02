@@ -23,6 +23,9 @@
             _diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
             _diConfigurator.Configure(GetType().Assembly);
             application.Idling += ApplicationIdling;
+
+            // build container explicitly.
+            _diConfigurator.Container.GetService<IServiceLocator>();
             return Result.Succeeded;
         }
 

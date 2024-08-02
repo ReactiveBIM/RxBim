@@ -101,7 +101,7 @@
             if (lazyRibbonCreation)
                 container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
             else
-                container.AddSingleton<ICriticalInitializationService, StartUpMenuBuilder>();
+                container.ContainerBuilt += (_, _) => container.GetService<IServiceLocator>().BuildRibbonMenu();
         }
 
         private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)

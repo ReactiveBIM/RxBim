@@ -6,7 +6,6 @@
     using System.Reflection;
     using Extensions;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Base DI configurator.
@@ -29,7 +28,6 @@
             AddConfigurations(assembly);
             AddServiceLocator();
             ConfigureAdditionalDependencies(assembly);
-            InitializeCriticalServices();
         }
 
         /// <summary>
@@ -89,12 +87,6 @@
 
                 return configurationBuilder.Build();
             });
-        }
-
-        private void InitializeCriticalServices()
-        {
-            // Ensure that critical services that must be launched as soon as possible are created
-            _ = Container.ServiceProvider.GetServices<ICriticalInitializationService>();
         }
     }
 }
