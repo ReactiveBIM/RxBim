@@ -32,7 +32,6 @@ public class DiContainer : IContainer
     }
 
     /// <inheritdoc />
-
     public event EventHandler? ContainerBuilt
     {
         add
