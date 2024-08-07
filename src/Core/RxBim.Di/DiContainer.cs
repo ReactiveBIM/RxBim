@@ -11,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 public class DiContainer : IContainer
 {
     private readonly IServiceCollection _services = null!;
-    private readonly Lazy<IServiceProvider> _provider;
+    private IServiceProvider? _provider;
+    private EventHandler? _containerBuilt;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DiContainer"/> class.
@@ -19,7 +20,6 @@ public class DiContainer : IContainer
     public DiContainer()
     {
         _services = new ServiceCollection();
-        _provider = new Lazy<IServiceProvider>(() => Services.BuildServiceProvider(false));
     }
 
     /// <summary>
@@ -28,10 +28,18 @@ public class DiContainer : IContainer
     /// <param name="serviceProvider">The scoped service provider.</param>
     private DiContainer(IServiceProvider serviceProvider)
     {
-        _provider = new Lazy<IServiceProvider>(() => serviceProvider);
+        _provider = serviceProvider;
+    }
 
-        // lazy value initializing
-        _ = _provider.Value;
+    /// <inheritdoc />
+    public event EventHandler? ContainerBuilt
+    {
+        add
+        {
+            EnsureContainerNotBuilt();
+            _containerBuilt += value;
+        }
+        remove => _containerBuilt -= value;
     }
 
     /// <inheritdoc />
@@ -39,15 +47,26 @@ public class DiContainer : IContainer
     {
         get
         {
-            if (_provider.IsValueCreated)
-                throw new InvalidOperationException("Container is already built");
-
+            EnsureContainerNotBuilt();
             return _services;
         }
     }
 
     /// <inheritdoc />
-    public IServiceProvider ServiceProvider => _provider.Value;
+    public IServiceProvider ServiceProvider
+    {
+        get
+        {
+            if (_provider is null)
+            {
+                _provider = Services.BuildServiceProvider(false);
+                _containerBuilt?.Invoke(this, EventArgs.Empty);
+                _containerBuilt = null;
+            }
+
+            return _provider;
+        }
+    }
 
     /// <inheritdoc />
     public IContainer Add(Type serviceType, Type implementationType, Lifetime lifetime)
@@ -104,7 +123,7 @@ public class DiContainer : IContainer
     /// <inheritdoc />
     public void Dispose()
     {
-        if (_provider.IsValueCreated && ServiceProvider is IDisposable disposable)
+        if (_provider is IDisposable disposable)
             disposable.Dispose();
     }
 
@@ -135,4 +154,10 @@ public class DiContainer : IContainer
         Lifetime.Singleton => ServiceLifetime.Singleton,
         _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, null)
     };
+
+    private void EnsureContainerNotBuilt()
+    {
+        if (_provider != null)
+            throw new InvalidOperationException("Container is already built");
+    }
 }

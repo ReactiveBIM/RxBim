@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon
 {
-    using System;
     using Di;
     using Shared;
 
@@ -23,18 +22,7 @@
         public override T InvokeMethod(IContainer container, string methodName)
         {
             if (methodName == Constants.StartMethodName)
-            {
-                try
-                {
-                    var builder = container.GetService<IRibbonMenuBuilder>();
-                    var ribbonConfiguration = container.GetService<Ribbon>();
-                    builder.BuildRibbonMenu(ribbonConfiguration);
-                }
-                catch (Exception e)
-                {
-                    throw new MethodCallerException("Failed to build ribbon", e);
-                }
-            }
+                container.GetRequiredService<IServiceLocator>().BuildRibbonMenu();
 
             return Decorated.InvokeMethod(container, methodName);
         }
