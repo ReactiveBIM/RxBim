@@ -10,7 +10,6 @@ namespace RxBim.Nuke.Versions
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.Utilities.Collections;
-    using static global::Nuke.Common.IO.FileSystemTasks;
     using static PublishTagService;
 
     public interface IVersionBuild : IPublish
@@ -34,7 +33,8 @@ namespace RxBim.Nuke.Versions
             .Description("Resets the solution to its default version value.")
             .Executes(() =>
             {
-                this.From<IHazSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props").ForEach(DeleteFile);
+                this.From<IHasSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
+                    .ForEach(f => f.DeleteFile());
             });
 
         AppVersion AppVersion { get; set; }

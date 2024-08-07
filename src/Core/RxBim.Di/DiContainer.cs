@@ -73,7 +73,7 @@ public class DiContainer : IContainer
     /// <inheritdoc />
     public IContainer AddInstance(Type serviceType, object implementationInstance)
     {
-        Services.AddTransient(serviceType, _ => implementationInstance);
+        Services.AddSingleton(serviceType, implementationInstance);
         return this;
     }
 

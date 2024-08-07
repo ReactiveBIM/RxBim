@@ -1,16 +1,15 @@
 namespace RxBim.Nuke.Builds
 {
-    extern alias nc;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using Di;
+    using global::Nuke.Common;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Utilities;
     using Models;
-    using nc::Nuke.Common;
-    using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Utilities;
 
     /// <content>
     /// Build-script extension for installer. Parameters.
@@ -103,6 +102,12 @@ namespace RxBim.Nuke.Builds
             get => Configuration == Configuration.Debug || _timestampRevisionVersion;
             set => _timestampRevisionVersion = value;
         }
+
+        /// <summary>
+        /// Supports any maximum version of CAD.
+        /// </summary>
+        [Parameter("Supports any maximum version of CAD")]
+        public bool SeriesMaxAny { get; set; }
 
         /// <summary>
         /// Solution.

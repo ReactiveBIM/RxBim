@@ -80,7 +80,7 @@
                 {
                     foreach (var file in Directory.EnumerateFiles(revitPath, "*", SearchOption.AllDirectories))
                     {
-                        DeleteFile(file);
+                        ((AbsolutePath)file).DeleteFile();
                     }
                 }
             });

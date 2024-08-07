@@ -29,10 +29,13 @@
         {
             _menuData.RibbonConfiguration ??= ribbonConfig;
 
-            if (_menuData.RibbonConfiguration is null || !CheckRibbonCondition())
+            if (_menuData.RibbonConfiguration is null)
                 return;
 
             PreBuildActions();
+
+            if (!CheckRibbonCondition())
+                return;
 
             foreach (var tabConfig in _menuData.RibbonConfiguration.Tabs)
                 CreateTab(tabConfig);

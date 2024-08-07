@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Nuke.Builds
 {
-    extern alias nc;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -8,17 +7,15 @@
     using Builders;
     using Extensions;
     using Generators;
+    using global::Nuke.Common;
+    using global::Nuke.Common.IO;
+    using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tools.DotNet;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
-    using nc::Nuke.Common;
-    using nc::Nuke.Common.IO;
-    using nc::Nuke.Common.ProjectModel;
-    using nc::Nuke.Common.Tools.DotNet;
-    using nc::Nuke.Common.Tools.Git;
-    using static Helpers.WixHelper;
-    using static nc::Nuke.Common.IO.FileSystemTasks;
-    using static nc::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
+    using GitTasks = global::Nuke.Common.Tools.Git.GitTasks;
 
     /// <summary>
     /// Contains tools for MSI packages creating.
@@ -77,7 +74,7 @@
         /// <summary>
         /// Compiles the project defined in <see cref="Project"/> to temporary path.
         /// </summary>
-        public Target CompileToTemp => _ => _
+        public virtual Target CompileToTemp => _ => _
             .Description("Build project to temp output")
             .Requires(() => Project)
             .DependsOn(Restore)
@@ -122,7 +119,7 @@
         /// Installs WixSharp.
         /// </summary>
         public Target InstallWixTools => _ => _
-            .Executes(SetupWixTools);
+            .Executes(WixHelper.SetupWixTools);
 
         /// <summary>
         /// Signs assemblies af a given project.
@@ -131,20 +128,7 @@
             .Requires(() => Project)
             .Requires(() => Configuration)
             .DependsOn(CompileToTemp)
-            .Executes(() =>
-            {
-                if (!CheckSignAvailable())
-                    return;
-
-                var types = GetAssemblyTypes();
-                types.SignAssemblies(
-                    (AbsolutePath)OutputTmpDirBin,
-                    (AbsolutePath)Cert,
-                    PrivateKey.Ensure(),
-                    Csp.Ensure(),
-                    Algorithm.Ensure(),
-                    ServerUrl.Ensure());
-            });
+            .Executes(SignAssemblyTypes);
 
         /// <summary>
         /// Generates additional files.
@@ -177,7 +161,8 @@
                     ProjectForInstallBuild,
                     Configuration,
                     types,
-                    OutputTmpDir);
+                    OutputTmpDir,
+                    SeriesMaxAny);
             });
 
         /// <summary>
@@ -201,31 +186,29 @@
             return optionsBuilder.Build();
         }
 
-        private void CreateOutDirectory()
+        /// <summary>
+        /// Signs assembly types.
+        /// </summary>
+        protected virtual void SignAssemblyTypes()
         {
-            var outDir = Solution.Directory / "out";
-            if (!Directory.Exists(outDir))
-                Directory.CreateDirectory(outDir!);
+            if (!CheckSignAvailable())
+                return;
+
+            var types = GetAssemblyTypes();
+            var dllNames = types.GetDllNames((AbsolutePath)OutputTmpDirBin);
+            dllNames.SignFiles(
+                (AbsolutePath)Cert,
+                PrivateKey.Ensure(),
+                Csp.Ensure(),
+                Algorithm.Ensure(),
+                ServerUrl.Ensure());
         }
 
-        private void BuildMsiInstaller(Project project, string configuration)
-        {
-            var options = GetBuildOptions(project, configuration);
-            _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
-            DeleteDirectory(OutputTmpDir);
-        }
-
-        private void BuildInnoInstaller(Project project, string configuration)
-        {
-            var options = GetBuildOptions(project, configuration);
-            var setupFileName = $"{options.OutFileName}_{options.Version}";
-
-            _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
-            DeleteDirectory(OutputTmpDir);
-            SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
-        }
-
-        private void SignSetupFile(string filePath)
+        /// <summary>
+        /// File sign logic.
+        /// </summary>
+        /// <param name="filePath">Path to file.</param>
+        protected virtual void SignSetupFile(string filePath)
         {
             if (!CheckSignAvailable())
                 return;
@@ -238,15 +221,6 @@
                 ServerUrl.Ensure());
         }
 
-        private bool CheckSignAvailable()
-        {
-            return !string.IsNullOrWhiteSpace(Cert)
-                   && !string.IsNullOrWhiteSpace(PrivateKey)
-                   && !string.IsNullOrWhiteSpace(Csp)
-                   && !string.IsNullOrWhiteSpace(Algorithm)
-                   && !string.IsNullOrWhiteSpace(ServerUrl);
-        }
-
         /// <summary>
         /// Gets assembly types.
         /// </summary>
@@ -254,6 +228,39 @@
         {
             return _types ??= ProjectForInstallBuild.GetAssemblyTypes(OutputTmpDirBin,
                 GetBuildOptions(ProjectForInstallBuild, Configuration));
+        }
+
+        private void CreateOutDirectory()
+        {
+            var outDir = Solution.Directory / "out";
+            if (!Directory.Exists(outDir))
+                Directory.CreateDirectory(outDir!);
+        }
+
+        private void BuildMsiInstaller(Project project, string configuration)
+        {
+            var options = GetBuildOptions(project, configuration);
+            _builder.BuildMsi(ProjectForInstallBuild, OutputTmpDirBin, options);
+            ((AbsolutePath)OutputTmpDir).DeleteDirectory();
+        }
+
+        private void BuildInnoInstaller(Project project, string configuration)
+        {
+            var options = GetBuildOptions(project, configuration);
+            var setupFileName = $"{options.OutFileName}_{options.Version}";
+
+            _builder.BuildInno(TemporaryDirectory, OutputTmpDir, OutputTmpDirBin, options);
+            ((AbsolutePath)OutputTmpDir).DeleteDirectory();
+            SignSetupFile((AbsolutePath)options.OutDir / $"{setupFileName}.exe");
+        }
+
+        private bool CheckSignAvailable()
+        {
+            return !string.IsNullOrWhiteSpace(Cert)
+                   && !string.IsNullOrWhiteSpace(PrivateKey)
+                   && !string.IsNullOrWhiteSpace(Csp)
+                   && !string.IsNullOrWhiteSpace(Algorithm)
+                   && !string.IsNullOrWhiteSpace(ServerUrl);
         }
     }
 }
