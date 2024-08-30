@@ -17,6 +17,7 @@
     <PropertyGroup>
         <Description>RxBim UI AutoCAD Library</Description>
         <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
+        <UseWpf>true</UseWpf>
     </PropertyGroup>
 
 </Project>
