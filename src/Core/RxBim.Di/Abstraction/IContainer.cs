@@ -10,6 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 public interface IContainer : IDisposable
 {
     /// <summary>
+    /// Occurs right after the container is built.
+    /// </summary>
+    event EventHandler? ContainerBuilt;
+
+    /// <summary>
     /// Services collection.
     /// </summary>
     IServiceCollection Services { get; }

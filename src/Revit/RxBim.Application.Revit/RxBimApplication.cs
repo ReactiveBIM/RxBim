@@ -12,7 +12,7 @@
     /// </summary>
     public abstract class RxBimApplication : IExternalApplication
     {
-        private bool _contextCreated;
+        private readonly UserInterfaceApplicationProxy _uiApplicationProxy = new();
         private UIControlledApplication _application = null!;
         private ApplicationDiConfigurator _diConfigurator = null!;
 
@@ -20,7 +20,12 @@
         public Result OnStartup(UIControlledApplication application)
         {
             _application = application;
+            _diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
+            _diConfigurator.Configure(GetType().Assembly);
             application.Idling += ApplicationIdling;
+
+            // build container explicitly.
+            _diConfigurator.Container.GetService<IServiceLocator>();
             return Result.Succeeded;
         }
 
@@ -34,17 +39,17 @@
 
         private void ApplicationIdling(object sender, IdlingEventArgs e)
         {
-            if (sender is UIApplication uiApp && !_contextCreated)
+            if (sender is UIApplication uiApp)
             {
                 try
                 {
-                    _diConfigurator = new ApplicationDiConfigurator(this, _application, uiApp);
-                    _diConfigurator.Configure(GetType().Assembly);
+                    if (_uiApplicationProxy.IsInitialized)
+                        return;
+
+                    _uiApplicationProxy.Initialize(uiApp);
 
                     var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
-
-                    _contextCreated = true;
                 }
                 catch (Exception exception)
                 {

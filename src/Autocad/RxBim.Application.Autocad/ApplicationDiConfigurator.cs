@@ -22,9 +22,9 @@
         }
 
         /// <inheritdoc />
-        public override void Configure(Assembly assembly)
+        protected override void ConfigureAdditionalDependencies(Assembly assembly)
         {
-            base.Configure(assembly);
+            base.ConfigureAdditionalDependencies(assembly);
 
             Container
                 .AddTransient(() => new AssemblyResolver(assembly))
