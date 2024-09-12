@@ -4,6 +4,7 @@
     using Autodesk.AutoCAD.Runtime;
     using JetBrains.Annotations;
     using Models;
+    using Newtonsoft.Json;
     using RxBim.Command.Autocad;
     using Shared;
     using Shared.Autocad;
@@ -22,6 +23,8 @@
         {
             Application.ShowAlertDialog(
                 $"Current environment variable = {settings.EnvironmentVariable}");
+            var obj = new { Name = "123", Age = 15 };
+            var json = JsonConvert.SerializeObject(obj);
 
             return PluginResult.Succeeded;
         }

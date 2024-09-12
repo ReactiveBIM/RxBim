@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <UseWpf>true</UseWpf>
         <Version>1.2.3.4</Version>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
@@ -11,7 +12,8 @@
         <ProjectReference Include="..\..\..\src\Autocad\RxBim.Logs.Autocad\RxBim.Logs.Autocad.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     </ItemGroup>
     <ItemGroup>
         <None Update="appsettings.RxBim.Sample.Command.Autocad.json">

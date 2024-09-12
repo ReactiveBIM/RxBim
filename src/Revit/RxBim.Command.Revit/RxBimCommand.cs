@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Command.Revit
 {
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.Attributes;
@@ -26,7 +25,7 @@
             var type = GetType();
             var assembly = type.Assembly;
 
-            #if NETCOREAPP
+#if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(type))
             {
                 var commandInstance = PluginContext.CreateInstance(type);
@@ -35,7 +34,7 @@
                     return command.Execute(commandData, ref message, elements);
                 }
             }
-            #endif
+#endif
 
             return ExecuteCommand(commandData, ref message, elements, assembly);
         }

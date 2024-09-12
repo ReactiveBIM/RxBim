@@ -18,9 +18,9 @@ namespace RxBim.Application.Revit
         private UIControlledApplication _application = null!;
         private ApplicationDiConfigurator _diConfigurator = null!;
 
-        #if NETCOREAPP
+#if NETCOREAPP
         private object? _isolatedApplicationInstance;
-        #endif
+#endif
 
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
@@ -28,7 +28,7 @@ namespace RxBim.Application.Revit
             var type = GetType();
             var assembly = type.Assembly;
 
-            #if NETCOREAPP
+#if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(type))
             {
                 _isolatedApplicationInstance = PluginContext.CreateInstance(type);
@@ -37,7 +37,7 @@ namespace RxBim.Application.Revit
                     return app.OnStartup(application);
                 }
             }
-            #endif
+#endif
 
             _application = application;
             return ExecuteApplication(assembly, application);
