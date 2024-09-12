@@ -3,6 +3,7 @@
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
     using Models;
+    using Newtonsoft.Json;
     using RxBim.Command.Revit;
     using Shared;
 
@@ -19,7 +20,10 @@
             TaskDialog.Show(
                 "RxBim.Sample.Command.Revit",
                 $"Current environment variable = {settings.EnvironmentVariable}");
-            
+
+            var obj = new { Name = "123", Age = 15 };
+            var json = JsonConvert.SerializeObject(obj);
+
             return PluginResult.Succeeded;
         }
     }

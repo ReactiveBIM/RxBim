@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Command.Revit
 {
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.Attributes;
@@ -22,20 +23,37 @@
             ref string? message,
             ElementSet elements)
         {
-            var assembly = GetType().Assembly;
+            var type = GetType();
+            var assembly = type.Assembly;
 
-            var di = Configure(commandData, assembly);
+            #if NETCOREAPP
+            if (PluginContext.IsCurrentContextDefault(type))
+            {
+                var commandInstance = PluginContext.CreateInstance(type);
+                if (commandInstance is IExternalCommand command)
+                {
+                    return command.Execute(commandData, ref message, elements);
+                }
+            }
+            #endif
 
-            var commandResult = CallCommandMethod(di);
-
-            SetMessageAndElements(ref message, elements, commandResult, di);
-            return commandResult.MapResultToRevitResult();
+            return ExecuteCommand(commandData, ref message, elements, assembly);
         }
 
         /// <inheritdoc/>
         public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
         {
             return applicationData.ActiveUIDocument?.Document != null;
+        }
+
+        private Result ExecuteCommand(ExternalCommandData commandData, ref string? message, ElementSet elements, Assembly assembly)
+        {
+            var di = Configure(commandData, assembly);
+
+            var commandResult = CallCommandMethod(di);
+
+            SetMessageAndElements(ref message, elements, commandResult, di);
+            return commandResult.MapResultToRevitResult();
         }
 
         private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)

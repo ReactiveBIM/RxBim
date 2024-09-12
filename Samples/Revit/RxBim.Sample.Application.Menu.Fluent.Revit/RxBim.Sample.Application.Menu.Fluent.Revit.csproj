@@ -38,7 +38,11 @@
     <None Remove="img\command_32.ico" />
     <EmbeddedResource Include="img\command_32.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
   <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackageGuid>dd8e4558-cde8-431f-a621-4cb25304bfce</PackageGuid>
     <UpgradeCode>09f0658d-e4c2-4725-a50a-98b6dbd15fa9</UpgradeCode>
     <Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>11b955dc-4115-44ea-a688-383a0803b56c</Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>
