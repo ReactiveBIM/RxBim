@@ -43,7 +43,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : AutocadRxBimBuild
+partial class Build : RevitRxBimBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -56,7 +56,7 @@ partial class Build : AutocadRxBimBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.BuildInnoExe);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().PackagesList);
 
     /*public Target Test => _ => _
         .Before<IClean>()

@@ -47,7 +47,7 @@ namespace RxBim.Application.Revit
         public Result OnShutdown(UIControlledApplication application)
         {
             #if NETCOREAPP
-            if (!PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
+            if (PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
             {
                 return app.OnShutdown(application);
             }

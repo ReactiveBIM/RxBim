@@ -40,9 +40,21 @@ public class PluginContext : AssemblyLoadContext
     {
         var assembly = type.Assembly;
         var location = assembly.Location;
-        var pluginName = Path.GetFileName(Path.GetDirectoryName(location)!);
+        var pluginName = Path.GetFileName(location);
         var context = new PluginContext(location, pluginName);
         var loadedAssembly = context.LoadFromAssemblyPath(location);
+        return loadedAssembly.CreateInstance(type.FullName!);
+    }
+
+    /// <summary>
+    /// Creates instance of specified type in separated context;
+    /// </summary>
+    /// <param name="type">Type.</param>
+    public object? CreateInstanceNew(Type type)
+    {
+        var assembly = type.Assembly;
+        var location = assembly.Location;
+        var loadedAssembly = LoadFromAssemblyPath(location);
         return loadedAssembly.CreateInstance(type.FullName!);
     }
 

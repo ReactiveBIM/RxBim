@@ -1,7 +1,10 @@
 ﻿namespace RxBim.Command.Revit
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.Loader;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
@@ -26,14 +29,27 @@
             var assembly = type.Assembly;
 
 #if NETCOREAPP
-            if (PluginContext.IsCurrentContextDefault(type))
+
+            /*if (!PluginContext.IsCurrentContextDefault(type))
+                return ExecuteCommand(commandData, ref message, elements, assembly);
+
+            var parentAppName = Path.GetFileName(Path.GetDirectoryName(assembly.Location));
+            var parentAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.Contains(parentAppName!) ?? false)
+                .ToList();
+            var parentContext = parentAssemblies.Select(AssemblyLoadContext.GetLoadContext)
+                .FirstOrDefault(c => !AssemblyLoadContext.Default.Equals(c));
+            if (parentContext is PluginContext context)
             {
-                var commandInstance = PluginContext.CreateInstance(type);
-                if (commandInstance is IExternalCommand command)
-                {
+                var instance = context.CreateInstanceNew(type);
+                if (instance is IExternalCommand command)
                     return command.Execute(commandData, ref message, elements);
-                }
             }
+
+            var commandInstance = PluginContext.CreateInstance(type);
+            if (commandInstance is IExternalCommand externalCommand)
+            {
+                return externalCommand.Execute(commandData, ref message, elements);
+            }*/
 #endif
 
             return ExecuteCommand(commandData, ref message, elements, assembly);
