@@ -12,6 +12,11 @@
   <PropertyGroup>
     <PackageGuid>2a0d9351-b3f5-4da8-b993-b43f39ba8339</PackageGuid>
     <UpgradeCode>61b41d3a-eae0-4832-9736-d08c8267140d</UpgradeCode>
+    <ProductVersion>2025</ProductVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
   
 </Project>
