@@ -6,7 +6,7 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.Private.Windows;
     using Autodesk.Windows;
-    using GalaSoft.MvvmLight.Command;
+    using Helpers;
     using Button = Button;
 
     /// <inheritdoc />
@@ -69,7 +69,7 @@
                 var tooltip = _menuData.GetTooltipContent(config, commandType);
                 SetTooltip(button, tooltip, config.HelpUrl, config.Description);
                 var commandName = commandType.GetCommandName();
-                button.CommandHandler = new RelayCommand(() => RunCommand(commandName), true);
+                button.CommandHandler = new RelayCommand(() => RunCommand(commandName), () => true);
             }
             else
             {
