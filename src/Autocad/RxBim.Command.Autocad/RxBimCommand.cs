@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Command.Autocad
 {
-    using System;
     using System.Reflection;
     using Di;
     using Shared;
@@ -15,21 +14,6 @@
         /// </summary>
         public virtual void Execute()
         {
-#if NETCOREAPP
-            var type = GetType();
-            if (PluginContext.IsCurrentContextDefault(type))
-            {
-                var instance = PluginContext.CreateInstance(type);
-                if (instance != null)
-                {
-                    var instanceType = instance.GetType();
-                    var method = instanceType.GetMethod(nameof(Execute));
-                    method?.Invoke(instance, Array.Empty<object>());
-                    return;
-                }
-            }
-#endif
-
             var assembly = GetType().Assembly;
             var di = Configure(assembly);
             CallCommandMethod(di);

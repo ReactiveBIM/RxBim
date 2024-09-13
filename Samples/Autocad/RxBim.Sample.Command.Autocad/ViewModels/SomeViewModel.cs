@@ -2,8 +2,8 @@
 {
     using System.Windows.Input;
     using Abstractions;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using JetBrains.Annotations;
     using Views;
 

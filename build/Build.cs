@@ -6,8 +6,6 @@ using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Tools.DotNet;
-using RxBim.Nuke.AutoCAD;
-using RxBim.Nuke.Revit;
 using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -43,7 +41,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : RevitRxBimBuild
+partial class Build : NukeBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -56,17 +54,18 @@ partial class Build : RevitRxBimBuild
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().PackagesList);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Compile);
 
-    /*public Target Test => _ => _
+    public Target Test => _ => _
         .Before<IClean>()
         .Before<IRestore>()
         .Executes(() =>
         {
             DotNetTest(settings => settings
                 .SetProjectFile(this.From<IHasSolution>().Solution.Path)
-                .SetConfiguration(this.From<IHasConfiguration>().Configuration));
-        });*/
+                .SetConfiguration(this.From<IHasConfiguration>().Configuration)
+                .SetFilter("FullyQualifiedName!~Integration"));
+        });
 
     string IVersionBuild.ProjectNamePrefix => "RxBim.";
 }

@@ -193,8 +193,6 @@
         /// <returns>True if the version name is found. Otherwise, returns false.</returns>
         public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
         {
-            versionNumber = "2025";
-            return true;
             var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
 

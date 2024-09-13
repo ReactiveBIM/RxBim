@@ -9,7 +9,6 @@ namespace RxBim.Sample.Application.Autocad
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using JetBrains.Annotations;
-    using Newtonsoft.Json;
     using RxBim.Application.Autocad;
     using Shared;
 
@@ -25,8 +24,6 @@ namespace RxBim.Sample.Application.Autocad
         {
             Application.ShowAlertDialog("RxBimApplication example started!");
             service.ShowAutocadVersion();
-            var obj = new { Name = "123", Age = 15 };
-            var json = JsonConvert.SerializeObject(obj);
             return PluginResult.Succeeded;
         }
 
