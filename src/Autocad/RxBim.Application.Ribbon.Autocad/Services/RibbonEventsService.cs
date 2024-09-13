@@ -30,7 +30,7 @@
             ComponentManager.ItemInitialized -= OnItemInitialized;
         }
 
-        private void OnItemInitialized(object sender, RibbonItemEventArgs e)
+        private void OnItemInitialized(object? sender, RibbonItemEventArgs e)
         {
             if (ComponentManager.Ribbon is null)
                 return;
