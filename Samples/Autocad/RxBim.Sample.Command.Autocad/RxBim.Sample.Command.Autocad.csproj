@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <UseWpf>true</UseWpf>
@@ -11,9 +11,6 @@
         <ProjectReference Include="..\..\..\src\Autocad\RxBim.Logs.Autocad\RxBim.Logs.Autocad.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
-    </ItemGroup>
-    <ItemGroup>
         <None Update="appsettings.RxBim.Sample.Command.Autocad.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -23,6 +20,9 @@
         <None Update="appsettings.RxBim.Sample.Command.Autocad.Testing.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
     </ItemGroup>
     <PropertyGroup>
         <PackageGuid>b1390114-2d4b-4eba-89c6-49165a83c0ea</PackageGuid>
