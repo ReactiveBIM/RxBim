@@ -5,10 +5,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="PresentationCore"/>
-        <Reference Include="PresentationFramework"/>
-        <Reference Include="WindowsBase"/>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
     </ItemGroup>
+
+    <PropertyGroup Condition="'$(ApplicationVersion)' == '2025'">
+        <UseWpf>true</UseWpf>
+    </PropertyGroup>
 
     <PropertyGroup>
         <Description>RxBim UI AutoCAD Library</Description>

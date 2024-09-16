@@ -56,7 +56,7 @@
             Application.Idle += OnIdle;
         }
 
-        private void OnIdle(object sender, EventArgs e)
+        private void OnIdle(object? sender, EventArgs e)
         {
             NeedRebuild?.Invoke(this, EventArgs.Empty);
             Application.Idle -= OnIdle;
