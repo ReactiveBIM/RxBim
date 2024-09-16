@@ -10,7 +10,7 @@
         <UseWpf>true</UseWpf>
     </PropertyGroup>
 
-    <ItemGroup Condition = "'$(TargetFramework)' == 'net472'">
+    <ItemGroup Condition = "'$(TargetFramework)' != 'net8.0-windows'">
         <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
         <Reference Include="WindowsBase" />

@@ -4,7 +4,7 @@
         <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(ApplicationVersion)' != '2025'">
         <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
         <Reference Include="WindowsBase" />
