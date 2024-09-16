@@ -5,18 +5,9 @@
         <ProjectReference Include="..\..\Core\RxBim.Di\RxBim.Di.csproj" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(ApplicationVersion)' != '2025'">
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="WindowsBase" />
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim UI Revit Library</Description>
         <RootNamespace>RxBim.Application.Ribbon</RootNamespace>
-    </PropertyGroup>
-    
-    <PropertyGroup Condition="'$(ApplicationVersion)' == '2025'">
         <UseWpf>true</UseWpf>
     </PropertyGroup>
 
