@@ -1,8 +1,12 @@
 ﻿<Project>
     <PropertyGroup>
-        <LangVersion>11</LangVersion>
+        <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(MSBuildProjectName.Contains('Sample')) AND '$(ApplicationVersion)' == '2025'">
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
     <Choose>

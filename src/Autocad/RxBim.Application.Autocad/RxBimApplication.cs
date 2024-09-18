@@ -30,7 +30,7 @@
         /// </summary>
         protected virtual bool CanBeStarted() => true;
 
-        private void ApplicationOnIdle(object sender, EventArgs e)
+        private void ApplicationOnIdle(object? sender, EventArgs e)
         {
             Application.Idle -= ApplicationOnIdle;
 
@@ -51,7 +51,7 @@
             }
         }
 
-        private void ApplicationOnQuitWillStart(object sender, EventArgs e)
+        private void ApplicationOnQuitWillStart(object? sender, EventArgs e)
         {
             Application.QuitWillStart -= ApplicationOnQuitWillStart;
 

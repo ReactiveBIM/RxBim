@@ -75,18 +75,18 @@
             ComponentManager.ToolTipClosed -= ComponentManager_ToolTipClosed;
         }
 
-        private void ComponentManager_ToolTipOpened(object sender, EventArgs e)
+        private void ComponentManager_ToolTipOpened(object? sender, EventArgs e)
         {
             if (sender is ToolTip { Content: RibbonToolTip ribbonToolTip } && _trackedToolTips.Contains(ribbonToolTip))
                 _helpTopic = ribbonToolTip.HelpTopic;
         }
 
-        private void ComponentManager_ToolTipClosed(object sender, EventArgs e)
+        private void ComponentManager_ToolTipClosed(object? sender, EventArgs e)
         {
             _helpTopic = null;
         }
 
-        private void AutoCadMessageHandler(object sender, PreTranslateMessageEventArgs e)
+        private void AutoCadMessageHandler(object? sender, PreTranslateMessageEventArgs e)
         {
             if (e.Message.message == (int)Messages.KeyDown)
             {
