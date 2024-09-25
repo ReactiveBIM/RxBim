@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
     using Autodesk.Revit.UI;
+    using Newtonsoft.Json;
     using RxBim.Application.Revit;
     using Shared;
 
@@ -12,6 +13,8 @@
         /// </summary>
         public PluginResult Start()
         {
+            var obj = new { Name = "123", Age = 15 };
+            var json = JsonConvert.SerializeObject(obj);
             TaskDialog.Show(GetType().Namespace, "App started");
             return PluginResult.Succeeded;
         }

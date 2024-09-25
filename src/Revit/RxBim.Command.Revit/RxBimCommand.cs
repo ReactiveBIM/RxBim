@@ -1,7 +1,10 @@
 ﻿namespace RxBim.Command.Revit
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.Loader;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
@@ -22,20 +25,50 @@
             ref string? message,
             ElementSet elements)
         {
-            var assembly = GetType().Assembly;
+            var type = GetType();
+            var assembly = type.Assembly;
 
-            var di = Configure(commandData, assembly);
+#if NETCOREAPP
 
-            var commandResult = CallCommandMethod(di);
+            /*if (!PluginContext.IsCurrentContextDefault(type))
+                return ExecuteCommand(commandData, ref message, elements, assembly);
 
-            SetMessageAndElements(ref message, elements, commandResult, di);
-            return commandResult.MapResultToRevitResult();
+            var parentAppName = Path.GetFileName(Path.GetDirectoryName(assembly.Location));
+            var parentAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.Contains(parentAppName!) ?? false)
+                .ToList();
+            var parentContext = parentAssemblies.Select(AssemblyLoadContext.GetLoadContext)
+                .FirstOrDefault(c => !AssemblyLoadContext.Default.Equals(c));
+            if (parentContext is PluginContext context)
+            {
+                var instance = context.CreateInstanceNew(type);
+                if (instance is IExternalCommand command)
+                    return command.Execute(commandData, ref message, elements);
+            }
+
+            var commandInstance = PluginContext.CreateInstance(type);
+            if (commandInstance is IExternalCommand externalCommand)
+            {
+                return externalCommand.Execute(commandData, ref message, elements);
+            }*/
+#endif
+
+            return ExecuteCommand(commandData, ref message, elements, assembly);
         }
 
         /// <inheritdoc/>
         public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
         {
             return applicationData.ActiveUIDocument?.Document != null;
+        }
+
+        private Result ExecuteCommand(ExternalCommandData commandData, ref string? message, ElementSet elements, Assembly assembly)
+        {
+            var di = Configure(commandData, assembly);
+
+            var commandResult = CallCommandMethod(di);
+
+            SetMessageAndElements(ref message, elements, commandResult, di);
+            return commandResult.MapResultToRevitResult();
         }
 
         private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)
