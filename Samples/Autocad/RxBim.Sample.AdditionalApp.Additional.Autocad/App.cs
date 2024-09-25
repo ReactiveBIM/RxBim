@@ -14,7 +14,7 @@ namespace RxBim.Sample.AdditionalApp.Additional.Autocad
     /// <inheritdoc />
     public class App : RxBimApplication
     {
-        private readonly string _name = Assembly.GetExecutingAssembly().GetName().Name;
+        private readonly string? _name = Assembly.GetExecutingAssembly().GetName().Name;
 
         /// <summary>
         /// This method is run when AutoCAD enters the first idle state after the application is loaded.

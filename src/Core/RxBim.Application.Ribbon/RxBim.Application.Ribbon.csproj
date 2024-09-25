@@ -1,16 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFrameworks>net472;net8.0-windows</TargetFrameworks>
         <PlatformTarget>x64</PlatformTarget>
         <Configurations>Debug;Release</Configurations>
+        <UseWpf>true</UseWpf>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="WindowsBase" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />

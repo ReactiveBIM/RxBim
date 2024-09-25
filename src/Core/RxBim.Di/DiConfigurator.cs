@@ -22,12 +22,12 @@
         /// Configures dependencies in the <see cref="IContainer.Services"/>.
         /// </summary>
         /// <param name="assembly">An assembly for dependency scanning.</param>
-        public virtual void Configure(Assembly assembly)
+        public void Configure(Assembly assembly)
         {
             ConfigureBaseDependencies();
-            ConfigureAdditionalDependencies(assembly);
             AddConfigurations(assembly);
             AddServiceLocator();
+            ConfigureAdditionalDependencies(assembly);
         }
 
         /// <summary>
@@ -35,7 +35,11 @@
         /// </summary>
         protected abstract void ConfigureBaseDependencies();
 
-        private void ConfigureAdditionalDependencies(Assembly assembly)
+        /// <summary>
+        /// Configure additional assembly based dependencies.
+        /// </summary>
+        /// <param name="assembly">An assembly for dependency scanning.</param>
+        protected virtual void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
                 .Where(x => x.GetInterface(typeof(TConfiguration).Name) != null)

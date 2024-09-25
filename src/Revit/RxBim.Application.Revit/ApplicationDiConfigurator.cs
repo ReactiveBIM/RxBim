@@ -12,28 +12,28 @@
     {
         private readonly object _applicationObject;
         private readonly UIControlledApplication _uiControlledApp;
-        private readonly UIApplication _uiApp;
+        private readonly UserInterfaceApplicationProxy _uiApplicationProxy;
 
         /// <summary>
         /// Initialize a new instance of <see cref="ApplicationDiConfigurator"/>.
         /// </summary>
         /// <param name="applicationObject">application object.</param>
         /// <param name="uiControlledApp">Revit ui controlled application.</param>
-        /// <param name="uiApp">Revit ui application.</param>
+        /// <param name="uiApplicationProxy">Proxy for Revit ui application.</param>
         public ApplicationDiConfigurator(
             object applicationObject,
             UIControlledApplication uiControlledApp,
-            UIApplication uiApp)
+            UserInterfaceApplicationProxy uiApplicationProxy)
         {
             _applicationObject = applicationObject;
             _uiControlledApp = uiControlledApp;
-            _uiApp = uiApp;
+            _uiApplicationProxy = uiApplicationProxy;
         }
 
         /// <inheritdoc/>
-        public override void Configure(Assembly assembly)
+        protected override void ConfigureAdditionalDependencies(Assembly assembly)
         {
-            base.Configure(assembly);
+            base.ConfigureAdditionalDependencies(assembly);
 
             Container
                 .AddTransient(() => new AssemblyResolver(assembly))
@@ -45,10 +45,10 @@
         {
             Container
                 .AddInstance(_uiControlledApp)
-                .AddInstance(_uiApp)
-                .AddInstance(_uiApp.Application)
-                .AddTransient(() => _uiApp.ActiveUIDocument)
-                .AddTransient(() => _uiApp.ActiveUIDocument?.Document!)
+                .AddSingleton(() => _uiApplicationProxy.Application)
+                .AddSingleton(() => _uiApplicationProxy.Application.Application)
+                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument)
+                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument?.Document!)
                 .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
