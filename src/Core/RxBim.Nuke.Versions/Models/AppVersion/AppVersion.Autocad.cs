@@ -57,5 +57,14 @@ namespace RxBim.Nuke.Versions
             new TargetFramework("net48"),
             new RuntimePackageReference("AutoCAD.NET", "24.3.0"),
             new DefineConstants("ACAD2024"));
+
+        public static AppVersion Autocad2025 = new(
+            "Autodesk Autocad 2025",
+            AppType.Autocad,
+            new RuntimeVersion("25.0"),
+            new ApplicationVersion("2025"),
+            new TargetFramework("net8.0-windows"),
+            new RuntimePackageReference("AutoCAD.NET", "25.0.1"),
+            new DefineConstants("ACAD2025"));
     }
 }

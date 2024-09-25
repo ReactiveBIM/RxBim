@@ -37,7 +37,7 @@
             return result.MapResultToRevitResult();
         }
 
-        private void ApplicationIdling(object sender, IdlingEventArgs e)
+        private void ApplicationIdling(object? sender, IdlingEventArgs e)
         {
             if (sender is UIApplication uiApp)
             {

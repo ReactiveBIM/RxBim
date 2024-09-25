@@ -1,4 +1,4 @@
-﻿namespace RxBim.Di
+﻿namespace RxBim.Shared
 {
     using System;
     using System.Collections.Generic;

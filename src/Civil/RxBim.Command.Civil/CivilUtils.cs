@@ -17,7 +17,7 @@ public static class CivilUtils
         {
             const string civilModuleName = "AeccDbMgd";
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            return assemblies.Any(assembly => assembly.FullName.Contains(civilModuleName));
+            return assemblies.Any(assembly => assembly.FullName?.Contains(civilModuleName) ?? false);
         }
         catch
         {

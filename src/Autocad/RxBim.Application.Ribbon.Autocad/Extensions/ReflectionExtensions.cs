@@ -29,7 +29,7 @@
                     if (cmdProperty is null)
                         continue;
 
-                    return cmdProperty.GetValue(attribute).ToString();
+                    return cmdProperty.GetValue(attribute)!.ToString()!;
                 }
                 catch (Exception e)
                 {
