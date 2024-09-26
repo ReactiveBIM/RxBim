@@ -24,10 +24,12 @@
         /// Gets applications versions numbers.
         /// </summary>
         /// <param name="context">Generator context.</param>
+        /// <param name="build">Build type from current context.</param>
         /// <param name="versionNumbers">Applications versions.</param>
         /// <returns>True if application versions are collected successfully. Otherwise, false.</returns>
         public static bool TryGetVersionNumbersFromReferencedAssembly(
             this GeneratorExecutionContext context,
+            INamedTypeSymbol build,
             out IReadOnlyCollection<string> versionNumbers)
         {
             var appVersionNumber =
@@ -40,7 +42,19 @@
 
             var appVersionValues = appVersionNumber.GetMembers()
                 .Where(x => x.IsStatic && x.Kind is SymbolKind.Field)
-                .Cast<IFieldSymbol>();
+                .Cast<IFieldSymbol>()
+                .ToList();
+
+            var versions = build.GetMembers()
+                .Where(x => x.Name.Equals("IncludedVersions") && x.Kind is SymbolKind.Property)
+                .Cast<IPropertySymbol>()
+                .FirstOrDefault();
+            if (versions != null && TryGetVersionNumbersFromPropertyValue(versions, out var includeVersions))
+            {
+                appVersionValues = appVersionValues
+                    .Where(v => includeVersions.Any(iv => iv.Equals(v.Name)))
+                    .ToList();
+            }
 
             versionNumbers = appVersionValues.Select(x => x.Name.Substring(Constants.Version.Length)).ToList();
             return true;
@@ -107,6 +121,28 @@
             verNumber = expressionSyntax.Token.ValueText;
 
             return !string.IsNullOrEmpty(verNumber);
+        }
+
+        private static bool TryGetVersionNumbersFromPropertyValue(
+            IPropertySymbol propertySymbol,
+            out IReadOnlyCollection<string> versions)
+        {
+            versions = new List<string>();
+
+            var sourceSpan = propertySymbol.Locations.First().SourceSpan;
+            var syntaxReference = propertySymbol.DeclaringSyntaxReferences.FirstOrDefault(x =>
+                x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
+            if (syntaxReference?.GetSyntax().FindNode(sourceSpan) is PropertyDeclarationSyntax
+                fieldDeclarationSyntax)
+            {
+                versions = fieldDeclarationSyntax.DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .Where(x => x.Identifier.Text.Contains(Constants.Version))
+                    .Select(x => x.Identifier.Text)
+                    .ToList();
+            }
+
+            return versions.Count > 0;
         }
     }
 }

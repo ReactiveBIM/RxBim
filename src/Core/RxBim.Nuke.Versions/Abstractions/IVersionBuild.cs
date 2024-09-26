@@ -41,6 +41,8 @@ namespace RxBim.Nuke.Versions
 
         VersionNumber VersionNumber { get; set; }
 
+        public abstract VersionNumber[] IncludedVersions { get; }
+
         string ProjectNamePrefix => string.Empty;
 
         IEnumerable<string> IPublish.GetPackageFileNames(IEnumerable<string> tags)

@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static GitHubActionsSourceUtils;
     using static PropertiesSourceUtils;
     using static TargetsSourceUtils;
@@ -27,7 +28,7 @@
             var propsSource = GetVersionPropertiesSource();
             context.AddSource("Build.Versions.Properties.g.cs", propsSource);
 
-            if (!context.TryGetVersionNumbersFromReferencedAssembly(out var versionNumbers))
+            if (!context.TryGetVersionNumbersFromReferencedAssembly(build, out var versionNumbers))
                 return;
 
             var buildDeclaredTargets = build.GetPropertiesNames("Target");

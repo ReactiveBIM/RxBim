@@ -41,7 +41,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : NukeBuild
+partial class Build : NukeBuild, IVersionBuild
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -66,6 +66,17 @@ partial class Build : NukeBuild
                 .SetConfiguration(this.From<IHasConfiguration>().Configuration)
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
+
+    public VersionNumber[] IncludedVersions =>
+    [
+        VersionNumber.Version2019,
+        VersionNumber.Version2020,
+        VersionNumber.Version2021,
+        VersionNumber.Version2022,
+        VersionNumber.Version2023,
+        VersionNumber.Version2024,
+        VersionNumber.Version2025
+    ];
 
     string IVersionBuild.ProjectNamePrefix => "RxBim.";
 }
