@@ -46,7 +46,7 @@
                 .ToList();
 
             var versions = build.GetMembers()
-                .Where(x => x.Name.Equals("IncludedVersions") && x.Kind is SymbolKind.Property)
+                .Where(x => x.Name.Equals(Constants.IncludedVersions) && x.Kind is SymbolKind.Property)
                 .Cast<IPropertySymbol>()
                 .FirstOrDefault();
             if (versions != null && TryGetVersionNumbersFromPropertyValue(versions, out var includeVersions))
@@ -98,19 +98,13 @@
             return numbers;
         }
 
-        private static bool TryGetVersionNumberFromFieldValue(ISymbol fieldSymbol, out string verNumber)
+        private static bool TryGetVersionNumberFromFieldValue(ISymbol appVersionField, out string verNumber)
         {
             verNumber = string.Empty;
-
-            var sourceSpan = fieldSymbol.Locations.First().SourceSpan;
-            var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault(x =>
-                x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
-
-            if (syntaxReference?.GetSyntax().FindNode(sourceSpan) is not VariableDeclaratorSyntax
-                fieldDeclarationSyntax)
+            if (GetSymbolSyntaxReference(appVersionField) is not VariableDeclaratorSyntax field)
                 return false;
 
-            var appVerArgCreation = fieldDeclarationSyntax.DescendantNodes()
+            var appVerArgCreation = field.DescendantNodes()
                 .OfType<ObjectCreationExpressionSyntax>()
                 .FirstOrDefault(x => x.Type is IdentifierNameSyntax { Identifier.Text: "ApplicationVersion" });
 
@@ -124,18 +118,13 @@
         }
 
         private static bool TryGetVersionNumbersFromPropertyValue(
-            IPropertySymbol propertySymbol,
+            ISymbol versionProperty,
             out IReadOnlyCollection<string> versions)
         {
             versions = new List<string>();
-
-            var sourceSpan = propertySymbol.Locations.First().SourceSpan;
-            var syntaxReference = propertySymbol.DeclaringSyntaxReferences.FirstOrDefault(x =>
-                x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
-            if (syntaxReference?.GetSyntax().FindNode(sourceSpan) is PropertyDeclarationSyntax
-                fieldDeclarationSyntax)
+            if (GetSymbolSyntaxReference(versionProperty) is PropertyDeclarationSyntax property)
             {
-                versions = fieldDeclarationSyntax.DescendantNodes()
+                versions = property.DescendantNodes()
                     .OfType<IdentifierNameSyntax>()
                     .Where(x => x.Identifier.Text.Contains(Constants.Version))
                     .Select(x => x.Identifier.Text)
@@ -143,6 +132,14 @@
             }
 
             return versions.Count > 0;
+        }
+
+        private static SyntaxNode? GetSymbolSyntaxReference(ISymbol symbol)
+        {
+            var sourceSpan = symbol.Locations.First().SourceSpan;
+            var syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault(x =>
+                x.Span.Start <= sourceSpan.Start && x.Span.End >= sourceSpan.End);
+            return syntaxReference?.GetSyntax().FindNode(sourceSpan);
         }
     }
 }

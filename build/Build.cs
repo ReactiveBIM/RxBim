@@ -67,16 +67,5 @@ partial class Build : NukeBuild
                 .SetFilter("FullyQualifiedName!~Integration"));
         });
 
-    public VersionNumber[] IncludedVersions =>
-    [
-        VersionNumber.Version2019,
-        VersionNumber.Version2020,
-        VersionNumber.Version2021,
-        VersionNumber.Version2022,
-        VersionNumber.Version2023,
-        VersionNumber.Version2024,
-        VersionNumber.Version2025
-    ];
-
     string IVersionBuild.ProjectNamePrefix => "RxBim.";
 }
