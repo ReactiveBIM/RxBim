@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RxBim.Nuke.Generators": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\..\\build\\_build.csproj"
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 namespace RxBim.Nuke.Versions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -40,6 +41,8 @@ namespace RxBim.Nuke.Versions
         AppVersion AppVersion { get; set; }
 
         VersionNumber VersionNumber { get; set; }
+
+        VersionNumber[] IncludedVersions => Array.Empty<VersionNumber>();
 
         string ProjectNamePrefix => string.Empty;
 
