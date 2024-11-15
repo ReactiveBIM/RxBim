@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Extensions;
-    using Generators;
     using global::Nuke.Common.ProjectModel;
-    using Models;
-    using Versions;
+    using RxBim.Nuke.Extensions;
+    using RxBim.Nuke.Generators;
+    using RxBim.Nuke.Models;
+    using RxBim.Nuke.Versions;
 
     /// <inheritdoc />
     public class AutocadPackageContentsGenerator : PackageContentsGenerator
@@ -29,7 +29,7 @@
                     ModuleName = $"{project.Name}\\{name}.dll",
                     OS = "Win64",
                     SeriesMin = $"R{acadVersion}",
-                    SeriesMax = seriesMaxAny ? null : $"R{acadVersion}"
+                    SeriesMax = seriesMaxAny ? null : $"R{acadVersion}",
                 });
             }
 
