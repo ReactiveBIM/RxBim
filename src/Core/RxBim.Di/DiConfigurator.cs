@@ -50,9 +50,9 @@
         protected virtual void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
-                .Where(x => x.GetInterface(typeof(TConfiguration).Name) != null)
+                .Where(x => typeof(TConfiguration).IsAssignableFrom(x))
                 .Select(Activator.CreateInstance)
-                .Cast<IPluginConfiguration>();
+                .Cast<TConfiguration>();
 
             foreach (var cfg in configs)
             {
