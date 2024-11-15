@@ -1,6 +1,8 @@
 ﻿namespace RxBim.Application.Ribbon
 {
+    using System;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -19,12 +21,12 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeMethod(IContainer container, string methodName)
+        public override T InvokeMethod(IServiceProvider serviceProvider, string methodName)
         {
             if (methodName == Constants.StartMethodName)
-                container.GetRequiredService<IServiceLocator>().BuildRibbonMenu();
+                serviceProvider.BuildRibbonMenu();
 
-            return Decorated.InvokeMethod(container, methodName);
+            return Decorated.InvokeMethod(serviceProvider, methodName);
         }
     }
 }

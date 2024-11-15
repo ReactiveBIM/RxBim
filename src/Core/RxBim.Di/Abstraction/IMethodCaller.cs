@@ -16,7 +16,7 @@ public interface IMethodCaller<out T>
     /// <summary>
     /// Returns the result of a method call.
     /// </summary>
-    /// <param name="container"><see cref="IContainer"/> object.</param>
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> object.</param>
     /// <param name="methodName">The method name.</param>
-    T InvokeMethod(IContainer container, string methodName);
+    T InvokeMethod(IServiceProvider serviceProvider, string methodName);
 }

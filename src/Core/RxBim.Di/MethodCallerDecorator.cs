@@ -23,6 +23,6 @@
         protected IMethodCaller<T> Decorated { get; }
 
         /// <inheritdoc />
-        public abstract T InvokeMethod(IContainer container, string methodName);
+        public abstract T InvokeMethod(IServiceProvider serviceProvider, string methodName);
     }
 }

@@ -1,15 +1,16 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using RxBim.Application.Ribbon;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection services)
         {
-            container.AddRevitMenu(ribbon => ribbon
+            services.AddRevitMenu(ribbon => ribbon
                 .EnableDisplayVersion()
                 .SetVersionPrefix("Version: ")
                 .TabFromAttributes()

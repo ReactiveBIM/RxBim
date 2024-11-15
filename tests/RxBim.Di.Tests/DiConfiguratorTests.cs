@@ -2,6 +2,7 @@
 
 using System;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using TestDependencies;
 using TestObjects;
 using Xunit;
@@ -13,10 +14,11 @@ public class DiConfiguratorTests
     {
         var testDiConfigurator = new TestDiConfigurator();
         testDiConfigurator.Configure(GetType().Assembly);
+        var sp = testDiConfigurator.Build();
         var act = () =>
         {
-            testDiConfigurator.Container.GetService<IBaseService>();
-            testDiConfigurator.Container.GetService<IPluginService>();
+            sp.GetService<IBaseService>();
+            sp.GetService<IPluginService>();
         };
         act.Should().NotThrow();
     }
@@ -26,10 +28,12 @@ public class DiConfiguratorTests
     {
         var testDiConfigurator = new TestDiConfigurator();
         testDiConfigurator.Configure(GetType().Assembly);
+        var sp = testDiConfigurator.Build();
         var methodCaller = new MethodCaller<int>(new ObjectWithDependencies());
 
         var result = 0;
-        Action act = () => result = methodCaller.InvokeMethod(testDiConfigurator.Container, "Execute");
+        Action act = () =>
+            result = methodCaller.InvokeMethod(sp, "Execute");
 
         act.Should().NotThrow();
         result.Should().Be(100);
