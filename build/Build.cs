@@ -15,7 +15,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, FeatureBranches
+        DevelopBranch, FeatureBranches, BugfixBranches
     },
     InvokedTargets = new[]
     {
@@ -48,6 +48,7 @@ partial class Build : NukeBuild
     const string ReleaseBranches = "release/**";
     const string HotfixBranches = "hotfix/**";
     const string FeatureBranches = "feature/**";
+    const string BugfixBranches = "bugfix/**";
 
     public Build()
     {
