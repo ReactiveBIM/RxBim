@@ -4,6 +4,7 @@
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Runtime;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Exception = System.Exception;
 
@@ -11,6 +12,7 @@
     public abstract class RxBimApplication : IExtensionApplication
     {
         private ApplicationDiConfigurator? _diConfigurator;
+        private IServiceProvider _serviceProvider = null!;
 
         /// <inheritdoc />
         public void Initialize()
@@ -41,9 +43,10 @@
 
                 _diConfigurator = new ApplicationDiConfigurator(this);
                 _diConfigurator.Configure(GetType().Assembly);
+                _serviceProvider = _diConfigurator.Build();
 
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
+                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
             }
             catch (Exception exception)
             {
@@ -60,8 +63,8 @@
 
             try
             {
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }
             catch (Exception exception)
             {

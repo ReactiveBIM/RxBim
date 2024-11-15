@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Di.Testing.Revit
 {
     using Autodesk.Revit.UI;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class TestingDiConfigurator : DiConfigurator<ITestConfiguration>
@@ -16,12 +17,12 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container
-                .AddInstance(_commandData)
-                .AddInstance(_commandData.Application)
-                .AddInstance(_commandData.Application.Application)
-                .AddTransient(() => _commandData.Application.ActiveUIDocument)
-                .AddTransient(() => _commandData.Application.ActiveUIDocument?.Document!);
+            Services
+                .AddSingleton(_commandData)
+                .AddSingleton(_commandData.Application)
+                .AddSingleton(_commandData.Application.Application)
+                .AddTransient(_ => _commandData.Application.ActiveUIDocument)
+                .AddTransient(_ => _commandData.Application.ActiveUIDocument?.Document!);
         }
     }
 }

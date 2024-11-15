@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using Extensions;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class MethodCaller<T> : IMethodCaller<T>
@@ -22,7 +23,7 @@
         public Type SourceObjectType => _sourceObject.GetType();
 
         /// <inheritdoc />
-        public T InvokeMethod(IContainer container, string methodName)
+        public T InvokeMethod(IServiceProvider serviceProvider, string methodName)
         {
             var methodInfo = _sourceObject.GetType().FindInvokeMethod<T>(methodName);
 
@@ -31,7 +32,7 @@
                 return methodInfo.Invoke<T>(_sourceObject);
             }
 
-            var parameters = methodInfo.GetMethodParameters(container);
+            var parameters = methodInfo.GetMethodParameters(serviceProvider);
             return methodInfo.Invoke<T>(_sourceObject, parameters.ToArray());
         }
     }

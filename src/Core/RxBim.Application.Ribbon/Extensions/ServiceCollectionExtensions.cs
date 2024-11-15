@@ -6,6 +6,7 @@
     using ConfigurationBuilders;
     using Di;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -15,68 +16,60 @@
         /// <summary>
         /// Adds a plugin ribbon menu from an action.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="builder">The ribbon menu builder.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
-        /// <param name="lazyRibbonCreation">
-        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
-        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddMenu<TBuilder>(
-            this IContainer container,
+            this IServiceCollection services,
             Action<IRibbonBuilder> builder,
-            Assembly assembly,
-            bool lazyRibbonCreation = true)
+            Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<TBuilder>(assembly);
-            container.AddSingleton(() =>
+            services.AddBuilder<TBuilder>(assembly);
+            services.AddSingleton(() =>
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
                 return ribbon.Build();
             });
-            container.AddMenuBuilder(lazyRibbonCreation);
+            services.AddMenuBuilder();
         }
 
         /// <summary>
         /// Adds a plugin ribbon menu from configuration.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="config">Plugin configuration.</param>
         /// <param name="assembly">
         /// Menu definition assembly.
         /// Used to get the command type from the command type name
         /// and to define the root directory for relative icon paths.
         /// </param>
-        /// <param name="lazyRibbonCreation">
-        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
-        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddMenu<TBuilder>(
-            this IContainer container,
+            this IServiceCollection services,
             IConfiguration? config,
-            Assembly assembly,
-            bool lazyRibbonCreation = true)
+            Assembly assembly)
             where TBuilder : class, IRibbonMenuBuilder
         {
-            container.AddBuilder<TBuilder>(assembly);
-            container.AddSingleton(() => GetMenuConfiguration(container, config));
-            container.AddMenuBuilder(lazyRibbonCreation);
+            services.AddBuilder<TBuilder>(assembly);
+            services.AddSingleton(sp => GetMenuConfiguration(sp, config));
+            services.AddMenuBuilder();
         }
 
         /// <summary>
         /// Implementation of building plugin ribbon.
         /// </summary>
-        /// <param name="serviceLocator">Service locator.</param>
-        internal static void BuildRibbonMenu(this IServiceLocator serviceLocator)
+        /// <param name="serviceProvider">Service locator.</param>
+        internal static void BuildRibbonMenu(this IServiceProvider serviceProvider)
         {
             try
             {
-                var builder = serviceLocator.GetService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = serviceLocator.GetService<Ribbon>();
+                var builder = serviceProvider.GetService<IRibbonMenuBuilder>();
+                var ribbonConfiguration = serviceProvider.GetService<Ribbon>();
                 builder.BuildRibbonMenu(ribbonConfiguration);
             }
             catch (Exception e)
@@ -85,30 +78,31 @@
             }
         }
 
-        private static void AddBuilder<T>(this IContainer container, Assembly assembly)
+        private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {
-            var thisAssembly = Assembly.GetExecutingAssembly();
-            container
+            services
                 .AddSingleton(() => new MenuData { MenuAssembly = assembly })
-                .RegisterTypes<IItemFromConfigStrategy>(Lifetime.Singleton, thisAssembly)
-                .RegisterTypes<IItemStrategy>(Lifetime.Singleton, thisAssembly)
+                .Scan(scan => scan
+                    .FromExecutingAssembly()
+                    .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
+                    .AsImplementedInterfaces()
+                    .WithSingletonLifetime()
+                    .AddClasses(classes => classes.AssignableTo<IItemFromConfigStrategy>())
+                    .AsImplementedInterfaces()
+                    .WithSingletonLifetime())
                 .AddSingleton<IRibbonMenuBuilder, T>();
         }
 
-        private static void AddMenuBuilder(this IContainer container, bool lazyRibbonCreation)
+        private static void AddMenuBuilder(this IServiceCollection services)
         {
-            if (lazyRibbonCreation)
-                container.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
-            else
-                container.ContainerBuilt += (_, _) => container.GetService<IServiceLocator>().BuildRibbonMenu();
+            services.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
-        private static Ribbon GetMenuConfiguration(IContainer container, IConfiguration? cfg)
+        private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)
         {
-            cfg ??= container.GetService<IConfiguration>();
-            var serviceLocator = container.GetService<IServiceLocator>();
-            var strategies = serviceLocator.GetServices<IItemFromConfigStrategy>().ToList();
+            cfg ??= serviceProvider.GetService<IConfiguration>();
+            var strategies = serviceProvider.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();
             builder.LoadFromConfig(cfg, strategies);

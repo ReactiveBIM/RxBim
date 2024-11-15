@@ -2,6 +2,7 @@ namespace RxBim.Di.Tests
 {
     using System;
     using FluentAssertions;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using TestObjects;
     using Xunit;
@@ -14,8 +15,8 @@ namespace RxBim.Di.Tests
             var badObject = new BadMethodNameObject();
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
-            var container = new DiContainer();
-            Action act = () => methodCaller.InvokeMethod(container, "Execute");
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            Action act = () => methodCaller.InvokeMethod(serviceProvider, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -27,8 +28,8 @@ namespace RxBim.Di.Tests
 
             var methodCaller = new MethodCaller<PluginResult>(badObject);
             
-            var container = new DiContainer();
-            Action act = () => methodCaller.InvokeMethod(container, "Execute");
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            Action act = () => methodCaller.InvokeMethod(serviceProvider, "Execute");
 
             act.Should().Throw<MethodCallerException>();
         }
@@ -40,8 +41,8 @@ namespace RxBim.Di.Tests
 
             var methodCaller = new MethodCaller<int>(testObject);
             var result = 0;
-            var container = new DiContainer();
-            Action act = () => result = methodCaller.InvokeMethod(container, "Execute");
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            Action act = () => result = methodCaller.InvokeMethod(serviceProvider, "Execute");
 
             act.Should().NotThrow();
             result.Should().Be(100);

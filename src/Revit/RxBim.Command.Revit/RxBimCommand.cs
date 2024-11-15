@@ -1,11 +1,13 @@
 ﻿namespace RxBim.Command.Revit
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -24,11 +26,11 @@
         {
             var assembly = GetType().Assembly;
 
-            var di = Configure(commandData, assembly);
+            var serviceProvider = Configure(commandData, assembly);
 
-            var commandResult = CallCommandMethod(di);
+            var commandResult = CallCommandMethod(serviceProvider);
 
-            SetMessageAndElements(ref message, elements, commandResult, di);
+            SetMessageAndElements(ref message, elements, commandResult, serviceProvider);
             return commandResult.MapResultToRevitResult();
         }
 
@@ -38,17 +40,17 @@
             return applicationData.ActiveUIDocument?.Document != null;
         }
 
-        private CommandDiConfigurator Configure(ExternalCommandData commandData, Assembly assembly)
+        private IServiceProvider Configure(ExternalCommandData commandData, Assembly assembly)
         {
             var di = new CommandDiConfigurator(this, commandData);
             di.Configure(assembly);
-            return di;
+            return di.Build();
         }
 
-        private PluginResult CallCommandMethod(CommandDiConfigurator di)
+        private PluginResult CallCommandMethod(IServiceProvider serviceProvider)
         {
-            var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            var commandResult = methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
+            var methodCaller = serviceProvider.GetService<IMethodCaller<PluginResult>>();
+            var commandResult = methodCaller.InvokeMethod(serviceProvider, Constants.ExecuteMethodName);
             return commandResult;
         }
 
@@ -56,7 +58,7 @@
             ref string? message,
             ElementSet elements,
             PluginResult commandResult,
-            CommandDiConfigurator di)
+            IServiceProvider serviceProvider)
         {
             if (!string.IsNullOrEmpty(commandResult.Message))
             {
@@ -66,7 +68,7 @@
             if (!commandResult.ElementIds.Any())
                 return;
 
-            var doc = di.Container.GetService<Document>();
+            var doc = serviceProvider.GetService<Document>();
             foreach (var id in commandResult.ElementIds)
             {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023

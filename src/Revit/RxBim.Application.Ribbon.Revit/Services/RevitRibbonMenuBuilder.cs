@@ -17,8 +17,8 @@
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IServiceLocator serviceLocator)
-            : base(menuData, serviceLocator)
+            IServiceProvider serviceProvider)
+            : base(menuData, serviceProvider)
         {
             _application = application;
         }
