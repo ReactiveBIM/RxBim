@@ -24,7 +24,18 @@
         public override T InvokeMethod(IServiceProvider serviceProvider, string methodName)
         {
             if (methodName == Constants.StartMethodName)
-                serviceProvider.BuildRibbonMenu();
+            {
+                try
+                {
+                    var builder = serviceProvider.GetService<IRibbonMenuBuilder>();
+                    var ribbonConfiguration = serviceProvider.GetService<Ribbon>();
+                    builder.BuildRibbonMenu(ribbonConfiguration);
+                }
+                catch (Exception e)
+                {
+                    throw new MethodCallerException("Failed to build ribbon", e);
+                }
+            }
 
             return Decorated.InvokeMethod(serviceProvider, methodName);
         }

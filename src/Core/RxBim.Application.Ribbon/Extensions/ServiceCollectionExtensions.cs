@@ -30,7 +30,7 @@
             where TBuilder : class, IRibbonMenuBuilder
         {
             services.AddBuilder<TBuilder>(assembly);
-            services.AddSingleton(() =>
+            services.AddSingleton(_ =>
             {
                 var ribbon = new RibbonBuilder();
                 builder(ribbon);
@@ -60,29 +60,11 @@
             services.AddMenuBuilder();
         }
 
-        /// <summary>
-        /// Implementation of building plugin ribbon.
-        /// </summary>
-        /// <param name="serviceProvider">Service locator.</param>
-        internal static void BuildRibbonMenu(this IServiceProvider serviceProvider)
-        {
-            try
-            {
-                var builder = serviceProvider.GetService<IRibbonMenuBuilder>();
-                var ribbonConfiguration = serviceProvider.GetService<Ribbon>();
-                builder.BuildRibbonMenu(ribbonConfiguration);
-            }
-            catch (Exception e)
-            {
-                throw new MethodCallerException("Failed to build ribbon", e);
-            }
-        }
-
         private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {
             services
-                .AddSingleton(() => new MenuData { MenuAssembly = assembly })
+                .AddSingleton(new MenuData { MenuAssembly = assembly })
                 .Scan(scan => scan
                     .FromExecutingAssembly()
                     .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
