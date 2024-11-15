@@ -97,7 +97,7 @@
                 var outputPath = project.GetTargetDir();
                 var revitPath = GetRevitAddinsPath() / Project;
 
-                outputPath.CopyToDirectory(revitPath, ExistsPolicy.FileOverwrite | ExistsPolicy.DirectoryMerge);
+                outputPath.Copy(revitPath, ExistsPolicy.FileOverwrite | ExistsPolicy.DirectoryMerge);
             });
 
         private AbsolutePath GetRevitAddinsPath()
