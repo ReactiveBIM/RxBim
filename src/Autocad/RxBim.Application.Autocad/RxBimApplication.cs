@@ -2,9 +2,11 @@
 {
     using System;
     using Autodesk.AutoCAD.ApplicationServices.Core;
+    using Autodesk.AutoCAD.Internal;
     using Autodesk.AutoCAD.Runtime;
     using Di;
     using Microsoft.Extensions.DependencyInjection;
+    using Ribbon;
     using Shared;
     using Exception = System.Exception;
 
@@ -44,6 +46,8 @@
                 _diConfigurator = new ApplicationDiConfigurator(this);
                 _diConfigurator.Configure(GetType().Assembly);
                 _serviceProvider = _diConfigurator.Build();
+
+                MenuBuilderUtility.BuildMenu(_serviceProvider);
 
                 var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);

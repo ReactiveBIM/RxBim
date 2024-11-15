@@ -5,6 +5,7 @@
     using Autodesk.Revit.UI.Events;
     using Di;
     using Microsoft.Extensions.DependencyInjection;
+    using Ribbon;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -24,6 +25,8 @@
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
             diConfigurator.Configure(GetType().Assembly);
             _serviceProvider = diConfigurator.Build();
+
+            MenuBuilderUtility.BuildMenu(_serviceProvider);
 
             application.Idling += ApplicationIdling;
 

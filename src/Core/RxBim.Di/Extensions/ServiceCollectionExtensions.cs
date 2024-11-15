@@ -1,4 +1,4 @@
-﻿namespace RxBim.Di;
+﻿namespace RxBim.Di.Extensions;
 
 using System;
 using JetBrains.Annotations;

@@ -19,14 +19,10 @@ namespace RxBim.Application.Ribbon
         /// <param name="services">DI container.</param>
         /// <param name="builder">The ribbon builder.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
-        /// <param name="lazyRibbonCreation">
-        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
-        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddRevitMenu(
             this IServiceCollection services,
             Action<IRibbonBuilder> builder,
-            Assembly? menuAssembly = null,
-            bool lazyRibbonCreation = true)
+            Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             services
@@ -40,14 +36,10 @@ namespace RxBim.Application.Ribbon
         /// <param name="services">DI container.</param>
         /// <param name="cfg">Configuration.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
-        /// <param name="lazyRibbonCreation">
-        /// True - create ribbon after CAD fully initialized, some of the functionality may be lost due to the late registration of the ribbon commands;
-        /// False - create ribbon panel due application startup - some of the CAD services can be unavailable!</param>
         public static void AddRevitMenu(
             this IServiceCollection services,
             IConfiguration? cfg = null,
-            Assembly? menuAssembly = null,
-            bool lazyRibbonCreation = true)
+            Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
             services
@@ -58,11 +50,7 @@ namespace RxBim.Application.Ribbon
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services
-                .Scan(scan => scan
-                    .FromExecutingAssembly()
-                    .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
-                    .AsImplementedInterfaces()
-                    .WithSingletonLifetime())
+                .RegisterItemStrategies(Assembly.GetExecutingAssembly())
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
         }
     }

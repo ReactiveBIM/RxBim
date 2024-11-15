@@ -46,11 +46,7 @@
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.Scan(scan => scan
-                    .FromExecutingAssembly()
-                    .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
-                    .AsImplementedInterfaces()
-                    .WithSingletonLifetime())
+            services.RegisterItemStrategies(Assembly.GetExecutingAssembly())
                 .AddSingleton<IOnlineHelpService, OnlineHelpService>()
                 .AddSingleton<IRibbonEventsService, RibbonEventsService>()
                 .AddSingleton<IColorThemeService, ColorThemeService>()

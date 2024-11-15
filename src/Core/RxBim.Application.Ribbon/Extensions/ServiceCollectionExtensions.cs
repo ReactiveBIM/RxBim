@@ -36,7 +36,6 @@
                 builder(ribbon);
                 return ribbon.Build();
             });
-            services.AddMenuBuilder();
         }
 
         /// <summary>
@@ -57,7 +56,20 @@
         {
             services.AddBuilder<TBuilder>(assembly);
             services.AddSingleton(sp => GetMenuConfiguration(sp, config));
-            services.AddMenuBuilder();
+        }
+
+        /// <summary>
+        /// Adds a ribbon item registration strategies.
+        /// </summary>
+        /// <param name="services">DI container.</param>
+        /// <param name="assembly">An assembly to load </param>
+        public static IServiceCollection RegisterItemStrategies(this IServiceCollection services, Assembly assembly)
+        {
+            return services.Scan(scan => scan
+                .FromAssemblies(assembly)
+                .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime());
         }
 
         private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
@@ -74,11 +86,6 @@
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime())
                 .AddSingleton<IRibbonMenuBuilder, T>();
-        }
-
-        private static void AddMenuBuilder(this IServiceCollection services)
-        {
-            services.Decorate(typeof(IMethodCaller<>), typeof(MenuBuilderMethodCaller<>));
         }
 
         private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)
