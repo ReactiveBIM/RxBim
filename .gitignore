@@ -270,7 +270,6 @@ out/
 
 projectfiles.tar
 
-global.json
 .nuke/temp
 
 testoutput/
