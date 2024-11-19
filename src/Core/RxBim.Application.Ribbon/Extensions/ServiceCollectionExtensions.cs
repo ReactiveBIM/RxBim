@@ -55,7 +55,7 @@
             where TBuilder : class, IRibbonMenuBuilder
         {
             services.AddBuilder<TBuilder>(assembly);
-            services.AddSingleton(sp => GetMenuConfiguration(sp, config));
+            services.AddSingleton<Ribbon>(sp => GetMenuConfiguration(sp, config));
         }
 
         /// <summary>
@@ -78,10 +78,7 @@
             services
                 .AddSingleton(new MenuData { MenuAssembly = assembly })
                 .Scan(scan => scan
-                    .FromExecutingAssembly()
-                    .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
-                    .AsImplementedInterfaces()
-                    .WithSingletonLifetime()
+                    .FromAssemblyOf<IItemFromConfigStrategy>()
                     .AddClasses(classes => classes.AssignableTo<IItemFromConfigStrategy>())
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime())
