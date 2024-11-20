@@ -4,6 +4,7 @@ namespace RxBim.Application.Ribbon
     using System.Reflection;
     using Abstractions;
     using Di;
+    using Di.Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
@@ -50,7 +51,7 @@ namespace RxBim.Application.Ribbon
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services
-                .RegisterItemStrategies(Assembly.GetExecutingAssembly())
+                .RegisterTypes<IItemStrategy>(Assembly.GetExecutingAssembly(), ServiceLifetime.Singleton)
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
         }
     }

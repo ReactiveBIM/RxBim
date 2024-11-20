@@ -58,20 +58,6 @@
             services.AddSingleton<Ribbon>(sp => GetMenuConfiguration(sp, config));
         }
 
-        /// <summary>
-        /// Adds a ribbon item registration strategies.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        /// <param name="assembly">An assembly to load </param>
-        public static IServiceCollection RegisterItemStrategies(this IServiceCollection services, Assembly assembly)
-        {
-            return services.Scan(scan => scan
-                .FromAssemblies(assembly)
-                .AddClasses(classes => classes.AssignableTo<IItemStrategy>())
-                .AsImplementedInterfaces()
-                .WithSingletonLifetime());
-        }
-
         private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {

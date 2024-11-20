@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using Di;
+    using Di.Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services;
@@ -46,7 +47,7 @@
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.RegisterItemStrategies(Assembly.GetExecutingAssembly())
+            services.RegisterTypes<IItemStrategy>(Assembly.GetExecutingAssembly(), ServiceLifetime.Singleton)
                 .AddSingleton<IOnlineHelpService, OnlineHelpService>()
                 .AddSingleton<IRibbonEventsService, RibbonEventsService>()
                 .AddSingleton<IColorThemeService, ColorThemeService>()
