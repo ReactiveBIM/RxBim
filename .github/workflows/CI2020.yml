@@ -21,6 +21,7 @@ on:
     branches:
       - develop
       - 'feature/**'
+      - 'bugfix/**'
 
 jobs:
   windows-latest:
