@@ -6,6 +6,7 @@
     using System.Reflection;
     using Extensions;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Base DI configurator.
@@ -16,18 +17,25 @@
         /// <summary>
         /// DI container.
         /// </summary>
-        public IContainer Container { get; } = new DiContainer();
+        protected IServiceCollection Services { get; } = new ServiceCollection();
 
         /// <summary>
-        /// Configures dependencies in the <see cref="IContainer.Services"/>.
+        /// Configures dependencies in the <see cref="IServiceCollection"/>.
         /// </summary>
         /// <param name="assembly">An assembly for dependency scanning.</param>
         public void Configure(Assembly assembly)
         {
             ConfigureBaseDependencies();
             AddConfigurations(assembly);
-            AddServiceLocator();
             ConfigureAdditionalDependencies(assembly);
+        }
+
+        /// <summary>
+        /// Builds container.
+        /// </summary>
+        public IServiceProvider Build()
+        {
+            return Services.BuildServiceProvider();
         }
 
         /// <summary>
@@ -42,13 +50,13 @@
         protected virtual void ConfigureAdditionalDependencies(Assembly assembly)
         {
             var configs = assembly.GetTypes()
-                .Where(x => x.GetInterface(typeof(TConfiguration).Name) != null)
+                .Where(x => typeof(TConfiguration).IsAssignableFrom(x))
                 .Select(Activator.CreateInstance)
-                .Cast<IPluginConfiguration>();
+                .Cast<TConfiguration>();
 
             foreach (var cfg in configs)
             {
-                cfg.Configure(Container);
+                cfg.Configure(Services);
             }
         }
 
@@ -56,11 +64,6 @@
         {
             var configurationBuilder = GetBaseConfigurationBuilder(assembly);
             AddUserConfigurations(configurationBuilder);
-        }
-
-        private void AddServiceLocator()
-        {
-            Container.AddInstance<IServiceLocator>(new ServiceLocator(Container));
         }
 
         private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
@@ -79,11 +82,10 @@
 
         private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
         {
-            Container.AddSingleton<IConfiguration>(() =>
+            Services.AddSingleton<IConfiguration>(sp =>
             {
-                var serviceLocator = Container.GetService<IServiceLocator>();
-                foreach (var addConfig in serviceLocator.GetServices<Action<IContainer, IConfigurationBuilder>>())
-                    addConfig(Container, configurationBuilder);
+                foreach (var addConfig in sp.GetServices<Action<IServiceCollection, IConfigurationBuilder>>())
+                    addConfig(Services, configurationBuilder);
 
                 return configurationBuilder.Build();
             });

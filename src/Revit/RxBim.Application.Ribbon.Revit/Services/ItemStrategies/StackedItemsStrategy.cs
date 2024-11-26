@@ -6,25 +6,26 @@
     using Abstractions;
     using Autodesk.Revit.UI;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
-        private readonly IServiceLocator _serviceLocator;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IRibbonPanelItemService _ribbonPanelItemService;
         private List<IItemStrategy>? _strategies;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IServiceLocator serviceLocator, IRibbonPanelItemService ribbonPanelItemService)
+        public StackedItemsStrategy(IServiceProvider serviceProvider, IRibbonPanelItemService ribbonPanelItemService)
         {
-            _serviceLocator = serviceLocator;
+            _serviceProvider = serviceProvider;
             _ribbonPanelItemService = ribbonPanelItemService;
         }
 
         private IEnumerable<IItemStrategy> Strategies =>
-            _strategies ??= _serviceLocator.GetServices<IItemStrategy>().ToList();
+            _strategies ??= _serviceProvider.GetServices<IItemStrategy>().ToList();
 
         /// <inheritdoc />
         protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
