@@ -1,9 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
-    using Shared;
 
     /// <summary>
     /// Utility class for creating the plugin ribbon.
