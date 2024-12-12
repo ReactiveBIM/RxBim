@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
     /// <param name="action">The function for creating a configuration.</param>
     public static void AddConfiguration(
         this IServiceCollection services,
-        Action<IServiceCollection, IConfigurationBuilder>? action)
+        Action<IServiceProvider, IConfigurationBuilder>? action)
     {
         if (action != null)
             services.AddSingleton(action);

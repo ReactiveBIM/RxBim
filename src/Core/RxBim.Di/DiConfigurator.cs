@@ -84,8 +84,8 @@
         {
             Services.AddSingleton<IConfiguration>(sp =>
             {
-                foreach (var addConfig in sp.GetServices<Action<IServiceCollection, IConfigurationBuilder>>())
-                    addConfig(Services, configurationBuilder);
+                foreach (var addConfig in sp.GetServices<Action<IServiceProvider, IConfigurationBuilder>>())
+                    addConfig(sp, configurationBuilder);
 
                 return configurationBuilder.Build();
             });
