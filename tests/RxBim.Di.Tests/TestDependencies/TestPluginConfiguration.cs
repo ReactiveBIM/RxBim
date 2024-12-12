@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Di.Tests.TestDependencies
 {
+    using Microsoft.Extensions.DependencyInjection;
+
     public class TestPluginConfiguration : IApplicationConfiguration
     {
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection services)
         {
-            container.AddTransient<IPluginService, PluginService>();
+            services.AddTransient<IPluginService, PluginService>();
         }
     }
 }

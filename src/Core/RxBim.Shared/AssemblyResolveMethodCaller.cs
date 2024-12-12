@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Shared
 {
+    using System;
     using Di;
 
     /// <inheritdoc />
@@ -15,9 +16,9 @@
         }
 
         /// <inheritdoc />
-        public override T InvokeMethod(IContainer container, string methodName)
+        public override T InvokeMethod(IServiceProvider serviceProvider, string methodName)
         {
-            var result = Decorated.InvokeMethod(container, methodName);
+            var result = Decorated.InvokeMethod(serviceProvider, methodName);
 
             if (methodName == Constants.ShutdownMethodName)
             {

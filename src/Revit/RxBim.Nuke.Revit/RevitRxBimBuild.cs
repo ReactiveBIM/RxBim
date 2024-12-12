@@ -11,7 +11,6 @@
     using global::Nuke.Common.IO;
     using JetBrains.Annotations;
     using Models;
-    using static global::Nuke.Common.IO.FileSystemTasks;
     using static Helpers.AssemblyScanner;
 
     /// <inheritdoc />
@@ -63,7 +62,7 @@
                 else
                 {
                     var revitPath = GetRevitAddinsPath() / addinFile;
-                    CopyFile(addinPath, revitPath, FileExistsPolicy.Overwrite);
+                    addinPath.Copy(revitPath, ExistsPolicy.FileOverwrite);
                 }
             });
 
@@ -98,10 +97,7 @@
                 var outputPath = project.GetTargetDir();
                 var revitPath = GetRevitAddinsPath() / Project;
 
-                CopyDirectoryRecursively(outputPath,
-                    revitPath,
-                    DirectoryExistsPolicy.Merge,
-                    FileExistsPolicy.Overwrite);
+                outputPath.Copy(revitPath, ExistsPolicy.FileOverwrite | ExistsPolicy.DirectoryMerge);
             });
 
         private AbsolutePath GetRevitAddinsPath()

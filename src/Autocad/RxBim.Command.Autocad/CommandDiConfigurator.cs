@@ -2,6 +2,7 @@
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -23,11 +24,11 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container
-                .AddInstance(Application.DocumentManager.MdiActiveDocument)
-                .AddInstance(Application.DocumentManager.MdiActiveDocument.Database)
-                .AddInstance(Application.DocumentManager.MdiActiveDocument.Editor)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_commandObject));
+            Services
+                .AddSingleton(Application.DocumentManager.MdiActiveDocument)
+                .AddSingleton(Application.DocumentManager.MdiActiveDocument.Database)
+                .AddSingleton(Application.DocumentManager.MdiActiveDocument.Editor)
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_commandObject));
         }
     }
 }
