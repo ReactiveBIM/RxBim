@@ -17,12 +17,7 @@
         /// </summary>
         public Target Clean => _ => _
             .Description("Clean bin/, obj/")
-            .Executes(() =>
-            {
-                Solution.Directory.GlobDirectories("**/bin", "**/obj")
-                    .Where(x => !BuildProjectDirectory.Contains(x))
-                    .ForEach(x => x.DeleteDirectory());
-            });
+            .Executes(CleanInternal);
 
         /// <summary>
         /// Restores packages from a solution.
@@ -30,11 +25,7 @@
         public Target Restore => _ => _
             .Description("Restore packages")
             .DependsOn(Clean)
-            .Executes(() =>
-            {
-                DotNetRestore(s => s
-                    .SetProjectFile(Solution.Path));
-            });
+            .Executes(RestoreInternal);
 
         /// <summary>
         /// Compiles a solution.
@@ -42,12 +33,7 @@
         public Target Compile => _ => _
             .Description("Compile solution")
             .DependsOn(Restore)
-            .Executes(() =>
-            {
-                DotNetBuild(settings => settings
-                    .SetProjectFile(Solution.Path)
-                    .SetConfiguration(Configuration));
-            });
+            .Executes(CompileInternal);
 
         /// <summary>
         /// Runs tests from a solution.
@@ -60,6 +46,29 @@
                 DotNetTest(settings => settings
                     .SetProjectFile(GetProjectPath(Project)));
             });
+
+        /// <inheritdoc cref="Compile"/>
+        protected virtual void CompileInternal()
+        {
+            DotNetBuild(settings => settings
+                .SetProjectFile(Solution.Path)
+                .SetConfiguration(Configuration));
+        }
+
+        /// <inheritdoc cref="Restore"/>
+        protected virtual void RestoreInternal()
+        {
+            DotNetRestore(s => s
+                .SetProjectFile(Solution.Path));
+        }
+
+        /// <inheritdoc cref="Clean"/>
+        protected virtual void CleanInternal()
+        {
+            Solution.Directory.GlobDirectories("**/bin", "**/obj")
+                .Where(x => !BuildProjectDirectory.Contains(x))
+                .ForEach(x => x.DeleteDirectory());
+        }
 
         private AbsolutePath? GetProjectPath(string? name)
         {

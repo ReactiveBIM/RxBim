@@ -118,13 +118,20 @@ namespace RxBim.Nuke.Builds
         /// <summary>
         /// Output temp directory path.
         /// </summary>
-        protected virtual string OutputTmpDir =>
-            _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
+        protected virtual string OutputTmpDir
+        {
+            get => _outputTmpDir ??= Path.Combine(Path.GetTempPath(), $"RxBim_build_{Guid.NewGuid()}");
+            set => _outputTmpDir = value;
+        }
 
         /// <summary>
         /// Output "bin" temp directory path.
         /// </summary>
-        protected virtual string OutputTmpDirBin => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
+        protected virtual string OutputTmpDirBin
+        {
+            get => _outputTmpDirBin ??= Path.Combine(OutputTmpDir, "bin");
+            set => _outputTmpDirBin = value;
+        }
 
         /// <summary>
         /// Selected project.

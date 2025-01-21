@@ -19,21 +19,13 @@
     public class InnoBuilder : IssBuilder
     {
         private readonly Options _options;
-        private readonly AbsolutePath _outputProjDir;
-        private readonly AbsolutePath _outputProjBinDir;
         private readonly string _projInstallDir;
 
         private readonly SetupBuilder _setupBuilder;
 
-        private InnoBuilder(
-            Options options,
-            AbsolutePath outputProjDir,
-            AbsolutePath outputProjBinDir,
-            string? setupFileName = null)
+        private InnoBuilder(Options options, string? setupFileName = null)
         {
             _options = options;
-            _outputProjDir = outputProjDir;
-            _outputProjBinDir = outputProjBinDir;
 
             var installDir = options.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
             _projInstallDir = $@"{installDir}\{options.ProjectName}";
@@ -47,39 +39,45 @@
                 .PrivilegesRequired(PrivilegesRequired.Lowest)
                 .OutputBaseFilename(outputFileName)
                 .DisableDirPage(YesNo.Yes);
-
-            Files
-                .CreateEntry(
-                    outputProjBinDir / "*",
-                    InnoConstants.Directories.App)
-                .Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
-            Files
-                .CreateEntry(outputProjDir / "*", installDir);
         }
 
         /// <summary>
         /// Creates an instance of <see cref="InnoBuilder"/>.
         /// </summary>
         /// <param name="options">Setup options.</param>
-        /// <param name="outputProjDir">Output compile project directory.</param>
-        /// <param name="outputProjBinDir">Output "bin" directory of compile project.</param>
         /// <param name="setupFileName">Setup file name.</param>
-        public static InnoBuilder Create(
-            Options options,
-            AbsolutePath outputProjDir,
-            AbsolutePath outputProjBinDir,
-            string? setupFileName = null) =>
-            new(options, outputProjDir, outputProjBinDir, setupFileName);
+        public static InnoBuilder Create(Options options, string? setupFileName = null) => new(options, setupFileName);
 
         /// <summary>
         /// Adds setup and uninstall icons from <see cref="Options"/>.
         /// </summary>
-        public InnoBuilder AddIcons()
+        /// <param name="outputDirectory">Output directory of compile project.</param>
+        public InnoBuilder AddIcons(AbsolutePath outputDirectory)
         {
             if (!string.IsNullOrWhiteSpace(_options.SetupIcon))
-                _setupBuilder.SetupIconFile(_outputProjBinDir / _options.SetupIcon);
+                _setupBuilder.SetupIconFile(outputDirectory / _options.SetupIcon);
             if (!string.IsNullOrWhiteSpace(_options.UninstallIcon))
                 _setupBuilder.UninstallDisplayIcon($@"{_projInstallDir}\{_options.UninstallIcon}");
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds files entry.
+        /// </summary>
+        /// <param name="sourceDirectory">Source directory.</param>
+        /// <param name="destinationDirectory">Destination directory.</param>
+        /// <param name="fileFlags"><see cref="FileFlags"/>.</param>
+        public InnoBuilder AddFilesEntry(
+            AbsolutePath sourceDirectory,
+            AbsolutePath destinationDirectory,
+            FileFlags? fileFlags = null)
+        {
+            var builder = Files.CreateEntry(sourceDirectory / "*", destinationDirectory);
+            if (fileFlags != null)
+            {
+                builder.Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
+            }
 
             return this;
         }
@@ -118,9 +116,10 @@
         /// <summary>
         /// Adds fonts files.
         /// </summary>
-        public InnoBuilder AddFonts()
+        /// <param name="outputProjDir">Output compile project directory.</param>
+        public InnoBuilder AddFonts(AbsolutePath outputProjDir)
         {
-            FillFonts(_outputProjDir)
+            FillFonts(outputProjDir)
                 .ForEach(font =>
                 {
                     Files.CreateEntry(font, @"{autofonts}")

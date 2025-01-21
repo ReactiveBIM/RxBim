@@ -19,7 +19,7 @@
         /// <param name="outputDirectory">The output path.</param>
         /// <param name="allAssembliesTypes">Assemblies types data.</param>
         /// <param name="seriesMaxAny">Supports any maximum version of CAD.</param>
-        public void Generate(
+        public virtual void Generate(
             Project project,
             string outputDirectory,
             IEnumerable<AssemblyType> allAssembliesTypes,
