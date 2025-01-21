@@ -21,14 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="Directory.Build.Props" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Directory.Build.Props" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Include="..\RxBim.Di\EnvironmentRegistryConstants.cs">
         <Link>EnvironmentRegistryConstants.cs</Link>
       </Compile>

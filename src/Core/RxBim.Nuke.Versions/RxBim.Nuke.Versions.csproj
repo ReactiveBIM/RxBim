@@ -9,10 +9,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Directory.Build.Props" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 

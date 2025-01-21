@@ -69,11 +69,11 @@
         /// <param name="destinationDirectory">Destination directory.</param>
         /// <param name="fileFlags"><see cref="FileFlags"/>.</param>
         public InnoBuilder AddFilesEntry(
-            AbsolutePath sourceDirectory,
-            AbsolutePath destinationDirectory,
+            string sourceDirectory,
+            string destinationDirectory,
             FileFlags? fileFlags = null)
         {
-            var builder = Files.CreateEntry(sourceDirectory / "*", destinationDirectory);
+            var builder = Files.CreateEntry((AbsolutePath)sourceDirectory / "*", destinationDirectory);
             if (fileFlags != null)
             {
                 builder.Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
