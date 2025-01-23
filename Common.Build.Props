@@ -88,7 +88,7 @@
     </Choose>
 
     <PropertyGroup>
-        <Version>3.0.1-lc005</Version>
+        <Version>3.0.1-lc006</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
