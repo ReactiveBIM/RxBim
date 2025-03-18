@@ -20,9 +20,9 @@
         public string? LargeImage { get; set; }
 
         /// <summary>
-        /// The URI string for default small button image.
+        /// The URI string for default button image.
         /// </summary>
-        public string? SmallImage { get; set; }
+        public string? Image { get; set; }
 
         /// <summary>
         /// The URI string for large button image for light theme.

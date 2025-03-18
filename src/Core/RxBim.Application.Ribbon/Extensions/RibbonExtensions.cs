@@ -121,9 +121,9 @@
             button.Text ??= attr.Text;
             button.ToolTip ??= attr.ToolTip;
             button.HelpUrl ??= attr.HelpUrl;
-            button.SmallImage ??= attr.SmallImage;
+            button.Image ??= attr.Image;
             button.LargeImage ??= attr.LargeImage;
-            button.SmallImageLight ??= attr.SmallImageLight ?? attr.SmallImage;
+            button.ImageLight ??= attr.SmallImageLight ?? attr.Image;
             button.LargeImageLight ??= attr.LargeImageLight ?? attr.LargeImage;
         }
 

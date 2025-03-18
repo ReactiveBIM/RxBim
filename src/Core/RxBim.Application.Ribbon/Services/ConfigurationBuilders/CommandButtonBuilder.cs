@@ -15,7 +15,7 @@
         public CommandButtonBuilder(string name, Type commandType)
             : base(name)
         {
-            Button.CommandType = commandType.AssemblyQualifiedName;
+            Item.CommandType = commandType.AssemblyQualifiedName;
         }
     }
 }

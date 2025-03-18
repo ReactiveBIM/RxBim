@@ -72,7 +72,7 @@
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
-            buttonData.Image = _menuData.GetIconImage(buttonConfig.SmallImage, assembly);
+            buttonData.Image = _menuData.GetIconImage(buttonConfig.Image, assembly);
             buttonData.LargeImage = _menuData.GetIconImage(buttonConfig.LargeImage, assembly);
         }
 
