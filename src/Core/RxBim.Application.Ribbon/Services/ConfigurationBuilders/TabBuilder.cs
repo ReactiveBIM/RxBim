@@ -27,6 +27,15 @@
             return this;
         }
 
+        /// <inheritdoc />
+        public ITabBuilder ComboBox(string title, Action<IComboBoxBuilder> comboBox)
+        {
+            var builder = new ComboBoxBuilder(title);
+            comboBox.Invoke(builder);
+            _tab.Items.Add(builder.Build());
+            return this;
+        }
+
         /// <summary>
         /// Returns tab.
         /// </summary>
@@ -44,7 +53,7 @@
             IConfigurationSection section,
             IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
-            var panelsSection = section.GetSection(nameof(Tab.Panels));
+            var panelsSection = section.GetSection(nameof(Tab.Items));
             if (!panelsSection.Exists())
                 return;
 
@@ -61,7 +70,7 @@
         {
             var builder = new PanelBuilder(panelTitle);
             panel?.Invoke(builder);
-            _tab.Panels.Add(builder.Build());
+            _tab.Items.Add(builder.Build());
             return builder;
         }
     }

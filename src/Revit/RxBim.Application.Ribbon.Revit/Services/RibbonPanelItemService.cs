@@ -20,12 +20,6 @@
         }
 
         /// <inheritdoc />
-        public RibbonItemData CannotBeStackedStub(IRibbonPanelItem itemConfig)
-        {
-            throw new InvalidOperationException($"Can't be stacked: {itemConfig.GetType().FullName}");
-        }
-
-        /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
         {
             button.LoadFromAttribute(_menuData.MenuAssembly);

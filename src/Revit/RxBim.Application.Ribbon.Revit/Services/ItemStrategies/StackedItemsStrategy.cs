@@ -5,8 +5,11 @@
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
+    using Autodesk.Windows;
     using Di;
     using Microsoft.Extensions.DependencyInjection;
+    using RibbonItem = Autodesk.Revit.UI.RibbonItem;
+    using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
@@ -28,7 +31,7 @@
             _strategies ??= _serviceProvider.GetServices<IItemStrategy>().ToList();
 
         /// <inheritdoc />
-        protected override void AddItem(string tabName, RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, StackedItems stackedItems)
         {
             var button1 = GetStackedItem(stackedItems.Items[0]);
             var button2 = GetStackedItem(stackedItems.Items[1]);
@@ -60,7 +63,7 @@
         /// <inheritdoc />
         protected override RibbonItemData GetItemForStack(StackedItems itemConfig)
         {
-            return _ribbonPanelItemService.CannotBeStackedStub(itemConfig);
+            return CantBeStackedStub(itemConfig);
         }
 
         private RibbonItemData GetStackedItem(IRibbonPanelItem firstItem)

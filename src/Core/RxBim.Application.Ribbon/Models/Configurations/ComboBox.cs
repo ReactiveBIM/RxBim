@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class ComboBox : RibbonPanelItemBase
 {
     /// <summary>
-    /// The panel item list.
+    /// Combobox members list.
     /// </summary>
     public List<ComboBoxMember> ComboBoxMembers { get; set; } = new();
 }

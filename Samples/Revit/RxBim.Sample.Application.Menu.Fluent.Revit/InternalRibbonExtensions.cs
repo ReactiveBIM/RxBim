@@ -15,6 +15,13 @@
         {
             return ribbon
                 .Tab("RxBim_Tab_FromAttr", tab => tab
+                    .ComboBox(
+                        "SomeBox",
+                        combobox => combobox
+                            .AddComboBoxMember(
+                                "SomeMember",
+                                comboboxmember => comboboxmember
+                                    .Text("Первая строка")))
                     .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel

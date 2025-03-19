@@ -8,12 +8,6 @@
     public interface IRibbonPanelItemService
     {
         /// <summary>
-        /// Stub for GetItemForStack, if item can't be stacked.
-        /// </summary>
-        /// <param name="itemConfig">Ribbon item configuration.</param>
-        RibbonItemData CannotBeStackedStub(IRibbonPanelItem itemConfig);
-
-        /// <summary>
         /// Creates and returns a command button.
         /// </summary>
         /// <param name="button">Command button configuration.</param>
