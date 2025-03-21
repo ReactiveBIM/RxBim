@@ -11,8 +11,6 @@
     /// <inheritdoc />
     internal class RibbonPanelItemService(MenuData menuData, IComboBoxEventsHandler comboBoxEventsHandler) : IRibbonPanelItemService
     {
-        private string _tabName = string.Empty;
-
         /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
         {
@@ -36,7 +34,6 @@
         /// <inheritdoc />
         public RibbonCombo CreateComboBox(string tabName, ComboBox itemConfig)
         {
-            _tabName = tabName;
             var comboBox = CreateComboBox(itemConfig);
 
             comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
@@ -109,14 +106,14 @@
             ribbonCombo.CurrentChanged += ComboBoxOnCurrentChanged;
         }
 
-        private void ComboBoxOnCurrentChanged(object sender, RibbonPropertyChangedEventArgs e)
+        private void ComboBoxOnCurrentChanged(object? sender, RibbonPropertyChangedEventArgs e)
         {
             if (sender is not RibbonCombo ribbonCombo)
                 return;
             if (e.OldValue is not RibbonItem oldItem || e.NewValue is not RibbonItem newItem)
                 return;
 
-            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Id, _tabName, oldItem.Text, newItem.Text);
+            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Id, oldItem.Text, newItem.Text);
         }
 
         private RibbonCombo CreateComboBox(ComboBox itemConfig)

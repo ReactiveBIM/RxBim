@@ -21,6 +21,11 @@
                             .Panel(
                                 title: "RxBim_Panel_1",
                                 panel => panel
+                                    .ComboBox(
+                                        "ComboBox1",
+                                        cb => cb
+                                            .AddComboBoxMember("ComboBoxMember1", cbm => cbm.Text("First row"))
+                                            .AddComboBoxMember("ComboBoxMember2", cbm => cbm.Text("Second row")))
                                     .CommandButton(
                                         "Command1_Large_WithText",
                                         typeof(Cmd1),
@@ -91,15 +96,21 @@
                                         button => SetupCommand3Button(button).Text("Command\n#3")))
                             .Panel("RxBim_Panel_2",
                                 panel => panel
+                                    .ComboBox(
+                                        "ComboBox1",
+                                        cb => cb
+                                            .AddComboBoxMember("ComboBoxMember3", cbm => cbm.Text("Third row"))
+                                            .AddComboBoxMember("ComboBoxMember4", cbm => cbm.Text("Forth row")))
                                     .StackedItems(items => items
                                         .CommandButton(
                                             "Command1_Small_WithText",
                                             typeof(Cmd1),
                                             button => SetupCommand1Button(button).Text("Command #1"))
-                                        .CommandButton(
-                                            "Command2_Small_WithText",
-                                            typeof(Cmd2),
-                                            button => SetupCommand2Button(button).Text("Command #2"))
+                                        .ComboBox(
+                                            "ComboBox2",
+                                            cb => cb
+                                                .AddComboBoxMember("ComboBoxMember1", cbm => cbm.Text("First row"))
+                                                .AddComboBoxMember("ComboBoxMember2", cbm => cbm.Text("Second row")))
                                         .CommandButton(
                                             "Command3_Small_WithText",
                                             typeof(Cmd3),

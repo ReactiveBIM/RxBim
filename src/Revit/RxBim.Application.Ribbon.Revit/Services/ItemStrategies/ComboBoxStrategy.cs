@@ -14,8 +14,6 @@ using RibbonPanel = Autodesk.Windows.RibbonPanel;
 [UsedImplicitly]
 public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : ItemStrategyBase<ComboBox>
 {
-    private string _tabName = string.Empty;
-
     /// <inheritdoc />
     protected override void AddItem(RibbonTab tab, Autodesk.Revit.UI.RibbonPanel ribbonPanel, ComboBox itemConfig)
     {
@@ -30,7 +28,6 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : 
 
     private void CreateComboBox(RibbonTab tab, Autodesk.Revit.UI.RibbonPanel ribbonPanel, ComboBox itemConfig)
     {
-        _tabName = tab.Title;
         var exist = tab.Panels.SelectMany(p => p.Source.Items)
             .FirstOrDefault(i => i.Name?.Equals(itemConfig.Name) ?? false);
         if (exist is RibbonCombo ribbonCombo)
@@ -45,7 +42,7 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : 
 
         var comboBox = ribbonPanelItemService.CreateComboBox(tab.Title, itemConfig);
         ComponentManager.Ribbon?.Tabs
-            .FirstOrDefault(x => x.Title.Equals(_tabName, StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(x => x.Title.Equals(tab.Title, StringComparison.OrdinalIgnoreCase))
             ?.Panels.FirstOrDefault(x =>
                 x.Source.AutomationName.Equals(ribbonPanel.Title, StringComparison.OrdinalIgnoreCase))
             ?.Source.Items.Add(comboBox);
