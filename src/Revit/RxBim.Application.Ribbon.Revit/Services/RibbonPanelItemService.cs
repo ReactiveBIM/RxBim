@@ -37,15 +37,7 @@
         public RibbonCombo CreateComboBox(string tabName, ComboBox itemConfig)
         {
             _tabName = tabName;
-            var comboBox = new RibbonCombo
-            {
-                Name = itemConfig.Name,
-                Text = itemConfig.Text,
-                Description = itemConfig.Description,
-                Image = menuData.GetIconImage(itemConfig.Image),
-                ToolTip = itemConfig.ToolTip,
-                Width = itemConfig.Width
-            };
+            var comboBox = CreateComboBox(itemConfig);
 
             comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
 
@@ -97,12 +89,47 @@
             }
         }
 
+        /// <inheritdoc />
+        public void SetComboBoxProperties(ComboBox config, Autodesk.Revit.UI.ComboBox comboBox, string tabName, string panelName)
+        {
+            var exist = ComponentManager.Ribbon?.Tabs
+                .FirstOrDefault(t => t.Title.Equals(tabName))
+                ?.Panels.FirstOrDefault(p => p.Source.AutomationName.Equals(panelName))
+                ?.Source.Items.OfType<RibbonRowPanel>().SelectMany(row => row.Items)
+                .FirstOrDefault(i => i.Id.EndsWith(comboBox.Name));
+            if (exist is not RibbonCombo ribbonCombo)
+                return;
+
+            ribbonCombo.Width = config.Width;
+            foreach (var member in config.ComboBoxMembers)
+            {
+                comboBox.AddItem(new ComboBoxMemberData(member.Name, member.Text));
+            }
+
+            ribbonCombo.CurrentChanged += ComboBoxOnCurrentChanged;
+        }
+
         private void ComboBoxOnCurrentChanged(object sender, RibbonPropertyChangedEventArgs e)
         {
+            if (sender is not RibbonCombo ribbonCombo)
+                return;
             if (e.OldValue is not RibbonItem oldItem || e.NewValue is not RibbonItem newItem)
                 return;
 
-            comboBoxEventsHandler.HandleCurrentChanged(_tabName, oldItem.Text, newItem.Text);
+            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Id, _tabName, oldItem.Text, newItem.Text);
+        }
+
+        private RibbonCombo CreateComboBox(ComboBox itemConfig)
+        {
+            return new RibbonCombo
+            {
+                Name = itemConfig.Name,
+                Text = itemConfig.Text,
+                Description = itemConfig.Description,
+                Image = menuData.GetIconImage(itemConfig.Image),
+                ToolTip = itemConfig.ToolTip,
+                Width = itemConfig.Width
+            };
         }
     }
 }

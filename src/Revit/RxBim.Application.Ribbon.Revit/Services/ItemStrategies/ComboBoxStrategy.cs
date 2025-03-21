@@ -25,7 +25,7 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : 
     /// <inheritdoc />
     protected override RibbonItemData GetItemForStack(ComboBox itemConfig)
     {
-        return CantBeStackedStub(itemConfig);
+        return new ComboBoxData(itemConfig.Name);
     }
 
     private void CreateComboBox(RibbonTab tab, Autodesk.Revit.UI.RibbonPanel ribbonPanel, ComboBox itemConfig)

@@ -48,5 +48,18 @@
         /// <param name="config">Pull-Down button config.</param>
         /// <param name="button">Revit Pull-Down button instance.</param>
         void CreateButtonsForPullDown(PullDownButton config, PulldownButton button);
+
+        /// <summary>
+        /// Sets <see cref="ComboBox"/> properties.
+        /// </summary>
+        /// <param name="config">Combobox config.</param>
+        /// <param name="comboBox">Revit combobox instance.</param>
+        /// <param name="tabName">Tab name.</param>
+        /// <param name="panelName">Panel name.</param>
+        void SetComboBoxProperties(
+            ComboBox config,
+            Autodesk.Revit.UI.ComboBox comboBox,
+            string tabName,
+            string panelName);
     }
 }

@@ -25,5 +25,13 @@
         /// <param name="name">The button internal name.</param>
         /// <param name="builder">The pull-down button builder.</param>
         IStackedItemsBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder);
+
+        /// <summary>
+        /// Adds a new combobox to the stack.
+        /// </summary>
+        /// <param name="name">Internal name of the combobox.</param>
+        /// <param name="builder">A combobox builder.</param>
+        /// <returns>Panel where combobox were created.</returns>
+        IStackedItemsBuilder ComboBox(string name, Action<IComboBoxBuilder> builder);
     }
 }

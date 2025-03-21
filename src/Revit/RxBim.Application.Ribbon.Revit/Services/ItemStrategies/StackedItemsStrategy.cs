@@ -8,6 +8,7 @@
     using Autodesk.Windows;
     using Di;
     using Microsoft.Extensions.DependencyInjection;
+    using ComboBox = Application.Ribbon.ComboBox;
     using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
@@ -56,6 +57,12 @@
                     addedItems[i] is PulldownButton addedButton)
                 {
                     _ribbonPanelItemService.CreateButtonsForPullDown(buttonConfig, addedButton);
+                }
+
+                if (stackedItems.Items[i] is ComboBox comboBoxConfig &&
+                    addedItems[i] is Autodesk.Revit.UI.ComboBox addedComboBox)
+                {
+                    _ribbonPanelItemService.SetComboBoxProperties(comboBoxConfig, addedComboBox, tab.Title, ribbonPanel.Title);
                 }
             }
         }

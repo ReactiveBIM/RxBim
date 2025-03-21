@@ -56,7 +56,7 @@
         /// <param name="itemConfig">Ribbon item configuration.</param>
         protected RibbonItemData CantBeStackedStub(TItem itemConfig)
         {
-            throw new InvalidOperationException($"Can't be stacked: {itemConfig.GetType().FullName}");
+            throw new InvalidOperationException($"Can't be stacked: {itemConfig!.GetType().FullName}");
         }
     }
 }

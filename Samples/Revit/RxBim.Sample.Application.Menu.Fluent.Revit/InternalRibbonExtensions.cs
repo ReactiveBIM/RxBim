@@ -69,9 +69,8 @@
                             .ComboBox(
                                 "Test",
                                 cb => cb
-                                    .AddComboBoxMember(
-                                        string.Empty,
-                                        cbm => cbm.Text("1")))
+                                    .AddComboBoxMember("1", cbm => cbm.Text("1"))
+                                    .AddComboBoxMember("2", cbm => cbm.Text("2")))
                             .CommandButton(
                                 name: "Command1_Large_WithText",
                                 commandType: typeof(Cmd1),
@@ -163,16 +162,17 @@
                     .Panel(
                         "RxBim_Panel_2",
                         panel => panel
+                            .ComboBox(
+                                "Test",
+                                cb => cb
+                                    .AddComboBoxMember("5", cbm => cbm.Text("7"))
+                                    .AddComboBoxMember("6", cbm => cbm.Text("8")))
                             .StackedItems(items => items
-                                .CommandButton(
-                                    "Command1_Stacked1",
-                                    typeof(Cmd1),
-                                    button => button
-                                        .ToolTip("Tooltip: I'm run command #1. Push me!")
-                                        .Text("Command #1")
-                                        .Description("Description: This is command #1")
-                                        .Image(@"img\num1_16.png")
-                                        .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
+                                .ComboBox(
+                                    "Test1",
+                                    cb => cb
+                                        .AddComboBoxMember("3", cbm => cbm.Text("1"))
+                                        .AddComboBoxMember("4", cbm => cbm.Text("2")))
                                 .CommandButton(
                                     "Command2_Stacked1",
                                     typeof(Cmd2),
