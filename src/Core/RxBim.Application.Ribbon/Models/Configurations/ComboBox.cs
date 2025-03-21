@@ -8,6 +8,11 @@ using System.Collections.Generic;
 public class ComboBox : RibbonPanelItemBase
 {
     /// <summary>
+    /// Combobox width.
+    /// </summary>
+    public double Width { get; set; } = 200;
+
+    /// <summary>
     /// Combobox members list.
     /// </summary>
     public List<ComboBoxMember> ComboBoxMembers { get; set; } = new();

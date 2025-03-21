@@ -63,6 +63,15 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
         }
 
         /// <inheritdoc />
+        public IPanelBuilder ComboBox(string name, Action<IComboBoxBuilder> builder)
+        {
+            var combobox = new ComboBoxBuilder(name);
+            builder.Invoke(combobox);
+            _panel.Items.Add(combobox.Build());
+            return this;
+        }
+
+        /// <inheritdoc />
         public IPanelBuilder Separator()
         {
             _panel.Items.Add(new PanelLayoutItem

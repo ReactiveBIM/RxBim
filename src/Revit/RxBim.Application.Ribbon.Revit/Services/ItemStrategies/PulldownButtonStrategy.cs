@@ -3,6 +3,7 @@
     using Abstractions;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
+    using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>

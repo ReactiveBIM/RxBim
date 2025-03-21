@@ -15,13 +15,6 @@
         {
             return ribbon
                 .Tab("RxBim_Tab_FromAttr", tab => tab
-                    .ComboBox(
-                        "SomeBox",
-                        combobox => combobox
-                            .AddComboBoxMember(
-                                "SomeMember",
-                                comboboxmember => comboboxmember
-                                    .Text("Первая строка")))
                     .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
@@ -66,7 +59,6 @@
         /// Builds a ribbon tab using fluent builder.
         /// </summary>
         /// <param name="ribbon">A ribbon.</param>
-        /// <returns></returns>
         public static IRibbonBuilder TabFromBuilder(this IRibbonBuilder ribbon)
         {
             return ribbon
@@ -74,6 +66,12 @@
                     .Panel(
                         title: "RxBim_Panel_1",
                         panel => panel
+                            .ComboBox(
+                                "Test",
+                                cb => cb
+                                    .AddComboBoxMember(
+                                        string.Empty,
+                                        cbm => cbm.Text("1")))
                             .CommandButton(
                                 name: "Command1_Large_WithText",
                                 commandType: typeof(Cmd1),

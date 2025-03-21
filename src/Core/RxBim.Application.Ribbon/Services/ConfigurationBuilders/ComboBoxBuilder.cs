@@ -12,6 +12,13 @@ public class ComboBoxBuilder : RibbonPanelItemBuilderBase<ComboBox, IComboBoxBui
     }
 
     /// <inheritdoc />
+    public IComboBoxBuilder SetWidth(double width)
+    {
+        Item.Width = width;
+        return this;
+    }
+
+    /// <inheritdoc />
     public IComboBoxBuilder AddComboBoxMember(string name, Action<IComboBoxMemberBuilder>? builder = null)
     {
         var comboBoxMemberBuilder = new ComboBoxMemberBuilder(name);

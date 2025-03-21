@@ -10,7 +10,6 @@
     /// Basic implementation of <see cref="IItemStrategy"/> for Revit menu item.
     /// </summary>
     public abstract class ItemStrategyBase<TItem> : IItemStrategy
-        where TItem : IRibbonPanelItem
     {
         /// <inheritdoc />
         public virtual bool IsApplicable(IRibbonPanelItem item)

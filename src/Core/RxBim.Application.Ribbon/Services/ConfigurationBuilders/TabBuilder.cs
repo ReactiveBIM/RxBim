@@ -27,15 +27,6 @@
             return this;
         }
 
-        /// <inheritdoc />
-        public ITabBuilder ComboBox(string title, Action<IComboBoxBuilder> comboBox)
-        {
-            var builder = new ComboBoxBuilder(title);
-            comboBox.Invoke(builder);
-            _tab.Items.Add(builder.Build());
-            return this;
-        }
-
         /// <summary>
         /// Returns tab.
         /// </summary>

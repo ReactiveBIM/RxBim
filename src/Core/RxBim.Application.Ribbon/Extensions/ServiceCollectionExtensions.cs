@@ -69,6 +69,7 @@
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime())
                 .AddSingleton<IRibbonMenuBuilder, T>();
+            services.AddSingleton<IComboBoxEventsHandler, ComboBoxEventsHandlerMock>();
         }
 
         private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)
