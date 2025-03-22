@@ -32,9 +32,9 @@
         }
 
         /// <inheritdoc />
-        public RibbonCombo CreateComboBox(string tabName, ComboBox itemConfig)
+        public RibbonCombo CreateComboBox(ComboBox itemConfig)
         {
-            var comboBox = CreateComboBox(itemConfig);
+            var comboBox = CreateComboBoxInternal(itemConfig);
 
             comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
 
@@ -89,21 +89,22 @@
         /// <inheritdoc />
         public void SetComboBoxProperties(ComboBox config, Autodesk.Revit.UI.ComboBox comboBox, string tabName, string panelName)
         {
-            var exist = ComponentManager.Ribbon?.Tabs
+            var existComboBox = ComponentManager.Ribbon?.Tabs
                 .FirstOrDefault(t => t.Title.Equals(tabName))
                 ?.Panels.FirstOrDefault(p => p.Source.AutomationName.Equals(panelName))
                 ?.Source.Items.OfType<RibbonRowPanel>().SelectMany(row => row.Items)
+                .OfType<RibbonCombo>()
                 .FirstOrDefault(i => i.Id.EndsWith(comboBox.Name));
-            if (exist is not RibbonCombo ribbonCombo)
+            if (existComboBox == null)
                 return;
 
-            ribbonCombo.Width = config.Width;
+            existComboBox.Width = config.Width;
             foreach (var member in config.ComboBoxMembers)
             {
                 comboBox.AddItem(new ComboBoxMemberData(member.Name, member.Text));
             }
 
-            ribbonCombo.CurrentChanged += ComboBoxOnCurrentChanged;
+            existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
         }
 
         private void ComboBoxOnCurrentChanged(object? sender, RibbonPropertyChangedEventArgs e)
@@ -116,7 +117,7 @@
             comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Id, oldItem.Text, newItem.Text);
         }
 
-        private RibbonCombo CreateComboBox(ComboBox itemConfig)
+        private RibbonCombo CreateComboBoxInternal(ComboBox itemConfig)
         {
             return new RibbonCombo
             {

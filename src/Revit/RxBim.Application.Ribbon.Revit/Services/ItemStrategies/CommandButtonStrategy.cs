@@ -4,7 +4,6 @@
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using JetBrains.Annotations;
-    using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>

@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Reflection;
     using ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 

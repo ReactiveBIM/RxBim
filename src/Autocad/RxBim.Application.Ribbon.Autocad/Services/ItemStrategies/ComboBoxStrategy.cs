@@ -1,12 +1,9 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
-    using System;
     using System.Linq;
-    using System.Windows.Controls;
     using Autodesk.Windows;
     using JetBrains.Annotations;
-    using RxBim.Application.Ribbon;
-    using ComboBox = Application.Ribbon.ComboBox;
+    using ComboBox = ComboBox;
 
     /// <inheritdoc />
     [UsedImplicitly]
@@ -15,15 +12,16 @@
         /// <inheritdoc />
         protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, ComboBox comboBoxConfig)
         {
-            var exist = ribbonTab.Panels.SelectMany(p => p.Source.Items)
+            var existComboBox = ribbonTab.Panels.SelectMany(p => p.Source.Items)
                 .OfType<RibbonRowPanel>()
                 .SelectMany(r => r.Items)
+                .OfType<RibbonCombo>()
                 .FirstOrDefault(i => i.Name?.Equals(comboBoxConfig.Name) ?? false);
-            if (exist is RibbonCombo ribbonCombo)
+            if (existComboBox != null)
             {
                 foreach (var comboBoxMember in comboBoxConfig.ComboBoxMembers)
                 {
-                    ribbonCombo.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+                    existComboBox.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
                 }
 
                 return;

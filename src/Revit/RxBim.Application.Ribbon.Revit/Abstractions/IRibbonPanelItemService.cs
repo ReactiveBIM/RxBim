@@ -2,7 +2,7 @@
 {
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
-    using ComboBox = Application.Ribbon.ComboBox;
+    using ComboBox = ComboBox;
 
     /// <summary>
     /// Service for <see cref="IRibbonPanelItem"/>.
@@ -18,9 +18,8 @@
         /// <summary>
         /// Creates and returns combobox.
         /// </summary>
-        /// <param name="tabName">Tab name.</param>
         /// <param name="comboBox">Combobox configuration.</param>
-        RibbonCombo CreateComboBox(string tabName, ComboBox comboBox);
+        RibbonCombo CreateComboBox(ComboBox comboBox);
 
         /// <summary>
         /// Checks button name. If name is not set, throws exception.

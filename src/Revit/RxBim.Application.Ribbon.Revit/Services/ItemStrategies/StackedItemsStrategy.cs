@@ -6,9 +6,8 @@
     using Abstractions;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
-    using ComboBox = Application.Ribbon.ComboBox;
+    using ComboBox = ComboBox;
     using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 

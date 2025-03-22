@@ -4,7 +4,6 @@
     using System.Linq;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
-    using Di;
     using UIFramework;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reflection;
-    using Di;
     using Di.Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
