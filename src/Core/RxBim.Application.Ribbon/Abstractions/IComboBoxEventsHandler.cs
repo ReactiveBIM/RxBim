@@ -9,7 +9,7 @@ public interface IComboBoxEventsHandler
     /// Handles 'CurrentChanged' event.
     /// </summary>
     /// <param name="id">Combobox id.</param>
-    /// <param name="oldPanelName">Previous panel.</param>
-    /// <param name="selectedPanelName">Selected panel.</param>
-    void HandleCurrentChanged(string id, string oldPanelName, string selectedPanelName);
+    /// <param name="oldValue">Old value.</param>
+    /// <param name="newValue">New value.</param>
+    void HandleCurrentChanged(string id, string oldValue, string newValue);
 }

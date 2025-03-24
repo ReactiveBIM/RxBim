@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -99,19 +98,6 @@
                 else
                     throw new InvalidOperationException($"Unknown panel item type: {item.GetType().Name}");
             }
-        }
-
-        private void AddItems(TTab tab, List<IRibbonPanelItem> items)
-        {
-            /*var addItemStrategies = _serviceProvider.GetServices<IItemStrategy>().ToList();
-            foreach (var item in items)
-            {
-                var strategy = addItemStrategies.FirstOrDefault(x => x.IsApplicable(item));
-                if (strategy != null)
-                    strategy.AddItem(tab!, panel!, item);
-                else
-                    throw new InvalidOperationException($"Unknown panel item type: {item.GetType().Name}");
-            }*/
         }
     }
 }

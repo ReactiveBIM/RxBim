@@ -21,7 +21,15 @@
             {
                 foreach (var comboBoxMember in comboBoxConfig.ComboBoxMembers)
                 {
-                    existComboBox.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+                    existComboBox.Items.Add(new RibbonItem
+                    {
+                        Name = comboBoxMember.Name,
+                        Text = comboBoxMember.Text,
+                        GroupName = comboBoxMember.GroupName,
+                        Image = menuData.GetIconImage(comboBoxMember.Image),
+                        Description = comboBoxMember.Description,
+                        ToolTip = comboBoxMember.ToolTip
+                    });
                 }
 
                 return;

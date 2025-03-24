@@ -6,13 +6,13 @@ using Abstractions;
 using Autodesk.Revit.UI;
 using Autodesk.Windows;
 using JetBrains.Annotations;
-using ComboBox = ComboBox;
+using ComboBox = RxBim.Application.Ribbon.ComboBox;
 using RibbonItem = Autodesk.Windows.RibbonItem;
 using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
 /// <inheritdoc />
 [UsedImplicitly]
-public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : ItemStrategyBase<ComboBox>
+public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService, MenuData menuData) : ItemStrategyBase<ComboBox>
 {
     /// <inheritdoc />
     protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, ComboBox itemConfig)
@@ -34,16 +34,22 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService) : 
         {
             foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
             {
-                ribbonCombo.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+                ribbonCombo.Items.Add(new RibbonItem
+                {
+                    Name = comboBoxMember.Name,
+                    Text = comboBoxMember.Text,
+                    GroupName = comboBoxMember.GroupName,
+                    Image = menuData.GetIconImage(comboBoxMember.Image),
+                    Description = comboBoxMember.Description,
+                    ToolTip = comboBoxMember.ToolTip
+                });
             }
 
             return;
         }
 
         var comboBox = ribbonPanelItemService.CreateComboBox(itemConfig);
-        ComponentManager.Ribbon?.Tabs
-            .FirstOrDefault(x => x.Title.Equals(tab.Title, StringComparison.OrdinalIgnoreCase))
-            ?.Panels.FirstOrDefault(x =>
+        tab.Panels.FirstOrDefault(x =>
                 x.Source.AutomationName.Equals(ribbonPanel.Title, StringComparison.OrdinalIgnoreCase))
             ?.Source.Items.Add(comboBox);
     }

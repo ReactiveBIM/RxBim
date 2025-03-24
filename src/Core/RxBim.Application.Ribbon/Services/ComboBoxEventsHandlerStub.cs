@@ -8,8 +8,8 @@ public class ComboBoxEventsHandlerStub : IComboBoxEventsHandler
     /// <inheritdoc />
     public void HandleCurrentChanged(
         string id,
-        string oldPanelName,
-        string selectedPanelName)
+        string oldValue,
+        string newValue)
     {
     }
 }

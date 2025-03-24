@@ -101,7 +101,13 @@
             existComboBox.Width = config.Width;
             foreach (var member in config.ComboBoxMembers)
             {
-                comboBox.AddItem(new ComboBoxMemberData(member.Name, member.Text));
+                comboBox.AddItem(new ComboBoxMemberData(member.Name, member.Text)
+                {
+                    GroupName = member.GroupName,
+                    Image = menuData.GetIconImage(member.Image),
+                    LongDescription = member.Description,
+                    ToolTip = member.ToolTip
+                });
             }
 
             existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
