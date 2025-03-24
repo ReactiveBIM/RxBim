@@ -120,7 +120,7 @@
             if (e.OldValue is not RibbonItem oldItem || e.NewValue is not RibbonItem newItem)
                 return;
 
-            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Id, oldItem.Text, newItem.Text);
+            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Name, oldItem.Text, newItem.Text);
         }
 
         private RibbonCombo CreateComboBoxInternal(ComboBox itemConfig)

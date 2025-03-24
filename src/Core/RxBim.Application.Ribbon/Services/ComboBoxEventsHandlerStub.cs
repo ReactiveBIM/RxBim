@@ -6,10 +6,7 @@
 public class ComboBoxEventsHandlerStub : IComboBoxEventsHandler
 {
     /// <inheritdoc />
-    public void HandleCurrentChanged(
-        string id,
-        string oldValue,
-        string newValue)
+    public void HandleCurrentChanged(string name, string oldValue, string newValue)
     {
     }
 }
