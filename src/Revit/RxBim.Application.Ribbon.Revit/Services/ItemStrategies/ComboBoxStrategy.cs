@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Abstractions;
 using Autodesk.Revit.UI;
@@ -29,6 +30,15 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService, Me
     private void CreateComboBox(RibbonTab tab, RibbonPanel ribbonPanel, ComboBox itemConfig)
     {
         var exist = tab.Panels.SelectMany(p => p.Source.Items)
+            .SelectMany(i =>
+            {
+                return i switch
+                {
+                    RibbonRowPanel ribbonRowPanel => ribbonRowPanel.Items.ToList(),
+                    RibbonSplitButton ribbonSplitButton => ribbonSplitButton.Items.ToList(),
+                    _ => new List<RibbonItem>([i])
+                };
+            })
             .FirstOrDefault(i => i.Name?.Equals(itemConfig.Name) ?? false);
         if (exist is RibbonCombo ribbonCombo)
         {
