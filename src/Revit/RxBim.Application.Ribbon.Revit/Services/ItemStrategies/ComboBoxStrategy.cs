@@ -39,7 +39,7 @@ public class ComboBoxStrategy(IRibbonPanelItemService ribbonPanelItemService, Me
                     _ => new List<RibbonItem>([i])
                 };
             })
-            .FirstOrDefault(i => i.Name?.Equals(itemConfig.Name) ?? false);
+            .FirstOrDefault(i => i.Name?.Equals(itemConfig.Name) ?? i.Id.EndsWith(itemConfig.Name ?? string.Empty));
         if (exist is RibbonCombo ribbonCombo)
         {
             foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
