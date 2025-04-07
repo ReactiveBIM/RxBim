@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Reflection;
     using ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -69,6 +68,7 @@
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime())
                 .AddSingleton<IRibbonMenuBuilder, T>();
+            services.AddSingleton<IComboBoxEventsHandler, ComboBoxEventsHandlerStub>();
         }
 
         private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)

@@ -10,7 +10,7 @@
         ToolTip = "Tooltip: I'm run command #2. Push me!",
         Text = "Command\n#2",
         Description = "Description: This is command #2",
-        SmallImage = @"img\num2_16.bmp",
+        Image = @"img\num2_16.bmp",
         LargeImage = @"img\num2_32.bmp",
         SmallImageLight = @"img\num2_16_light.bmp",
         LargeImageLight = @"img\num2_32_light.bmp",

@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 

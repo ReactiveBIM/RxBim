@@ -2,6 +2,8 @@
 {
     using Abstractions;
     using Autodesk.Revit.UI;
+    using Autodesk.Windows;
+    using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for pull-down button.
@@ -17,7 +19,7 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(string tabName, RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
         {
             var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);

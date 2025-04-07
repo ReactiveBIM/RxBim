@@ -44,7 +44,7 @@
             IConfigurationSection section,
             IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
-            var panelsSection = section.GetSection(nameof(Tab.Panels));
+            var panelsSection = section.GetSection(nameof(Tab.Items));
             if (!panelsSection.Exists())
                 return;
 
@@ -61,7 +61,7 @@
         {
             var builder = new PanelBuilder(panelTitle);
             panel?.Invoke(builder);
-            _tab.Panels.Add(builder.Build());
+            _tab.Items.Add(builder.Build());
             return builder;
         }
     }
