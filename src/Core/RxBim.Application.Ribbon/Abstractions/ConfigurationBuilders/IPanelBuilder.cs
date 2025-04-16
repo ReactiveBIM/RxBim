@@ -36,6 +36,14 @@
         IPanelBuilder PullDownButton(string name, Action<IPulldownButtonBuilder> builder);
 
         /// <summary>
+        /// Adds a new combobox on the panel.
+        /// </summary>
+        /// <param name="name">Internal name of the combobox.</param>
+        /// <param name="builder">A combobox builder.</param>
+        /// <returns>Panel where combobox were created.</returns>
+        IPanelBuilder ComboBox(string name, Action<IComboBoxBuilder> builder);
+
+        /// <summary>
         /// Adds a new separator to the panel.
         /// </summary>
         IPanelBuilder Separator();

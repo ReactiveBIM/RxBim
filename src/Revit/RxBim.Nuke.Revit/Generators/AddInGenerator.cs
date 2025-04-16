@@ -6,6 +6,7 @@
     using System.Linq;
     using Extensions;
     using global::Nuke.Common.ProjectModel;
+    using JetBrains.Annotations;
     using Models;
     using Nuke.Extensions;
     using Nuke.Models;
@@ -14,6 +15,7 @@
     /// <summary>
     /// The Generator for Revit addin manifest files.
     /// </summary>
+    [PublicAPI]
     public class AddInGenerator
     {
         /// <summary>
@@ -40,7 +42,13 @@
             GenerateAddIn(rootProjectName, pluginTypes, outputDirectory);
         }
 
-        private void GenerateAddIn(
+        /// <summary>
+        /// Generates a new addin file.
+        /// </summary>
+        /// <param name="rootProjectName">The root project name.</param>
+        /// <param name="addinTypesPerProjects">Addin types for registration in Revit.</param>
+        /// <param name="output">The output directory path.</param>
+        protected virtual void GenerateAddIn(
             string? rootProjectName,
             IEnumerable<ProjectWithAssemblyType> addinTypesPerProjects,
             string output)
@@ -70,7 +78,12 @@
             revitAddIns.ToXDocument().Save(addInFile);
         }
 
-        private Guid GetAddInGuid(Project project, AssemblyType assemblyType)
+        /// <summary>
+        /// Returns addin guid.
+        /// </summary>
+        /// <param name="project">Project for generate guid.</param>
+        /// <param name="assemblyType"><see cref="AssemblyType"/>.</param>
+        protected Guid GetAddInGuid(Project project, AssemblyType assemblyType)
         {
             var propertyName = assemblyType.ToPropertyName();
             var value = project.GetProperty(propertyName);

@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a ribbon panel configuration.
     /// </summary>
-    public class Panel
+    public class Panel : IRibbonPanelItem
     {
         /// <summary>
         /// The panel name.

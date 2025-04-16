@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
@@ -78,7 +77,7 @@
 
             var tab = GetOrCreateTab(tabConfig.Name!);
 
-            foreach (var panelConfig in tabConfig.Panels)
+            foreach (var panelConfig in tabConfig.Items.OfType<Panel>())
                 CreatePanel(tab, panelConfig);
         }
 

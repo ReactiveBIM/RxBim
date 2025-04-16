@@ -2,12 +2,13 @@
 {
     using System;
     using Autodesk.Revit.UI;
+    using Autodesk.Windows;
+    using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
     /// <summary>
     /// Basic implementation of <see cref="IItemStrategy"/> for Revit menu item.
     /// </summary>
     public abstract class ItemStrategyBase<TItem> : IItemStrategy
-        where TItem : IRibbonPanelItem
     {
         /// <inheritdoc />
         public virtual bool IsApplicable(IRibbonPanelItem item)
@@ -18,10 +19,10 @@
         /// <inheritdoc />
         public void AddItem(object tab, object panel, IRibbonPanelItem item)
         {
-            if (tab is not string tabName || panel is not RibbonPanel ribbonPanel || item is not TItem panelItem)
+            if (tab is not RibbonTab ribbonTab || panel is not RibbonPanel ribbonPanel || item is not TItem itemConfig)
                 return;
 
-            AddItem(tabName, ribbonPanel, panelItem);
+            AddItem(ribbonTab, ribbonPanel, itemConfig);
         }
 
         /// <inheritdoc />
@@ -36,16 +37,25 @@
         /// <summary>
         /// Creates and adds to ribbon an item.
         /// </summary>
-        /// <param name="tabName">Ribbon tab name.</param>
+        /// <param name="tab">Ribbon tab.</param>
         /// <param name="ribbonPanel">Ribbon panel.</param>
         /// <param name="itemConfig">Ribbon item configuration.</param>
         // ReSharper disable once UnusedParameter.Global
-        protected abstract void AddItem(string tabName, RibbonPanel ribbonPanel, TItem itemConfig);
+        protected abstract void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, TItem itemConfig);
 
         /// <summary>
         /// Creates and returns an item for a stack.
         /// </summary>
         /// <param name="itemConfig">Ribbon item configuration.</param>
         protected abstract RibbonItemData GetItemForStack(TItem itemConfig);
+
+        /// <summary>
+        /// Stub for GetItemForStack, if item can't be stacked.
+        /// </summary>
+        /// <param name="itemConfig">Ribbon item configuration.</param>
+        protected RibbonItemData CantBeStackedStub(TItem itemConfig)
+        {
+            throw new InvalidOperationException($"Can't be stacked: {itemConfig!.GetType().FullName}");
+        }
     }
 }

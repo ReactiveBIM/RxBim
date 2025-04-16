@@ -10,7 +10,7 @@
     /// Extension methods for <see cref="AddIn"/>.
     /// </summary>
     [PublicAPI]
-    internal static class AddInExtensions
+    public static class AddInExtensions
     {
         /// <summary>
         /// Maps an <see cref="AddIn"/> to the <see cref="XElement"/>.

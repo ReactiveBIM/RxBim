@@ -9,6 +9,7 @@
     using global::Nuke.Common.ProjectModel;
     using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.InnoSetup;
+    using Helpers;
     using InnoSetup.ScriptBuilder;
     using Models;
 
@@ -48,15 +49,14 @@
         {
             var iss = temporaryDirectory / "package.iss";
             var setupFileName = $"{options.OutFileName}_{options.Version}";
+            var installDir = options.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
 
             InnoBuilder
-                .Create(
-                    options,
-                    (AbsolutePath)outputDir,
-                    (AbsolutePath)outputBinDir,
-                    setupFileName)
-                .AddIcons()
-                .AddFonts()
+                .Create(options, setupFileName)
+                .AddFilesEntry(outputDir, installDir)
+                .AddFilesEntry(outputBinDir, InnoConstants.Directories.App, FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs)
+                .AddIcons(outputBinDir)
+                .AddFonts(outputDir)
                 .AddUninstallScript()
                 .AddRxBimEnvironment(options.Environment ?? string.Empty)
                 .Build(iss);

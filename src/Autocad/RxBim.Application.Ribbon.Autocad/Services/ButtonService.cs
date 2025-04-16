@@ -162,13 +162,13 @@
             if (themeType is ThemeType.Light)
             {
                 button.Image =
-                    _menuData.GetIconImage(buttonConfig.SmallImageLight ?? buttonConfig.SmallImage, assembly);
+                    _menuData.GetIconImage(buttonConfig.ImageLight ?? buttonConfig.Image, assembly);
                 button.LargeImage =
                     _menuData.GetIconImage(buttonConfig.LargeImageLight ?? buttonConfig.LargeImage, assembly);
             }
             else
             {
-                button.Image = _menuData.GetIconImage(buttonConfig.SmallImage, assembly);
+                button.Image = _menuData.GetIconImage(buttonConfig.Image, assembly);
                 button.LargeImage = _menuData.GetIconImage(buttonConfig.LargeImage, assembly);
             }
         }

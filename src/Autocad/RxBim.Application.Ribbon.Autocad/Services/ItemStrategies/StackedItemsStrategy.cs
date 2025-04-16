@@ -4,7 +4,6 @@
     using System.Linq;
     using Autodesk.Windows;
     using ConfigurationBuilders;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>

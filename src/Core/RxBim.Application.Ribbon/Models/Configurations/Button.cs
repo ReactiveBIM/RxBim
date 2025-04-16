@@ -3,19 +3,9 @@
     /// <summary>
     /// Represents a button configuration.
     /// </summary>
-    public abstract class Button : IRibbonPanelItem
+    public abstract class Button : RibbonPanelItemBase
     {
         private string? _helpUrl;
-
-        /// <summary>
-        /// The button name.
-        /// </summary>
-        public string? Name { get; set; }
-
-        /// <summary>
-        /// The label text.
-        /// </summary>
-        public string? Text { get; set; }
 
         /// <summary>
         /// The URI string for default large button image.
@@ -23,29 +13,14 @@
         public string? LargeImage { get; set; }
 
         /// <summary>
-        /// The URI string for default small button image.
-        /// </summary>
-        public string? SmallImage { get; set; }
-
-        /// <summary>
         /// The URI string for large button image for light theme.
         /// </summary>
         public string? LargeImageLight { get; set; }
 
         /// <summary>
-        /// URI string for small button image for light theme.
+        /// URI string for button image for light theme.
         /// </summary>
-        public string? SmallImageLight { get; set; }
-
-        /// <summary>
-        /// The description text.
-        /// </summary>
-        public string? Description { get; set; }
-
-        /// <summary>
-        /// The tooltip text.
-        /// </summary>
-        public string? ToolTip { get; set; }
+        public string? ImageLight { get; set; }
 
         /// <summary>
         /// The help url for the button.

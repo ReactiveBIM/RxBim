@@ -15,6 +15,6 @@
         /// <summary>
         /// The tab panel list.
         /// </summary>
-        public List<Panel> Panels { get; set; } = new();
+        public List<IRibbonPanelItem> Items { get; set; } = new();
     }
 }
