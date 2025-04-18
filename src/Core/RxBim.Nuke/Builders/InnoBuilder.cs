@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Nuke.Builders
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Text;
@@ -12,6 +13,7 @@
     using global::Nuke.Common.Utilities.Collections;
     using Helpers;
     using InnoSetup.ScriptBuilder;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The Inno Setup builder.
@@ -76,9 +78,20 @@
             var builder = Files.CreateEntry((AbsolutePath)sourceDirectory / "*", destinationDirectory);
             if (fileFlags != null)
             {
-                builder.Flags(FileFlags.IgnoreVersion | FileFlags.RecurseSubdirs);
+                builder.Flags(fileFlags.Value);
             }
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds custom setting to <see cref="SetupBuilder"/>.
+        /// </summary>
+        /// <param name="customSettings">Action to add settings.</param>
+        [UsedImplicitly]
+        public InnoBuilder AddCustomSettings(Action<SetupBuilder> customSettings)
+        {
+            customSettings.Invoke(_setupBuilder);
             return this;
         }
 
