@@ -27,8 +27,8 @@
                     Platform = "Revit",
                     ModuleName = $"{project.Name}.addin",
                     OS = "Win64",
-                    SeriesMax = $"R{revitVersion}",
-                    SeriesMin = seriesMaxAny ? null : $"R{revitVersion}"
+                    SeriesMin = $"R{revitVersion}",
+                    SeriesMax = seriesMaxAny ? null : $"R{revitVersion}"
                 };
             }
             else

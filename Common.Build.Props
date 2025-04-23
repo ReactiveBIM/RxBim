@@ -28,7 +28,7 @@
                     </ItemGroup>
                 </When>
             </Choose>
-            
+
         </When>
         <When Condition="$(MSBuildProjectName.Contains('Autocad'))">
             <PropertyGroup>
@@ -70,7 +70,7 @@
             </Choose>
         </When>
     </Choose>
-    
+
     <Choose>
         <When Condition=" !$(MSBuildProjectName.Contains('Tests')) ">
             <PropertyGroup>
@@ -88,7 +88,7 @@
     </Choose>
 
     <PropertyGroup>
-        <Version>3.0.1</Version>
+        <Version>3.0.2-dev002</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
