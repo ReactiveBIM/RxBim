@@ -24,8 +24,12 @@ namespace RxBim.Application.Autocad
             var type = GetType();
             if (PluginContext.IsCurrentContextDefault(type))
             {
-                _ = PluginContext.CreateInstance(type)!;
-                return;
+                var appInstance = PluginContext.CreateInstance(type);
+                if (appInstance is IExtensionApplication application)
+                {
+                    application.Initialize();
+                    return;
+                }
             }
 #endif
 

@@ -39,7 +39,6 @@
     <EmbeddedResource Include="img\command_32.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3"/>
   </ItemGroup>
   <PropertyGroup>

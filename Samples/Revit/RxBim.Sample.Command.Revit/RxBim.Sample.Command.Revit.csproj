@@ -21,7 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <PropertyGroup>
     <Command__RxBim_Sample_Command_Revit_CheckEnvironmentCmd>e6a45fc1-6039-4786-9d9b-2c72103a0161</Command__RxBim_Sample_Command_Revit_CheckEnvironmentCmd>

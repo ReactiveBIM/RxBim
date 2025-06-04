@@ -19,19 +19,15 @@
         /// <param name="settings"><see cref="PluginSettings"/></param>
         public PluginResult ExecuteCommand(PluginSettings settings)
         {
+            const string appName = "Revit";
+            var res = Result.Success()
+                .Bind(Result.Success)
+                .Map(_ => appName, appName);
+
             TaskDialog.Show(
                 "RxBim.Sample.Command.Revit",
-                $"Current environment variable = {settings.EnvironmentVariable}");
+                $"Current {res.Value} environment variable = {settings.EnvironmentVariable}");
 
-            var res = Result.Success()
-                .Bind(() =>
-                {
-                    var obj = new { Name = "123", Age = 15 };
-                    var json = JsonConvert.SerializeObject(obj);
-                    return Result.Success();
-                })
-                .Map(json => "Result.Success(json)", "123");
-            
             return PluginResult.Succeeded;
         }
     }

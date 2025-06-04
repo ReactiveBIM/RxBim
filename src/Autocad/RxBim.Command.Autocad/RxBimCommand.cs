@@ -21,11 +21,9 @@
             if (PluginContext.IsCurrentContextDefault(type))
             {
                 var instance = PluginContext.CreateInstance(type);
-                if (instance != null)
+                if (instance is RxBimCommand rxBimCommand)
                 {
-                    var instanceType = instance.GetType();
-                    var method = instanceType.GetMethod(nameof(Execute));
-                    method?.Invoke(instance, Array.Empty<object>());
+                    rxBimCommand.Execute();
                     return;
                 }
             }

@@ -41,7 +41,7 @@
 #endif
 
             _application = application;
-            return ExecuteApplication(assembly, application);
+            return ExecuteApplication(application);
         }
 
         /// <inheritdoc />
@@ -57,7 +57,7 @@
             return ShutdownApplication();
         }
 
-        private Result ExecuteApplication(Assembly loadedAssembly, UIControlledApplication application)
+        private Result ExecuteApplication(UIControlledApplication application)
         {
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
             diConfigurator.Configure(GetType().Assembly);

@@ -25,18 +25,12 @@
         /// </summary>
         public PluginResult ExecuteCommand()
         {
-            var obj = new { Name = "123", Age = 15 };
-            var json = JsonConvert.SerializeObject(obj);
+            const string appName = "Revit";
             var res = Result.Success()
-                .Bind(() =>
-                {
-                    var obj = new { Name = "123", Age = 15 };
-                    var json = JsonConvert.SerializeObject(obj);
-                    return Result.Success(json);
-                })
-                .Map(str => "123");
-            
-            TaskDialog.Show(nameof(Cmd1), "Command executed");
+                .Bind(() => Result.Success(appName))
+                .Map(_ => appName);
+
+            TaskDialog.Show(nameof(Cmd1), $"{res.Value} Command executed");
             return PluginResult.Succeeded;
         }
     }
