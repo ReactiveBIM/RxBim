@@ -1,6 +1,8 @@
 ﻿namespace RxBim.Application.Ribbon.Abstractions
 {
     using Autodesk.Revit.UI;
+    using Autodesk.Windows;
+    using ComboBox = ComboBox;
 
     /// <summary>
     /// Service for <see cref="IRibbonPanelItem"/>.
@@ -8,16 +10,16 @@
     public interface IRibbonPanelItemService
     {
         /// <summary>
-        /// Stub for GetItemForStack, if item can't be stacked.
-        /// </summary>
-        /// <param name="itemConfig">Ribbon item configuration.</param>
-        RibbonItemData CannotBeStackedStub(IRibbonPanelItem itemConfig);
-
-        /// <summary>
         /// Creates and returns a command button.
         /// </summary>
         /// <param name="button">Command button configuration.</param>
         PushButtonData CreateCommandButtonData(CommandButton button);
+
+        /// <summary>
+        /// Creates and returns combobox.
+        /// </summary>
+        /// <param name="comboBox">Combobox configuration.</param>
+        RibbonCombo CreateComboBox(ComboBox comboBox);
 
         /// <summary>
         /// Checks button name. If name is not set, throws exception.
@@ -45,5 +47,18 @@
         /// <param name="config">Pull-Down button config.</param>
         /// <param name="button">Revit Pull-Down button instance.</param>
         void CreateButtonsForPullDown(PullDownButton config, PulldownButton button);
+
+        /// <summary>
+        /// Sets <see cref="ComboBox"/> properties.
+        /// </summary>
+        /// <param name="config">Combobox config.</param>
+        /// <param name="comboBox">Revit combobox instance.</param>
+        /// <param name="tabName">Tab name.</param>
+        /// <param name="panelName">Panel name.</param>
+        void SetComboBoxProperties(
+            ComboBox config,
+            Autodesk.Revit.UI.ComboBox comboBox,
+            string tabName,
+            string panelName);
     }
 }

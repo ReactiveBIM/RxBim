@@ -16,10 +16,11 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.0" />
+        <PackageReference Include="Scrutor" Version="3.0.1" />
         <!-- DO NOT CHANGE OR UPDATE VERSIONS OF MICROSOFT.EXTENSIONS PACKAGES!!! -->
         
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />        
-        <PackageReference Include="Scrutor" Version="3.3.0" />
     </ItemGroup>
 
     <ItemGroup>

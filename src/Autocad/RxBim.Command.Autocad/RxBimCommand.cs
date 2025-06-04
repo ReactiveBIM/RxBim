@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -35,17 +36,17 @@
             CallCommandMethod(di);
         }
 
-        private CommandDiConfigurator Configure(Assembly assembly)
+        private IServiceProvider Configure(Assembly assembly)
         {
             var di = new CommandDiConfigurator(this);
             di.Configure(assembly);
-            return di;
+            return di.Build();
         }
 
-        private void CallCommandMethod(CommandDiConfigurator di)
+        private void CallCommandMethod(IServiceProvider serviceProvider)
         {
-            var methodCaller = di.Container.GetService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeMethod(di.Container, Constants.ExecuteMethodName);
+            var methodCaller = serviceProvider.GetService<IMethodCaller<PluginResult>>();
+            methodCaller.InvokeMethod(serviceProvider, Constants.ExecuteMethodName);
         }
     }
 }

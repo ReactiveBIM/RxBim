@@ -1,11 +1,12 @@
-﻿#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-namespace RxBim.Application.Revit
+﻿namespace RxBim.Application.Revit
 {
     using System;
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
+    using Ribbon;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
 
@@ -16,7 +17,7 @@ namespace RxBim.Application.Revit
     {
         private readonly UserInterfaceApplicationProxy _uiApplicationProxy = new();
         private UIControlledApplication _application = null!;
-        private ApplicationDiConfigurator _diConfigurator = null!;
+        private IServiceProvider _serviceProvider = null!;
 
 #if NETCOREAPP
         private object? _isolatedApplicationInstance;
@@ -58,20 +59,20 @@ namespace RxBim.Application.Revit
 
         private Result ExecuteApplication(Assembly loadedAssembly, UIControlledApplication application)
         {
-            _application = application;
-            _diConfigurator = new ApplicationDiConfigurator(this, _application, _uiApplicationProxy);
-            _diConfigurator.Configure(loadedAssembly);
-            _application.Idling += ApplicationIdling;
+            var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
+            diConfigurator.Configure(GetType().Assembly);
+            _serviceProvider = diConfigurator.Build();
 
-            // build container explicitly.
-            _diConfigurator.Container.GetService<IServiceLocator>();
+            MenuBuilderUtility.BuildMenu(_serviceProvider);
+
+            application.Idling += ApplicationIdling;
             return Result.Succeeded;
         }
 
         private Result ShutdownApplication()
         {
-            var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+            var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+            var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             return result.MapResultToRevitResult();
         }
 
@@ -86,8 +87,8 @@ namespace RxBim.Application.Revit
 
                     _uiApplicationProxy.Initialize(uiApp);
 
-                    var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                    methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
+                    var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                    methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
                 }
                 catch (Exception exception)
                 {

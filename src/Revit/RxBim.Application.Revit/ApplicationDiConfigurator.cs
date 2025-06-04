@@ -3,6 +3,7 @@
     using System.Reflection;
     using Autodesk.Revit.UI;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -35,23 +36,23 @@
         {
             base.ConfigureAdditionalDependencies(assembly);
 
-            #if !NETCOREAPP
-            Container
-                .AddTransient(() => new AssemblyResolver(assembly))
+#if !NETCOREAPP
+            Services
+                .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
-            #endif
+#endif
         }
 
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container
-                .AddInstance(_uiControlledApp)
-                .AddSingleton(() => _uiApplicationProxy.Application)
-                .AddSingleton(() => _uiApplicationProxy.Application.Application)
-                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument)
-                .AddTransient(() => _uiApplicationProxy.Application.ActiveUIDocument?.Document!)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
+            Services
+                .AddSingleton(_uiControlledApp)
+                .AddSingleton(_ => _uiApplicationProxy.Application)
+                .AddSingleton(_ => _uiApplicationProxy.Application.Application)
+                .AddTransient(_ => _uiApplicationProxy.Application.ActiveUIDocument)
+                .AddTransient(_ => _uiApplicationProxy.Application.ActiveUIDocument?.Document!)
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

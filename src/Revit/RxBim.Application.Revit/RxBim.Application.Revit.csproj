@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
         <ProjectReference Include="..\..\Core\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
 

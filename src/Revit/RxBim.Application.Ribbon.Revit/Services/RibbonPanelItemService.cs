@@ -4,35 +4,21 @@
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
+    using Autodesk.Windows;
+    using ComboBox = ComboBox;
+    using RibbonItem = Autodesk.Windows.RibbonItem;
 
     /// <inheritdoc />
-    internal class RibbonPanelItemService : IRibbonPanelItemService
+    internal class RibbonPanelItemService(MenuData menuData, IComboBoxEventsHandler comboBoxEventsHandler) : IRibbonPanelItemService
     {
-        private readonly MenuData _menuData;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RibbonPanelItemService"/> class.
-        /// </summary>
-        /// <param name="menuData"><see cref="MenuData"/>.</param>
-        public RibbonPanelItemService(MenuData menuData)
-        {
-            _menuData = menuData;
-        }
-
-        /// <inheritdoc />
-        public RibbonItemData CannotBeStackedStub(IRibbonPanelItem itemConfig)
-        {
-            throw new InvalidOperationException($"Can't be stacked: {itemConfig.GetType().FullName}");
-        }
-
         /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
         {
-            button.LoadFromAttribute(_menuData.MenuAssembly);
+            button.LoadFromAttribute(menuData.MenuAssembly);
             CheckButtonName(button);
             if (string.IsNullOrWhiteSpace(button.CommandType))
                 throw new ArgumentException($"Command type not found! Button: {button.Name}");
-            var cmdType = _menuData.MenuAssembly.GetTypeByName(button.CommandType!);
+            var cmdType = menuData.MenuAssembly.GetTypeByName(button.CommandType!);
             var className = cmdType.FullName;
             var assemblyLocation = cmdType.Assembly.Location;
             var pushButtonData =
@@ -41,8 +27,23 @@
                     AvailabilityClassName = className
                 };
             SetButtonProperties(pushButtonData, button);
-            SetTooltip(pushButtonData, _menuData.GetTooltipContent(button, cmdType));
+            SetTooltip(pushButtonData, menuData.GetTooltipContent(button, cmdType));
             return pushButtonData;
+        }
+
+        /// <inheritdoc />
+        public RibbonCombo CreateComboBox(ComboBox itemConfig)
+        {
+            var comboBox = CreateComboBoxInternal(itemConfig);
+
+            comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+
+            foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
+            {
+                comboBox.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+            }
+
+            return comboBox;
         }
 
         /// <inheritdoc />
@@ -63,7 +64,7 @@
         public void SetButtonProperties(ButtonData buttonData, Button buttonConfig)
         {
             var assembly = buttonConfig is CommandButton commandButton
-                ? _menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
+                ? menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
                 : null;
 
             if (buttonConfig.Text != null)
@@ -72,8 +73,8 @@
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
-            buttonData.Image = _menuData.GetIconImage(buttonConfig.SmallImage, assembly);
-            buttonData.LargeImage = _menuData.GetIconImage(buttonConfig.LargeImage, assembly);
+            buttonData.Image = menuData.GetIconImage(buttonConfig.Image, assembly);
+            buttonData.LargeImage = menuData.GetIconImage(buttonConfig.LargeImage, assembly);
         }
 
         /// <inheritdoc />
@@ -83,6 +84,56 @@
             {
                 button.AddPushButton(pushButtonData);
             }
+        }
+
+        /// <inheritdoc />
+        public void SetComboBoxProperties(ComboBox config, Autodesk.Revit.UI.ComboBox comboBox, string tabName, string panelName)
+        {
+            var existComboBox = ComponentManager.Ribbon?.Tabs
+                .FirstOrDefault(t => t.Title.Equals(tabName))
+                ?.Panels.FirstOrDefault(p => p.Source.AutomationName.Equals(panelName))
+                ?.Source.Items.OfType<RibbonRowPanel>().SelectMany(row => row.Items)
+                .OfType<RibbonCombo>()
+                .FirstOrDefault(i => i.Id.EndsWith(comboBox.Name));
+            if (existComboBox == null)
+                return;
+
+            existComboBox.Width = config.Width;
+            foreach (var member in config.ComboBoxMembers)
+            {
+                comboBox.AddItem(new ComboBoxMemberData(member.Name, member.Text)
+                {
+                    GroupName = member.GroupName,
+                    Image = menuData.GetIconImage(member.Image),
+                    LongDescription = member.Description,
+                    ToolTip = member.ToolTip
+                });
+            }
+
+            existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+        }
+
+        private void ComboBoxOnCurrentChanged(object? sender, RibbonPropertyChangedEventArgs e)
+        {
+            if (sender is not RibbonCombo ribbonCombo)
+                return;
+            if (e.OldValue is not RibbonItem oldItem || e.NewValue is not RibbonItem newItem)
+                return;
+
+            comboBoxEventsHandler.HandleCurrentChanged(ribbonCombo.Name, oldItem.Text, newItem.Text);
+        }
+
+        private RibbonCombo CreateComboBoxInternal(ComboBox itemConfig)
+        {
+            return new RibbonCombo
+            {
+                Name = itemConfig.Name,
+                Text = itemConfig.Text,
+                Description = itemConfig.Description,
+                Image = menuData.GetIconImage(itemConfig.Image),
+                ToolTip = itemConfig.ToolTip,
+                Width = itemConfig.Width
+            };
         }
     }
 }

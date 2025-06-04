@@ -88,10 +88,11 @@
     </Choose>
 
     <PropertyGroup>
+        <Version>3.0.1</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
-        <Copyright>Copyright ©2021 Reactive BIM</Copyright>
+        <Copyright>Copyright ©2025 Reactive BIM</Copyright>
         <PackageTags>BIM Plugin Framework</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ReactiveBIM/RxBim</PackageProjectUrl>

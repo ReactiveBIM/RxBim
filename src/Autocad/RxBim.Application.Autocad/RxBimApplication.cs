@@ -3,8 +3,11 @@ namespace RxBim.Application.Autocad
 {
     using System;
     using Autodesk.AutoCAD.ApplicationServices.Core;
+    using Autodesk.AutoCAD.Internal;
     using Autodesk.AutoCAD.Runtime;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
+    using Ribbon;
     using Shared;
     using Exception = System.Exception;
 
@@ -12,6 +15,7 @@ namespace RxBim.Application.Autocad
     public abstract class RxBimApplication : IExtensionApplication
     {
         private ApplicationDiConfigurator? _diConfigurator;
+        private IServiceProvider _serviceProvider = null!;
 
         /// <inheritdoc />
         public void Initialize()
@@ -51,9 +55,12 @@ namespace RxBim.Application.Autocad
 
                 _diConfigurator = new ApplicationDiConfigurator(this);
                 _diConfigurator.Configure(GetType().Assembly);
+                _serviceProvider = _diConfigurator.Build();
 
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.StartMethodName);
+                MenuBuilderUtility.BuildMenu(_serviceProvider);
+
+                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
             }
             catch (Exception exception)
             {
@@ -70,8 +77,8 @@ namespace RxBim.Application.Autocad
 
             try
             {
-                var methodCaller = _diConfigurator.Container.GetService<IMethodCaller<PluginResult>>();
-                methodCaller.InvokeMethod(_diConfigurator.Container, Constants.ShutdownMethodName);
+                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }
             catch (Exception exception)
             {

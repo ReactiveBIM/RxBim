@@ -37,6 +37,14 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             return AddItem(pulldownButton.Build());
         }
 
+        /// <inheritdoc />
+        public IStackedItemsBuilder ComboBox(string name, Action<IComboBoxBuilder> builder)
+        {
+            var combobox = new ComboBoxBuilder(name);
+            builder.Invoke(combobox);
+            return AddItem(combobox.Build());
+        }
+
         /// <summary>
         /// Adds a item in the stack.
         /// </summary>

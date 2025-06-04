@@ -3,6 +3,7 @@
     using System.Reflection;
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Shared;
 
     /// <summary>
@@ -26,19 +27,19 @@
         {
             base.ConfigureAdditionalDependencies(assembly);
 
-            #if !NETCOREAPP
-            Container
-                .AddTransient(() => new AssemblyResolver(assembly))
+#if !NETCOREAPP
+            Services
+                .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
-            #endif
+#endif
         }
 
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container
-                .AddInstance(Application.DocumentManager)
-                .AddTransient<IMethodCaller<PluginResult>>(() => new MethodCaller<PluginResult>(_applicationObject));
+            Services
+                .AddSingleton(Application.DocumentManager)
+                .AddTransient<IMethodCaller<PluginResult>>(_ => new MethodCaller<PluginResult>(_applicationObject));
         }
     }
 }

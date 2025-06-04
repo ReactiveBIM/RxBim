@@ -6,6 +6,7 @@ using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Tools.DotNet;
+using RxBim.Nuke.Revit;
 using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -15,7 +16,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, FeatureBranches
+        DevelopBranch, FeatureBranches, BugfixBranches
     },
     InvokedTargets = new[]
     {
@@ -41,13 +42,14 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : NukeBuild
+partial class Build : NukeBuild, IVersions
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
     const string ReleaseBranches = "release/**";
     const string HotfixBranches = "hotfix/**";
     const string FeatureBranches = "feature/**";
+    const string BugfixBranches = "bugfix/**";
 
     public Build()
     {

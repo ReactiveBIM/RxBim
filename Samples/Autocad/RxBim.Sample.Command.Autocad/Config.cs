@@ -4,6 +4,7 @@
     using Di;
     using Logs.Autocad;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Models;
     using Services;
     using ViewModels;
@@ -13,14 +14,14 @@
     public class Config : ICommandConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection services)
         {
-            container.AddTransient<ISomeService, SomeService>();
-            container.AddTransient<SomeWindow>();
-            container.AddTransient<SomeViewModel>();
-            container.AddAutocadLogs();
+            services.AddTransient<ISomeService, SomeService>();
+            services.AddTransient<SomeWindow>();
+            services.AddTransient<SomeViewModel>();
+            services.AddAutocadLogs();
 
-            container.AddSingleton(() => container.GetService<IConfiguration>()
+            services.AddSingleton(serviceProvider => serviceProvider.GetService<IConfiguration>()
                 .GetSection(nameof(PluginSettings))
                 .Get<PluginSettings>());
         }

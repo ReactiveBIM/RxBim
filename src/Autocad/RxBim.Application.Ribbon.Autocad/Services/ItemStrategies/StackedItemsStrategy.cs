@@ -1,22 +1,23 @@
 ﻿namespace RxBim.Application.Ribbon.Services.ItemStrategies
 {
+    using System;
     using System.Linq;
     using Autodesk.Windows;
     using ConfigurationBuilders;
-    using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Implementation of <see cref="IItemStrategy"/> for stacked items.
     /// </summary>
     public class StackedItemsStrategy : ItemStrategyBase<StackedItems>
     {
-        private readonly IServiceLocator _serviceLocator;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IPanelService _panelService;
 
         /// <inheritdoc />
-        public StackedItemsStrategy(IServiceLocator serviceLocator, IPanelService panelService)
+        public StackedItemsStrategy(IServiceProvider serviceProvider, IPanelService panelService)
         {
-            _serviceLocator = serviceLocator;
+            _serviceProvider = serviceProvider;
             _panelService = panelService;
         }
 
@@ -27,7 +28,7 @@
             var stackedItemsRow = new RibbonRowPanel();
             var small = stackSize == StackedItemsBuilder.MaxStackSize;
 
-            var strategies = _serviceLocator.GetServices<IItemStrategy>().ToList();
+            var strategies = _serviceProvider.GetServices<IItemStrategy>().ToList();
 
             _panelService.AddItem(ribbonPanel, stackedItemsRow);
 

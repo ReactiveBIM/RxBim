@@ -2,57 +2,58 @@
 {
     using System;
     using System.Reflection;
-    using Di;
+    using Di.Extensions;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <summary>
-    /// Extensions for <see cref="IContainer"/>.
+    /// Extensions for <see cref="IServiceCollection"/>.
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
         /// Adds ribbon menu from action.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="builder">The ribbon builder.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddAutocadMenu(
-            this IContainer container,
+            this IServiceCollection services,
             Action<IRibbonBuilder> builder,
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddServices();
-            container.AddMenu<AutocadRibbonMenuBuilder>(builder, menuAssembly);
+            services.AddServices();
+            services.AddMenu<AutocadRibbonMenuBuilder>(builder, menuAssembly);
         }
 
         /// <summary>
         /// Adds ribbon menu from config.
         /// </summary>
-        /// <param name="container">DI container.</param>
+        /// <param name="services">DI container.</param>
         /// <param name="cfg">Configuration.</param>
         /// <param name="menuAssembly">Menu assembly.</param>
         public static void AddAutocadMenu(
-            this IContainer container,
+            this IServiceCollection services,
             IConfiguration? cfg = null,
             Assembly? menuAssembly = null)
         {
             menuAssembly ??= Assembly.GetCallingAssembly();
-            container.AddServices();
-            container.AddMenu<AutocadRibbonMenuBuilder>(cfg, menuAssembly);
+            services.AddServices();
+            services.AddMenu<AutocadRibbonMenuBuilder>(cfg, menuAssembly);
         }
 
-        private static void AddServices(this IContainer container)
+        private static void AddServices(this IServiceCollection services)
         {
-            container.RegisterTypes<IItemStrategy>(Lifetime.Singleton, Assembly.GetExecutingAssembly());
-            container.AddSingleton<IOnlineHelpService, OnlineHelpService>();
-            container.AddSingleton<IRibbonEventsService, RibbonEventsService>();
-            container.AddSingleton<IColorThemeService, ColorThemeService>();
-            container.AddSingleton<ITabService, TabService>();
-            container.AddSingleton<IPanelService, PanelService>();
-            container.AddSingleton<IButtonService, ButtonService>();
-            container.AddSingleton<IRibbonComponentStorageService, RibbonComponentStorageService>();
+            services.RegisterTypes<IItemStrategy>(Assembly.GetExecutingAssembly(), ServiceLifetime.Singleton)
+                .AddSingleton<IOnlineHelpService, OnlineHelpService>()
+                .AddSingleton<IRibbonEventsService, RibbonEventsService>()
+                .AddSingleton<IColorThemeService, ColorThemeService>()
+                .AddSingleton<ITabService, TabService>()
+                .AddSingleton<IPanelService, PanelService>()
+                .AddSingleton<IButtonService, ButtonService>()
+                .AddSingleton<IRibbonComponentStorageService, RibbonComponentStorageService>();
         }
     }
 }
