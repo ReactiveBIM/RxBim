@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Command.Revit
 {
     using System;
-    using System;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+#if NETCOREAPP
     using System.Runtime.Loader;
+#endif
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
@@ -32,7 +33,7 @@
 
 #if NETCOREAPP
 
-            /*if (!PluginContext.IsCurrentContextDefault(type))
+            if (!PluginContext.IsCurrentContextDefault(type))
                 return ExecuteCommand(commandData, ref message, elements, assembly);
 
             var parentAppName = Path.GetFileName(Path.GetDirectoryName(assembly.Location));
@@ -51,9 +52,9 @@
             if (commandInstance is IExternalCommand externalCommand)
             {
                 return externalCommand.Execute(commandData, ref message, elements);
-            }*/
+            }
 #endif
-            
+
             return ExecuteCommand(commandData, ref message, elements, assembly);
         }
 

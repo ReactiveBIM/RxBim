@@ -3,8 +3,10 @@
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
     using Command.Revit;
-    using RxBim.Command.Revit;
+    using CSharpFunctionalExtensions;
+    using Newtonsoft.Json;
     using Shared;
+    using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc />
     [Transaction(TransactionMode.Manual)]
@@ -23,6 +25,17 @@
         /// </summary>
         public PluginResult ExecuteCommand()
         {
+            var obj = new { Name = "123", Age = 15 };
+            var json = JsonConvert.SerializeObject(obj);
+            var res = Result.Success()
+                .Bind(() =>
+                {
+                    var obj = new { Name = "123", Age = 15 };
+                    var json = JsonConvert.SerializeObject(obj);
+                    return Result.Success(json);
+                })
+                .Map(str => "123");
+            
             TaskDialog.Show(nameof(Cmd1), "Command executed");
             return PluginResult.Succeeded;
         }
