@@ -36,7 +36,7 @@ public class PluginContext : AssemblyLoadContext
     /// Creates instance of specified type in separated context;
     /// </summary>
     /// <param name="type">Type.</param>
-    public static object? CreateInstance(Type type)
+    public static object? CreateInstanceInNewContext(Type type)
     {
         var assembly = type.Assembly;
         var location = assembly.Location;
@@ -47,10 +47,10 @@ public class PluginContext : AssemblyLoadContext
     }
 
     /// <summary>
-    /// Creates instance of specified type in separated context;
+    /// Creates instance of specified type in current context;
     /// </summary>
     /// <param name="type">Type.</param>
-    public object? CreateInstanceNew(Type type)
+    public object? CreateInstanceInContext(Type type)
     {
         var assembly = type.Assembly;
         var location = assembly.Location;

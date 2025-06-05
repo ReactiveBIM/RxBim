@@ -43,12 +43,12 @@
                 .FirstOrDefault(c => !AssemblyLoadContext.Default.Equals(c));
             if (parentContext is PluginContext context)
             {
-                var instance = context.CreateInstanceNew(type);
+                var instance = context.CreateInstanceInContext(type);
                 if (instance is IExternalCommand command)
                     return command.Execute(commandData, ref message, elements);
             }
 
-            var commandInstance = PluginContext.CreateInstance(type);
+            var commandInstance = PluginContext.CreateInstanceInNewContext(type);
             if (commandInstance is IExternalCommand externalCommand)
             {
                 return externalCommand.Execute(commandData, ref message, elements);

@@ -32,7 +32,7 @@
 #if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(type))
             {
-                _isolatedApplicationInstance = PluginContext.CreateInstance(type);
+                _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
                 if (_isolatedApplicationInstance is IExternalApplication app)
                 {
                     return app.OnStartup(application);

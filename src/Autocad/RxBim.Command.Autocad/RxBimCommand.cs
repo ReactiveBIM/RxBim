@@ -20,7 +20,7 @@
             var type = GetType();
             if (PluginContext.IsCurrentContextDefault(type))
             {
-                var instance = PluginContext.CreateInstance(type);
+                var instance = PluginContext.CreateInstanceInNewContext(type);
                 if (instance is RxBimCommand rxBimCommand)
                 {
                     rxBimCommand.Execute();
