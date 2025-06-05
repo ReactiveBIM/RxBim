@@ -27,7 +27,6 @@
         public Result OnStartup(UIControlledApplication application)
         {
             var type = GetType();
-            var assembly = type.Assembly;
 
 #if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(type))
