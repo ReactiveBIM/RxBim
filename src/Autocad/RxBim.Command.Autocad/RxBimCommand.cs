@@ -1,10 +1,14 @@
 ﻿namespace RxBim.Command.Autocad
 {
     using System;
+#if NETCOREAPP
     using System.IO;
     using System.Linq;
+#endif
     using System.Reflection;
+#if NETCOREAPP
     using System.Runtime.Loader;
+#endif
     using Di;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;

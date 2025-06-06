@@ -1,7 +1,9 @@
 ﻿namespace RxBim.Command.Revit
 {
     using System;
+#if NETCOREAPP
     using System.IO;
+#endif
     using System.Linq;
     using System.Reflection;
 #if NETCOREAPP
