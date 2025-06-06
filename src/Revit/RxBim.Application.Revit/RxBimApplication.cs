@@ -26,9 +26,8 @@
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
-            var type = GetType();
-
 #if NETCOREAPP
+            var type = GetType();
             if (PluginContext.IsCurrentContextDefault(type))
             {
                 _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
