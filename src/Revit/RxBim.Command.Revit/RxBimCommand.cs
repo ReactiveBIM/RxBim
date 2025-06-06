@@ -43,12 +43,13 @@
             if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
 
-            var parentAppName = Path.GetFileName(Path.GetDirectoryName(assembly.Location));
-            var parentAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.Contains(parentAppName!) ?? false)
+            var appName = Path.GetFileNameWithoutExtension(assembly.Location);
+            var existAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.FullName?.Contains(appName) ?? false)
                 .ToList();
-            var parentContext = parentAssemblies.Select(AssemblyLoadContext.GetLoadContext)
+            var existContext = existAssemblies.Select(AssemblyLoadContext.GetLoadContext)
                 .FirstOrDefault(c => !AssemblyLoadContext.Default.Equals(c));
-            if (parentContext is PluginContext context)
+            if (existContext is PluginContext context)
             {
                 var instance = context.CreateInstanceInContext(type);
                 if (instance is IExternalCommand command)
