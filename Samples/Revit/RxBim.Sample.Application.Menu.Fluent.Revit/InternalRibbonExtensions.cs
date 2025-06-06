@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
+    using Command.Revit;
     using RxBim.Application.Ribbon;
 
     /// <summary>
@@ -69,8 +70,8 @@
                             .ComboBox(
                                 "Test",
                                 cb => cb
-                                    .AddComboBoxMember("1", cbm => cbm.Text("1"))
-                                    .AddComboBoxMember("2", cbm => cbm.Text("2")))
+                                    .AddComboBoxMember("1", cbm => cbm.Text("1").ToolTip("123"))
+                                    .AddComboBoxMember("2", cbm => cbm.Text("2").ToolTip("123")))
                             .CommandButton(
                                 name: "Command1_Large_WithText",
                                 commandType: typeof(Cmd1),
@@ -165,14 +166,14 @@
                             .ComboBox(
                                 "Test",
                                 cb => cb
-                                    .AddComboBoxMember("5", cbm => cbm.Text("7"))
-                                    .AddComboBoxMember("6", cbm => cbm.Text("8")))
+                                    .AddComboBoxMember("5", cbm => cbm.Text("7").ToolTip("123"))
+                                    .AddComboBoxMember("6", cbm => cbm.Text("8").ToolTip("123")))
                             .StackedItems(items => items
                                 .ComboBox(
                                     "Test1",
                                     cb => cb
-                                        .AddComboBoxMember("3", cbm => cbm.Text("1"))
-                                        .AddComboBoxMember("4", cbm => cbm.Text("2")))
+                                        .AddComboBoxMember("3", cbm => cbm.Text("1").ToolTip("123"))
+                                        .AddComboBoxMember("4", cbm => cbm.Text("2").ToolTip("123")))
                                 .CommandButton(
                                     "Command2_Stacked1",
                                     typeof(Cmd2),
