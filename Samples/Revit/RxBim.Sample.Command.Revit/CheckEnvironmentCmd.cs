@@ -4,7 +4,6 @@
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
     using Models;
-    using Newtonsoft.Json;
     using RxBim.Command.Revit;
     using Shared;
     using Result = CSharpFunctionalExtensions.Result;
