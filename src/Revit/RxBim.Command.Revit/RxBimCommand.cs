@@ -47,10 +47,9 @@
 
             // Attempt to find already exist context. If there is no exist context - create new.
             var appName = Path.GetFileNameWithoutExtension(assembly.Location);
-            var existAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+            var existContext = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName?.Contains(appName) ?? false)
-                .ToList();
-            var existContext = existAssemblies.Select(AssemblyLoadContext.GetLoadContext)
+                .Select(AssemblyLoadContext.GetLoadContext)
                 .FirstOrDefault(c => !AssemblyLoadContext.Default.Equals(c));
             if (existContext is PluginContext context)
             {

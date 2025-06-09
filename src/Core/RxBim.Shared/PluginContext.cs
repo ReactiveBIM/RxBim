@@ -38,12 +38,19 @@ public class PluginContext : AssemblyLoadContext
     /// <param name="type">Type.</param>
     public static object? CreateInstanceInNewContext(Type type)
     {
-        var assembly = type.Assembly;
-        var location = assembly.Location;
-        var pluginName = Path.GetFileName(location);
-        var context = new PluginContext(location, pluginName);
-        var loadedAssembly = context.LoadFromAssemblyPath(location);
-        return loadedAssembly.CreateInstance(type.FullName!);
+        try
+        {
+            var assembly = type.Assembly;
+            var location = assembly.Location;
+            var pluginName = Path.GetFileName(location);
+            var context = new PluginContext(location, pluginName);
+            var loadedAssembly = context.LoadFromAssemblyPath(location);
+            return loadedAssembly.CreateInstance(type.FullName!);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -52,10 +59,17 @@ public class PluginContext : AssemblyLoadContext
     /// <param name="type">Type.</param>
     public object? CreateInstanceInContext(Type type)
     {
-        var assembly = type.Assembly;
-        var location = assembly.Location;
-        var loadedAssembly = LoadFromAssemblyPath(location);
-        return loadedAssembly.CreateInstance(type.FullName!);
+        try
+        {
+            var assembly = type.Assembly;
+            var location = assembly.Location;
+            var loadedAssembly = LoadFromAssemblyPath(location);
+            return loadedAssembly.CreateInstance(type.FullName!);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <inheritdoc />
