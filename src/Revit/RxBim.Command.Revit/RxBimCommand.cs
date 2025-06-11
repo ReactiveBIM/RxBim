@@ -45,7 +45,7 @@
             if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
 
-            // Attempt to find already exist context. If there is no exist context - create new.
+            // Attempt to find already exist context. If there is no exist context - create new one.
             var appName = Path.GetFileNameWithoutExtension(assembly.Location);
             var existContext = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName?.Contains(appName) ?? false)
