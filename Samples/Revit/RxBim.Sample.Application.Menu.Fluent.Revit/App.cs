@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
     using Autodesk.Revit.UI;
-    using CSharpFunctionalExtensions;
     using RxBim.Application.Revit;
     using Shared;
-    using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc />
     public class App : RxBimApplication
@@ -14,11 +12,7 @@
         /// </summary>
         public PluginResult Start()
         {
-            const string appName = "Revit";
-            var res = Result.Success()
-                .Bind(() => Result.Success(appName))
-                .Map(_ => appName);
-            TaskDialog.Show(GetType().Namespace, $"{res.Value} App started");
+            TaskDialog.Show(GetType().Namespace, "App started");
             return PluginResult.Succeeded;
         }
 

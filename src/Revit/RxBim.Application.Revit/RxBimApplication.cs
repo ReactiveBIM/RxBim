@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Revit
 {
     using System;
-    using System.Reflection;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
@@ -19,44 +18,10 @@
         private UIControlledApplication _application = null!;
         private IServiceProvider _serviceProvider = null!;
 
-#if NETCOREAPP
-        private object? _isolatedApplicationInstance;
-#endif
-
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
-#if NETCOREAPP
-            var type = GetType();
-            if (PluginContext.IsCurrentContextDefault(type))
-            {
-                _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
-                if (_isolatedApplicationInstance is IExternalApplication app)
-                {
-                    return app.OnStartup(application);
-                }
-            }
-#endif
-
             _application = application;
-            return ExecuteApplication(application);
-        }
-
-        /// <inheritdoc />
-        public Result OnShutdown(UIControlledApplication application)
-        {
-            #if NETCOREAPP
-            if (PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
-            {
-                return app.OnShutdown(application);
-            }
-            #endif
-
-            return ShutdownApplication();
-        }
-
-        private Result ExecuteApplication(UIControlledApplication application)
-        {
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
             diConfigurator.Configure(GetType().Assembly);
             _serviceProvider = diConfigurator.Build();
@@ -64,10 +29,12 @@
             MenuBuilderUtility.BuildMenu(_serviceProvider);
 
             application.Idling += ApplicationIdling;
+
             return Result.Succeeded;
         }
 
-        private Result ShutdownApplication()
+        /// <inheritdoc />
+        public Result OnShutdown(UIControlledApplication application)
         {
             var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
             var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);

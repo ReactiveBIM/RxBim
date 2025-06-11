@@ -3,7 +3,6 @@
   <PropertyGroup>
     <PackageGuid>AFEFCD19-AD5A-4686-93CA-7071ACB511BB</PackageGuid>
     <UpgradeCode>C305D6A5-68A7-4369-96E0-E751DCF17C34</UpgradeCode>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
@@ -18,9 +17,6 @@
     <None Update="appsettings.RxBim.Sample.Command.Revit.Testing.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
   </ItemGroup>
   <PropertyGroup>
     <Command__RxBim_Sample_Command_Revit_CheckEnvironmentCmd>e6a45fc1-6039-4786-9d9b-2c72103a0161</Command__RxBim_Sample_Command_Revit_CheckEnvironmentCmd>

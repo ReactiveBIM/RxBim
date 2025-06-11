@@ -7,7 +7,6 @@ public class ComboBoxMemberBuilder : RibbonPanelItemBuilderBase<ComboBoxMember, 
     public ComboBoxMemberBuilder(string name)
         : base(name)
     {
-        Item.ToolTip = string.Empty;
     }
 
     /// <inheritdoc />
