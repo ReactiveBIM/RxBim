@@ -31,7 +31,7 @@
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
         }
 
-        private Assembly? CurrentDomainOnAssemblyResolve(object o, ResolveEventArgs args)
+        private Assembly? CurrentDomainOnAssemblyResolve(object? o, ResolveEventArgs args)
         {
             var dll = _dlls.FirstOrDefault(f => f.IsResolve(args.Name));
             if (dll == null)
