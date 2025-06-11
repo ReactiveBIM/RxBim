@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Configurations>Debug;Release</Configurations>
-        <TargetFrameworks>netstandard2.0;net8.0-windows</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>

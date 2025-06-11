@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-namespace RxBim.Application.Autocad
+﻿namespace RxBim.Application.Autocad
 {
     using System;
     using Autodesk.AutoCAD.ApplicationServices.Core;
@@ -20,19 +19,6 @@ namespace RxBim.Application.Autocad
         /// <inheritdoc />
         public void Initialize()
         {
-#if NETCOREAPP
-            var type = GetType();
-            if (PluginContext.IsCurrentContextDefault(type))
-            {
-                var appInstance = PluginContext.CreateInstanceInNewContext(type);
-                if (appInstance is IExtensionApplication application)
-                {
-                    application.Initialize();
-                    return;
-                }
-            }
-#endif
-
             Application.Idle += ApplicationOnIdle;
             Application.QuitWillStart += ApplicationOnQuitWillStart;
         }

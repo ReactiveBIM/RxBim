@@ -3,9 +3,7 @@
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
     using Command.Revit;
-    using CSharpFunctionalExtensions;
     using Shared;
-    using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc />
     [Transaction(TransactionMode.Manual)]
@@ -24,12 +22,7 @@
         /// </summary>
         public PluginResult ExecuteCommand()
         {
-            const string appName = "Revit";
-            var res = Result.Success()
-                .Bind(() => Result.Success(appName))
-                .Map(_ => appName);
-
-            TaskDialog.Show(nameof(Cmd1), $"{res.Value} Command executed");
+            TaskDialog.Show(nameof(Cmd1), "Command executed");
             return PluginResult.Succeeded;
         }
     }

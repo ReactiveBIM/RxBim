@@ -42,7 +42,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
         "NUGET_API_KEY", "ALL_PACKAGES"
     })]
 [PublicAPI]
-partial class Build : RevitRxBimBuild, IVersions
+partial class Build : NukeBuild, IVersions
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";

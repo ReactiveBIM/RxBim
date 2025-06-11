@@ -7,7 +7,6 @@
 
     <PropertyGroup>
         <Description>RxBim Application api Library</Description>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
 </Project>

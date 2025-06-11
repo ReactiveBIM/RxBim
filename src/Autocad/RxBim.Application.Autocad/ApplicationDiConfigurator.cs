@@ -27,11 +27,9 @@
         {
             base.ConfigureAdditionalDependencies(assembly);
 
-#if !NETCOREAPP
             Services
                 .AddTransient(_ => new AssemblyResolver(assembly))
                 .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
-#endif
         }
 
         /// <inheritdoc />
