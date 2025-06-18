@@ -18,26 +18,51 @@
     [Regeneration(RegenerationOption.Manual)]
     public abstract class RxBimCommand : IExternalCommand, IExternalCommandAvailability
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
+        /// via Addin Manager.
+        /// </summary>
+        protected virtual bool RunInSeparatedContext => true;
+#endif
+
         /// <inheritdoc />
         public Result Execute(
             ExternalCommandData commandData,
             ref string? message,
             ElementSet elements)
         {
-            var assembly = GetType().Assembly;
+            var type = GetType();
+            var assembly = type.Assembly;
 
-            var serviceProvider = Configure(commandData, assembly);
+#if NETCOREAPP
+            if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
+                return ExecuteCommand(commandData, ref message, elements, assembly);
 
-            var commandResult = CallCommandMethod(serviceProvider);
+            var commandInstance = PluginContext.CreateInstanceInNewContext(type);
+            if (commandInstance is IExternalCommand externalCommand)
+            {
+                return externalCommand.Execute(commandData, ref message, elements);
+            }
+#endif
 
-            SetMessageAndElements(ref message, elements, commandResult, serviceProvider);
-            return commandResult.MapResultToRevitResult();
+            return ExecuteCommand(commandData, ref message, elements, assembly);
         }
 
         /// <inheritdoc/>
         public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
         {
             return applicationData.ActiveUIDocument?.Document != null;
+        }
+
+        private Result ExecuteCommand(ExternalCommandData commandData, ref string? message, ElementSet elements, Assembly assembly)
+        {
+            var serviceProvider = Configure(commandData, assembly);
+
+            var commandResult = CallCommandMethod(serviceProvider);
+
+            SetMessageAndElements(ref message, elements, commandResult, serviceProvider);
+            return commandResult.MapResultToRevitResult();
         }
 
         private IServiceProvider Configure(ExternalCommandData commandData, Assembly assembly)

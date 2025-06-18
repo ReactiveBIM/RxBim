@@ -16,9 +16,21 @@
         /// </summary>
         public virtual void Execute()
         {
-            var assembly = GetType().Assembly;
-            var di = Configure(assembly);
-            CallCommandMethod(di);
+            var type = GetType();
+            var assembly = type.Assembly;
+#if NETCOREAPP
+            if (PluginContext.IsCurrentContextDefault(type))
+            {
+                var newInstance = PluginContext.CreateInstanceInNewContext(type);
+                if (newInstance is RxBimCommand rxBimCommand)
+                {
+                    rxBimCommand.Execute();
+                    return;
+                }
+            }
+#endif
+
+            CallCommandMethod(assembly);
         }
 
         private IServiceProvider Configure(Assembly assembly)
@@ -28,10 +40,11 @@
             return di.Build();
         }
 
-        private void CallCommandMethod(IServiceProvider serviceProvider)
+        private void CallCommandMethod(Assembly assembly)
         {
-            var methodCaller = serviceProvider.GetService<IMethodCaller<PluginResult>>();
-            methodCaller.InvokeMethod(serviceProvider, Constants.ExecuteMethodName);
+            var di = Configure(assembly);
+            var methodCaller = di.GetService<IMethodCaller<PluginResult>>();
+            methodCaller.InvokeMethod(di, Constants.ExecuteMethodName);
         }
     }
 }
