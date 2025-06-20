@@ -32,39 +32,46 @@
         /// <inheritdoc/>
         public override IConfigurationProvider Build(IConfigurationBuilder builder)
         {
-            var packageContentsFileDir = Directory.GetParent(_basePath);
-            var environment = EnvironmentRegistryConstants.DefaultEnvironment;
-
-            if (packageContentsFileDir is not null)
-            {
-                var packageContentsFile = System.IO.Path.Combine(
-                    packageContentsFileDir.FullName,
-                    PackageContentsFileName);
-
-                if (File.Exists(packageContentsFile))
-                {
-                    var xmlDoc = new XmlDocument();
-                    xmlDoc.Load(packageContentsFile);
-                    var productCode = xmlDoc.DocumentElement
-                        ?.SelectSingleNode("//ApplicationPackage")
-                        ?.Attributes?
-                        .GetNamedItem("ProductCode")
-                        .Value;
-
-                    if (!string.IsNullOrWhiteSpace(productCode))
-                    {
-                        environment = Registry.CurrentUser
-                            .OpenSubKey($"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\\{productCode}")
-                            ?.GetValue(EnvironmentRegistryConstants.EnvironmentRegKeyName)
-                            ?.ToString() ?? EnvironmentRegistryConstants.DefaultEnvironment;
-                    }
-                }
-            }
-
+            var environment = GetEnvironment(_basePath);
             Path = $"{System.IO.Path.GetFileNameWithoutExtension(_configFile)}.{environment}.json";
             Optional = true;
 
             return base.Build(builder);
+        }
+
+        private string GetEnvironment(string basePath)
+        {
+            var packageContentsFileDir = Directory.GetParent(basePath);
+            var environment = EnvironmentRegistryConstants.DefaultEnvironment;
+
+            if (packageContentsFileDir is null)
+                return EnvironmentRegistryConstants.DefaultEnvironment;
+
+            var packageContentsFile = System.IO.Path.Combine(
+                packageContentsFileDir.FullName,
+                PackageContentsFileName);
+            if (!File.Exists(packageContentsFile))
+            {
+                return GetEnvironment(packageContentsFileDir.FullName);
+            }
+
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(packageContentsFile);
+            var productCode = xmlDoc.DocumentElement
+                ?.SelectSingleNode("//ApplicationPackage")
+                ?.Attributes?
+                .GetNamedItem("ProductCode")
+                .Value;
+
+            if (!string.IsNullOrWhiteSpace(productCode))
+            {
+                environment = Registry.CurrentUser
+                    .OpenSubKey($"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\\{productCode}")
+                    ?.GetValue(EnvironmentRegistryConstants.EnvironmentRegKeyName)
+                    ?.ToString() ?? EnvironmentRegistryConstants.DefaultEnvironment;
+            }
+
+            return environment;
         }
     }
 }
