@@ -12,6 +12,7 @@
     internal class EnvironmentConfigurationSource : JsonConfigurationSource
     {
         private const string PackageContentsFileName = "PackageContents.xml";
+        private const int MaxRecursionLevel = 3;
 
         private readonly string _basePath;
         private readonly string _configFile;
@@ -39,8 +40,11 @@
             return base.Build(builder);
         }
 
-        private string GetEnvironment(string basePath)
+        private string GetEnvironment(string basePath, int recursionLevel = 0)
         {
+            if (recursionLevel == MaxRecursionLevel)
+                return EnvironmentRegistryConstants.DefaultEnvironment;
+
             var packageContentsFileDir = Directory.GetParent(basePath);
             var environment = EnvironmentRegistryConstants.DefaultEnvironment;
 
@@ -52,7 +56,8 @@
                 PackageContentsFileName);
             if (!File.Exists(packageContentsFile))
             {
-                return GetEnvironment(packageContentsFileDir.FullName);
+                recursionLevel++;
+                return GetEnvironment(packageContentsFileDir.FullName, recursionLevel);
             }
 
             var xmlDoc = new XmlDocument();
