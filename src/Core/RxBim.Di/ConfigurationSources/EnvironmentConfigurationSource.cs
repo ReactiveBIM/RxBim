@@ -20,7 +20,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="EnvironmentConfigurationSource"/> class.
         /// </summary>
-        /// <param name="basePath">Base location.</param>
+        /// <param name="basePath">Base path.</param>
         /// <param name="configFile">Configuration JSON file.</param>
         public EnvironmentConfigurationSource(
             string basePath,
