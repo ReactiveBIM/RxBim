@@ -36,7 +36,6 @@
                     .Select(AssemblyLoadContext.GetLoadContext)
                     .FirstOrDefault(c => c != AssemblyLoadContext.Default && c?.Name == pluginName);
 
-
                 if (existContext is PluginContext context)
                 {
                     var instance = context.CreateInstanceInContext(type);
