@@ -5,6 +5,11 @@
     using Di;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
+#if NETCOREAPP
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.Loader;
+#endif
 
     /// <summary>
     /// Autocad command.
@@ -21,6 +26,26 @@
 #if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(type))
             {
+                // Attempt to find already exist context. If there is no exist context - create new.
+                var assemblyName = assembly.FullName;
+                var pluginName = Path.GetFileName(assembly.Location);
+
+                var existContext = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .Where(a => a.FullName == assemblyName)
+                    .Select(AssemblyLoadContext.GetLoadContext)
+                    .FirstOrDefault(c => c != AssemblyLoadContext.Default && c?.Name == pluginName);
+
+                if (existContext is PluginContext context)
+                {
+                    var instance = context.CreateInstanceInContext(type);
+                    if (instance is RxBimCommand command)
+                    {
+                        command.CallCommandMethod(assembly);
+                        return;
+                    }
+                }
+
                 var newInstance = PluginContext.CreateInstanceInNewContext(type);
                 if (newInstance is RxBimCommand rxBimCommand)
                 {
