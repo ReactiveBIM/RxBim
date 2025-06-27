@@ -45,6 +45,7 @@
                         return;
                     }
                 }
+
                 var newInstance = PluginContext.CreateInstanceInNewContext(type);
                 if (newInstance is RxBimCommand rxBimCommand)
                 {
