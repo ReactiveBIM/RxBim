@@ -70,7 +70,8 @@
 
             public bool IsResolve(string dllRequest)
             {
-                return dllRequest.StartsWith($"{DllName},", StringComparison.OrdinalIgnoreCase);
+                return dllRequest.Equals(DllName, StringComparison.OrdinalIgnoreCase)
+                    || dllRequest.StartsWith($"{DllName},", StringComparison.OrdinalIgnoreCase);
             }
 
             public Assembly LoadAssembly()
