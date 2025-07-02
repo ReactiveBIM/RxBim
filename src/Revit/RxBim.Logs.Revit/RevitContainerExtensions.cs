@@ -18,14 +18,19 @@
         /// <param name="services">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
+        /// <param name="additionalConfiguration">An action for additional logs configuration.</param>
         public static void AddRevitLogs(
             this IServiceCollection services,
             Assembly? pluginAssembly = null,
-            IConfiguration? cfg = null)
+            IConfiguration? cfg = null,
+            Action<IServiceProvider, LoggerConfiguration>? additionalConfiguration = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            services.AddLogs(cfg,
-                (serviceProvider, configuration) => EnrichWithRevitData(serviceProvider, configuration, pluginAssembly));
+            services.AddLogs(cfg, (serviceProvider, configuration) =>
+            {
+                EnrichWithRevitData(serviceProvider, configuration, pluginAssembly);
+                additionalConfiguration?.Invoke(serviceProvider, configuration);
+            });
         }
 
         private static void EnrichWithRevitData(
