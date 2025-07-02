@@ -70,7 +70,12 @@
 
             public bool IsResolve(string dllRequest)
             {
-                return dllRequest.StartsWith($"{DllName},", StringComparison.OrdinalIgnoreCase);
+                // Assembly FullName format: $"{Name}, {AssemblyVersion}, {Culture}, {PublicKeyToken}, {SpecialFlags}"
+                // more details on https://learn.microsoft.com/en-us/dotnet/api/system.reflection.assemblyname
+                // or https://source.dot.net/System.Private.CoreLib/R/5feac5f806a6cd7f.html
+                // `Name` is required, other fields are optional and may be missing.
+                return dllRequest.Equals(DllName, StringComparison.OrdinalIgnoreCase)
+                    || dllRequest.StartsWith($"{DllName},", StringComparison.OrdinalIgnoreCase);
             }
 
             public Assembly LoadAssembly()
