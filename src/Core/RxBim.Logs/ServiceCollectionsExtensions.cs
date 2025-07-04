@@ -21,20 +21,23 @@
         /// </summary>
         /// <param name="services">A DI container.</param>
         /// <param name="cfg">A configuration.</param>
+        /// <param name="useDefaultEnrichers">Indicates, that default enrichers will be used.</param>
         /// <param name="addEnricher">An action for additional logs configuration.</param>
         public static void AddLogs(
             this IServiceCollection services,
             IConfiguration? cfg = null,
+            bool useDefaultEnrichers = true,
             Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
         {
-            RegisterLogger(services, cfg, addEnricher);
+            RegisterLogger(services, cfg, useDefaultEnrichers, addEnricher);
             services.Decorate(typeof(IMethodCaller<>), typeof(LoggedMethodCaller<>));
         }
 
         private static void RegisterLogger(
             IServiceCollection services,
             IConfiguration? cfg,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            bool useDefaultEnrichers = true,
+            Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
         {
             services.AddSingleton(
                 sp =>
@@ -44,7 +47,7 @@
                         TryGetConfigurationFromContainer(sp, ref cfg);
                     }
 
-                    return CreateLogger(cfg, sp, addEnricher);
+                    return CreateLogger(cfg, sp, useDefaultEnrichers, addEnricher);
                 });
         }
 
@@ -63,7 +66,8 @@
         private static ILogger CreateLogger(
             IConfiguration? cfg,
             IServiceProvider serviceProvider,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            bool useDefaultEnrichers = true,
+            Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
         {
             var config = new LoggerConfiguration();
             if (cfg != null)
@@ -78,7 +82,7 @@
                     .WriteTo.File("log.txt", LogEventLevel.Information, fileSizeLimitBytes: 1024 * 10);
             }
 
-            AddLogEnrichers(serviceProvider, config, addEnricher);
+            AddLogEnrichers(serviceProvider, config, useDefaultEnrichers, addEnricher);
 
             return config.CreateLogger();
         }
@@ -86,14 +90,17 @@
         private static void AddLogEnrichers(
             IServiceProvider serviceProvider,
             LoggerConfiguration config,
-            Action<IServiceProvider, LoggerConfiguration>? addEnricher)
+            bool useDefaultEnrichers = true,
+            Action<IServiceProvider, LoggerConfiguration>? addEnricher = null)
         {
-            config
-                .Enrich.FromLogContext()
-                .Enrich.WithMachineName()
-                .Enrich.WithEnvironmentUserName()
-                .Enrich.With<ExceptionEnricher>()
-                .Enrich.With<OsEnricher>();
+            config.Enrich.FromLogContext();
+            if (useDefaultEnrichers)
+            {
+                config.Enrich.WithMachineName()
+                    .Enrich.WithEnvironmentUserName()
+                    .Enrich.With<ExceptionEnricher>()
+                    .Enrich.With<OsEnricher>();
+            }
 
             addEnricher?.Invoke(serviceProvider, config);
         }

@@ -18,15 +18,17 @@
         /// <param name="services">The DI container.</param>
         /// <param name="pluginAssembly">The plugin assembly.</param>
         /// <param name="cfg">The configuration.</param>
+        /// <param name="useDefaultEnrichers">Indicates, that default enrichers will be used.</param>
         /// <param name="additionalConfiguration">An action for additional logs configuration.</param>
         public static void AddRevitLogs(
             this IServiceCollection services,
             Assembly? pluginAssembly = null,
             IConfiguration? cfg = null,
+            bool useDefaultEnrichers = true,
             Action<IServiceProvider, LoggerConfiguration>? additionalConfiguration = null)
         {
             pluginAssembly ??= Assembly.GetCallingAssembly();
-            services.AddLogs(cfg, (serviceProvider, configuration) =>
+            services.AddLogs(cfg, useDefaultEnrichers, (serviceProvider, configuration) =>
             {
                 EnrichWithRevitData(serviceProvider, configuration, pluginAssembly);
                 additionalConfiguration?.Invoke(serviceProvider, configuration);
