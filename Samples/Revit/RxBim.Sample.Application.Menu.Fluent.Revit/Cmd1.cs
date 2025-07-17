@@ -4,6 +4,8 @@
     using Autodesk.Revit.UI;
     using Command.Revit;
     using CSharpFunctionalExtensions;
+    using PikTools.Ui.Abstractions;
+    using RxBim.Command.Revit;
     using Shared;
     using Result = CSharpFunctionalExtensions.Result;
 
@@ -19,17 +21,21 @@
         HelpUrl = "https://github.com/ReactiveBIM/RxBim")]
     public class Cmd1 : RxBimCommand
     {
+        /*/// <inheritdoc />
+        protected override bool RunInSeparatedContext => false;*/
+
         /// <summary>
         /// cmd.
         /// </summary>
-        public PluginResult ExecuteCommand()
+        /// <param name="notificationService">123</param>
+        public PluginResult ExecuteCommand(INotificationService notificationService)
         {
             const string appName = "Revit";
             var res = Result.Success()
                 .Bind(() => Result.Success(appName))
                 .Map(_ => appName);
 
-            TaskDialog.Show(nameof(Cmd1), $"{res.Value} Command executed");
+            notificationService.ShowMessage(nameof(Cmd1), $"{res.Value} Command executed");
             return PluginResult.Succeeded;
         }
     }

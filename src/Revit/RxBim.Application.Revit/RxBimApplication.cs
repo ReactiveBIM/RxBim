@@ -21,19 +21,28 @@
 
 #if NETCOREAPP
         private object? _isolatedApplicationInstance;
+
+        /// <summary>
+        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
+        /// via Addin Manager.
+        /// </summary>
+        protected virtual bool RunInSeparatedContext => true;
 #endif
 
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
 #if NETCOREAPP
-            var type = GetType();
-            if (PluginContext.IsCurrentContextDefault(type))
+            if (RunInSeparatedContext)
             {
-                _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
-                if (_isolatedApplicationInstance is IExternalApplication app)
+                var type = GetType();
+                if (PluginContext.IsCurrentContextDefault(type))
                 {
-                    return app.OnStartup(application);
+                    _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
+                    if (_isolatedApplicationInstance is IExternalApplication app)
+                    {
+                        return app.OnStartup(application);
+                    }
                 }
             }
 #endif

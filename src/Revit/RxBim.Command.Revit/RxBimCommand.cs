@@ -48,10 +48,14 @@
             var assemblyName = assembly.FullName;
             var pluginName = Path.GetFileName(assembly.Location);
 
-            var existContext = AppDomain.CurrentDomain
+            var assemblies = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .Where(a => a.FullName == assemblyName)
+                .ToList();
+            var existContexts = assemblies
                 .Select(AssemblyLoadContext.GetLoadContext)
+                .ToList();
+            var existContext = existContexts
                 .FirstOrDefault(c => c != AssemblyLoadContext.Default && c?.Name == pluginName);
 
             if (existContext is PluginContext context)

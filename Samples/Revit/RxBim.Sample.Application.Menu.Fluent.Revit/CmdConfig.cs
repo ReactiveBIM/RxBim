@@ -6,17 +6,12 @@
     using RxBim.Application.Ribbon;
 
     /// <inheritdoc />
-    public class Config : IApplicationConfiguration
+    public class CmdConfig : ICommandConfiguration
     {
         /// <inheritdoc />
         public void Configure(IServiceCollection services)
         {
             services.AddUi();
-            services.AddRevitMenu(ribbon => ribbon
-                .EnableDisplayVersion()
-                .SetVersionPrefix("Version: ")
-                .TabFromAttributes()
-                .TabFromBuilder());
         }
     }
 }

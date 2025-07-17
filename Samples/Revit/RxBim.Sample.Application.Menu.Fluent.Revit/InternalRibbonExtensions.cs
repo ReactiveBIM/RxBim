@@ -83,8 +83,8 @@
                                     .LargeImage(@"img\num1_32.png")
                                     .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                             .CommandButton(
-                                "Command2_Large_WithText",
-                                typeof(Cmd2),
+                                "TEST",
+                                typeof(CheckEnvironmentCmd),
                                 button => button
                                     .ToolTip("Tooltip: I'm run command #2. Push me!")
                                     .Text("Command\n#2")
