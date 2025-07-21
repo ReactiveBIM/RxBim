@@ -2,7 +2,6 @@
 {
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
-    using PikTools.Ui.Abstractions;
     using RxBim.Application.Revit;
     using Shared;
     using Result = CSharpFunctionalExtensions.Result;
@@ -16,8 +15,7 @@
         /// <summary>
         /// Start application.
         /// </summary>
-        /// <param name="notificationService">s</param>
-        public PluginResult Start(INotificationService notificationService)
+        public PluginResult Start()
         {
             const string appName = "Revit";
             var res = Result.Success()

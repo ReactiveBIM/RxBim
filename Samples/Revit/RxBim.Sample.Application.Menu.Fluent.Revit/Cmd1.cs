@@ -4,8 +4,6 @@
     using Autodesk.Revit.UI;
     using Command.Revit;
     using CSharpFunctionalExtensions;
-    using PikTools.Ui.Abstractions;
-    using RxBim.Command.Revit;
     using Shared;
     using Result = CSharpFunctionalExtensions.Result;
 
@@ -27,15 +25,14 @@
         /// <summary>
         /// cmd.
         /// </summary>
-        /// <param name="notificationService">123</param>
-        public PluginResult ExecuteCommand(INotificationService notificationService)
+        public PluginResult ExecuteCommand()
         {
             const string appName = "Revit";
             var res = Result.Success()
                 .Bind(() => Result.Success(appName))
                 .Map(_ => appName);
 
-            notificationService.ShowMessage(nameof(Cmd1), $"{res.Value} Command executed");
+            TaskDialog.Show(nameof(Cmd1), $"{res.Value} Command executed");
             return PluginResult.Succeeded;
         }
     }

@@ -4,7 +4,6 @@
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
-    <ProjectReference Include="..\RxBim.Sample.Command.Revit\RxBim.Sample.Command.Revit.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="img\*.png">
@@ -40,8 +39,7 @@
     <EmbeddedResource Include="img\command_32.ico" />
   </ItemGroup>
   <ItemGroup>
-<!--    <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3"/>-->
-    <PackageReference Include="PikTools.Ui" Version="5.0.7" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3"/>
   </ItemGroup>
   <PropertyGroup>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

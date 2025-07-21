@@ -2,7 +2,6 @@
 {
     using Di;
     using Microsoft.Extensions.DependencyInjection;
-    using PikTools.Ui;
     using RxBim.Application.Ribbon;
 
     /// <inheritdoc />
@@ -11,7 +10,6 @@
         /// <inheritdoc />
         public void Configure(IServiceCollection services)
         {
-            services.AddUi();
             services.AddRevitMenu(ribbon => ribbon
                 .EnableDisplayVersion()
                 .SetVersionPrefix("Version: ")

@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
-    using Command.Revit;
     using RxBim.Application.Ribbon;
 
     /// <summary>
@@ -83,8 +82,8 @@
                                     .LargeImage(@"img\num1_32.png")
                                     .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                             .CommandButton(
-                                "TEST",
-                                typeof(CheckEnvironmentCmd),
+                                "Command2_Large_WithText",
+                                typeof(Cmd2),
                                 button => button
                                     .ToolTip("Tooltip: I'm run command #2. Push me!")
                                     .Text("Command\n#2")
