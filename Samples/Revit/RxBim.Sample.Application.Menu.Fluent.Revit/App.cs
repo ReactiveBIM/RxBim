@@ -9,9 +9,6 @@
     /// <inheritdoc />
     public class App : RxBimApplication
     {
-        /*/// <inheritdoc />
-        protected override bool RunInSeparatedContext => false;*/
-
         /// <summary>
         /// Start application.
         /// </summary>

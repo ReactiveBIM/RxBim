@@ -19,9 +19,6 @@
         HelpUrl = "https://github.com/ReactiveBIM/RxBim")]
     public class Cmd1 : RxBimCommand
     {
-        /*/// <inheritdoc />
-        protected override bool RunInSeparatedContext => false;*/
-
         /// <summary>
         /// cmd.
         /// </summary>
