@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Application.Revit
 {
     using System;
-    using System.Reflection;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
     using Di;
