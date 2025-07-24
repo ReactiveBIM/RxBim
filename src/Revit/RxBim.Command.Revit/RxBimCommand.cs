@@ -10,10 +10,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Result = Autodesk.Revit.UI.Result;
-#if NETCOREAPP
-    using System.IO;
-    using System.Runtime.Loader;
-#endif
 
     /// <summary>
     /// Revit command.
@@ -40,26 +36,8 @@
             var assembly = type.Assembly;
 
 #if NETCOREAPP
-
             if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
-
-            // Attempt to find already exist context. If there is no exist context - create new.
-            var assemblyName = assembly.FullName;
-            var pluginName = Path.GetFileName(assembly.Location);
-
-            var existContext = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .Where(a => a.FullName == assemblyName)
-                .Select(AssemblyLoadContext.GetLoadContext)
-                .FirstOrDefault(c => c != AssemblyLoadContext.Default && c?.Name == pluginName);
-
-            if (existContext is PluginContext context)
-            {
-                var instance = context.CreateInstanceInContext(type);
-                if (instance is IExternalCommand command)
-                    return command.Execute(commandData, ref message, elements);
-            }
 
             var commandInstance = PluginContext.CreateInstanceInNewContext(type);
             if (commandInstance is IExternalCommand externalCommand)

@@ -17,18 +17,29 @@ namespace RxBim.Application.Autocad
         private ApplicationDiConfigurator? _diConfigurator;
         private IServiceProvider _serviceProvider = null!;
 
+#if NETCOREAPP
+        /// <summary>
+        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
+        /// via Addin Manager.
+        /// </summary>
+        protected virtual bool RunInSeparatedContext => true;
+#endif
+
         /// <inheritdoc />
         public void Initialize()
         {
 #if NETCOREAPP
-            var type = GetType();
-            if (PluginContext.IsCurrentContextDefault(type))
+            if (RunInSeparatedContext)
             {
-                var appInstance = PluginContext.CreateInstanceInNewContext(type);
-                if (appInstance is IExtensionApplication application)
+                var type = GetType();
+                if (PluginContext.IsCurrentContextDefault(type))
                 {
-                    application.Initialize();
-                    return;
+                    var appInstance = PluginContext.CreateInstanceInNewContext(type);
+                    if (appInstance is IExtensionApplication application)
+                    {
+                        application.Initialize();
+                        return;
+                    }
                 }
             }
 #endif
