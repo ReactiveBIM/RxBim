@@ -13,8 +13,7 @@
     {
 #if NETCOREAPP
         /// <summary>
-        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
-        /// via Addin Manager.
+        /// Allows you to turn off plugin execution in separated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => true;
 #endif
