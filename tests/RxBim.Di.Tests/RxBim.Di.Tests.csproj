@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <NoWarn>CS1591</NoWarn>
         <Configurations>Debug;Release</Configurations>
         <IsPackable>false</IsPackable>
