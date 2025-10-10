@@ -11,6 +11,13 @@
     /// </summary>
     public abstract class RxBimCommand
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Allows you to turn off plugin execution in separated context.
+        /// </summary>
+        protected virtual bool RunInSeparatedContext => true;
+#endif
+
         /// <summary>
         /// Executes a command.
         /// </summary>
@@ -19,7 +26,7 @@
             var type = GetType();
             var assembly = type.Assembly;
 #if NETCOREAPP
-            if (PluginContext.IsCurrentContextDefault(type))
+            if (RunInSeparatedContext && PluginContext.IsCurrentContextDefault(type))
             {
                 var newInstance = PluginContext.CreateInstanceInNewContext(type);
                 if (newInstance is RxBimCommand rxBimCommand)
