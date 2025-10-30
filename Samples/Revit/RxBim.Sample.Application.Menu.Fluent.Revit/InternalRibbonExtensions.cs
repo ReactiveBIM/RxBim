@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
-    using Command.Revit;
     using RxBim.Application.Ribbon;
 
     /// <summary>
