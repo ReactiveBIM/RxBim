@@ -68,7 +68,11 @@ namespace RxBim.Application.Autocad
                 if (_diConfigurator is not null || !CanBeStarted())
                     return;
 
+#if NETCOREAPP
+                _diConfigurator = new ApplicationDiConfigurator(this, !RunInSeparatedContext);
+#else
                 _diConfigurator = new ApplicationDiConfigurator(this);
+#endif
                 _diConfigurator.Configure(GetType().Assembly);
                 _serviceProvider = _diConfigurator.Build();
 
