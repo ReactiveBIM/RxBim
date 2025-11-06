@@ -14,6 +14,7 @@
         private readonly object _applicationObject;
         private readonly UIControlledApplication _uiControlledApp;
         private readonly UserInterfaceApplicationProxy _uiApplicationProxy;
+        private readonly bool _addResolver;
 
         /// <summary>
         /// Initialize a new instance of <see cref="ApplicationDiConfigurator"/>.
@@ -21,14 +22,17 @@
         /// <param name="applicationObject">application object.</param>
         /// <param name="uiControlledApp">Revit ui controlled application.</param>
         /// <param name="uiApplicationProxy">Proxy for Revit ui application.</param>
+        /// <param name="addResolver">Allows you to turn off plugin adding assembly resolver in DI.</param>
         public ApplicationDiConfigurator(
             object applicationObject,
             UIControlledApplication uiControlledApp,
-            UserInterfaceApplicationProxy uiApplicationProxy)
+            UserInterfaceApplicationProxy uiApplicationProxy,
+            bool addResolver = true)
         {
             _applicationObject = applicationObject;
             _uiControlledApp = uiControlledApp;
             _uiApplicationProxy = uiApplicationProxy;
+            _addResolver = addResolver;
         }
 
         /// <inheritdoc/>
@@ -36,11 +40,12 @@
         {
             base.ConfigureAdditionalDependencies(assembly);
 
-#if !NETCOREAPP
-            Services
-                .AddTransient(_ => new AssemblyResolver(assembly))
-                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
-#endif
+            if (_addResolver)
+            {
+                Services
+                    .AddTransient(_ => new AssemblyResolver(assembly))
+                    .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
+            }
         }
 
         /// <inheritdoc />

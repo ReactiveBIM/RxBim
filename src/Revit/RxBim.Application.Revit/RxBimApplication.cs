@@ -65,7 +65,11 @@
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
+#if NETCOREAPP
+            var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy, !RunInSeparatedContext);
+#else
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);
+#endif
             diConfigurator.Configure(GetType().Assembly);
             _serviceProvider = diConfigurator.Build();
 
