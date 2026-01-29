@@ -22,7 +22,7 @@ namespace RxBim.Application.Autocad
         /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
         /// via Addin Manager.
         /// </summary>
-        protected virtual bool RunInSeparatedContext => true;
+        protected virtual bool RunInSeparatedContext => false;
 #endif
 
         /// <inheritdoc />

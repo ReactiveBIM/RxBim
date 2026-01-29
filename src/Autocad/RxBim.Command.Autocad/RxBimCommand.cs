@@ -15,7 +15,7 @@
         /// <summary>
         /// Allows you to turn off plugin execution in separated context.
         /// </summary>
-        protected virtual bool RunInSeparatedContext => true;
+        protected virtual bool RunInSeparatedContext => false;
 #endif
 
         /// <summary>
