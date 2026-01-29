@@ -11,7 +11,7 @@
     /// </summary>
     public abstract class RxBimCommand
     {
-#if NETCOREAPP
+#if ACAD2025
         /// <summary>
         /// Allows you to turn off plugin execution in separated context.
         /// </summary>
@@ -25,7 +25,7 @@
         {
             var type = GetType();
             var assembly = type.Assembly;
-#if NETCOREAPP
+#if ACAD2025
             if (RunInSeparatedContext && PluginContext.IsCurrentContextDefault(type))
             {
                 var newInstance = PluginContext.CreateInstanceInNewContext(type);
