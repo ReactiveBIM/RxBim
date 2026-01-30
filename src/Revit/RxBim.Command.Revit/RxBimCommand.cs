@@ -18,12 +18,12 @@
     [Regeneration(RegenerationOption.Manual)]
     public abstract class RxBimCommand : IExternalCommand, IExternalCommandAvailability
     {
-#if NETCOREAPP
+#if RVT2025
         /// <summary>
         /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
         /// via Addin Manager.
         /// </summary>
-        protected virtual bool RunInSeparatedContext => true;
+        protected virtual bool RunInSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -35,7 +35,7 @@
             var type = GetType();
             var assembly = type.Assembly;
 
-#if NETCOREAPP
+#if RVT2025
             if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
 
