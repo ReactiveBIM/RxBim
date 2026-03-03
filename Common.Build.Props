@@ -1,6 +1,6 @@
 ﻿<Project>
     <PropertyGroup>
-        <LangVersion>12</LangVersion>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
     </PropertyGroup>
@@ -79,7 +79,7 @@
             </PropertyGroup>
 
             <ItemGroup>
-                <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+                <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
                     <PrivateAssets>all</PrivateAssets>
                     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
                 </PackageReference>
@@ -88,7 +88,7 @@
     </Choose>
 
     <PropertyGroup>
-        <Version>3.0.5-dev002</Version>
+        <Version>3.0.5-dev003</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>

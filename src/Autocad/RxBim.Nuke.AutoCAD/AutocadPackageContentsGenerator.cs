@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Extensions;
+    using Generators;
     using global::Nuke.Common.ProjectModel;
-    using RxBim.Nuke.Extensions;
-    using RxBim.Nuke.Generators;
-    using RxBim.Nuke.Models;
-    using RxBim.Nuke.Versions;
+    using Models;
+    using Versions;
 
     /// <inheritdoc />
     public class AutocadPackageContentsGenerator : PackageContentsGenerator

@@ -32,7 +32,7 @@
         public static void BuildMsiWithTool(
             this Project project,
             string toolPath,
-            Options options)
+            BuildOptions options)
         {
             var p = ProcessTasks.StartProcess(
                 toolPath,
@@ -90,11 +90,11 @@
         /// <param name="project">The project.</param>
         public static IEnumerable<XElement> GenerateInstallationProperties(this Project project)
         {
-            if (project.GetProperty(nameof(Options.PackageGuid)) == null)
-                yield return new XElement(nameof(Options.PackageGuid), Guid.NewGuid());
+            if (project.GetProperty(nameof(BuildOptions.PackageGuid)) == null)
+                yield return new XElement(nameof(BuildOptions.PackageGuid), Guid.NewGuid());
 
-            if (project.GetProperty(nameof(Options.UpgradeCode)) == null)
-                yield return new XElement(nameof(Options.UpgradeCode), Guid.NewGuid());
+            if (project.GetProperty(nameof(BuildOptions.UpgradeCode)) == null)
+                yield return new XElement(nameof(BuildOptions.UpgradeCode), Guid.NewGuid());
         }
 
         /// <summary>
@@ -106,7 +106,7 @@
         public static List<AssemblyType> GetAssemblyTypes(
             this Project project,
             string output,
-            Options options)
+            BuildOptions options)
         {
             var file = Path.Combine(output, $"{project.Name}.dll");
 
@@ -129,7 +129,7 @@
                 if (additionalFiles.Any(f => !File.Exists(f)))
                 {
                     throw new FileNotFoundException(
-                        $"Assembly not found from property {nameof(Options.ProjectsAddingToManifest)}");
+                        $"Assembly not found from property {nameof(BuildOptions.ProjectsAddingToManifest)}");
                 }
             }
 

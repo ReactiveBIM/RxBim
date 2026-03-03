@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Nuke.Revit.Generators.Extensions
 {
-    using RxBim.Nuke.Extensions;
-    using RxBim.Nuke.Models;
+    using Nuke.Extensions;
+    using Nuke.Models;
 
     /// <summary>
     /// Extensions for <see cref="AssemblyType"/> class.

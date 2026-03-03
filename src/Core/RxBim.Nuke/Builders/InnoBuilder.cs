@@ -18,22 +18,22 @@
     /// </summary>
     public class InnoBuilder : IssBuilder
     {
-        private readonly Options _options;
+        private readonly BuildOptions _buildOptions;
         private readonly string _projInstallDir;
 
         private readonly SetupBuilder _setupBuilder;
 
-        private InnoBuilder(Options options, string? setupFileName = null)
+        private InnoBuilder(BuildOptions buildOptions, string? setupFileName = null)
         {
-            _options = options;
+            _buildOptions = buildOptions;
 
-            var installDir = options.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
-            _projInstallDir = $@"{installDir}\{options.ProjectName}";
-            var outputFileName = setupFileName ?? $"{options.OutFileName}_{options.Version}";
+            var installDir = buildOptions.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
+            _projInstallDir = $@"{installDir}\{buildOptions.ProjectName}";
+            var outputFileName = setupFileName ?? $"{buildOptions.OutFileName}_{buildOptions.Version}";
 
-            _setupBuilder = Setup.Create(options.ProductProjectName)
-                .AppId($"{{{{{options.PackageGuid}}}")
-                .AppVersion(options.Version)
+            _setupBuilder = Setup.Create(buildOptions.ProductProjectName)
+                .AppId($"{{{{{buildOptions.PackageGuid}}}")
+                .AppVersion(buildOptions.Version)
                 .DefaultDirName(_projInstallDir)
                 .UsePreviousAppDir(YesNo.No)
                 .PrivilegesRequired(PrivilegesRequired.Lowest)
@@ -44,20 +44,20 @@
         /// <summary>
         /// Creates an instance of <see cref="InnoBuilder"/>.
         /// </summary>
-        /// <param name="options">Setup options.</param>
+        /// <param name="buildOptions">Setup options.</param>
         /// <param name="setupFileName">Setup file name.</param>
-        public static InnoBuilder Create(Options options, string? setupFileName = null) => new(options, setupFileName);
+        public static InnoBuilder Create(BuildOptions buildOptions, string? setupFileName = null) => new(buildOptions, setupFileName);
 
         /// <summary>
-        /// Adds setup and uninstall icons from <see cref="Options"/>.
+        /// Adds setup and uninstall icons from <see cref="BuildOptions"/>.
         /// </summary>
         /// <param name="outputDirectory">Output directory of compile project.</param>
         public InnoBuilder AddIcons(AbsolutePath outputDirectory)
         {
-            if (!string.IsNullOrWhiteSpace(_options.SetupIcon))
-                _setupBuilder.SetupIconFile(outputDirectory / _options.SetupIcon);
-            if (!string.IsNullOrWhiteSpace(_options.UninstallIcon))
-                _setupBuilder.UninstallDisplayIcon($@"{_projInstallDir}\{_options.UninstallIcon}");
+            if (!string.IsNullOrWhiteSpace(_buildOptions.SetupIcon))
+                _setupBuilder.SetupIconFile(outputDirectory / _buildOptions.SetupIcon);
+            if (!string.IsNullOrWhiteSpace(_buildOptions.UninstallIcon))
+                _setupBuilder.UninstallDisplayIcon($@"{_projInstallDir}\{_buildOptions.UninstallIcon}");
 
             return this;
         }
@@ -97,7 +97,7 @@
         /// <param name="environment">Environment value.</param>
         public InnoBuilder AddRxBimEnvironment(string environment)
         {
-            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{{{_options.PackageGuid}}}";
+            var environmentRegKey = @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{{{_buildOptions.PackageGuid}}}";
 
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.EnvironmentRegKeyName)
@@ -107,7 +107,7 @@
             Registry.CreateEntry(RegistryKeys.HKCU, environmentRegKey)
                 .ValueName(EnvironmentRegistryConstants.PluginNameRegKeyName)
                 .ValueType(ValueTypes.String)
-                .ValueData(_options.ProductProjectName)
+                .ValueData(_buildOptions.ProductProjectName)
                 .Flags(RegistryFlags.UninsDeleteKey);
 
             return this;

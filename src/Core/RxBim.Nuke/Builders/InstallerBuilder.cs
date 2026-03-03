@@ -25,7 +25,7 @@
         /// <param name="project">Selected project.</param>
         /// <param name="outputBinDir">Output assemblies directory path.</param>
         /// <param name="options">Options.</param>
-        public void BuildMsi(Project project, string outputBinDir, Options options)
+        public void BuildMsi(Project project, string outputBinDir, BuildOptions options)
         {
             if (!Directory.Exists(outputBinDir))
                 return;
@@ -45,7 +45,7 @@
             AbsolutePath temporaryDirectory,
             string outputDir,
             string outputBinDir,
-            Options options)
+            BuildOptions options)
         {
             var iss = temporaryDirectory / "package.iss";
             var setupFileName = $"{options.OutFileName}_{options.Version}";

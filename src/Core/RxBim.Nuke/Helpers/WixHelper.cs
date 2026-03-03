@@ -8,7 +8,6 @@
     using global::Nuke.Common.IO;
     using Octokit;
     using SharpCompress.Archives;
-    using SharpCompress.Common;
 
     /// <summary>
     /// Helper class for setup Wix tools.
@@ -35,14 +34,12 @@
             {
                 var wixSharp7Z = DownloadWixSharp();
                 using Stream stream = File.OpenRead(wixSharp7Z);
-                var reader = ArchiveFactory.Open(stream);
+                var reader = ArchiveFactory.OpenArchive(stream);
                 foreach (var entry in reader.Entries.Where(entry => !entry.Key!.StartsWith("Samples")))
                 {
                     if (entry.IsDirectory || entry.Key!.StartsWith("Samples"))
                         continue;
-                    entry.WriteToDirectory(
-                        wixSharpBinPath,
-                        new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+                    entry.WriteToDirectory(wixSharpBinPath);
                 }
             }
 

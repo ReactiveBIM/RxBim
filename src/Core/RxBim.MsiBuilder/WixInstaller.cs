@@ -14,34 +14,34 @@ namespace RxBim.MsiBuilder
 
     public class WixInstaller
     {
-        public Project CreateProject(Options options)
+        public Project CreateProject(BuildOptions buildOptions)
         {
-            var projectName = options.ProjectName;
-            var productProjectName = options.ProductProjectName;
-            var installDir = options.InstallDir;
+            var projectName = buildOptions.ProjectName;
+            var productProjectName = buildOptions.ProductProjectName;
+            var installDir = buildOptions.InstallDir;
 
-            var sourceDir = options.SourceDir;
-            var version = options.Version is null ? new Version() : new Version(options.Version);
+            var sourceDir = buildOptions.SourceDir;
+            var version = buildOptions.Version is null ? new Version() : new Version(buildOptions.Version);
             var environmentRegKey =
-                @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{options.PackageGuid}}}";
+                @$"{EnvironmentRegistryConstants.RxBimEnvironmentRegPath}\{{{buildOptions.PackageGuid}}}";
 
             var project = new ManagedProject(
                 productProjectName,
                 new Dir(installDir,
-                    FillEntities(null, new[] { options.BundleDir }, false)
+                    FillEntities(null, new[] { buildOptions.BundleDir }, false)
                         .Concat(new[]
                         {
                             new Dir(projectName, FillEntities(null, new[] { sourceDir }).ToArray())
                         }).ToArray()))
             {
-                Description = options.Description,
+                Description = buildOptions.Description,
                 Package =
                 {
                     AttributesDefinition =
-                        $"AdminImage=yes; Comments={options.Comments}; Description={options.Description ?? options.ProjectName}"
+                        $"AdminImage=yes; Comments={buildOptions.Comments}; Description={buildOptions.Description ?? buildOptions.ProjectName}"
                 },
-                GUID = options.PackageGuid is null ? null : new Guid(options.PackageGuid),
-                UpgradeCode = options.UpgradeCode is null ? null : new Guid(options.UpgradeCode),
+                GUID = buildOptions.PackageGuid is null ? null : new Guid(buildOptions.PackageGuid),
+                UpgradeCode = buildOptions.UpgradeCode is null ? null : new Guid(buildOptions.UpgradeCode),
                 MajorUpgradeStrategy = new MajorUpgradeStrategy
                 {
                     UpgradeVersions = VersionRange.ThisAndOlder,
@@ -55,20 +55,20 @@ namespace RxBim.MsiBuilder
                 ControlPanelInfo = { Manufacturer = "ReactiveBIM" },
                 Encoding = Encoding.UTF8,
                 Codepage = "1251",
-                OutDir = options.OutDir,
-                OutFileName = $"{options.OutFileName}_{version}",
+                OutDir = buildOptions.OutDir,
+                OutFileName = $"{buildOptions.OutFileName}_{version}",
                 RegValues = new[]
                 {
                     new RegValue(
                         RegistryHive.CurrentUser,
                         environmentRegKey,
                         EnvironmentRegistryConstants.EnvironmentRegKeyName,
-                        options.Environment),
+                        buildOptions.Environment),
                     new RegValue(
                         RegistryHive.CurrentUser,
                         environmentRegKey,
                         EnvironmentRegistryConstants.PluginNameRegKeyName,
-                        options.ProductProjectName)
+                        buildOptions.ProductProjectName)
                 }
             };
 
@@ -82,14 +82,14 @@ namespace RxBim.MsiBuilder
                     Condition.Always));
 
             var attributesDefinition = $"AdminImage=yes;";
-            if (!string.IsNullOrEmpty(options.Comments))
+            if (!string.IsNullOrEmpty(buildOptions.Comments))
             {
-                attributesDefinition += $"Comments={options.Comments}; ";
+                attributesDefinition += $"Comments={buildOptions.Comments}; ";
             }
 
-            if (!string.IsNullOrEmpty(options.Description))
+            if (!string.IsNullOrEmpty(buildOptions.Description))
             {
-                attributesDefinition += $"Description={options.Description}; ";
+                attributesDefinition += $"Description={buildOptions.Description}; ";
             }
 
             project.Package.AttributesDefinition = attributesDefinition;
