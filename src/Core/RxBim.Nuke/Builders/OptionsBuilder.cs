@@ -9,22 +9,22 @@ using global::Nuke.Common.ProjectModel;
 using JetBrains.Annotations;
 
 /// <summary>
-/// Builder for <see cref="Options"/>.
+/// Builder for <see cref="BuildOptions"/>.
 /// </summary>
 [PublicAPI]
 public class OptionsBuilder
 {
     /// <summary>
-    /// Queue for <see cref="Options"/> modification.
+    /// Queue for <see cref="BuildOptions"/> modification.
     /// </summary>
-    protected Queue<Action<Options>> OptionsModifyQueue { get; set; } = new();
+    protected Queue<Action<BuildOptions>> OptionsModifyQueue { get; set; } = new();
 
     /// <summary>
-    /// Builds <see cref="Options"/>.
+    /// Builds <see cref="BuildOptions"/>.
     /// </summary>
-    public Options Build()
+    public BuildOptions Build()
     {
-        var resultOptions = new Options();
+        var resultOptions = new BuildOptions();
         while (OptionsModifyQueue.Any())
         {
             OptionsModifyQueue.Dequeue().Invoke(resultOptions);
@@ -34,10 +34,10 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// Adds action in <see cref="Options"/> build queue.
+    /// Adds action in <see cref="BuildOptions"/> build queue.
     /// </summary>
-    /// <param name="optionsModification">Custom action for <see cref="Options"/> modification.</param>
-    public OptionsBuilder AddOptionsModifyAction(Action<Options> optionsModification)
+    /// <param name="optionsModification">Custom action for <see cref="BuildOptions"/> modification.</param>
+    public OptionsBuilder AddOptionsModifyAction(Action<BuildOptions> optionsModification)
     {
         OptionsModifyQueue.Enqueue(optionsModification);
         return this;
@@ -51,21 +51,21 @@ public class OptionsBuilder
     {
         OptionsModifyQueue.Enqueue(opts =>
         {
-            opts.Comments = project.GetProperty(nameof(Options.Comments));
-            opts.Description = project.GetProperty(nameof(Options.Description));
+            opts.Comments = project.GetProperty(nameof(BuildOptions.Comments));
+            opts.Description = project.GetProperty(nameof(BuildOptions.Description));
             opts.OutDir = project.Solution.Directory / "out";
-            opts.PackageGuid = project.GetProperty(nameof(Options.PackageGuid)) ??
+            opts.PackageGuid = project.GetProperty(nameof(BuildOptions.PackageGuid)) ??
                                throw new ArgumentException(
-                                   $"Project {project.Name} should contain '{nameof(Options.PackageGuid)}' property with valid guid value!");
-            opts.UpgradeCode = project.GetProperty(nameof(Options.UpgradeCode)) ??
+                                   $"Project {project.Name} should contain '{nameof(BuildOptions.PackageGuid)}' property with valid guid value!");
+            opts.UpgradeCode = project.GetProperty(nameof(BuildOptions.UpgradeCode)) ??
                                throw new ArgumentException(
-                                   $"Project {project.Name} should contain '{nameof(Options.UpgradeCode)}' property with valid guid value!");
+                                   $"Project {project.Name} should contain '{nameof(BuildOptions.UpgradeCode)}' property with valid guid value!");
             opts.ProjectName = project.Name;
-            opts.AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(Options.AddAllAppToManifest)));
-            opts.ProjectsAddingToManifest = project.GetProperty(nameof(Options.ProjectsAddingToManifest))
+            opts.AddAllAppToManifest = Convert.ToBoolean(project.GetProperty(nameof(BuildOptions.AddAllAppToManifest)));
+            opts.ProjectsAddingToManifest = project.GetProperty(nameof(BuildOptions.ProjectsAddingToManifest))
                 ?.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            opts.SetupIcon = project.GetProperty(nameof(Options.SetupIcon));
-            opts.UninstallIcon = project.GetProperty(nameof(Options.UninstallIcon));
+            opts.SetupIcon = project.GetProperty(nameof(BuildOptions.SetupIcon));
+            opts.UninstallIcon = project.GetProperty(nameof(BuildOptions.UninstallIcon));
         });
 
         return this;
@@ -96,15 +96,15 @@ public class OptionsBuilder
     /// <param name="configuration">Configuration.</param>
     public virtual OptionsBuilder SetProductVersion(Project project, string configuration)
     {
-        var productVersion = project.GetProperty(nameof(Options.ProductVersion));
+        var productVersion = project.GetProperty(nameof(BuildOptions.ProductVersion));
         if (string.IsNullOrWhiteSpace(productVersion)
             && configuration.Equals(Configuration.Release))
         {
             throw new ArgumentException(
-                $"Project {project.Name} should contain '{nameof(Options.ProductVersion)}' property with product version value!");
+                $"Project {project.Name} should contain '{nameof(BuildOptions.ProductVersion)}' property with product version value!");
         }
 
-        var msiFilePrefix = project.GetProperty(nameof(Options.InstallFilePrefix));
+        var msiFilePrefix = project.GetProperty(nameof(BuildOptions.InstallFilePrefix));
         var outputFileName = $"{msiFilePrefix}{project.Name}";
 
         if (!string.IsNullOrWhiteSpace(productVersion))
@@ -142,9 +142,9 @@ public class OptionsBuilder
     {
         OptionsModifyQueue.Enqueue(opts =>
         {
-            opts.Version = project.GetProperty(nameof(Options.Version)) ??
+            opts.Version = project.GetProperty(nameof(BuildOptions.Version)) ??
                            throw new ArgumentException(
-                               $"Project {project.Name} should contain '{nameof(Options.Version)}'" +
+                               $"Project {project.Name} should contain '{nameof(BuildOptions.Version)}'" +
                                " property with valid version value!");
         });
 

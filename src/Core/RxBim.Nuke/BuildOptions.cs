@@ -12,7 +12,7 @@ namespace RxBim.Nuke
     /// <summary>
     /// Installation package options.
     /// </summary>
-    public class Options
+    public class BuildOptions
     {
         [Option('p', "project", Required = true, HelpText = "Set project name.")]
         public string? ProjectName { get; set; }

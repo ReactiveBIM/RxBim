@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Nuke.Revit.Generators.Models
 {
-    using RxBim.Nuke.Models;
+    using Nuke.Models;
 
     /// <summary>
     /// Specifies an addin file data.
