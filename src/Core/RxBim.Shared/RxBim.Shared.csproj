@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <Configurations>Debug;Release</Configurations>
         <TargetFrameworks>netstandard2.0;net8.0-windows</TargetFrameworks>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj"/>
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim shared Library</Description>
     </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="RxBim.Shared.SharedLibraryAttribute"/>
+    </ItemGroup>
 
 </Project>
