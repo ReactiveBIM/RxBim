@@ -62,11 +62,10 @@
 
         private void AddConfigurations(Assembly assembly)
         {
-            var configurationBuilder = GetBaseConfigurationBuilder(assembly);
-            AddUserConfigurations(configurationBuilder);
+            AddUserConfigurations(() => CreateBaseConfigurationBuilder(assembly));
         }
 
-        private IConfigurationBuilder GetBaseConfigurationBuilder(Assembly assembly)
+        private IConfigurationBuilder CreateBaseConfigurationBuilder(Assembly assembly)
         {
             var basePath = Path.GetDirectoryName(assembly.Location)
                            ?? throw new InvalidOperationException(
@@ -80,10 +79,12 @@
                 .AddEnvironmentJsonFile(basePath, configFile);
         }
 
-        private void AddUserConfigurations(IConfigurationBuilder configurationBuilder)
+        private void AddUserConfigurations(Func<IConfigurationBuilder> builderFactory)
         {
             Services.AddSingleton<IConfiguration>(sp =>
             {
+                var configurationBuilder = builderFactory();
+
                 foreach (var addConfig in sp.GetServices<Action<IServiceProvider, IConfigurationBuilder>>())
                     addConfig(sp, configurationBuilder);
 
