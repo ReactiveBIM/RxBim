@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// The exception of execution external application or command.
+    /// The exception to execution external application or command.
     /// </summary>
     public class MethodCallerException : Exception
     {

@@ -38,6 +38,31 @@
         }
 
         /// <summary>
+        /// Adds a plugin ribbon menu from an action.
+        /// </summary>
+        /// <param name="services">DI container.</param>
+        /// <param name="builder">The ribbon menu builder.</param>
+        /// <param name="assembly">
+        /// Menu definition assembly.
+        /// Used to get the command type from the command type name
+        /// and to define the root directory for relative icon paths.
+        /// </param>
+        public static void AddMenu<TBuilder>(
+            this IServiceCollection services,
+            Action<IServiceProvider, IRibbonBuilder> builder,
+            Assembly assembly)
+            where TBuilder : class, IRibbonMenuBuilder
+        {
+            services.AddBuilder<TBuilder>(assembly);
+            services.AddSingleton(sp =>
+            {
+                var ribbon = new RibbonBuilder();
+                builder(sp, ribbon);
+                return ribbon.Build();
+            });
+        }
+
+        /// <summary>
         /// Adds a plugin ribbon menu from configuration.
         /// </summary>
         /// <param name="services">DI container.</param>

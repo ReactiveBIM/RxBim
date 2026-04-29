@@ -72,4 +72,14 @@ public partial class AppVersion
         new RuntimePackageReference("AutoCAD.NET", "25.0.1"),
         new RuntimePackageReference("Civil3D.NET", "13.7.765"),
         new DefineConstants("ACAD2025;CIVIL2025"));
+
+    public static AppVersion Civil2026 = new(
+        "Autodesk Civil 2026",
+        AppType.Civil,
+        new RuntimeVersion("25.1"),
+        new ApplicationVersion("2026"),
+        new TargetFramework("net8.0-windows"),
+        new RuntimePackageReference("AutoCAD.NET", "25.1.0"),
+        new RuntimePackageReference("Civil3D.NET", "13.8.1516"),
+        new DefineConstants("ACAD2026;CIVIL2026"));
 }

@@ -9,19 +9,19 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_Publish2025 --host GitHubActions
+#         nuke --generate-configuration GitHubActions_CI2026 --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: Publish2025
+name: CI2026
 
 on:
   push:
     branches:
-      - master
-      - 'release/**'
-      - 'hotfix/**'
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
 
 jobs:
   windows-latest:
@@ -38,8 +38,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: SetVersion2025, Test, Publish'
-        run: ./build.cmd SetVersion2025 Test Publish
+      - name: 'Run: SetVersion2026, Test, Publish'
+        run: ./build.cmd SetVersion2026 Test Publish
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           ALL_PACKAGES: ${{ secrets.ALL_PACKAGES }}

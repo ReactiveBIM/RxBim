@@ -1,4 +1,5 @@
-﻿namespace RxBim.Application.Autocad
+﻿#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+namespace RxBim.Application.Autocad
 {
     using System;
     using Autodesk.AutoCAD.ApplicationServices.Core;
@@ -16,9 +17,33 @@
         private ApplicationDiConfigurator? _diConfigurator;
         private IServiceProvider _serviceProvider = null!;
 
+#if ACAD2025
+        /// <summary>
+        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
+        /// via Addin Manager.
+        /// </summary>
+        protected virtual bool RunInSeparatedContext => false;
+#endif
+
         /// <inheritdoc />
         public void Initialize()
         {
+#if ACAD2025
+            if (RunInSeparatedContext)
+            {
+                var type = GetType();
+                if (PluginContext.IsCurrentContextDefault(type))
+                {
+                    var appInstance = PluginContext.CreateInstanceInNewContext(type);
+                    if (appInstance is IExtensionApplication application)
+                    {
+                        application.Initialize();
+                        return;
+                    }
+                }
+            }
+#endif
+
             Application.Idle += ApplicationOnIdle;
             Application.QuitWillStart += ApplicationOnQuitWillStart;
         }
@@ -43,7 +68,11 @@
                 if (_diConfigurator is not null || !CanBeStarted())
                     return;
 
+#if ACAD2025
+                _diConfigurator = new ApplicationDiConfigurator(this, !RunInSeparatedContext);
+#else
                 _diConfigurator = new ApplicationDiConfigurator(this);
+#endif
                 _diConfigurator.Configure(GetType().Assembly);
                 _serviceProvider = _diConfigurator.Build();
 

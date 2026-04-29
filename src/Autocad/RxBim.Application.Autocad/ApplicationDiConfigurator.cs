@@ -12,14 +12,17 @@
     public class ApplicationDiConfigurator : DiConfigurator<IApplicationConfiguration>
     {
         private readonly object _applicationObject;
+        private readonly bool _addResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDiConfigurator"/> class.
         /// </summary>
         /// <param name="applicationObject">application object.</param>
-        public ApplicationDiConfigurator(object applicationObject)
+        /// <param name="addResolver">Allows you to turn off plugin adding assembly resolver in DI.</param>
+        public ApplicationDiConfigurator(object applicationObject, bool addResolver = true)
         {
             _applicationObject = applicationObject;
+            _addResolver = addResolver;
         }
 
         /// <inheritdoc />
@@ -27,9 +30,12 @@
         {
             base.ConfigureAdditionalDependencies(assembly);
 
-            Services
-                .AddTransient(_ => new AssemblyResolver(assembly))
-                .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
+            if (_addResolver)
+            {
+                Services
+                    .AddTransient(_ => new AssemblyResolver(assembly))
+                    .Decorate(typeof(IMethodCaller<>), typeof(AssemblyResolveMethodCaller<>));
+            }
         }
 
         /// <inheritdoc />

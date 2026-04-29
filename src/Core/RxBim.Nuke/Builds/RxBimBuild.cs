@@ -23,7 +23,7 @@
     /// <typeparam name="TBuilder">WIX-builder.</typeparam>
     /// <typeparam name="TPackGen">PackageContents file generator.</typeparam>
     /// <typeparam name="TPropGen">Project properties generator.</typeparam>
-    /// <typeparam name="TOptsBuilder">Builder for <see cref="Options"/>.</typeparam>
+    /// <typeparam name="TOptsBuilder">Builder for <see cref="BuildOptions"/>.</typeparam>
     [PublicAPI]
     public abstract partial class RxBimBuild<TBuilder, TPackGen, TPropGen, TOptsBuilder> : NukeBuild
         where TBuilder : InstallerBuilder<TPackGen>, new()
@@ -166,11 +166,11 @@
             });
 
         /// <summary>
-        /// Returns <see cref="Options"/>.
+        /// Returns <see cref="BuildOptions"/>.
         /// </summary>
         /// <param name="project">Selected project.</param>
         /// <param name="configuration">Configuration.</param>
-        protected virtual Options GetBuildOptions(Project project, string configuration)
+        protected virtual BuildOptions GetBuildOptions(Project project, string configuration)
         {
             var optionsBuilder = new TOptsBuilder();
             optionsBuilder

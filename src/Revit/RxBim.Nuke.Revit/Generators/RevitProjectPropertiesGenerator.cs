@@ -5,8 +5,8 @@
     using System.Xml.Linq;
     using Extensions;
     using global::Nuke.Common.ProjectModel;
-    using RxBim.Nuke.Generators;
-    using RxBim.Nuke.Models;
+    using Nuke.Generators;
+    using Nuke.Models;
 
     /// <inheritdoc />
     public class RevitProjectPropertiesGenerator : ProjectPropertiesGenerator
