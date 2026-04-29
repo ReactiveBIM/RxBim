@@ -3,6 +3,7 @@
         <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1903</WarningsNotAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(MSBuildProjectName.Contains('Sample')) AND '$(ApplicationVersion)' == '2025'">
