@@ -1,0 +1,73 @@
+<Solution>
+  <Folder Name="/samples/">
+    <File Path="Samples/Directory.Build.Props" />
+  </Folder>
+  <Folder Name="/samples/Autocad/">
+    <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Main.Autocad/RxBim.Sample.AdditionalApp.Main.Autocad.csproj" />
+    <Project Path="samples/Autocad/RxBim.Sample.Application.Autocad/RxBim.Sample.Application.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Config.Autocad/RxBim.Sample.Application.Menu.Config.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad.csproj" />
+    <Project Path="samples/Autocad/RxBim.Sample.Command.Autocad/RxBim.Sample.Command.Autocad.csproj" />
+  </Folder>
+  <Folder Name="/samples/Civil/">
+    <Project Path="Samples/Civil/RxBim.Sample.Application.Civil/RxBim.Sample.Application.Civil.csproj" />
+    <Project Path="Samples/Civil/RxBim.Sample.Command.Civil/RxBim.Sample.Command.Civil.csproj" />
+  </Folder>
+  <Folder Name="/samples/Revit/">
+    <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Config.Revit/RxBim.Sample.Application.Menu.Config.Revit.csproj" />
+    <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Fluent.Revit/RxBim.Sample.Application.Menu.Fluent.Revit.csproj" />
+    <Project Path="Samples/Revit/RxBim.Sample.Command.Revit/RxBim.Sample.Command.Revit.csproj" />
+  </Folder>
+  <Folder Name="/SolutionFolder/">
+    <File Path=".gitignore" />
+    <File Path="Common.Build.Props" />
+    <File Path="LICENSE" />
+    <File Path="Readme.md" />
+    <File Path="stylecop.ruleset" />
+    <File Path="stylecopTests.ruleset" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Autocad/">
+    <Project Path="src/Autocad/RxBim.Application.Autocad/RxBim.Application.Autocad.csproj" />
+    <Project Path="src/Autocad/RxBim.Application.Ribbon.Autocad/RxBim.Application.Ribbon.Autocad.csproj" />
+    <Project Path="src/Autocad/RxBim.Command.Autocad/RxBim.Command.Autocad.csproj" />
+    <Project Path="src/Autocad/RxBim.Command.Generators.Autocad/RxBim.Command.Generators.Autocad.csproj" />
+    <Project Path="src/Autocad/RxBim.Logs.Autocad/RxBim.Logs.Autocad.csproj" />
+    <Project Path="src/Autocad/RxBim.Nuke.AutoCAD/RxBim.Nuke.AutoCAD.csproj" />
+  </Folder>
+  <Folder Name="/src/Civil/">
+    <Project Path="src/Civil/RxBim.Application.Civil/RxBim.Application.Civil.csproj" />
+    <Project Path="src/Civil/RxBim.Command.Civil/RxBim.Command.Civil.csproj" />
+  </Folder>
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/RxBim.Analyzers/RxBim.Analyzers.csproj" />
+    <Project Path="src/Core/RxBim.Application.Ribbon/RxBim.Application.Ribbon.csproj" />
+    <Project Path="src/Core/RxBim.Di/RxBim.Di.csproj" />
+    <Project Path="src/Core/RxBim.Logs/RxBim.Logs.csproj" />
+    <Project Path="src/Core/RxBim.Nuke.Generators/RxBim.Nuke.Generators.csproj" />
+    <Project Path="src/Core/RxBim.Nuke.Versions/RxBim.Nuke.Versions.csproj" />
+    <Project Path="src/Core/RxBim.Nuke/RxBim.Nuke.csproj" />
+    <Project Path="src/Core/RxBim.Shared/RxBim.Shared.csproj" />
+  </Folder>
+  <Folder Name="/src/Core/MsiBuilder/">
+    <Project Path="src/Core/RxBim.MsiBuilder.Bin/RxBim.MsiBuilder.Bin.csproj" />
+    <Project Path="src/Core/RxBim.MsiBuilder.GlobalTool/RxBim.MsiBuilder.GlobalTool.csproj" />
+    <Project Path="src/Core/RxBim.MsiBuilder/RxBim.MsiBuilder.csproj" />
+  </Folder>
+  <Folder Name="/src/Revit/">
+    <Project Path="src/Revit/RxBim.Application.Revit/RxBim.Application.Revit.csproj" />
+    <Project Path="src/Revit/RxBim.Application.Ribbon.Revit/RxBim.Application.Ribbon.Revit.csproj" />
+    <Project Path="src/Revit/RxBim.Command.Revit/RxBim.Command.Revit.csproj" />
+    <Project Path="src/Revit/RxBim.Di.Testing.Revit/RxBim.Di.Testing.Revit.csproj" />
+    <Project Path="src/Revit/RxBim.Logs.Revit/RxBim.Logs.Revit.csproj" />
+    <Project Path="src/Revit/RxBim.Nuke.Revit/RxBim.Nuke.Revit.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RxBim.Analyzers.Tests/RxBim.Analyzers.Tests.csproj" />
+    <Project Path="tests/RxBim.Di.Tests/RxBim.Di.Tests.csproj" />
+  </Folder>
+  <Project Path="build/_build.csproj">
+    <Build Project="false" />
+  </Project>
+</Solution>
