@@ -36,14 +36,11 @@
                 .SetTimestampServerDigestAlgorithm(digestAlgorithm)
                 .SetRfc3161TimestampServerUrl(timestampServerUrl);
 
-            if (!settings.HasValidToolPath())
-            {
-                var programFilesPath =
-                    (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-                settings = settings
-                    .SetProcessToolPath(
-                        programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
-            }
+            var programFilesPath =
+                (AbsolutePath)Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            settings = settings
+                .SetProcessToolPath(
+                    programFilesPath / "Microsoft SDKs" / "ClickOnce" / "SignTool" / "signtool.exe");
 
             Log.Information("ToolPath: {Path}", settings.ProcessToolPath);
 

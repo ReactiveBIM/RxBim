@@ -19,7 +19,7 @@ public static class Program
         {
             CheckNetFramework();
 
-            Parser.Default.ParseArguments<Options>(args)
+            Parser.Default.ParseArguments<BuildOptions>(args)
                 .WithParsed(o =>
                 {
                     var wixInstaller = new WixInstaller();

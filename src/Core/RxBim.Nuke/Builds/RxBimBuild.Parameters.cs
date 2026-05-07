@@ -139,7 +139,7 @@ namespace RxBim.Nuke.Builds
         protected virtual Project ProjectForInstallBuild => Solution.AllProjects.First(x => x.Name == Project);
 
         /// <summary>
-        /// Builder for <see cref="Options"/>.
+        /// Builder for <see cref="BuildOptions"/>.
         /// </summary>
         protected TOptsBuilder OptionsBuilder { get; set; }
     }
