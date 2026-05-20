@@ -3,6 +3,7 @@
 using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shared;
 using TestDependencies;
 using TestObjects;
 using Xunit;

@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Logs
 {
     using System;
-    using Di;
     using Enrichers;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
@@ -9,6 +8,7 @@
     using Microsoft.Extensions.DependencyModel;
     using Serilog;
     using Serilog.Events;
+    using Shared;
 
     /// <summary>
     /// A DI container extensions.
