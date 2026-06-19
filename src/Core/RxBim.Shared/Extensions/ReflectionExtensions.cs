@@ -19,7 +19,7 @@
         public static List<object> GetMethodParameters(this MethodBase methodInfo, IServiceProvider services)
         {
             return methodInfo.GetParameters()
-                .Select(parameterInfo => services.GetService(parameterInfo.ParameterType))
+                .Select(parameterInfo => services.GetService(parameterInfo.ParameterType)!)
                 .ToList();
         }
 
@@ -62,7 +62,7 @@
             object sourceObject,
             object[]? parameters = null)
         {
-            return (T)methodInfo.Invoke(sourceObject, parameters);
+            return (T)methodInfo.Invoke(sourceObject, parameters)!;
         }
     }
 }
