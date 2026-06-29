@@ -44,6 +44,7 @@ namespace RxBim.Application.Autocad
             }
 #endif
 
+            BeforeStartAction();
             Application.Idle += ApplicationOnIdle;
             Application.QuitWillStart += ApplicationOnQuitWillStart;
         }
@@ -72,7 +73,6 @@ namespace RxBim.Application.Autocad
 
             try
             {
-                BeforeStartAction();
                 if (_diConfigurator is not null || !CanBeStarted())
                     return;
 
@@ -104,7 +104,6 @@ namespace RxBim.Application.Autocad
 
             try
             {
-                BeforeStartAction();
                 var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }

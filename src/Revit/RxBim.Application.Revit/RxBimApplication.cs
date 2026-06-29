@@ -46,6 +46,7 @@
             }
 #endif
 
+            BeforeStartAction();
             _application = application;
             return ExecuteApplication(application);
         }
@@ -72,8 +73,6 @@
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
-            BeforeStartAction();
-
 #if NETCOREAPP
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy, !RunInSeparatedContext);
 #else
