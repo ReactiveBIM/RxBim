@@ -17,7 +17,7 @@ namespace RxBim.Application.Autocad
         private ApplicationDiConfigurator? _diConfigurator;
         private IServiceProvider _serviceProvider = null!;
 
-#if ACAD2025
+#if NETCOREAPP
         /// <summary>
         /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
         /// via Addin Manager.
@@ -28,9 +28,7 @@ namespace RxBim.Application.Autocad
         /// <inheritdoc />
         public void Initialize()
         {
-            BeforeStartAction();
-
-#if ACAD2025
+#if NETCOREAPP
             if (RunInSeparatedContext)
             {
                 var type = GetType();
@@ -74,10 +72,11 @@ namespace RxBim.Application.Autocad
 
             try
             {
+                BeforeStartAction();
                 if (_diConfigurator is not null || !CanBeStarted())
                     return;
 
-#if ACAD2025
+#if NETCOREAPP
                 _diConfigurator = new ApplicationDiConfigurator(this, !RunInSeparatedContext);
 #else
                 _diConfigurator = new ApplicationDiConfigurator(this);
@@ -105,6 +104,7 @@ namespace RxBim.Application.Autocad
 
             try
             {
+                BeforeStartAction();
                 var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }
