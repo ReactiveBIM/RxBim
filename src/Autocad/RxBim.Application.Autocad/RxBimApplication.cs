@@ -28,6 +28,8 @@ namespace RxBim.Application.Autocad
         /// <inheritdoc />
         public void Initialize()
         {
+            BeforeStartAction();
+
 #if ACAD2025
             if (RunInSeparatedContext)
             {
@@ -46,6 +48,13 @@ namespace RxBim.Application.Autocad
 
             Application.Idle += ApplicationOnIdle;
             Application.QuitWillStart += ApplicationOnQuitWillStart;
+        }
+
+        /// <summary>
+        /// Invokes some logic before application execution.
+        /// </summary>
+        public virtual void BeforeStartAction()
+        {
         }
 
         /// <inheritdoc />

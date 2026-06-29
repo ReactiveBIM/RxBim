@@ -31,6 +31,8 @@
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
+            BeforeStartAction();
+
 #if RVT2025
             if (RunInSeparatedContext)
             {
@@ -48,6 +50,13 @@
 
             _application = application;
             return ExecuteApplication(application);
+        }
+
+        /// <summary>
+        /// Invokes some logic before application execution.
+        /// </summary>
+        public virtual void BeforeStartAction()
+        {
         }
 
         /// <inheritdoc />
