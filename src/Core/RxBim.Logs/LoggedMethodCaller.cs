@@ -1,8 +1,8 @@
 ﻿namespace RxBim.Logs
 {
     using System;
-    using Di;
     using Serilog;
+    using Shared;
 
     /// <inheritdoc />
     public class LoggedMethodCaller<T> : MethodCallerDecorator<T>

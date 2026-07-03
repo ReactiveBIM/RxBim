@@ -1,9 +1,8 @@
-﻿namespace RxBim.Di
+﻿namespace RxBim.Shared
 {
     using System;
     using System.Linq;
     using Extensions;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class MethodCaller<T> : IMethodCaller<T>

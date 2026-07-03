@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Shared
 {
     using System;
-    using Di;
 
     /// <inheritdoc />
     public class AssemblyResolveMethodCaller<T> : MethodCallerDecorator<T>
