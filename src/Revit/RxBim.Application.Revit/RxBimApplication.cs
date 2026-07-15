@@ -18,7 +18,7 @@
         private UIControlledApplication _application = null!;
         private IServiceProvider _serviceProvider = null!;
 
-#if RVT2025
+#if NETCOREAPP
         private object? _isolatedApplicationInstance;
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
-#if RVT2025
+#if NETCOREAPP
             if (RunInSeparatedContext)
             {
                 var type = GetType();
@@ -46,14 +46,22 @@
             }
 #endif
 
+            BeforeStartAction();
             _application = application;
             return ExecuteApplication(application);
+        }
+
+        /// <summary>
+        /// Invokes some logic before application execution.
+        /// </summary>
+        public virtual void BeforeStartAction()
+        {
         }
 
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-            #if RVT2025
+            #if NETCOREAPP
             if (PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
             {
                 return app.OnShutdown(application);
@@ -65,7 +73,7 @@
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
-#if RVT2025
+#if NETCOREAPP
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy, !RunInSeparatedContext);
 #else
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);

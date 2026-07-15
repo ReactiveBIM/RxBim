@@ -3,7 +3,7 @@
         <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
-        <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1903</WarningsNotAsErrors>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1903;NU1902</WarningsNotAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(MSBuildProjectName.Contains('Sample')) AND '$(ApplicationVersion)' == '2025'">
@@ -89,7 +89,7 @@
     </Choose>
 
     <PropertyGroup>
-        <Version>3.0.5</Version>
+        <Version>3.0.6</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>

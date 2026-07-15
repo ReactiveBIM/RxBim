@@ -3,6 +3,7 @@ namespace RxBim.Shared;
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -76,7 +77,17 @@ public class PluginContext : AssemblyLoadContext
     protected override Assembly? Load(AssemblyName assemblyName)
     {
         var assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
-        return assemblyPath is not null ? LoadFromAssemblyPath(assemblyPath) : null;
+        if (assemblyPath is null)
+            return null;
+
+        if (AssemblyMetadataReader.HasAttribute(assemblyPath, nameof(SharedLibraryAttribute)))
+        {
+            var alreadyInDefault = Default.Assemblies
+                .Any(a => a.GetName().FullName == assemblyName.FullName);
+            return alreadyInDefault ? null : Default.LoadFromAssemblyPath(assemblyPath);
+        }
+
+        return LoadFromAssemblyPath(assemblyPath);
     }
 }
 #endif
