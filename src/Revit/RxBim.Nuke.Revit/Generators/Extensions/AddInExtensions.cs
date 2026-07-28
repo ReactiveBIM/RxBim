@@ -30,6 +30,31 @@
         }
 
         /// <summary>
+        /// Maps <see cref="ManifestSettings"/> to an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="settings">Manifest settings.</param>
+        /// <returns>The mapped element, or <see langword="null"/> when no settings are specified.</returns>
+        public static XElement? ToXElement(this ManifestSettings settings)
+        {
+            if (settings.UseRevitContext == null
+                && string.IsNullOrWhiteSpace(settings.ContextName))
+            {
+                return null;
+            }
+
+            var useRevitContext = settings.UseRevitContext == null
+                ? null
+                : new XElement(
+                    nameof(ManifestSettings.UseRevitContext),
+                    settings.UseRevitContext.Value.ToString());
+            var contextName = string.IsNullOrWhiteSpace(settings.ContextName)
+                ? null
+                : new XElement(nameof(ManifestSettings.ContextName), settings.ContextName);
+
+            return new XElement(nameof(ManifestSettings), useRevitContext, contextName);
+        }
+
+        /// <summary>
         /// Maps a <see cref="RevitAddIns"/> to the <see cref="XDocument"/>.
         /// </summary>
         /// <param name="revitAddIns">RevitAddIns.</param>
@@ -37,7 +62,8 @@
         public static XDocument ToXDocument(this RevitAddIns revitAddIns)
         {
             return new XDocument(new XElement(nameof(RevitAddIns),
-                revitAddIns.AddIn.Ensure().Select(x => x.ToXElement())));
+                revitAddIns.AddIn.Ensure().Select(x => x.ToXElement()),
+                revitAddIns.ManifestSettings?.ToXElement()));
         }
     }
 }

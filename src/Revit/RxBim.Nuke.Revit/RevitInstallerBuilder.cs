@@ -5,12 +5,18 @@
     using Builders;
     using Builds;
     using Generators;
+    using Generators.Models;
     using global::Nuke.Common.ProjectModel;
     using Models;
 
     /// <inheritdoc />
     public class RevitInstallerBuilder : InstallerBuilder<RevitPackageContentsGenerator>
     {
+        /// <summary>
+        /// Revit addin manifest settings.
+        /// </summary>
+        public ManifestSettings? ManifestSettings { get; set; }
+
         /// <inheritdoc />
         public override void GenerateAdditionalFiles(
             string? rootProjectName,
@@ -18,7 +24,7 @@
             IEnumerable<AssemblyType> allAssembliesTypes,
             string outputDir)
         {
-            var addInGenerator = new AddInGenerator();
+            var addInGenerator = new AddInGenerator(ManifestSettings);
             var addInTypesPerProjects = allAssembliesTypes
                 .Select(x => new ProjectWithAssemblyType(
                     allProject.First(proj => proj.Name == x.AssemblyName), x))

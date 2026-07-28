@@ -7,6 +7,7 @@
     using Builds;
     using Extensions;
     using Generators;
+    using Generators.Models;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using JetBrains.Annotations;
@@ -23,6 +24,20 @@
         /// </summary>
         [Parameter]
         public string RevitVersion { get; set; } = "2019";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Revit's assembly load context should be used.
+        /// Supported by Revit 2026 and newer.
+        /// </summary>
+        [Parameter("Use Revit's assembly load context (Revit 2026+)")]
+        public bool? UseRevitContext { get; set; }
+
+        /// <summary>
+        /// Gets or sets the custom assembly load context name.
+        /// Supported by Revit 2026 and newer.
+        /// </summary>
+        [Parameter("Custom addin assembly load context name (Revit 2026+)")]
+        public string? ContextName { get; set; }
 
         /// <summary>
         /// Copies an addin file to the manifests directory.
@@ -52,7 +67,7 @@
                 {
                     var dllPath = project.GetTargetPath();
 
-                    new AddInGenerator().GenerateAddInFile(Project,
+                    new AddInGenerator(GetManifestSettings()).GenerateAddInFile(Project,
                         Scan(dllPath)
                             .Where(x => x.IsPluginType())
                             .Select(x => new ProjectWithAssemblyType(project, x))
@@ -100,6 +115,12 @@
                 outputPath.Copy(revitPath, ExistsPolicy.FileOverwrite | ExistsPolicy.DirectoryMerge);
             });
 
+        /// <inheritdoc />
+        protected override void ConfigureInstallerBuilder(RevitInstallerBuilder builder)
+        {
+            builder.ManifestSettings = GetManifestSettings();
+        }
+
         private AbsolutePath GetRevitAddinsPath()
         {
             var revitPath = Path.Combine(
@@ -109,6 +130,18 @@
                 "Addins",
                 RevitVersion);
             return (AbsolutePath)revitPath;
+        }
+
+        private ManifestSettings? GetManifestSettings()
+        {
+            if (UseRevitContext == null && string.IsNullOrWhiteSpace(ContextName))
+                return null;
+
+            return new ManifestSettings
+            {
+                UseRevitContext = UseRevitContext,
+                ContextName = ContextName
+            };
         }
     }
 }

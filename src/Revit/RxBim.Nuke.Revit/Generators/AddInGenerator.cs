@@ -19,6 +19,28 @@
     public class AddInGenerator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AddInGenerator"/> class.
+        /// </summary>
+        public AddInGenerator()
+            : this(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddInGenerator"/> class.
+        /// </summary>
+        /// <param name="manifestSettings">Revit addin manifest settings.</param>
+        public AddInGenerator(ManifestSettings? manifestSettings)
+        {
+            ManifestSettings = manifestSettings;
+        }
+
+        /// <summary>
+        /// Revit addin manifest settings.
+        /// </summary>
+        protected ManifestSettings? ManifestSettings { get; }
+
+        /// <summary>
         /// Generate a new addin file.
         /// </summary>
         /// <param name="rootProjectName">The root project name.</param>
@@ -71,7 +93,8 @@
 
             var revitAddIns = new RevitAddIns
             {
-                AddIn = addIns
+                AddIn = addIns,
+                ManifestSettings = ManifestSettings
             };
 
             var addInFile = Path.Combine(output, $"{rootProjectName}.addin");

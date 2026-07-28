@@ -140,6 +140,7 @@
             .Executes(() =>
             {
                 var types = GetAssemblyTypes();
+                ConfigureInstallerBuilder(_builder);
                 _builder.GenerateAdditionalFiles(
                     ProjectForInstallBuild.Name,
                     Solution.AllProjects,
@@ -164,6 +165,14 @@
                     OutputTmpDir,
                     SeriesMaxAny);
             });
+
+        /// <summary>
+        /// Configures the installer builder before generating additional files.
+        /// </summary>
+        /// <param name="builder">Installer builder.</param>
+        protected virtual void ConfigureInstallerBuilder(TBuilder builder)
+        {
+        }
 
         /// <summary>
         /// Returns <see cref="BuildOptions"/>.
