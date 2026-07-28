@@ -26,10 +26,12 @@
         public string RevitVersion { get; set; } = "2019";
 
         /// <summary>
-        /// Gets or sets a value indicating whether Revit's assembly load context should be used.
-        /// Supported by Revit 2026 and newer.
+        /// Gets or sets whether the add-in should use Revit's shared assembly load context.
+        /// <see langword="false"/> enables a separate isolated add-in context;
+        /// <see langword="true"/> disables isolation and uses Revit's context.
+        /// When omitted, Revit 2026 and newer default to <see langword="true"/>.
         /// </summary>
-        [Parameter("Use Revit's assembly load context (Revit 2026+)")]
+        [Parameter("Use Revit's shared assembly load context: false enables isolation; true uses Revit context (Revit 2026+)")]
         public bool? UseRevitContext { get; set; }
 
         /// <summary>

@@ -41,7 +41,8 @@
         /// <inheritdoc />
         protected override string GetDebugInstallDir(Project project)
         {
-            return "%AppDataFolder%/Autodesk/Revit/Addins/2019";
+            var applicationVersion = project.GetProperty("ApplicationVersion") ?? "2019";
+            return $"%AppDataFolder%/Autodesk/Revit/Addins/{applicationVersion}";
         }
     }
 }
