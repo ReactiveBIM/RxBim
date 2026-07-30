@@ -18,12 +18,14 @@
         private UIControlledApplication _application = null!;
         private IServiceProvider _serviceProvider = null!;
 
-#if RVT2025
+#if NETCOREAPP
         private object? _isolatedApplicationInstance;
 
         /// <summary>
-        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
-        /// via Addin Manager.
+        /// Enables plugin execution in an isolated context managed by RxBim.
+        /// In Revit 2026 and newer, set it to <see langword="false"/> to let the manifest select
+        /// Revit's context. For the RxBim context, <c>UseRevitContext=true</c> or an omitted setting
+        /// is preferred to avoid nesting it inside Revit's isolated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
 #endif
@@ -31,11 +33,11 @@
         /// <inheritdoc />
         public Result OnStartup(UIControlledApplication application)
         {
-#if RVT2025
+#if NETCOREAPP
             if (RunInSeparatedContext)
             {
                 var type = GetType();
-                if (PluginContext.IsCurrentContextDefault(type))
+                if (!PluginContext.IsCurrentContextRxBim(type))
                 {
                     _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (_isolatedApplicationInstance is IExternalApplication app)
@@ -61,8 +63,8 @@
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-#if RVT2025
-            if (PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
+#if NETCOREAPP
+            if (_isolatedApplicationInstance is IExternalApplication app)
             {
                 return app.OnShutdown(application);
             }
@@ -73,7 +75,7 @@
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
-#if RVT2025
+#if NETCOREAPP
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy, !RunInSeparatedContext);
 #else
             var diConfigurator = new ApplicationDiConfigurator(this, application, _uiApplicationProxy);

@@ -10,6 +10,7 @@ using System.Runtime.Loader;
 /// <inheritdoc />
 public class PluginContext : AssemblyLoadContext
 {
+    private const string ContextNamePrefix = "RxBim:";
     private readonly AssemblyDependencyResolver _resolver;
 
     /// <summary>
@@ -18,7 +19,7 @@ public class PluginContext : AssemblyLoadContext
     /// <param name="assemblyPath">Assembly path.</param>
     /// <param name="pluginName">Plugin name</param>
     public PluginContext(string assemblyPath, string pluginName)
-     : base(pluginName)
+     : base($"{ContextNamePrefix}{pluginName}")
     {
         _resolver = new AssemblyDependencyResolver(assemblyPath);
     }
@@ -31,6 +32,16 @@ public class PluginContext : AssemblyLoadContext
     {
         var currentContext = GetLoadContext(type.Assembly);
         return currentContext == Default;
+    }
+
+    /// <summary>
+    /// Determines whether the type is loaded into a context managed by RxBim.
+    /// </summary>
+    /// <param name="type">Type.</param>
+    public static bool IsCurrentContextRxBim(Type type)
+    {
+        var currentContext = GetLoadContext(type.Assembly);
+        return currentContext?.Name?.StartsWith(ContextNamePrefix, StringComparison.Ordinal) == true;
     }
 
     /// <summary>

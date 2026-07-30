@@ -32,7 +32,7 @@ namespace RxBim.Application.Autocad
             if (RunInSeparatedContext)
             {
                 var type = GetType();
-                if (PluginContext.IsCurrentContextDefault(type))
+                if (!PluginContext.IsCurrentContextRxBim(type))
                 {
                     var appInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (appInstance is IExtensionApplication application)

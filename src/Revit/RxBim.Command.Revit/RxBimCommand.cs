@@ -18,10 +18,12 @@
     [Regeneration(RegenerationOption.Manual)]
     public abstract class RxBimCommand : IExternalCommand, IExternalCommandAvailability
     {
-#if RVT2025
+#if NETCOREAPP
         /// <summary>
-        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
-        /// via Addin Manager.
+        /// Enables command execution in an isolated context managed by RxBim.
+        /// In Revit 2026 and newer, set it to <see langword="false"/> to let the manifest select
+        /// Revit's context. For the RxBim context, <c>UseRevitContext=true</c> or an omitted setting
+        /// is preferred to avoid nesting it inside Revit's isolated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
 #endif
@@ -35,8 +37,8 @@
             var type = GetType();
             var assembly = type.Assembly;
 
-#if RVT2025
-            if (!PluginContext.IsCurrentContextDefault(type) || !RunInSeparatedContext)
+#if NETCOREAPP
+            if (PluginContext.IsCurrentContextRxBim(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
 
             var commandInstance = PluginContext.CreateInstanceInNewContext(type);
