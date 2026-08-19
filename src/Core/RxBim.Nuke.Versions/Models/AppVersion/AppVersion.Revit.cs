@@ -60,7 +60,7 @@ namespace RxBim.Nuke.Versions
             new RuntimePackageReference("Revit_All_Main_Versions_API_x64", "2025.0.0"),
             new DefineConstants("RVT2025"));
 
-        public static AppVersion Revit206 = new(
+        public static AppVersion Revit2026 = new(
             "Autodesk Revit 2026",
             AppType.Revit,
             new ApplicationVersion("2026"),

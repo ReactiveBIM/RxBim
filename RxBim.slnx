@@ -66,6 +66,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/RxBim.Analyzers.Tests/RxBim.Analyzers.Tests.csproj" />
     <Project Path="tests/RxBim.Di.Tests/RxBim.Di.Tests.csproj" />
+    <Project Path="tests/RxBim.Nuke.Tests/RxBim.Nuke.Tests.csproj" />
   </Folder>
   <Project Path="build/_build.csproj">
     <Build Project="false" />
