@@ -80,10 +80,10 @@
             .DependsOn(Restore)
             .Executes(() =>
             {
-                DotNetBuild(settings => settings
+                DotNetBuild(settings => ConfigureBuildSettings(settings
                     .SetProjectFile(GetProjectPath(Project))
                     .SetOutputDirectory(OutputTmpDirBin)
-                    .SetConfiguration(Configuration));
+                    .SetConfiguration(Configuration)));
             });
 
         /// <summary>
@@ -165,6 +165,16 @@
                     OutputTmpDir,
                     SeriesMaxAny);
             });
+
+        /// <summary>
+        /// Configures additional project build settings.
+        /// </summary>
+        /// <param name="settings">The dotnet build settings.</param>
+        /// <returns>The configured dotnet build settings.</returns>
+        protected virtual DotNetBuildSettings ConfigureBuildSettings(DotNetBuildSettings settings)
+        {
+            return settings;
+        }
 
         /// <summary>
         /// Configures the installer builder before generating additional files.

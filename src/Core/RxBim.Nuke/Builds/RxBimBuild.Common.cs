@@ -50,9 +50,9 @@
         /// <inheritdoc cref="Compile"/>
         protected virtual void CompileInternal()
         {
-            DotNetBuild(settings => settings
+            DotNetBuild(settings => ConfigureBuildSettings(settings
                 .SetProjectFile(Solution.Path)
-                .SetConfiguration(Configuration));
+                .SetConfiguration(Configuration)));
         }
 
         /// <inheritdoc cref="Restore"/>
