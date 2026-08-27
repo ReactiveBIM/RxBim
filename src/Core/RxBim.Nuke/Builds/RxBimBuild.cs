@@ -10,7 +10,9 @@
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Utilities;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
@@ -80,10 +82,11 @@
             .DependsOn(Restore)
             .Executes(() =>
             {
-                DotNetBuild(settings => ConfigureBuildSettings(settings
+                DotNetBuild(settings => settings
                     .SetProjectFile(GetProjectPath(Project))
                     .SetOutputDirectory(OutputTmpDirBin)
-                    .SetConfiguration(Configuration)));
+                    .SetConfiguration(Configuration)
+                    .Apply(CompileSettings));
             });
 
         /// <summary>
@@ -167,14 +170,9 @@
             });
 
         /// <summary>
-        /// Configures additional project build settings.
+        /// Gets additional project build settings.
         /// </summary>
-        /// <param name="settings">The dotnet build settings.</param>
-        /// <returns>The configured dotnet build settings.</returns>
-        protected virtual DotNetBuildSettings ConfigureBuildSettings(DotNetBuildSettings settings)
-        {
-            return settings;
-        }
+        protected virtual Configure<DotNetBuildSettings> CompileSettings => _ => _;
 
         /// <summary>
         /// Configures the installer builder before generating additional files.
