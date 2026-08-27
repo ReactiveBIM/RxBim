@@ -10,7 +10,9 @@
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
     using global::Nuke.Common.ProjectModel;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Utilities;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
@@ -83,7 +85,8 @@
                 DotNetBuild(settings => settings
                     .SetProjectFile(GetProjectPath(Project))
                     .SetOutputDirectory(OutputTmpDirBin)
-                    .SetConfiguration(Configuration));
+                    .SetConfiguration(Configuration)
+                    .Apply(CompileSettings));
             });
 
         /// <summary>
@@ -165,6 +168,11 @@
                     OutputTmpDir,
                     SeriesMaxAny);
             });
+
+        /// <summary>
+        /// Gets additional project build settings.
+        /// </summary>
+        protected virtual Configure<DotNetBuildSettings> CompileSettings => _ => _;
 
         /// <summary>
         /// Configures the installer builder before generating additional files.

@@ -20,6 +20,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="NuGet.Frameworks" Version="7.9.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,7 +30,7 @@
         <!-- Common build related files -->
 
         <None Include="..\.nuke" LinkBase="config" />
-        
+
         <None Include="..\build.sh" LinkBase="scripts" />
         <None Include="..\build.ps1" LinkBase="scripts" />
 
