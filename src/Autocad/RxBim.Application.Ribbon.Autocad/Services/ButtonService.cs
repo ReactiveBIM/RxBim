@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Controls;
     using Autodesk.AutoCAD.ApplicationServices.Core;
@@ -14,23 +13,22 @@
     {
         private readonly MenuData _menuData;
         private readonly IOnlineHelpService _onlineHelpService;
-        private readonly IColorThemeService _colorThemeService;
-        private readonly List<(RibbonButton Button, Button Config)> _createdButtons = new();
+        private readonly IThemedRibbonButtonService<RibbonButton> _themedButtonService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonService"/> class.
         /// </summary>
         /// <param name="menuData"><see cref="MenuData"/>.</param>
         /// <param name="onlineHelpService"><see cref="IOnlineHelpService"/>.</param>
-        /// <param name="colorThemeService"><see cref="IColorThemeService"/>.</param>
+        /// <param name="themedButtonService"><see cref="IThemedRibbonButtonService{TButton}"/>.</param>
         public ButtonService(
             MenuData menuData,
             IOnlineHelpService onlineHelpService,
-            IColorThemeService colorThemeService)
+            IThemedRibbonButtonService<RibbonButton> themedButtonService)
         {
             _menuData = menuData;
             _onlineHelpService = onlineHelpService;
-            _colorThemeService = colorThemeService;
+            _themedButtonService = themedButtonService;
         }
 
         /// <inheritdoc/>
@@ -44,8 +42,7 @@
         {
             var ribbonButton = new T();
             ribbonButton.SetProperties(config, size, orientation, forceTextSettings);
-            SetRibbonItemImages(ribbonButton, config);
-            _createdButtons.Add((ribbonButton, config));
+            _themedButtonService.Register(ribbonButton, config);
             if (addToolTip)
                 SetTooltip(ribbonButton, config.ToolTip, config.HelpUrl, config.Description);
             return ribbonButton;
@@ -110,13 +107,13 @@
         /// <inheritdoc />
         public void ClearButtonCache()
         {
-            _createdButtons.Clear();
+            _themedButtonService.Clear();
         }
 
         /// <inheritdoc />
         public void ApplyCurrentTheme()
         {
-            _createdButtons.ForEach(x => SetRibbonItemImages(x.Button, x.Config));
+            _themedButtonService.ApplyCurrentTheme();
         }
 
         private void SetTooltip(RibbonItem button, string? tooltipText, string? helpUrl, string? description)
@@ -149,28 +146,6 @@
             _onlineHelpService.AddToolTip(toolTip);
 
             button.ToolTip = toolTip;
-        }
-
-        private void SetRibbonItemImages(RibbonItem button, Button buttonConfig)
-        {
-            var assembly = buttonConfig is CommandButton commandButton
-                ? _menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
-                : null;
-
-            var themeType = _colorThemeService.GetCurrentTheme();
-
-            if (themeType is ThemeType.Light)
-            {
-                button.Image =
-                    _menuData.GetIconImage(buttonConfig.ImageLight ?? buttonConfig.Image, assembly);
-                button.LargeImage =
-                    _menuData.GetIconImage(buttonConfig.LargeImageLight ?? buttonConfig.LargeImage, assembly);
-            }
-            else
-            {
-                button.Image = _menuData.GetIconImage(buttonConfig.Image, assembly);
-                button.LargeImage = _menuData.GetIconImage(buttonConfig.LargeImage, assembly);
-            }
         }
 
         private void RunCommand(string commandName)
