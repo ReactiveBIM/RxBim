@@ -105,14 +105,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))"
             Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
 
-    <PropertyGroup Condition="$(MSBuildProjectName.Contains('Revit')) AND '$(ApplicationVersion)' != '' AND '$(ApplicationVersion)' >= '2024'">
-        <DefineConstants>$(DefineConstants);RVT_HAS_UI_THEME</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="$(MSBuildProjectName.Contains('Revit')) AND '$(ApplicationVersion)' != '' AND '$(ApplicationVersion)' >= '2025'">
-        <DefineConstants>$(DefineConstants);RVT_HAS_THEME_CHANGED_TYPE</DefineConstants>
-    </PropertyGroup>
-
     <PropertyGroup Condition="$(IsPackable) != false">
         <PackageId Condition="$(NotRefenceApi) == true">$(MSBuildProjectName)</PackageId>
         <PackageId Condition="$(NotRefenceApi) != true">$(MSBuildProjectName).$(ApplicationVersion)</PackageId>

@@ -2,12 +2,12 @@
 {
     using System;
     using Autodesk.Revit.UI;
-    using ColorThemeType = RxBim.Application.Ribbon.ThemeType;
-#if RVT_HAS_UI_THEME
+    using ColorThemeType = ThemeType;
+#if !(RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023)
     using Autodesk.Revit.UI.Events;
 #endif
 
-    /// <inheritdoc />
+    /// <inheritdoc cref="IColorThemeService" />
     internal sealed class RevitColorThemeService(UIControlledApplication application)
         : IColorThemeService, IDisposable
     {
@@ -22,10 +22,10 @@
             if (_isRunning)
                 return;
 
-#if RVT_HAS_UI_THEME
-            application.ThemeChanged += OnThemeChanged;
-#else
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
             _ = application;
+#else
+            application.ThemeChanged += OnThemeChanged;
 #endif
             _isRunning = true;
         }
@@ -33,10 +33,10 @@
         /// <inheritdoc />
         public ColorThemeType GetCurrentTheme()
         {
-#if RVT_HAS_UI_THEME
-            return UIThemeManager.CurrentTheme is UITheme.Light ? ColorThemeType.Light : ColorThemeType.Dark;
-#else
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
             return ColorThemeType.Light;
+#else
+            return UIThemeManager.CurrentTheme is UITheme.Light ? ColorThemeType.Light : ColorThemeType.Dark;
 #endif
         }
 
@@ -46,17 +46,17 @@
             if (!_isRunning)
                 return;
 
-#if RVT_HAS_UI_THEME
+#if !(RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023)
             application.ThemeChanged -= OnThemeChanged;
 #endif
             _isRunning = false;
         }
 
-#if RVT_HAS_UI_THEME
+#if !(RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023)
         private void OnThemeChanged(object? sender, ThemeChangedEventArgs e)
         {
-#if RVT_HAS_THEME_CHANGED_TYPE
-            if (e.ThemeChangedType is not Autodesk.Revit.UI.ThemeType.UITheme)
+#if !(RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023 || RVT2024)
+            if (e.ThemeChangedType is not ThemeType.UITheme)
                 return;
 #endif
             ThemeChanged?.Invoke(this, EventArgs.Empty);
