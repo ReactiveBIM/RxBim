@@ -110,12 +110,6 @@
             _themedButtonService.Clear();
         }
 
-        /// <inheritdoc />
-        public void ApplyCurrentTheme()
-        {
-            _themedButtonService.ApplyCurrentTheme();
-        }
-
         private void SetTooltip(RibbonItem button, string? tooltipText, string? helpUrl, string? description)
         {
             var hasToolTip = !string.IsNullOrWhiteSpace(tooltipText);
