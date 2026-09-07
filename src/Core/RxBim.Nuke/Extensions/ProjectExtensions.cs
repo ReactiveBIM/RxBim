@@ -200,6 +200,7 @@
                 versionNumber = applicationVersion!;
                 return true;
             }
+
             var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
 
@@ -231,7 +232,7 @@
             versionNumber = string.Empty;
             return false;
         }
-        
+
         /// <summary>
         /// Commits changes to GIT.
         /// </summary>

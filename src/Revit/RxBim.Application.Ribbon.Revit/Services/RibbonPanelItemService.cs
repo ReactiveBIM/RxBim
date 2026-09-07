@@ -131,6 +131,7 @@
             // Restrict the lookup to the owning panel or pull-down to avoid name collisions.
             var button = EnumerateRibbonItems(items).First(x =>
                 x.Id != null && x.Id.EndsWith("%" + config.Name, StringComparison.Ordinal));
+
             if (config.ShowText.HasValue)
                 button.ShowText = config.ShowText.Value;
 
