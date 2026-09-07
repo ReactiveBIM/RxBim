@@ -58,6 +58,9 @@
                     _ribbonPanelItemService.CreateButtonsForPullDown(buttonConfig, addedButton);
                 }
 
+                if (stackedItems.Items[i] is Button button)
+                    _ribbonPanelItemService.SetButtonTextVisibility(button, tab, ribbonPanel.Title);
+
                 if (stackedItems.Items[i] is ComboBox comboBoxConfig &&
                     addedItems[i] is Autodesk.Revit.UI.ComboBox addedComboBox)
                 {

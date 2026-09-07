@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
@@ -111,6 +112,46 @@
             }
 
             existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+        }
+
+        /// <inheritdoc />
+        public void SetButtonTextVisibility(Button config, RibbonTab tab, string panelName)
+        {
+            if (!config.ShowText.HasValue &&
+                !(config is PullDownButton pullDown && pullDown.CommandButtonsList.Any(x => x.ShowText.HasValue)))
+                return;
+
+            var panel = tab.Panels.First(x => x.Source.AutomationName == panelName);
+            ApplyButtonTextVisibility(config, panel.Source.Items);
+        }
+
+        private static void ApplyButtonTextVisibility(Button config, IEnumerable<RibbonItem> items)
+        {
+            // Revit's public RibbonItem API does not expose text visibility.
+            // Restrict the lookup to the owning panel or pull-down to avoid name collisions.
+            var button = EnumerateRibbonItems(items).First(x =>
+                x.Id != null && x.Id.EndsWith("%" + config.Name, StringComparison.Ordinal));
+            if (config.ShowText.HasValue)
+                button.ShowText = config.ShowText.Value;
+
+            if (config is PullDownButton pullDown && button is RibbonListButton listButton)
+            {
+                foreach (var command in pullDown.CommandButtonsList.Where(x => x.ShowText.HasValue))
+                    ApplyButtonTextVisibility(command, listButton.Items);
+            }
+        }
+
+        private static IEnumerable<RibbonItem> EnumerateRibbonItems(IEnumerable<RibbonItem> items)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+                if (item is RibbonRowPanel row)
+                {
+                    foreach (var child in EnumerateRibbonItems(row.Items))
+                        yield return child;
+                }
+            }
         }
 
         private void ComboBoxOnCurrentChanged(object? sender, RibbonPropertyChangedEventArgs e)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using Bimlab.Nuke.Components;
 using JetBrains.Annotations;
@@ -56,7 +56,13 @@ partial class Build : RevitRxBimBuild, IVersions
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().Compile);
+    public static int Main()
+    {
+        var project = EnvironmentInfo.GetNamedArgument<string>("project");
+        return project?.EndsWith(".Autocad", StringComparison.OrdinalIgnoreCase) == true
+            ? Execute<AutocadBuild>(x => x.Compile)
+            : Execute<Build>(x => x.From<IPublish>().Compile);
+    }
 
     public Target Test => _ => _
         .Before<IClean>()

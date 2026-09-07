@@ -8,6 +8,11 @@
         private string? _helpUrl;
 
         /// <summary>
+        /// Controls button text visibility. Null preserves automatic visibility.
+        /// </summary>
+        public bool? ShowText { get; set; }
+
+        /// <summary>
         /// The URI string for default large button image.
         /// </summary>
         public string? LargeImage { get; set; }

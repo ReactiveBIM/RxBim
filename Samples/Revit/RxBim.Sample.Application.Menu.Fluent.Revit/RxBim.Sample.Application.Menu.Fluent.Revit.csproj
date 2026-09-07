@@ -45,9 +45,9 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackageGuid>dd8e4558-cde8-431f-a621-4cb25304bfce</PackageGuid>
     <UpgradeCode>09f0658d-e4c2-4725-a50a-98b6dbd15fa9</UpgradeCode>
-    <Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>11b955dc-4115-44ea-a688-383a0803b56c</Application__RxBim_Application_Menu_Fluent_Revit_Sample_App>
-    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd1>1e28cd58-c7a6-4a5d-9d1b-27841fc0af02</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd1>
-    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd2>769795d6-2c36-4177-8781-8a420a73818f</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd2>
-    <Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd3>556ab0a6-cf42-405f-9036-7a42d4f9f4af</Command__RxBim_Application_Menu_Fluent_Revit_Sample_Cmd3>
+    <Application__RxBim_Sample_Application_Menu_Fluent_Revit_App>11b955dc-4115-44ea-a688-383a0803b56c</Application__RxBim_Sample_Application_Menu_Fluent_Revit_App>
+    <Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd1>1e28cd58-c7a6-4a5d-9d1b-27841fc0af02</Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd1>
+    <Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd2>769795d6-2c36-4177-8781-8a420a73818f</Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd2>
+    <Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd3>556ab0a6-cf42-405f-9036-7a42d4f9f4af</Command__RxBim_Sample_Application_Menu_Fluent_Revit_Cmd3>
   </PropertyGroup>
 </Project>

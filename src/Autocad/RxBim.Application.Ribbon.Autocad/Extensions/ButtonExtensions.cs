@@ -36,7 +36,9 @@
             if (hasText)
                 ribbonButton.Text = buttonConfig.Text;
 
-            if (hasText || forceTextSettings)
+            if (buttonConfig.ShowText.HasValue)
+                ribbonButton.ShowText = buttonConfig.ShowText.Value;
+            else if (hasText || forceTextSettings)
                 ribbonButton.ShowText = true;
 
             if (!string.IsNullOrWhiteSpace(buttonConfig.Description))

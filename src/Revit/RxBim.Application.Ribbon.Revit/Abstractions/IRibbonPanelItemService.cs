@@ -42,6 +42,14 @@
         void SetButtonProperties(ButtonData buttonData, Button buttonConfig);
 
         /// <summary>
+        /// Applies text visibility to a created button and its pull-down commands.
+        /// </summary>
+        /// <param name="config">Button configuration.</param>
+        /// <param name="tab">Ribbon tab containing the button.</param>
+        /// <param name="panelName">Panel name.</param>
+        void SetButtonTextVisibility(Button config, RibbonTab tab, string panelName);
+
+        /// <summary>
         /// Creates buttons for Pull-Down button.
         /// </summary>
         /// <param name="config">Pull-Down button config.</param>

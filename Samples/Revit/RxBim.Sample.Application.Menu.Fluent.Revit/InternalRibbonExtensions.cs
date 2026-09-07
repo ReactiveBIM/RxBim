@@ -8,15 +8,14 @@
     internal static class InternalRibbonExtensions
     {
         /// <summary>
-        /// Builds a new Tab using attributes.
+        /// Adds panels using command attributes.
         /// </summary>
-        /// <param name="ribbon">A ribbon.</param>
-        public static IRibbonBuilder TabFromAttributes(this IRibbonBuilder ribbon)
+        /// <param name="tab">A tab.</param>
+        public static ITabBuilder PanelsFromAttributes(this ITabBuilder tab)
         {
-            return ribbon
-                .Tab("RxBim_Tab_FromAttr", tab => tab
+            return tab
                     .Panel(
-                        title: "RxBim_Panel_1",
+                        title: "Attributes 1",
                         panel => panel
                             .CommandButton<Cmd1>("Command1_Large_WithText")
                             .CommandButton<Cmd2>("Command2_Large_WithText")
@@ -35,7 +34,7 @@
                             .CommandButton<Cmd2>("Command2_SlideOut")
                             .CommandButton<Cmd3>("Command3_SlideOut"))
                     .Panel(
-                        "RxBim_Panel_2",
+                        "Attributes 2",
                         panel => panel
                             .StackedItems(items => items
                                 .CommandButton<Cmd1>("Command1_Stacked1")
@@ -52,19 +51,18 @@
                                         .CommandButton<Cmd2>("Command2_Pulldown2")
                                         .CommandButton<Cmd3>("Command3_Pulldown2"))
                                 .CommandButton<Cmd1>("Command1_Stacked2")
-                                .CommandButton<Cmd2>("Command2_Stacked2"))));
+                                .CommandButton<Cmd2>("Command2_Stacked2")));
         }
 
         /// <summary>
-        /// Builds a ribbon tab using fluent builder.
+        /// Adds panels using the fluent builder.
         /// </summary>
-        /// <param name="ribbon">A ribbon.</param>
-        public static IRibbonBuilder TabFromBuilder(this IRibbonBuilder ribbon)
+        /// <param name="tab">A tab.</param>
+        public static ITabBuilder PanelsFromBuilder(this ITabBuilder tab)
         {
-            return ribbon
-                .Tab("RxBim_Tab_FromAction", tab => tab
+            return tab
                     .Panel(
-                        title: "RxBim_Panel_1",
+                        title: "Fluent 1",
                         panel => panel
                             .ComboBox(
                                 "Test",
@@ -160,7 +158,7 @@
                                     .Description("Description: This is command #3")
                                     .LargeImage(@"img\num3_32.jpg")))
                     .Panel(
-                        "RxBim_Panel_2",
+                        "Fluent 2",
                         panel => panel
                             .ComboBox(
                                 "Test",
@@ -242,7 +240,7 @@
                                         .Text("Command #2")
                                         .Description("Description: This is command #2")
                                         .Image(@"img\num2_16.bmp")
-                                        .HelpUrl("https://www.google.com/")))));
+                                        .HelpUrl("https://www.google.com/"))));
         }
     }
 }
