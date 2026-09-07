@@ -59,7 +59,8 @@ partial class Build : RevitRxBimBuild, IVersions
     public static int Main()
     {
         var project = EnvironmentInfo.GetNamedArgument<string>("project");
-        return project?.EndsWith(".Autocad", StringComparison.OrdinalIgnoreCase) == true
+        return project?.EndsWith(".Autocad", StringComparison.OrdinalIgnoreCase) == true ||
+               project?.EndsWith(".Civil", StringComparison.OrdinalIgnoreCase) == true
             ? Execute<AutocadBuild>(x => x.Compile)
             : Execute<Build>(x => x.From<IPublish>().Compile);
     }
