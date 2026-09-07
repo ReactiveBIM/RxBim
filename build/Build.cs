@@ -16,7 +16,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, FeatureBranches, BugfixBranches
+        DevelopBranch, BugfixBranches
     },
     InvokedTargets = new[]
     {
@@ -25,6 +25,17 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     ImportSecrets = new[]
     {
         "NUGET_API_KEY", "ALL_PACKAGES"
+    })]
+[GitHubActions("FeatureCI",
+    GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
+    OnPushBranches = new[]
+    {
+        FeatureBranches
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Test), nameof(ICompile.Compile)
     })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
