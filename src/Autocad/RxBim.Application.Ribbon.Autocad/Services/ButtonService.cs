@@ -153,8 +153,14 @@
 
         private void SetRibbonItemImages(RibbonItem button, Button buttonConfig)
         {
-            var assembly = buttonConfig is CommandButton commandButton
-                ? _menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
+            var commandTypeName = buttonConfig switch
+            {
+                CommandButton commandButton => commandButton.CommandType,
+                ToggleCommandButton toggleCommandButton => toggleCommandButton.CommandType,
+                _ => null
+            };
+            var assembly = !string.IsNullOrWhiteSpace(commandTypeName)
+                ? _menuData.MenuAssembly.GetTypeByName(commandTypeName!).Assembly
                 : null;
 
             var themeType = _colorThemeService.GetCurrentTheme();

@@ -1,4 +1,4 @@
-namespace RxBim.Application.Ribbon.ConfigurationBuilders
+﻿namespace RxBim.Application.Ribbon.ConfigurationBuilders
 {
     using System;
 
@@ -24,6 +24,18 @@ namespace RxBim.Application.Ribbon.ConfigurationBuilders
             Action<ICommandButtonBuilder>? builder = null)
         {
             var buttonBuilder = new CommandButtonBuilder(name, commandType);
+            builder?.Invoke(buttonBuilder);
+
+            return AddItem(buttonBuilder.Build());
+        }
+
+        /// <inheritdoc />
+        public IStackedItemsBuilder ToggleCommandButton(
+            string name,
+            Type commandType,
+            Action<IToggleCommandButtonBuilder>? builder = null)
+        {
+            var buttonBuilder = new ToggleCommandButtonBuilder(name, commandType);
             builder?.Invoke(buttonBuilder);
 
             return AddItem(buttonBuilder.Build());

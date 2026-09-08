@@ -10,7 +10,8 @@
         /// <inheritdoc />
         public override bool IsApplicable(IConfigurationSection itemSection)
         {
-            return itemSection.GetSection(nameof(CommandButton.CommandType)).Exists();
+            return itemSection.GetSection(nameof(CommandButton.CommandType)).Exists()
+                   && !itemSection.GetSection(nameof(ToggleCommandButton.IsToggle)).Exists();
         }
     }
 }
