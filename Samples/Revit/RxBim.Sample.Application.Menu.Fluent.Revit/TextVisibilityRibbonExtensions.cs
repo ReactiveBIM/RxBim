@@ -29,8 +29,10 @@
                     .PullDownButton("HiddenMenu", menu => menu
                         .Text("Hidden menu")
                         .ToolTip("The menu caption is hidden; its title is preserved.")
-                        .Image(@"img\command_16.ico")
-                        .LargeImage(@"img\command_32.ico")
+                        .Image(@"img\command_16.ico", ThemeType.Dark)
+                        .LargeImage(@"img\command_32.ico", ThemeType.Dark)
+                        .Image(@"img\command_16_light.ico", ThemeType.Light)
+                        .LargeImage(@"img\command_32_light.ico", ThemeType.Light)
                         .ShowText(false)
                         .CommandButton<Cmd1>("MenuHidden", button => button.ShowText(false))
                         .CommandButton<Cmd2>("MenuVisible", button => button.ShowText(true))
@@ -40,7 +42,8 @@
                         .PullDownButton("StackedHiddenMenu", menu => menu
                             .Text("Stacked hidden menu")
                             .ToolTip("The stacked menu caption is hidden; its title is preserved.")
-                            .Image(@"img\command_16.ico")
+                            .Image(@"img\command_16.ico", ThemeType.Dark)
+                            .Image(@"img\command_16_light.ico", ThemeType.Light)
                             .ShowText(false)
                             .CommandButton<Cmd1>("StackedMenuDefault"))
                         .CommandButton<Cmd2>("StackedVisible", button => button.ShowText(true))
