@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net8.0-windows</TargetFrameworks>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
@@ -23,7 +23,7 @@
         <PackageReference Include="Scrutor" Version="3.0.1" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
         <!-- Версии, загружаемые Revit и AutoCAD на .NET 8. -->
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
