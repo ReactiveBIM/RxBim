@@ -57,7 +57,8 @@
             {
                 if (!panelsSection.Exists())
                     continue;
-                var panel = CreatePanel(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value);
+                var panel = CreatePanel(panelSection.GetSection(nameof(Application.Ribbon.Panel.Name)).Value
+                    ?? throw new InvalidOperationException($"Panel name is missing in section '{panelSection.Path}'."));
                 panel.LoadFromConfig(panelSection, fromConfigStrategies);
             }
         }

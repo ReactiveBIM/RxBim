@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Sample.Command.Revit
 {
+    using System;
     using Di;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +12,10 @@
         /// <inheritdoc />
         public void Configure(IServiceCollection services)
         {
-            services.AddSingleton(sp => sp.GetService<IConfiguration>()
+            services.AddSingleton(sp => sp.GetRequiredService<IConfiguration>()
                 .GetSection(nameof(PluginSettings))
-                .Get<PluginSettings>());
+                .Get<PluginSettings>()
+                ?? throw new InvalidOperationException($"Configuration section '{nameof(PluginSettings)}' is missing or empty."));
         }
     }
 }

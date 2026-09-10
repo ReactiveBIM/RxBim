@@ -93,7 +93,7 @@
         {
             try
             {
-                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                 var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
                 return result.MapResultToRevitResult();
             }
@@ -114,7 +114,7 @@
 
                     _uiApplicationProxy.Initialize(uiApp);
 
-                    var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                    var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
                 }
                 catch (Exception exception)

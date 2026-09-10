@@ -50,7 +50,7 @@
         private void CallCommandMethod(Assembly assembly)
         {
             var di = Configure(assembly);
-            var methodCaller = di.GetService<IMethodCaller<PluginResult>>();
+            var methodCaller = di.GetRequiredService<IMethodCaller<PluginResult>>();
             methodCaller.InvokeMethod(di, Constants.ExecuteMethodName);
         }
     }

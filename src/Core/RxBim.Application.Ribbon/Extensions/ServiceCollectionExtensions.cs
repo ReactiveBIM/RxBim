@@ -98,7 +98,7 @@
 
         private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)
         {
-            cfg ??= serviceProvider.GetService<IConfiguration>();
+            cfg ??= serviceProvider.GetRequiredService<IConfiguration>();
             var strategies = serviceProvider.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();

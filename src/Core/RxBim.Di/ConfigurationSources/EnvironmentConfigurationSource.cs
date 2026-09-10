@@ -66,7 +66,7 @@
                 ?.SelectSingleNode("//ApplicationPackage")
                 ?.Attributes?
                 .GetNamedItem("ProductCode")
-                .Value;
+                ?.Value;
 
             if (!string.IsNullOrWhiteSpace(productCode))
             {

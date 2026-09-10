@@ -86,7 +86,7 @@ namespace RxBim.Application.Autocad
 
                 MenuBuilderUtility.BuildMenu(_serviceProvider);
 
-                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
             }
             catch (Exception exception)
@@ -104,7 +104,7 @@ namespace RxBim.Application.Autocad
 
             try
             {
-                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }
             catch (Exception exception)
