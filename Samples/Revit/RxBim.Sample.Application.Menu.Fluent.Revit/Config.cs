@@ -13,8 +13,10 @@
             services.AddRevitMenu(ribbon => ribbon
                 .EnableDisplayVersion()
                 .SetVersionPrefix("Version: ")
-                .TabFromAttributes()
-                .TabFromBuilder());
+                .Tab("RxBim", tab => tab
+                    .PanelsFromAttributes()
+                    .PanelsFromBuilder()
+                    .TextVisibilityPanels()));
         }
     }
 }

@@ -1,8 +1,9 @@
-namespace RxBim.Application.Ribbon
+﻿namespace RxBim.Application.Ribbon
 {
     using System;
     using System.Reflection;
     using Abstractions;
+    using Autodesk.Revit.UI;
     using Di.Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -68,6 +69,10 @@ namespace RxBim.Application.Ribbon
         {
             return services
                 .RegisterTypes<IItemStrategy>(Assembly.GetExecutingAssembly(), ServiceLifetime.Singleton)
+                .AddSingleton<IColorThemeService, RevitColorThemeService>()
+                .AddSingleton<IButtonImageProvider, ButtonImageProvider>()
+                .AddSingleton<IRibbonButtonImageAdapter<RibbonButton>, RevitRibbonButtonImageAdapter>()
+                .AddSingleton<IThemedRibbonButtonService<RibbonButton>, ThemedRibbonButtonService<RibbonButton>>()
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
         }
     }

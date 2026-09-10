@@ -8,7 +8,7 @@
     public interface IColorThemeService
     {
         /// <summary>
-        /// Current theme changed event
+        /// Current theme changed event.
         /// </summary>
         event EventHandler ThemeChanged;
 

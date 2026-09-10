@@ -13,7 +13,7 @@
         private readonly IButtonService _buttonService;
         private readonly IRibbonComponentStorageService _storageService;
         private readonly IRibbonEventsService _ribbonEventsService;
-        private readonly IColorThemeService _colorThemeService;
+        private readonly IThemedRibbonButtonService<RibbonButton> _themedButtonService;
         private readonly ITabService _tabService;
         private bool _alreadyBuiltOnce;
 
@@ -24,7 +24,7 @@
             IButtonService buttonService,
             IRibbonComponentStorageService storageService,
             IRibbonEventsService ribbonEventsService,
-            IColorThemeService colorThemeService,
+            IThemedRibbonButtonService<RibbonButton> themedButtonService,
             ITabService tabService,
             MenuData menuData,
             IServiceProvider serviceProvider)
@@ -34,10 +34,9 @@
             _buttonService = buttonService;
             _storageService = storageService;
             _ribbonEventsService = ribbonEventsService;
-            _colorThemeService = colorThemeService;
+            _themedButtonService = themedButtonService;
             _tabService = tabService;
             _onlineHelpService = onlineHelpService;
-            _colorThemeService.ThemeChanged += (_, _) => _buttonService.ApplyCurrentTheme();
             _ribbonEventsService.NeedRebuild += (_, _) => BuildRibbonMenu();
         }
 
@@ -50,7 +49,7 @@
                 _alreadyBuiltOnce = true;
                 _onlineHelpService.Run();
                 _ribbonEventsService.Run();
-                _colorThemeService.Run();
+                _themedButtonService.Run();
             }
             else
             {
