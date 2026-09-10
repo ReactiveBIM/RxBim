@@ -154,6 +154,34 @@
                                             typeof(Cmd2),
                                             button => SetupCommand2Button(button))))
                             .Panel(
+                                title: "Toggle",
+                                panel => panel
+                                    .ToggleCommandButton(
+                                        "Toggle1_Large_WithText",
+                                        typeof(Cmd1),
+                                        button => SetupCommand1Button(button)
+                                            .Text("Toggle\n#1")
+                                            .IsChecked())
+                                    .ToggleCommandButton(
+                                        "Toggle2_Large_WithText",
+                                        typeof(Cmd2),
+                                        button => SetupCommand2Button(button)
+                                            .Text("Toggle\n#2"))
+                                    .Separator()
+                                    .StackedItems(items => items
+                                        .ToggleCommandButton(
+                                            "Toggle1_Small",
+                                            typeof(Cmd1),
+                                            button => SetupCommand1Button(button).IsChecked())
+                                        .ToggleCommandButton(
+                                            "Toggle2_Small",
+                                            typeof(Cmd2),
+                                            button => SetupCommand2Button(button))
+                                        .CommandButton(
+                                            "Command3_Small",
+                                            typeof(Cmd3),
+                                            button => SetupCommand3Button(button))))
+                            .Panel(
                                 title: "Attributes 1",
                                 panel => panel
                                     .CommandButton<Cmd1>()
