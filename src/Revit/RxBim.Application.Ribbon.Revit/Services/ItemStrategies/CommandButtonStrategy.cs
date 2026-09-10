@@ -25,7 +25,8 @@
         {
             var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
             var pushButton = (PushButton)panel.AddItem(pushButtonData);
-            _ribbonPanelItemService.RegisterButton(pushButton, cmdButtonConfig);
+            _ribbonPanelItemService.RegisterButton(pushButton, cmdButtonConfig);            
+            _ribbonPanelItemService.SetButtonTextVisibility(cmdButtonConfig, tab, panel.Title);
         }
 
         /// <inheritdoc />

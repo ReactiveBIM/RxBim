@@ -9,18 +9,17 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_CI2025 --host GitHubActions
+#         nuke --generate-configuration GitHubActions_FeatureCI --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: CI2025
+name: FeatureCI
 
 on:
   push:
     branches:
-      - develop
-      - 'bugfix/**'
+      - 'feature/**'
 
 jobs:
   windows-latest:
@@ -37,13 +36,5 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: SetVersion2025, Test, Publish'
-        run: ./build.cmd SetVersion2025 Test Publish
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-          ALL_PACKAGES: ${{ secrets.ALL_PACKAGES }}
-      - name: 'Publish: packages'
-        uses: actions/upload-artifact@v5
-        with:
-          name: packages
-          path: artifacts/packages
+      - name: 'Run: Test, Compile'
+        run: ./build.cmd Test Compile
