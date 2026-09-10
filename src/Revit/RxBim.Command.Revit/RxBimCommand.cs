@@ -76,7 +76,7 @@
 
         private PluginResult CallCommandMethod(IServiceProvider serviceProvider)
         {
-            var methodCaller = serviceProvider.GetService<IMethodCaller<PluginResult>>();
+            var methodCaller = serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
             var commandResult = methodCaller.InvokeMethod(serviceProvider, Constants.ExecuteMethodName);
             return commandResult;
         }
@@ -95,7 +95,7 @@
             if (!commandResult.ElementIds.Any())
                 return;
 
-            var doc = serviceProvider.GetService<Document>();
+            var doc = serviceProvider.GetRequiredService<Document>();
             foreach (var id in commandResult.ElementIds)
             {
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
