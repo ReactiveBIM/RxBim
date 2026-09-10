@@ -11,7 +11,7 @@
         public override bool IsApplicable(IConfigurationSection itemSection)
         {
             return itemSection.GetSection(nameof(CommandButton.CommandType)).Exists()
-                   && !itemSection.GetSection(nameof(ToggleCommandButton.IsToggle)).Exists();
+                   && itemSection.GetValue<bool?>(nameof(ToggleCommandButton.IsToggle)) != true;
         }
     }
 }
