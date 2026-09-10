@@ -1,15 +1,22 @@
 ﻿namespace RxBim.Application.Ribbon.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using ComboBox = ComboBox;
+    using RevitRibbonButton = Autodesk.Revit.UI.RibbonButton;
     using RibbonItem = Autodesk.Windows.RibbonItem;
 
     /// <inheritdoc />
-    internal class RibbonPanelItemService(MenuData menuData, IComboBoxEventsHandler comboBoxEventsHandler) : IRibbonPanelItemService
+    internal class RibbonPanelItemService(
+        MenuData menuData,
+        IComboBoxEventsHandler comboBoxEventsHandler,
+        IButtonImageProvider imageProvider,
+        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService)
+        : IRibbonPanelItemService
     {
         /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
@@ -63,26 +70,32 @@
         /// <inheritdoc />
         public void SetButtonProperties(ButtonData buttonData, Button buttonConfig)
         {
-            var assembly = buttonConfig is CommandButton commandButton
-                ? menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
-                : null;
-
             if (buttonConfig.Text != null)
                 buttonData.Text = buttonConfig.Text;
             if (buttonConfig.Description != null)
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
-            buttonData.Image = menuData.GetIconImage(buttonConfig.Image, assembly);
-            buttonData.LargeImage = menuData.GetIconImage(buttonConfig.LargeImage, assembly);
+
+            var images = imageProvider.GetImages(buttonConfig);
+            buttonData.Image = images.Image;
+            buttonData.LargeImage = images.LargeImage;
+        }
+
+        /// <inheritdoc />
+        public void RegisterButton(RevitRibbonButton button, Button buttonConfig)
+        {
+            themedButtonService.Register(button, buttonConfig);
         }
 
         /// <inheritdoc />
         public void CreateButtonsForPullDown(PullDownButton config, PulldownButton button)
         {
-            foreach (var pushButtonData in config.CommandButtonsList.Select(CreateCommandButtonData))
+            foreach (var commandButtonConfig in config.CommandButtonsList)
             {
-                button.AddPushButton(pushButtonData);
+                var pushButtonData = CreateCommandButtonData(commandButtonConfig);
+                var pushButton = button.AddPushButton(pushButtonData);
+                RegisterButton(pushButton, commandButtonConfig);
             }
         }
 
@@ -111,6 +124,47 @@
             }
 
             existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+        }
+
+        /// <inheritdoc />
+        public void SetButtonTextVisibility(Button config, RibbonTab tab, string panelName)
+        {
+            if (!config.ShowText.HasValue &&
+                !(config is PullDownButton pullDown && pullDown.CommandButtonsList.Any(x => x.ShowText.HasValue)))
+                return;
+
+            var panel = tab.Panels.First(x => x.Source.AutomationName == panelName);
+            ApplyButtonTextVisibility(config, panel.Source.Items);
+        }
+
+        private static void ApplyButtonTextVisibility(Button config, IEnumerable<RibbonItem> items)
+        {
+            // Revit's public RibbonItem API does not expose text visibility.
+            // Restrict the lookup to the owning panel or pull-down to avoid name collisions.
+            var button = EnumerateRibbonItems(items).First(x =>
+                x.Id != null && x.Id.EndsWith("%" + config.Name, StringComparison.Ordinal));
+
+            if (config.ShowText.HasValue)
+                button.ShowText = config.ShowText.Value;
+
+            if (config is PullDownButton pullDown && button is RibbonListButton listButton)
+            {
+                foreach (var command in pullDown.CommandButtonsList.Where(x => x.ShowText.HasValue))
+                    ApplyButtonTextVisibility(command, listButton.Items);
+            }
+        }
+
+        private static IEnumerable<RibbonItem> EnumerateRibbonItems(IEnumerable<RibbonItem> items)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+                if (item is RibbonRowPanel row)
+                {
+                    foreach (var child in EnumerateRibbonItems(row.Items))
+                        yield return child;
+                }
+            }
         }
 
         private void ComboBoxOnCurrentChanged(object? sender, RibbonPropertyChangedEventArgs e)

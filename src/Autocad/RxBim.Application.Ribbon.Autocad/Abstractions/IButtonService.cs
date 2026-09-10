@@ -48,10 +48,5 @@
         /// Clears the button cache.
         /// </summary>
         void ClearButtonCache();
-
-        /// <summary>
-        /// Applies current color theme for all buttons.
-        /// </summary>
-        void ApplyCurrentTheme();
     }
 }

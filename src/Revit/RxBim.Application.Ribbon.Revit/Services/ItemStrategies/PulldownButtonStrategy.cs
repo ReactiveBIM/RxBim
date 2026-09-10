@@ -23,7 +23,9 @@
         {
             var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);
+            _ribbonPanelItemService.RegisterButton(pulldownButton, pullDownButtonConfig);
             _ribbonPanelItemService.CreateButtonsForPullDown(pullDownButtonConfig, pulldownButton);
+            _ribbonPanelItemService.SetButtonTextVisibility(pullDownButtonConfig, tab, ribbonPanel.Title);
         }
 
         /// <inheritdoc />

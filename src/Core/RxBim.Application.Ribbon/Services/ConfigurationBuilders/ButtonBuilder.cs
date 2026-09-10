@@ -48,6 +48,13 @@
         }
 
         /// <inheritdoc />
+        public TButtonBuilder ShowText(bool showText)
+        {
+            Item.ShowText = showText;
+            return (this as TButtonBuilder)!;
+        }
+
+        /// <inheritdoc />
         public TButtonBuilder HelpUrl(string url)
         {
             Item.HelpUrl = url;
