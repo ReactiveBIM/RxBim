@@ -6,10 +6,16 @@
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using ComboBox = ComboBox;
+    using RevitRibbonButton = Autodesk.Revit.UI.RibbonButton;
     using RibbonItem = Autodesk.Windows.RibbonItem;
 
     /// <inheritdoc />
-    internal class RibbonPanelItemService(MenuData menuData, IComboBoxEventsHandler comboBoxEventsHandler) : IRibbonPanelItemService
+    internal class RibbonPanelItemService(
+        MenuData menuData,
+        IComboBoxEventsHandler comboBoxEventsHandler,
+        IButtonImageProvider imageProvider,
+        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService)
+        : IRibbonPanelItemService
     {
         /// <inheritdoc />
         public PushButtonData CreateCommandButtonData(CommandButton button)
@@ -63,26 +69,32 @@
         /// <inheritdoc />
         public void SetButtonProperties(ButtonData buttonData, Button buttonConfig)
         {
-            var assembly = buttonConfig is CommandButton commandButton
-                ? menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
-                : null;
-
             if (buttonConfig.Text != null)
                 buttonData.Text = buttonConfig.Text;
             if (buttonConfig.Description != null)
                 buttonData.LongDescription = buttonConfig.Description;
             if (buttonConfig.HelpUrl != null)
                 buttonData.SetContextualHelp(new ContextualHelp(ContextualHelpType.Url, buttonConfig.HelpUrl));
-            buttonData.Image = menuData.GetIconImage(buttonConfig.Image, assembly);
-            buttonData.LargeImage = menuData.GetIconImage(buttonConfig.LargeImage, assembly);
+
+            var images = imageProvider.GetImages(buttonConfig);
+            buttonData.Image = images.Image;
+            buttonData.LargeImage = images.LargeImage;
+        }
+
+        /// <inheritdoc />
+        public void RegisterButton(RevitRibbonButton button, Button buttonConfig)
+        {
+            themedButtonService.Register(button, buttonConfig);
         }
 
         /// <inheritdoc />
         public void CreateButtonsForPullDown(PullDownButton config, PulldownButton button)
         {
-            foreach (var pushButtonData in config.CommandButtonsList.Select(CreateCommandButtonData))
+            foreach (var commandButtonConfig in config.CommandButtonsList)
             {
-                button.AddPushButton(pushButtonData);
+                var pushButtonData = CreateCommandButtonData(commandButtonConfig);
+                var pushButton = button.AddPushButton(pushButtonData);
+                RegisterButton(pushButton, commandButtonConfig);
             }
         }
 

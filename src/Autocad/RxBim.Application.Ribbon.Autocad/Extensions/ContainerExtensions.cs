@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reflection;
+    using Autodesk.Windows;
     using Di.Extensions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -66,6 +67,9 @@
                 .AddSingleton<IOnlineHelpService, OnlineHelpService>()
                 .AddSingleton<IRibbonEventsService, RibbonEventsService>()
                 .AddSingleton<IColorThemeService, ColorThemeService>()
+                .AddSingleton<IButtonImageProvider, ButtonImageProvider>()
+                .AddSingleton<IRibbonButtonImageAdapter<RibbonButton>, AutocadRibbonButtonImageAdapter>()
+                .AddSingleton<IThemedRibbonButtonService<RibbonButton>, ThemedRibbonButtonService<RibbonButton>>()
                 .AddSingleton<ITabService, TabService>()
                 .AddSingleton<IPanelService, PanelService>()
                 .AddSingleton<IButtonService, ButtonService>()

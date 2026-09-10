@@ -9,6 +9,7 @@
     /// </summary>
     public class TabBuilder : ITabBuilder
     {
+        private const string LegacyPanelsSectionName = "Panels";
         private readonly Tab _tab = new();
 
         /// <summary>
@@ -45,6 +46,10 @@
             IReadOnlyCollection<IItemFromConfigStrategy> fromConfigStrategies)
         {
             var panelsSection = section.GetSection(nameof(Tab.Items));
+
+            // Старые JSON-конфигурации используют имя Panels.
+            if (!panelsSection.Exists())
+                panelsSection = section.GetSection(LegacyPanelsSectionName);
             if (!panelsSection.Exists())
                 return;
 

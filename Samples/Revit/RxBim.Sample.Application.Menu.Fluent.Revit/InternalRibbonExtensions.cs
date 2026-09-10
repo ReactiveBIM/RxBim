@@ -25,7 +25,8 @@
                             .PullDownButton(
                                 "Pulldown1",
                                 pulldown => pulldown
-                                    .LargeImage(@"img\command_32.ico")
+                                    .LargeImage(@"img\command_32.ico", ThemeType.Dark)
+                                    .LargeImage(@"img\command_32_light.ico", ThemeType.Light)
                                     .Text("Pulldown\n#1")
                                     .CommandButton<Cmd1>("Command1_Pulldown1")
                                     .CommandButton<Cmd2>("Command2_Pulldown1")
@@ -46,7 +47,8 @@
                                 .PullDownButton(
                                     "Pulldown2",
                                     pulldown => pulldown
-                                        .Image(@"img\command_16.ico")
+                                        .Image(@"img\command_16.ico", ThemeType.Dark)
+                                        .Image(@"img\command_16_light.ico", ThemeType.Light)
                                         .Text("Pulldown #2")
                                         .CommandButton<Cmd1>("Command1_Pulldown2")
                                         .CommandButton<Cmd2>("Command2_Pulldown2")
@@ -78,8 +80,10 @@
                                     .ToolTip("Tooltip: I'm run command #1. Push me!")
                                     .Text("Command\n#1")
                                     .Description("Description: This is command #1")
-                                    .Image(@"img\num1_16.png")
-                                    .LargeImage(@"img\num1_32.png")
+                                    .Image(@"img\num1_16.png", ThemeType.Dark)
+                                    .Image(@"img\num1_16_light.png", ThemeType.Light)
+                                    .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                                    .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
                                     .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                             .CommandButton(
                                 "Command2_Large_WithText",
@@ -88,8 +92,10 @@
                                     .ToolTip("Tooltip: I'm run command #2. Push me!")
                                     .Text("Command\n#2")
                                     .Description("Description: This is command #2")
-                                    .Image(@"img\num2_16.bmp")
-                                    .LargeImage(@"img\num2_32.bmp")
+                                    .Image(@"img\num2_16.bmp", ThemeType.Dark)
+                                    .Image(@"img\num2_16_light.bmp", ThemeType.Light)
+                                    .LargeImage(@"img\num2_32.bmp", ThemeType.Dark)
+                                    .LargeImage(@"img\num2_32_light.bmp", ThemeType.Light)
                                     .HelpUrl("https://www.google.com/"))
                             .CommandButton(
                                 "Command3_Large_WithText",
@@ -98,8 +104,10 @@
                                     .ToolTip("Tooltip: I'm run command #3. Push me!")
                                     .Text("Command\n#3")
                                     .Description("Description: This is command #3")
-                                    .Image(@"img\num3_16.jpg")
-                                    .LargeImage(@"img\num3_32.jpg")
+                                    .Image(@"img\num3_16.jpg", ThemeType.Dark)
+                                    .Image(@"img\num3_16_light.jpg", ThemeType.Light)
+                                    .LargeImage(@"img\num3_32.jpg", ThemeType.Dark)
+                                    .LargeImage(@"img\num3_32_light.jpg", ThemeType.Light)
                                     .HelpUrl("https://www.autodesk.com/"))
                             .Separator()
                             .PullDownButton(
@@ -112,7 +120,8 @@
                                             .ToolTip("Tooltip: I'm run command #1. Push me!")
                                             .Text("Command\n#1")
                                             .Description("Description: This is command #1")
-                                            .LargeImage(@"img\num1_32.png")
+                                            .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                                            .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
                                             .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                                     .CommandButton(
                                         "Command2_Pulldown1",
@@ -121,7 +130,8 @@
                                             .ToolTip("Tooltip: I'm run command #2. Push me!")
                                             .Text("Command\n#2")
                                             .Description("Description: This is command #2")
-                                            .LargeImage(@"img\num2_32.bmp")
+                                            .LargeImage(@"img\num2_32.bmp", ThemeType.Dark)
+                                            .LargeImage(@"img\num2_32_light.bmp", ThemeType.Light)
                                             .HelpUrl("https://www.google.com/"))
                                     .CommandButton(
                                         "Command3_Pulldown1",
@@ -130,9 +140,11 @@
                                             .ToolTip("Tooltip: I'm run command #3. Push me!")
                                             .Text("Command\n#3")
                                             .Description("Description: This is command #3")
-                                            .LargeImage(@"img\num3_32.jpg")
+                                            .LargeImage(@"img\num3_32.jpg", ThemeType.Dark)
+                                            .LargeImage(@"img\num3_32_light.jpg", ThemeType.Light)
                                             .HelpUrl("https://www.autodesk.com/"))
-                                    .LargeImage(@"img\command_32.ico")
+                                    .LargeImage(@"img\command_32.ico", ThemeType.Dark)
+                                    .LargeImage(@"img\command_32_light.ico", ThemeType.Light)
                                     .Text("Pulldown\n#1"))
                             .SlideOut()
                             .CommandButton(
@@ -142,7 +154,8 @@
                                     .ToolTip("Tooltip: I'm run command #1. Push me!")
                                     .Text("Command\n#1")
                                     .Description("Description: This is command #1")
-                                    .LargeImage(@"img\num1_32.png"))
+                                    .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                                    .LargeImage(@"img\num1_32_light.png", ThemeType.Light))
                             .CommandButton(
                                 "Command2_SlideOut",
                                 typeof(Cmd2),
@@ -150,7 +163,8 @@
                                     .ToolTip("Tooltip: I'm run command #2. Push me!")
                                     .Text("Command\n#2")
                                     .Description("Description: This is command #2")
-                                    .LargeImage(@"img\num2_32.bmp"))
+                                    .LargeImage(@"img\num2_32.bmp", ThemeType.Dark)
+                                    .LargeImage(@"img\num2_32_light.bmp", ThemeType.Light))
                             .CommandButton(
                                 "Command3_SlideOut",
                                 typeof(Cmd3),
@@ -158,7 +172,8 @@
                                     .ToolTip("Tooltip: I'm run command #3. Push me!")
                                     .Text("Command\n#3")
                                     .Description("Description: This is command #3")
-                                    .LargeImage(@"img\num3_32.jpg")))
+                                    .LargeImage(@"img\num3_32.jpg", ThemeType.Dark)
+                                    .LargeImage(@"img\num3_32_light.jpg", ThemeType.Light)))
                     .Panel(
                         "RxBim_Panel_2",
                         panel => panel
@@ -180,7 +195,8 @@
                                         .ToolTip("Tooltip: I'm run command #2. Push me!")
                                         .Text("Command #2")
                                         .Description("Description: This is command #2")
-                                        .Image(@"img\num2_16.bmp")
+                                        .Image(@"img\num2_16.bmp", ThemeType.Dark)
+                                        .Image(@"img\num2_16_light.bmp", ThemeType.Light)
                                         .HelpUrl("https://www.google.com/"))
                                 .CommandButton(
                                     "Command3_Stacked1",
@@ -189,7 +205,8 @@
                                         .ToolTip("Tooltip: I'm run command #3. Push me!")
                                         .Text("Command #3")
                                         .Description("Description: This is command #3")
-                                        .Image(@"img\num3_16.jpg")
+                                        .Image(@"img\num3_16.jpg", ThemeType.Dark)
+                                        .Image(@"img\num3_16_light.jpg", ThemeType.Light)
                                         .HelpUrl("https://www.autodesk.com/")))
                             .Separator()
                             .StackedItems(items => items
@@ -203,7 +220,8 @@
                                                 .ToolTip("Tooltip: I'm run command #1. Push me!")
                                                 .Text("Command\n#1")
                                                 .Description("Description: This is command #1")
-                                                .LargeImage(@"img\num1_32.png")
+                                                .LargeImage(@"img\num1_32.png", ThemeType.Dark)
+                                                .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
                                                 .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                                         .CommandButton(
                                             "Command2_Pulldown2",
@@ -212,7 +230,8 @@
                                                 .ToolTip("Tooltip: I'm run command #2. Push me!")
                                                 .Text("Command\n#2")
                                                 .Description("Description: This is command #2")
-                                                .LargeImage(@"img\num2_32.bmp")
+                                                .LargeImage(@"img\num2_32.bmp", ThemeType.Dark)
+                                                .LargeImage(@"img\num2_32_light.bmp", ThemeType.Light)
                                                 .HelpUrl("https://www.google.com/"))
                                         .CommandButton(
                                             "Command3_Pulldown2",
@@ -221,9 +240,11 @@
                                                 .ToolTip("Tooltip: I'm run command #3. Push me!")
                                                 .Text("Command\n#3")
                                                 .Description("Description: This is command #3")
-                                                .LargeImage(@"img\num3_32.jpg")
+                                                .LargeImage(@"img\num3_32.jpg", ThemeType.Dark)
+                                                .LargeImage(@"img\num3_32_light.jpg", ThemeType.Light)
                                                 .HelpUrl("https://www.autodesk.com/"))
-                                        .Image(@"img\command_16.ico")
+                                        .Image(@"img\command_16.ico", ThemeType.Dark)
+                                        .Image(@"img\command_16_light.ico", ThemeType.Light)
                                         .Text("Pulldown #2"))
                                 .CommandButton(
                                     "Command1_Stacked2",
@@ -232,7 +253,8 @@
                                         .ToolTip("Tooltip: I'm run command #1. Push me!")
                                         .Text("Command #1")
                                         .Description("Description: This is command #1")
-                                        .Image(@"img\num1_16.png")
+                                        .Image(@"img\num1_16.png", ThemeType.Dark)
+                                        .Image(@"img\num1_16_light.png", ThemeType.Light)
                                         .HelpUrl("https://github.com/ReactiveBIM/RxBim"))
                                 .CommandButton(
                                     "Command2_Stacked2",
@@ -241,7 +263,8 @@
                                         .ToolTip("Tooltip: I'm run command #2. Push me!")
                                         .Text("Command #2")
                                         .Description("Description: This is command #2")
-                                        .Image(@"img\num2_16.bmp")
+                                        .Image(@"img\num2_16.bmp", ThemeType.Dark)
+                                        .Image(@"img\num2_16_light.bmp", ThemeType.Light)
                                         .HelpUrl("https://www.google.com/")))));
         }
     }
