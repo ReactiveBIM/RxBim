@@ -34,6 +34,40 @@
                 .Which.Name.Should().Be("Panel");
         }
 
+        [Theory]
+        [InlineData("Ribbon:Tabs:0:Name", "Ribbon:Tabs:0")]
+        [InlineData("Ribbon:Tabs:0:Items:0:Name", "Ribbon:Tabs:0:Items:0")]
+        public void ShouldRejectMissingName(string missingKey, string sectionPath)
+        {
+            var values = new Dictionary<string, string?>
+            {
+                ["Ribbon:Tabs:0:Name"] = "Tab",
+                ["Ribbon:Tabs:0:Items:0:Name"] = "Panel",
+                ["Ribbon:Tabs:0:Items:0:Visible"] = "true"
+            };
+            values.Remove(missingKey);
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection(values).Build();
+            var services = new ServiceCollection();
+            services.AddMenu<RibbonMenuBuilderStub>(configuration, typeof(RibbonConfigurationTests).Assembly);
+            using var provider = services.BuildServiceProvider();
+
+            Action resolve = () => provider.GetRequiredService<Ribbon>();
+
+            resolve.Should().Throw<InvalidOperationException>().WithMessage($"*'{sectionPath}'*");
+        }
+
+        [Fact]
+        public void ShouldRequireConfigurationWhenNotProvidedExplicitly()
+        {
+            var services = new ServiceCollection();
+            services.AddMenu<RibbonMenuBuilderStub>((IConfiguration?)null, typeof(RibbonConfigurationTests).Assembly);
+            using var provider = services.BuildServiceProvider();
+
+            Action resolve = () => provider.GetRequiredService<Ribbon>();
+
+            resolve.Should().Throw<InvalidOperationException>().WithMessage("*IConfiguration*");
+        }
+
         private sealed class RibbonMenuBuilderStub : IRibbonMenuBuilder
         {
             public event EventHandler? MenuCreated;

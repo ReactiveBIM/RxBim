@@ -37,7 +37,9 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
             }
             else
             {
-                probeDirs.Add(Path.GetDirectoryName(typeof(AssemblyFinder).Assembly.Location));
+                var assemblyDirectory = Path.GetDirectoryName(typeof(AssemblyFinder).Assembly.Location);
+                if (assemblyDirectory != null)
+                    probeDirs.Add(assemblyDirectory);
             }
 
             var query = from probeDir in probeDirs

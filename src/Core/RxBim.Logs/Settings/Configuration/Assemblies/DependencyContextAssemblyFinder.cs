@@ -21,7 +21,7 @@ namespace RxBim.Logs.Settings.Configuration.Assemblies
             var query = from library in _dependencyContext.RuntimeLibraries
                         where IsReferencingSerilog(library)
                         from assemblyName in library.GetDefaultAssemblyNames(_dependencyContext)
-                        where IsCaseInsensitiveMatch(assemblyName.Name, nameToFind)
+                        where assemblyName.Name != null && IsCaseInsensitiveMatch(assemblyName.Name, nameToFind)
                         select assemblyName;
 
             return query.ToList().AsReadOnly();

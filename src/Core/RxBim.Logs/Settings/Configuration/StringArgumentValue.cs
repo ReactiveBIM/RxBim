@@ -12,11 +12,12 @@ namespace RxBim.Logs.Settings.Configuration
     {
         private static readonly Regex StaticMemberAccessorRegex = new Regex("^(?<shortTypeName>[^:]+)::(?<memberName>[A-Za-z][A-Za-z0-9]*)(?<typeNameExtraQualifiers>[^:]*)$");
 
+        // With throwOnError: true, a missing type causes an exception instead of returning null.
         private static readonly Dictionary<Type, Func<string, object>> ExtendedTypeConversions = new Dictionary<Type, Func<string, object>>
         {
             { typeof(Uri), s => new Uri(s) },
             { typeof(TimeSpan), s => TimeSpan.Parse(s) },
-            { typeof(Type), s => Type.GetType(s, throwOnError: true) },
+            { typeof(Type), s => Type.GetType(s, throwOnError: true)! },
         };
 
         private readonly string _providedValue;
@@ -63,14 +64,12 @@ namespace RxBim.Logs.Settings.Configuration
                 // like "Namespace.TypeName::StaticProperty, AssemblyName"
                 if (TryParseStaticMemberAccessor(argumentValue, out var accessorTypeName, out var memberName))
                 {
-                    var accessorType = Type.GetType(accessorTypeName!, throwOnError: true);
+                    var accessorType = Type.GetType(accessorTypeName!, throwOnError: true)!;
                     
                     // is there a public static property with that name ?
                     var publicStaticPropertyInfo = accessorType.GetTypeInfo().DeclaredProperties
                         .Where(x => x.Name == memberName)
-                        .Where(x => x.GetMethod != null)
-                        .Where(x => x.GetMethod.IsPublic)
-                        .FirstOrDefault(x => x.GetMethod.IsStatic);
+                        .FirstOrDefault(x => x.GetMethod is { IsPublic: true, IsStatic: true });
 
                     if (publicStaticPropertyInfo != null)
                     {
