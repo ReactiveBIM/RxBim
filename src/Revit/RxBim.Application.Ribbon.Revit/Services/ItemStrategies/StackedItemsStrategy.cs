@@ -8,6 +8,7 @@
     using Autodesk.Windows;
     using Microsoft.Extensions.DependencyInjection;
     using ComboBox = ComboBox;
+    using RevitRibbonButton = Autodesk.Revit.UI.RibbonButton;
     using RibbonItem = Autodesk.Revit.UI.RibbonItem;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
@@ -52,11 +53,20 @@
 
             for (var i = 0; i < stackedItems.Items.Count; i++)
             {
-                if (stackedItems.Items[i] is PullDownButton buttonConfig &&
-                    addedItems[i] is PulldownButton addedButton)
+                if (stackedItems.Items[i] is Button registeredButtonConfig &&
+                    addedItems[i] is RevitRibbonButton registeredButton)
                 {
-                    _ribbonPanelItemService.CreateButtonsForPullDown(buttonConfig, addedButton);
+                    _ribbonPanelItemService.RegisterButton(registeredButton, registeredButtonConfig);
                 }
+
+                if (stackedItems.Items[i] is PullDownButton pullDownConfig &&
+                    addedItems[i] is PulldownButton pullDownButton)
+                {
+                    _ribbonPanelItemService.CreateButtonsForPullDown(pullDownConfig, pullDownButton);
+                }
+
+                if (stackedItems.Items[i] is Button button)
+                    _ribbonPanelItemService.SetButtonTextVisibility(button, tab, ribbonPanel.Title);
 
                 if (stackedItems.Items[i] is ComboBox comboBoxConfig &&
                     addedItems[i] is Autodesk.Revit.UI.ComboBox addedComboBox)

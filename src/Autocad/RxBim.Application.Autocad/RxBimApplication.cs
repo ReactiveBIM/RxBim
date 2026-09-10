@@ -111,6 +111,10 @@ namespace RxBim.Application.Autocad
             {
                 Application.ShowAlertDialog($"Error: {exception}");
             }
+            finally
+            {
+                (_serviceProvider as IDisposable)?.Dispose();
+            }
         }
     }
 }

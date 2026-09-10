@@ -13,15 +13,25 @@
     public class RevitRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
         private readonly UIControlledApplication _application;
+        private readonly IThemedRibbonButtonService<Autodesk.Revit.UI.RibbonButton> _themedButtonService;
 
         /// <inheritdoc />
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IThemedRibbonButtonService<Autodesk.Revit.UI.RibbonButton> themedButtonService)
             : base(menuData, serviceProvider)
         {
             _application = application;
+            _themedButtonService = themedButtonService;
+        }
+
+        /// <inheritdoc />
+        protected override void PreBuildActions()
+        {
+            base.PreBuildActions();
+            _themedButtonService.Run();
         }
 
         /// <inheritdoc />

@@ -16,10 +16,11 @@
                     .EnableDisplayVersion()
                     .SetVersionPrefix("Version: ")
                     .Tab(
-                        title: "RxBim_Tab_FromAction",
+                        title: "RxBim",
                         tab => tab
+                            .TextVisibilityPanels()
                             .Panel(
-                                title: "RxBim_Panel_1",
+                                title: "Fluent 1",
                                 panel => panel
                                     .ComboBox(
                                         "ComboBox1",
@@ -94,7 +95,7 @@
                                         "Command3_Large_SlideOut",
                                         typeof(Cmd3),
                                         button => SetupCommand3Button(button).Text("Command\n#3")))
-                            .Panel("RxBim_Panel_2",
+                            .Panel("Fluent 2",
                                 panel => panel
                                     .ComboBox(
                                         "ComboBox1",
@@ -151,12 +152,9 @@
                                         .CommandButton(
                                             "Command2_Small",
                                             typeof(Cmd2),
-                                            button => SetupCommand2Button(button)))))
-                .Tab(
-                        title: "RxBim_Tab_FromAttributes",
-                        tab => tab
+                                            button => SetupCommand2Button(button))))
                             .Panel(
-                                title: "RxBim_Panel_1",
+                                title: "Attributes 1",
                                 panel => panel
                                     .CommandButton<Cmd1>()
                                     .CommandButton<Cmd2>()
@@ -175,7 +173,7 @@
                                     .CommandButton<Cmd1>()
                                     .CommandButton<Cmd2>()
                                     .CommandButton<Cmd3>())
-                            .Panel("RxBim_Panel_2",
+                            .Panel("Attributes 2",
                                 panel => panel
                                     .StackedItems(items => items
                                         .CommandButton<Cmd1>()
