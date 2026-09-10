@@ -21,6 +21,19 @@
             Action<ICommandButtonBuilder>? builder = null);
 
         /// <summary>
+        /// Adds a new toggle command button to the panel.
+        /// </summary>
+        /// <param name="name">Internal name of the button.</param>
+        /// <param name="commandType">Class which implements the command.
+        ///     This command will be executed when the user clicks the button.</param>
+        /// <param name="builder">The button builder.</param>
+        /// <returns>Panel where button were created.</returns>
+        IPanelBuilder ToggleCommandButton(
+            string name,
+            Type commandType,
+            Action<IToggleCommandButtonBuilder>? builder = null);
+
+        /// <summary>
         /// Adds a new Stacked items on the panel.
         /// </summary>
         /// <param name="builder">The stacked items builder.</param>
