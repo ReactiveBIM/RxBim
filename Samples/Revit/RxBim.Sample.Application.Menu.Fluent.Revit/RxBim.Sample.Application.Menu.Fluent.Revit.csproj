@@ -17,8 +17,12 @@
     <EmbeddedResource Include="img\command_32.png" />
     <None Remove="img\num1_16.png" />
     <EmbeddedResource Include="img\num1_16.png" />
+    <None Remove="img\num1_16_light.png" />
+    <EmbeddedResource Include="img\num1_16_light.png" />
     <None Remove="img\num1_32.png" />
     <EmbeddedResource Include="img\num1_32.png" />
+    <None Remove="img\num1_32_light.png" />
+    <EmbeddedResource Include="img\num1_32_light.png" />
     <None Remove="img\num2_16.png" />
     <EmbeddedResource Include="img\num2_16.png" />
     <None Remove="img\num2_32.png" />
@@ -33,10 +37,20 @@
     <EmbeddedResource Include="img\num3_16.jpg" />
     <None Remove="img\num3_32.jpg" />
     <EmbeddedResource Include="img\num3_32.jpg" />
+    <None Remove="img\num2_16_light.bmp" />
+    <EmbeddedResource Include="img\num2_16_light.bmp" />
+    <None Remove="img\num2_32_light.bmp" />
+    <EmbeddedResource Include="img\num2_32_light.bmp" />
+    <None Remove="img\num3_16_light.jpg" />
+    <EmbeddedResource Include="img\num3_16_light.jpg" />
+    <None Remove="img\num3_32_light.jpg" />
+    <EmbeddedResource Include="img\num3_32_light.jpg" />
     <None Remove="img\command_16.ico" />
     <EmbeddedResource Include="img\command_16.ico" />
+    <EmbeddedResource Include="img\command_16_light.ico" />
     <None Remove="img\command_32.ico" />
     <EmbeddedResource Include="img\command_32.ico" />
+    <EmbeddedResource Include="img\command_32_light.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3"/>

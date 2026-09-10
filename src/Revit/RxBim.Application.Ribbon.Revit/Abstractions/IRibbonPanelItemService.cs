@@ -3,6 +3,7 @@
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
     using ComboBox = ComboBox;
+    using RevitRibbonButton = Autodesk.Revit.UI.RibbonButton;
 
     /// <summary>
     /// Service for <see cref="IRibbonPanelItem"/>.
@@ -41,6 +42,13 @@
         /// <param name="buttonConfig">Button configuration.</param>
         void SetButtonProperties(ButtonData buttonData, Button buttonConfig);
 
+        /// <summary>
+        /// Registers a created ribbon button for color theme updates.
+        /// </summary>
+        /// <param name="button">Created Revit ribbon button.</param>
+        /// <param name="buttonConfig">Button configuration.</param>
+        void RegisterButton(RevitRibbonButton button, Button buttonConfig);
+        
         /// <summary>
         /// Applies text visibility to a created button and its pull-down commands.
         /// </summary>

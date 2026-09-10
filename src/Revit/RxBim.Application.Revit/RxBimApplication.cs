@@ -91,9 +91,16 @@
 
         private Result ShutdownApplication()
         {
-            var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
-            return result.MapResultToRevitResult();
+            try
+            {
+                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
+                return result.MapResultToRevitResult();
+            }
+            finally
+            {
+                (_serviceProvider as IDisposable)?.Dispose();
+            }
         }
 
         private void ApplicationIdling(object? sender, IdlingEventArgs e)

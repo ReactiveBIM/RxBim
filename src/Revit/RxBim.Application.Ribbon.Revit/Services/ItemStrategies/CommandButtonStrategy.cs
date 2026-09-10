@@ -24,7 +24,8 @@
         protected override void AddItem(RibbonTab tab, RibbonPanel panel, CommandButton cmdButtonConfig)
         {
             var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
-            panel.AddItem(pushButtonData);
+            var pushButton = (PushButton)panel.AddItem(pushButtonData);
+            _ribbonPanelItemService.RegisterButton(pushButton, cmdButtonConfig);            
             _ribbonPanelItemService.SetButtonTextVisibility(cmdButtonConfig, tab, panel.Title);
         }
 
