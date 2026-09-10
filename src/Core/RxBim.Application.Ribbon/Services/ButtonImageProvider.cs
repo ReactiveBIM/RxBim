@@ -16,11 +16,13 @@
             return new ButtonImages(image, largeImage);
         }
 
-        private Assembly? GetButtonAssembly(Button buttonConfig)
+        private Assembly? GetButtonAssembly(Button buttonConfig) => buttonConfig switch
         {
-            return buttonConfig is CommandButton commandButton
-                ? menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly
-                : null;
-        }
+            CommandButton commandButton =>
+                menuData.MenuAssembly.GetTypeByName(commandButton.CommandType!).Assembly,
+            ToggleCommandButton toggleCommandButton =>
+                menuData.MenuAssembly.GetTypeByName(toggleCommandButton.CommandType!).Assembly,
+            _ => null
+        };
     }
 }
