@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <NoWarn>CS1591</NoWarn>
+    <Configurations>Debug;Release</Configurations>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Fixtures\**\*.cs" />
+    <ProjectReference Include="..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj" />
+    <ProjectReference Include="Fixtures\First\RxBim.Shared.Tests.First.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="Fixtures\Second\RxBim.Shared.Tests.Second.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="Fixtures\WpfProbe\RxBim.Shared.Tests.WpfProbe.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <Target Name="CopyPluginFixtures" AfterTargets="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <PluginFixture Include="Fixtures\First\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\First\bin\$(Configuration)\net8.0-windows\*.deps.json" />
+      <PluginFixture Include="Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.deps.json" />
+    </ItemGroup>
+    <Error Condition="'@(PluginFixture)' == ''" Text="Plugin fixtures were not built. Build the fixture projects in RxBim.slnx before running tests." />
+    <Copy SourceFiles="@(PluginFixture)" DestinationFolder="$(OutDir)Fixtures" SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+    <ItemGroup>
+      <WpfProbeFile Include="Fixtures\WpfProbe\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\WpfProbe\bin\$(Configuration)\net8.0-windows\*.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WpfProbeFile)" DestinationFolder="$(OutDir)WpfProbe" SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>

@@ -26,6 +26,13 @@
         /// is preferred to avoid nesting it inside Revit's isolated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
+
+        /// <summary>
+        /// Reuses the context for the application's DLL directory until Revit exits.
+        /// Applies only when <see cref="RunInSeparatedContext"/> is enabled.
+        /// A new command instance and DI container are created for each execution.
+        /// </summary>
+        protected virtual bool ReuseSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -40,6 +47,9 @@
 #if NETCOREAPP
             if (PluginContext.IsCurrentContextRxBim(type) || !RunInSeparatedContext)
                 return ExecuteCommand(commandData, ref message, elements, assembly);
+
+            if (ReuseSeparatedContext)
+                return ExecuteInReusedContext(type, commandData, ref message, elements);
 
             var commandInstance = PluginContext.CreateInstanceInNewContext(type);
             if (commandInstance is IExternalCommand externalCommand)
@@ -56,6 +66,26 @@
         {
             return applicationData.ActiveUIDocument?.Document != null;
         }
+
+#if NETCOREAPP
+        private Result ExecuteInReusedContext(Type type, ExternalCommandData commandData, ref string? message, ElementSet elements)
+        {
+            IExternalCommand command;
+
+            try
+            {
+                command = (IExternalCommand)PluginContext.CreateInstanceInReusedContext(type);
+            }
+            catch (Exception exception)
+            {
+                // A reused context failure must not cause the command to run in the original context.
+                message = exception.ToString();
+                return Result.Failed;
+            }
+
+            return command.Execute(commandData, ref message, elements);
+        }
+#endif
 
         private Result ExecuteCommand(ExternalCommandData commandData, ref string? message, ElementSet elements, Assembly assembly)
         {

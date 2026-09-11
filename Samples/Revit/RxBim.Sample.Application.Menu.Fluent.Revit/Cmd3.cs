@@ -19,6 +19,14 @@
         HelpUrl = "https://www.autodesk.com/")]
     public class Cmd3 : RxBimCommand
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// cmd.
         /// </summary>
