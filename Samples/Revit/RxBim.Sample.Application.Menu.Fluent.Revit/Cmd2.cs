@@ -19,6 +19,14 @@
         HelpUrl = "https://www.google.com/")]
     public class Cmd2 : RxBimCommand
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// cmd.
         /// </summary>

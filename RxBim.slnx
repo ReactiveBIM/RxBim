@@ -64,6 +64,7 @@
     <Project Path="src/Revit/RxBim.Nuke.Revit/RxBim.Nuke.Revit.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/RxBim.Shared.Tests/RxBim.Shared.Tests.csproj" />
     <Project Path="tests/RxBim.Analyzers.Tests/RxBim.Analyzers.Tests.csproj" />
     <Project Path="tests/RxBim.Application.Ribbon.Tests/RxBim.Application.Ribbon.Tests.csproj" />
     <Project Path="tests/RxBim.Di.Tests/RxBim.Di.Tests.csproj" />

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <NoWarn>CS1591</NoWarn>
+    <Configurations>Debug;Release</Configurations>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Fixtures\**\*.cs" />
+    <ProjectReference Include="..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj" />
+    <ProjectReference Include="Fixtures\First\RxBim.Shared.Tests.First.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="Fixtures\Second\RxBim.Shared.Tests.Second.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <Target Name="CopyPluginFixtures" AfterTargets="Build">
+    <ItemGroup>
+      <PluginFixture Include="Fixtures\First\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\First\bin\$(Configuration)\net8.0-windows\*.deps.json" />
+      <PluginFixture Include="Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.deps.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginFixture)" DestinationFolder="$(OutDir)Fixtures" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

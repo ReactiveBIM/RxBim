@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <GenerateDependencyFile>true</GenerateDependencyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Exercise the production dispatch across contexts without requiring a running AutoCAD host. -->
+    <Compile Include="..\..\..\..\src\Autocad\RxBim.Command.Autocad\RxBimCommand.cs" Link="Autocad\RxBimCommand.cs" />
+    <ProjectReference Include="..\Dependency\RxBim.Shared.Tests.Dependency.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj" />
+  </ItemGroup>
+</Project>
