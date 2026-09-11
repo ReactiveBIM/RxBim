@@ -238,13 +238,19 @@ public class PluginContextTests
     }
 
     [Fact]
-    public void HigherRequestedDependencyVersionCannotUseAnOlderAssembly()
+    public void DependencyVersionResolutionMatchesLegacyContext()
     {
         using var directory = new TestPluginDirectory();
-        var instance = PluginContext.CreateInstanceInReusedContext(directory.SecondType);
-        var dependencyName = ReadProperty<Type>(instance, "DependencyType").Assembly.GetName();
+        var legacy = PluginContext.CreateInstanceInNewContext(directory.SecondType)!;
+        var reused = PluginContext.CreateInstanceInReusedContext(directory.SecondType);
+        var dependency = ReadProperty<Type>(reused, "DependencyType").Assembly;
+        var dependencyName = dependency.GetName();
         dependencyName.Version = new Version(2, 0, 0, 0);
 
-        Assert.Throws<FileLoadException>(() => ContextOf(instance).LoadFromAssemblyName(dependencyName));
+        var legacyAssembly = ContextOf(legacy).LoadFromAssemblyName(dependencyName);
+        var reusedAssembly = ContextOf(reused).LoadFromAssemblyName(dependencyName);
+
+        Assert.Equal(legacyAssembly.GetName().FullName, reusedAssembly.GetName().FullName);
+        Assert.Same(dependency, reusedAssembly);
     }
 }

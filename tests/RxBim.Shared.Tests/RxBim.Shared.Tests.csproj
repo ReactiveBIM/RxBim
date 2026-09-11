@@ -17,11 +17,14 @@
     <ProjectReference Include="Fixtures\First\RxBim.Shared.Tests.First.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="Fixtures\Second\RxBim.Shared.Tests.Second.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
-  <Target Name="CopyPluginFixtures" AfterTargets="Build">
+  <Target Name="CopyPluginFixtures" AfterTargets="CopyFilesToOutputDirectory">
     <ItemGroup>
       <PluginFixture Include="Fixtures\First\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\First\bin\$(Configuration)\net8.0-windows\*.deps.json" />
       <PluginFixture Include="Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.dll;Fixtures\Second\bin\$(Configuration)\net8.0-windows\*.deps.json" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginFixture)" DestinationFolder="$(OutDir)Fixtures" SkipUnchangedFiles="true" />
+    <Error Condition="'@(PluginFixture)' == ''" Text="Plugin fixtures were not built. Build the fixture projects in RxBim.slnx before running tests." />
+    <Copy SourceFiles="@(PluginFixture)" DestinationFolder="$(OutDir)Fixtures" SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
   </Target>
 </Project>

@@ -70,6 +70,11 @@
     <Project Path="tests/RxBim.Di.Tests/RxBim.Di.Tests.csproj" />
     <Project Path="tests/RxBim.Nuke.Tests/RxBim.Nuke.Tests.csproj" />
   </Folder>
+  <Folder Name="/tests/Fixtures/">
+    <Project Path="tests/RxBim.Shared.Tests/Fixtures/Dependency/RxBim.Shared.Tests.Dependency.csproj" />
+    <Project Path="tests/RxBim.Shared.Tests/Fixtures/First/RxBim.Shared.Tests.First.csproj" />
+    <Project Path="tests/RxBim.Shared.Tests/Fixtures/Second/RxBim.Shared.Tests.Second.csproj" />
+  </Folder>
   <Project Path="build/_build.csproj">
     <Build Project="false" />
   </Project>
