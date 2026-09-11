@@ -74,6 +74,7 @@
     <Project Path="tests/RxBim.Shared.Tests/Fixtures/Dependency/RxBim.Shared.Tests.Dependency.csproj" />
     <Project Path="tests/RxBim.Shared.Tests/Fixtures/First/RxBim.Shared.Tests.First.csproj" />
     <Project Path="tests/RxBim.Shared.Tests/Fixtures/Second/RxBim.Shared.Tests.Second.csproj" />
+    <Project Path="tests/RxBim.Shared.Tests/Fixtures/WpfProbe/RxBim.Shared.Tests.WpfProbe.csproj" />
   </Folder>
   <Project Path="build/_build.csproj">
     <Build Project="false" />
