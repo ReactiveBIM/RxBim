@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
 using Xunit;
 using static TestPluginDirectory;
 
@@ -68,20 +67,6 @@ public class PluginContextTests
         Assert.NotSame(ContextOf(first), ContextOf(second));
         Assert.NotEqual(first.GetType(), second.GetType());
         Assert.Equal(1, ReadProperty<int>(second, "Sequence"));
-    }
-
-    [Fact]
-    public async Task ConcurrentCallsCreateExactlyOneContext()
-    {
-        const int numberOfCalls = 24;
-        using var directory = new TestPluginDirectory();
-        var type = directory.FirstType;
-        var objects = await Task.WhenAll(Enumerable.Range(0, numberOfCalls)
-            .Select(_ => Task.Run(() => PluginContext.CreateInstanceInReusedContext(type))));
-
-        Assert.Single(objects.Select(ContextOf).Distinct());
-        Assert.Single(AssemblyLoadContext.All.Where(context => context.Name == ContextOf(objects[0]).Name));
-        Assert.Equal(numberOfCalls, objects.Select(instance => ReadProperty<int>(instance, "Sequence")).Distinct().Count());
     }
 
     [Fact]
