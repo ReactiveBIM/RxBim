@@ -2,19 +2,18 @@
 namespace RxBim.Shared;
 
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading;
 
 /// <inheritdoc />
 public class PluginContext : AssemblyLoadContext
 {
     private const string ContextNamePrefix = "RxBim:";
     private const string AssemblyExtension = ".dll";
-    private static readonly ConcurrentDictionary<string, Lazy<PluginContext>> ReusedContexts =
+    private static readonly Dictionary<string, PluginContext> ReusedContexts =
         new(StringComparer.OrdinalIgnoreCase);
     private readonly AssemblyDependencyResolver _resolver;
     private readonly string? _directory;
@@ -99,10 +98,11 @@ public class PluginContext : AssemblyLoadContext
         assemblyPath = Path.GetFullPath(assemblyPath);
         var directory = Path.TrimEndingDirectorySeparator(Path.GetDirectoryName(assemblyPath)!);
 
-        // Lazy prevents concurrent calls from creating redundant non-collectible contexts.
-        var context = ReusedContexts.GetOrAdd(directory, _ => new Lazy<PluginContext>(
-            () => new PluginContext(assemblyPath),
-            LazyThreadSafetyMode.ExecutionAndPublication)).Value;
+        if (!ReusedContexts.TryGetValue(directory, out var context))
+        {
+            context = new PluginContext(assemblyPath);
+            ReusedContexts.Add(directory, context);
+        }
 
         return context.CreateInstanceCore(type);
     }
