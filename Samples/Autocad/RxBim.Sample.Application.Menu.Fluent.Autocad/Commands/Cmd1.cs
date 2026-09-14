@@ -18,6 +18,14 @@
         HelpUrl = "https://github.com/ReactiveBIM/RxBim")]
     public class Cmd1 : RxBimCommand
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// Executes the command.
         /// </summary>

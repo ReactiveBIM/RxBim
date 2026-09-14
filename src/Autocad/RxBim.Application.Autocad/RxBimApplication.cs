@@ -23,6 +23,13 @@ namespace RxBim.Application.Autocad
         /// via Addin Manager.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
+
+        /// <summary>
+        /// Reuses the context for the application's DLL directory until AutoCAD exits.
+        /// Applies only when <see cref="RunInSeparatedContext"/> is enabled.
+        /// Enable this setting for the application's commands as well to share the same context.
+        /// </summary>
+        protected virtual bool ReuseSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -34,6 +41,12 @@ namespace RxBim.Application.Autocad
                 var type = GetType();
                 if (!PluginContext.IsCurrentContextRxBim(type))
                 {
+                    if (ReuseSeparatedContext)
+                    {
+                        InitializeInReusedContext(type);
+                        return;
+                    }
+
                     var appInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (appInstance is IExtensionApplication application)
                     {
@@ -66,6 +79,26 @@ namespace RxBim.Application.Autocad
         /// If it returns true, the application will run. Otherwise, the application will not run.
         /// </summary>
         protected virtual bool CanBeStarted() => true;
+
+#if NETCOREAPP
+        private void InitializeInReusedContext(Type type)
+        {
+            IExtensionApplication application;
+
+            try
+            {
+                application = (IExtensionApplication)PluginContext.CreateInstanceInReusedContext(type);
+            }
+            catch (Exception exception)
+            {
+                // Report loading failures without initializing in the original context.
+                Application.ShowAlertDialog($"Error: {exception}");
+                return;
+            }
+
+            application.Initialize();
+        }
+#endif
 
         private void ApplicationOnIdle(object? sender, EventArgs e)
         {

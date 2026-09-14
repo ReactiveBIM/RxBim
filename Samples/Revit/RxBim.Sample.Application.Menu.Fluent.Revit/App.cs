@@ -9,6 +9,14 @@
     /// <inheritdoc />
     public class App : RxBimApplication
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// Start application.
         /// </summary>

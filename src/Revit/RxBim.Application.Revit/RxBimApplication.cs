@@ -3,7 +3,6 @@
     using System;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
     using Ribbon;
     using Shared;
@@ -28,6 +27,13 @@
         /// is preferred to avoid nesting it inside Revit's isolated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
+
+        /// <summary>
+        /// Reuses the context for the application's DLL directory until Revit exits.
+        /// Applies only when <see cref="RunInSeparatedContext"/> is enabled.
+        /// Enable this setting for the application's commands as well to share the same context.
+        /// </summary>
+        protected virtual bool ReuseSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -39,11 +45,12 @@
                 var type = GetType();
                 if (!PluginContext.IsCurrentContextRxBim(type))
                 {
+                    if (ReuseSeparatedContext)
+                        return StartInReusedContext(type, application);
+
                     _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (_isolatedApplicationInstance is IExternalApplication app)
-                    {
                         return app.OnStartup(application);
-                    }
                 }
             }
 #endif
@@ -72,6 +79,27 @@
 
             return ShutdownApplication();
         }
+
+#if NETCOREAPP
+        private Result StartInReusedContext(Type type, UIControlledApplication application)
+        {
+            IExternalApplication app;
+
+            try
+            {
+                app = (IExternalApplication)PluginContext.CreateInstanceInReusedContext(type);
+            }
+            catch (Exception exception)
+            {
+                // Report loading failures instead of starting the application without the requested isolation.
+                TaskDialog.Show(nameof(RxBim), exception.ToString());
+                return Result.Failed;
+            }
+
+            _isolatedApplicationInstance = app;
+            return app.OnStartup(application);
+        }
+#endif
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
