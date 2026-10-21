@@ -15,7 +15,8 @@
         MenuData menuData,
         IComboBoxEventsHandler comboBoxEventsHandler,
         IButtonImageProvider imageProvider,
-        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService)
+        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService,
+        RevitEnhancedToolTipService enhancedToolTipService)
         : IRibbonPanelItemService
     {
         /// <inheritdoc />
@@ -125,6 +126,10 @@
 
             existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
         }
+
+        /// <inheritdoc />
+        public void RegisterEnhancedToolTip(Button config, RibbonTab tab, string panelName) =>
+            enhancedToolTipService.Register(config, tab, panelName);
 
         /// <inheritdoc />
         public void SetButtonTextVisibility(Button config, RibbonTab tab, string panelName)

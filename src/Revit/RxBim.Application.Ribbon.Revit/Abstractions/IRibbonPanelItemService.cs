@@ -50,6 +50,14 @@
         void RegisterButton(RevitRibbonButton button, Button buttonConfig);
         
         /// <summary>
+        /// Registers enhanced tooltips for a created button and its pull-down commands.
+        /// </summary>
+        /// <param name="config">Button configuration.</param>
+        /// <param name="tab">Ribbon tab containing the button.</param>
+        /// <param name="panelName">Panel name.</param>
+        void RegisterEnhancedToolTip(Button config, RibbonTab tab, string panelName);
+
+        /// <summary>
         /// Applies text visibility to a created button and its pull-down commands.
         /// </summary>
         /// <param name="config">Button configuration.</param>

@@ -25,6 +25,7 @@
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);
             _ribbonPanelItemService.RegisterButton(pulldownButton, pullDownButtonConfig);
             _ribbonPanelItemService.CreateButtonsForPullDown(pullDownButtonConfig, pulldownButton);
+            _ribbonPanelItemService.RegisterEnhancedToolTip(pullDownButtonConfig, tab, ribbonPanel.Title);
             _ribbonPanelItemService.SetButtonTextVisibility(pullDownButtonConfig, tab, ribbonPanel.Title);
         }
 

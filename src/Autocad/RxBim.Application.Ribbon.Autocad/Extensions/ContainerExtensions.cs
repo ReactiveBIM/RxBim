@@ -65,6 +65,7 @@
         {
             services.RegisterTypes<IItemStrategy>(Assembly.GetExecutingAssembly(), ServiceLifetime.Singleton)
                 .AddSingleton<IOnlineHelpService, OnlineHelpService>()
+                .AddSingleton<IAutocadEnhancedToolTipService, AutocadEnhancedToolTipService>()
                 .AddSingleton<IRibbonEventsService, RibbonEventsService>()
                 .AddSingleton<IColorThemeService, ColorThemeService>()
                 .AddSingleton<IButtonImageProvider, ButtonImageProvider>()

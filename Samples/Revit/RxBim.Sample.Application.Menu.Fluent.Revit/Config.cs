@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
     using Di;
+    using EnhancedToolTips;
     using Microsoft.Extensions.DependencyInjection;
     using RxBim.Application.Ribbon;
 
@@ -16,7 +17,8 @@
                 .Tab("RxBim", tab => tab
                     .PanelsFromAttributes()
                     .PanelsFromBuilder()
-                    .TextVisibilityPanels()));
+                    .TextVisibilityPanels()
+                    .ToolTipProbePanel()));
         }
     }
 }

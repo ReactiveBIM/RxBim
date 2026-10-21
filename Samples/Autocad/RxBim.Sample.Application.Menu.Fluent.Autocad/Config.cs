@@ -19,6 +19,7 @@
                         title: "RxBim",
                         tab => tab
                             .TextVisibilityPanels()
+                            .EnhancedToolTipPanel()
                             .Panel(
                                 title: "Fluent 1",
                                 panel => panel

@@ -193,6 +193,7 @@
             button.Description ??= attr.Description;
             button.Text ??= attr.Text;
             button.ToolTip ??= attr.ToolTip;
+            button.EnhancedToolTip ??= attr.EnhancedToolTip;
             button.HelpUrl ??= attr.HelpUrl;
             button.Image ??= attr.Image;
             button.LargeImage ??= attr.LargeImage;

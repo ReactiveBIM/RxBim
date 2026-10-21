@@ -26,6 +26,7 @@
             var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
             var pushButton = (PushButton)panel.AddItem(pushButtonData);
             _ribbonPanelItemService.RegisterButton(pushButton, cmdButtonConfig);            
+            _ribbonPanelItemService.RegisterEnhancedToolTip(cmdButtonConfig, tab, panel.Title);
             _ribbonPanelItemService.SetButtonTextVisibility(cmdButtonConfig, tab, panel.Title);
         }
 

@@ -66,7 +66,10 @@
                 }
 
                 if (stackedItems.Items[i] is Button button)
+                {
+                    _ribbonPanelItemService.RegisterEnhancedToolTip(button, tab, ribbonPanel.Title);
                     _ribbonPanelItemService.SetButtonTextVisibility(button, tab, ribbonPanel.Title);
+                }
 
                 if (stackedItems.Items[i] is ComboBox comboBoxConfig &&
                     addedItems[i] is Autodesk.Revit.UI.ComboBox addedComboBox)
