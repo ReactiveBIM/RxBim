@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="RxBim.Application.Ribbon.Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Markdig" Version="0.41.3" />
     </ItemGroup>
 

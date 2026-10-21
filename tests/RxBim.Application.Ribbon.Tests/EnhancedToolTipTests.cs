@@ -2,14 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
+    using System.Windows.Documents;
     using ConfigurationBuilders;
     using FluentAssertions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
     using Xunit;
+    using Border = System.Windows.Controls.Border;
+    using FlowDocumentScrollViewer = System.Windows.Controls.FlowDocumentScrollViewer;
 
     public class EnhancedToolTipTests
     {
@@ -154,6 +158,63 @@
                 service.Clear();
             });
         }
+
+        [Theory]
+        [InlineData("A &amp; B", "A & B")]
+        [InlineData("&lt;b&gt;", "<b>")]
+        [InlineData("&#38; &#x26;", "& &")]
+        [InlineData("&amp;lt;", "&lt;")]
+        [InlineData("`&amp;`", "&amp;")]
+        public void MarkdownEntitiesPreserveExpectedText(string markdown, string expectedText)
+        {
+            RunOnUiThread(() =>
+            {
+                var document = RenderMarkdown(markdown);
+
+                GetDocumentText(document).Should().Be(expectedText);
+            });
+        }
+
+        [Theory]
+        [InlineData("<https://example.com/help>", "https://example.com/help", "https://example.com/help")]
+        [InlineData("<http://example.com/help>", "http://example.com/help", "http://example.com/help")]
+        [InlineData("[Help](https://example.com/help)", "Help", "https://example.com/help")]
+        public void MarkdownWebLinksRenderClickableText(string markdown, string expectedText, string expectedAddress)
+        {
+            RunOnUiThread(() =>
+            {
+                var document = RenderMarkdown(markdown);
+
+                GetDocumentText(document).Should().Be(expectedText);
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                var link = paragraph.Inlines.OfType<Hyperlink>().Should().ContainSingle().Subject;
+                link.NavigateUri.AbsoluteUri.Should().Be(expectedAddress);
+            });
+        }
+
+        [Theory]
+        [InlineData("user@example.com")]
+        [InlineData("ftp://example.com/file")]
+        public void MarkdownOtherAutolinksPreserveTextWithoutNavigation(string address)
+        {
+            RunOnUiThread(() =>
+            {
+                var document = RenderMarkdown("<" + address + ">");
+
+                GetDocumentText(document).Should().Be(address);
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                paragraph.Inlines.OfType<Hyperlink>().Should().BeEmpty();
+            });
+        }
+
+        private static FlowDocument RenderMarkdown(string markdown)
+        {
+            var card = (Border)EnhancedToolTipContent.Create(string.Empty, markdown, null, null);
+            return ((FlowDocumentScrollViewer)card.Child).Document;
+        }
+
+        private static string GetDocumentText(FlowDocument document) =>
+            new TextRange(document.ContentStart, document.ContentEnd).Text.TrimEnd('\r', '\n');
 
         private static MenuData CreateMenuData()
         {

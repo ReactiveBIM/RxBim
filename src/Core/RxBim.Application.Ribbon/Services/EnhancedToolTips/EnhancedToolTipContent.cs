@@ -221,6 +221,12 @@ internal static class EnhancedToolTipContent
         {
             case LiteralInline literal:
                 return new Run(literal.Content.ToString());
+            case HtmlEntityInline entity:
+                return new Run(entity.Transcoded.ToString());
+            case AutolinkInline autolink:
+                var automaticLink = CreateLink(autolink.Url);
+                automaticLink.Inlines.Add(new Run(autolink.Url));
+                return automaticLink;
             case CodeInline code:
                 return new Run(code.Content) { FontFamily = new FontFamily("Consolas") };
             case LineBreakInline lineBreak:
@@ -244,19 +250,22 @@ internal static class EnhancedToolTipContent
 
     private static Span RenderLink(LinkInline link)
     {
-        var label = new Span();
+        var label = link.IsImage ? new Span() : CreateLink(link.Url);
+        RenderInlines(link, label.Inlines);
+        return label;
+    }
 
-        if (!link.IsImage && Uri.TryCreate(link.Url, UriKind.Absolute, out var uri) &&
-            uri.IsHttpOrHttps())
+    private static Span CreateLink(string? url)
+    {
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.IsHttpOrHttps())
         {
-            label = new Hyperlink
+            return new Hyperlink
             {
                 NavigateUri = uri,
                 Foreground = SystemColors.HotTrackBrush
             };
         }
 
-        RenderInlines(link, label.Inlines);
-        return label;
+        return new Span();
     }
 }
