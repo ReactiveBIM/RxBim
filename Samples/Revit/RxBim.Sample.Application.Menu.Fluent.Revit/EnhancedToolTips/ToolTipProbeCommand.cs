@@ -16,7 +16,7 @@ public class ToolTipProbeCommand : RxBimCommand
     /// </summary>
     public PluginResult ExecuteCommand()
     {
-        TaskDialog.Show("Tooltip probes", "The ribbon command was executed.");
+        TaskDialog.Show("Enhanced tooltips", "The ribbon command was executed.");
         return PluginResult.Succeeded;
     }
 }

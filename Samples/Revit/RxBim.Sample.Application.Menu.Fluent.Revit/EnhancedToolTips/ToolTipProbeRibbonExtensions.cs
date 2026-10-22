@@ -11,7 +11,7 @@ internal static class ToolTipProbeRibbonExtensions
     /// <summary>
     /// The panel that exclusively owns the probe buttons.
     /// </summary>
-    internal const string PanelName = "Tooltip probes";
+    internal const string PanelName = "Enhanced tooltips";
 
     /// <summary>
     /// The help topic shared by native contextual help and the interactive cards.
