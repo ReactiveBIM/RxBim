@@ -33,7 +33,7 @@ Configuration uses the same button property:
 }
 ```
 
-The card supports headings, lists, emphasis, code and HTTP(S) hyperlinks. Images are not loaded, and HTML is displayed as text. `HelpUrl` remains separate from content links and supplies the help footer and F1 action. F1 is handled only while an enhanced card with a help address is visible. Otherwise the host retains its normal help behavior.
+The card uses BimTeam.Markdig.Wpf to render Markdown, including images and tables. Content hyperlinks are passed to the Windows shell without filtering URI schemes in RxBim; opening failures are traced. `HelpUrl` remains separate from content links and supplies the help footer and F1 action. F1 is handled only while an enhanced card with a help address is visible. Otherwise the host retains its normal help behavior.
 
 Version information follows `Ribbon.DisplayVersion` and `Ribbon.VersionPrefix`, including when native `ToolTip` is absent. It is passed separately from Markdown. The help caption follows the current UI culture, with English and Russian resources.
 

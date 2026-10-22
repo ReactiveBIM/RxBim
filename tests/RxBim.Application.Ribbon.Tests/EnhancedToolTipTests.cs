@@ -2,10 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
+    using System.Windows;
     using System.Windows.Documents;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
     using ConfigurationBuilders;
     using FluentAssertions;
     using Microsoft.Extensions.Configuration;
@@ -14,6 +18,7 @@
     using Xunit;
     using Border = System.Windows.Controls.Border;
     using FlowDocumentScrollViewer = System.Windows.Controls.FlowDocumentScrollViewer;
+    using Image = System.Windows.Controls.Image;
 
     public class EnhancedToolTipTests
     {
@@ -193,9 +198,9 @@
         }
 
         [Theory]
-        [InlineData("user@example.com")]
-        [InlineData("ftp://example.com/file")]
-        public void MarkdownOtherAutolinksPreserveTextWithoutNavigation(string address)
+        [InlineData("user@example.com", "mailto:user@example.com")]
+        [InlineData("ftp://example.com/file", "ftp://example.com/file")]
+        public void MarkdownOtherAutolinksRenderClickableText(string address, string expectedAddress)
         {
             RunOnUiThread(() =>
             {
@@ -203,7 +208,89 @@
 
                 GetDocumentText(document).Should().Be(address);
                 var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
-                paragraph.Inlines.OfType<Hyperlink>().Should().BeEmpty();
+                var link = paragraph.Inlines.OfType<Hyperlink>().Should().ContainSingle().Subject;
+                link.NavigateUri.OriginalString.Should().Be(expectedAddress);
+            });
+        }
+
+        [Fact]
+        public void SharedMarkdownRendererCreatesTooltipTables()
+        {
+            RunOnUiThread(() =>
+            {
+                var document = RenderMarkdown("| Name | Value |\n| --- | --- |\n| Width | 900 |");
+
+                var table = document.Blocks.OfType<Table>().Should().ContainSingle().Subject;
+                table.Columns.Count.Should().Be(2);
+                var rows = table.RowGroups.Single().Rows;
+                rows.Count.Should().Be(2);
+                GetDocumentText(document).Should().Contain("Width").And.Contain("900");
+            });
+        }
+
+        [Fact]
+        public void SharedMarkdownRendererCreatesTooltipImagesWithinCardWidth()
+        {
+            RunOnUiThread(() =>
+            {
+                var bitmap = BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null, new byte[4], 4);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                using var stream = new MemoryStream();
+                encoder.Save(stream);
+                var markdown = "![Plan](data:image/png;base64," + Convert.ToBase64String(stream.ToArray()) + ")";
+
+                var document = RenderMarkdown(markdown);
+
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                var container = paragraph.Inlines.OfType<InlineUIContainer>().Should().ContainSingle().Subject;
+                var image = container.Child.Should().BeOfType<Image>().Subject;
+                image.Source.Should().BeAssignableTo<BitmapSource>().Subject.PixelWidth.Should().Be(1);
+                image.MaxWidth.Should().Be(360);
+            });
+        }
+
+        [Fact]
+        public void SharedMarkdownRendererKeepsTitleHelpAndVersionSeparateFromBody()
+        {
+            RunOnUiThread(() =>
+            {
+                const string title = "**Command**";
+                const string version = "Version **literal**";
+
+                var card = (Border)EnhancedToolTipContent.Create(
+                    title, "**Details**", "https://example.com/help", version);
+
+                var document = ((FlowDocumentScrollViewer)card.Child).Document;
+                var heading = document.Blocks.FirstBlock.Should().BeOfType<Paragraph>().Subject;
+                new TextRange(heading.ContentStart, heading.ContentEnd).Text.TrimEnd('\r', '\n').Should().Be(title);
+                heading.FontWeight.Should().Be(FontWeights.Bold);
+                var footer = document.Blocks.LastBlock.Should().BeOfType<Paragraph>().Subject;
+                var help = footer.Inlines.OfType<Hyperlink>().Should().ContainSingle().Subject;
+                help.NavigateUri.AbsoluteUri.Should().Be("https://example.com/help");
+                help.Tag.Should().BeSameAs(EnhancedToolTipContent.HelpLinkTag);
+                footer.Inlines.OfType<Run>().Should().ContainSingle().Subject.Text.Should().Be(version);
+                GetDocumentText(document).Should().Contain("Details");
+            });
+        }
+
+        [Theory]
+        [InlineData("mailto:user@example.com")]
+        [InlineData("ftp://example.com/file")]
+        [InlineData("file:///C:/manual.pdf")]
+        [InlineData("bimteam:help")]
+        [InlineData("manual.md")]
+        [InlineData("#section")]
+        public void MarkdownNonWebLinksKeepTheirLabelsAndNavigation(string address)
+        {
+            RunOnUiThread(() =>
+            {
+                var document = RenderMarkdown("[**Help**](" + address + ")");
+
+                GetDocumentText(document).Should().Be("Help");
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                var link = paragraph.Inlines.OfType<Hyperlink>().Should().ContainSingle().Subject;
+                link.NavigateUri.OriginalString.Should().Be(address);
             });
         }
 

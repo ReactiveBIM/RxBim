@@ -6,12 +6,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
-using Markdig;
-using Markdig.Syntax;
-using Markdig.Syntax.Inlines;
-using MarkdownBlock = Markdig.Syntax.Block;
-using MarkdownInline = Markdig.Syntax.Inlines.Inline;
+using BimTeam.Markdig.Wpf;
 
 /// <summary>
 /// Builds a scrollable Markdown card with separate help and version information.
@@ -41,26 +36,24 @@ internal static class EnhancedToolTipContent
     /// <returns>The interactive tooltip card.</returns>
     internal static FrameworkElement Create(string title, string markdown, string? helpUrl, string? version)
     {
-        var document = new FlowDocument
+        var document = MarkdownWpf.ToFlowDocument(markdown, options: new MarkdownRenderOptions
         {
-            PagePadding = new Thickness(0),
-            FontFamily = SystemFonts.MessageFontFamily,
-            FontSize = SystemFonts.MessageFontSize,
-            Foreground = SystemColors.ControlTextBrush,
-            TextAlignment = TextAlignment.Left
-        };
+            ImageMaxWidth = ContentWidth
+        });
 
         if (!string.IsNullOrWhiteSpace(title))
         {
-            document.Blocks.Add(new Paragraph(new Run(title))
+            var heading = new Paragraph(new Run(title))
             {
                 FontWeight = FontWeights.Bold,
                 Margin = new Thickness(0, 0, 0, 8)
-            });
-        }
+            };
 
-        foreach (var block in Markdown.Parse(markdown))
-            document.Blocks.Add(RenderBlock(block));
+            if (document.Blocks.FirstBlock is { } firstBlock)
+                document.Blocks.InsertBefore(firstBlock, heading);
+            else
+                document.Blocks.Add(heading);
+        }
 
         AddFooter(document, helpUrl, version);
 
@@ -114,158 +107,5 @@ internal static class EnhancedToolTipContent
 
         if (footer.Inlines.Count != 0)
             document.Blocks.Add(footer);
-    }
-
-    private static System.Windows.Documents.Block RenderBlock(MarkdownBlock block)
-    {
-        switch (block)
-        {
-            case ListBlock list:
-                return RenderList(list);
-            case QuoteBlock quote:
-                var section = RenderSection(quote);
-                section.BorderBrush = SystemColors.ControlDarkBrush;
-                section.BorderThickness = new Thickness(3, 0, 0, 0);
-                section.Padding = new Thickness(8, 0, 0, 0);
-                return section;
-            case ThematicBreakBlock:
-                return new Paragraph
-                {
-                    BorderBrush = SystemColors.ControlDarkBrush,
-                    BorderThickness = new Thickness(0, 1, 0, 0),
-                    Margin = new Thickness(0, 6, 0, 6)
-                };
-            case CodeBlock code:
-                return new Paragraph(new Run(code.Lines.ToString()))
-                {
-                    FontFamily = new FontFamily("Consolas"),
-                    Background = SystemColors.ControlLightBrush,
-                    Padding = new Thickness(6),
-                    Margin = new Thickness(0, 4, 0, 8)
-                };
-            case LeafBlock leaf:
-                return RenderParagraph(leaf);
-            case ContainerBlock container:
-                return RenderSection(container);
-            default:
-                return new Paragraph();
-        }
-    }
-
-    private static Paragraph RenderParagraph(LeafBlock leaf)
-    {
-        var paragraph = new Paragraph { Margin = new Thickness(0, 0, 0, 8) };
-
-        if (leaf.Inline is not null)
-            RenderInlines(leaf.Inline, paragraph.Inlines);
-        else
-            paragraph.Inlines.Add(new Run(leaf.Lines.ToString()));
-
-        if (leaf is HeadingBlock heading)
-        {
-            paragraph.FontWeight = FontWeights.Bold;
-            paragraph.FontSize = SystemFonts.MessageFontSize + Math.Max(0, 4 - heading.Level);
-            paragraph.Margin = new Thickness(0, 4, 0, 6);
-        }
-
-        return paragraph;
-    }
-
-    private static Section RenderSection(ContainerBlock container)
-    {
-        var section = new Section { Margin = new Thickness(0, 0, 0, 8) };
-
-        foreach (var child in container)
-            section.Blocks.Add(RenderBlock(child));
-
-        return section;
-    }
-
-    private static List RenderList(ListBlock source)
-    {
-        var list = new List
-        {
-            MarkerStyle = source.IsOrdered ? TextMarkerStyle.Decimal : TextMarkerStyle.Disc,
-            Padding = new Thickness(20, 0, 0, 0),
-            Margin = new Thickness(0, 0, 0, 8)
-        };
-
-        if (source.IsOrdered && int.TryParse(source.OrderedStart, out var start) && start > 0)
-            list.StartIndex = start;
-
-        foreach (var child in source)
-        {
-            if (child is not ListItemBlock item)
-                continue;
-
-            var listItem = new ListItem { Margin = new Thickness(0, 0, 0, 3) };
-
-            foreach (var block in item)
-                listItem.Blocks.Add(RenderBlock(block));
-
-            list.ListItems.Add(listItem);
-        }
-
-        return list;
-    }
-
-    private static void RenderInlines(ContainerInline container, InlineCollection destination)
-    {
-        foreach (var child in container)
-            destination.Add(RenderInline(child));
-    }
-
-    private static System.Windows.Documents.Inline RenderInline(MarkdownInline inline)
-    {
-        switch (inline)
-        {
-            case LiteralInline literal:
-                return new Run(literal.Content.ToString());
-            case HtmlEntityInline entity:
-                return new Run(entity.Transcoded.ToString());
-            case AutolinkInline autolink:
-                var automaticLink = CreateLink(autolink.Url);
-                automaticLink.Inlines.Add(new Run(autolink.Url));
-                return automaticLink;
-            case CodeInline code:
-                return new Run(code.Content) { FontFamily = new FontFamily("Consolas") };
-            case LineBreakInline lineBreak:
-                return lineBreak.IsHard ? new LineBreak() : new Run(" ");
-            case EmphasisInline emphasis:
-                Span formatted = emphasis.DelimiterCount >= 2 ? new Bold() : new Italic();
-                RenderInlines(emphasis, formatted.Inlines);
-                return formatted;
-            case LinkInline link:
-                return RenderLink(link);
-            case ContainerInline nested:
-                var span = new Span();
-                RenderInlines(nested, span.Inlines);
-                return span;
-            case HtmlInline html:
-                return new Run(html.Tag);
-            default:
-                return new Run();
-        }
-    }
-
-    private static Span RenderLink(LinkInline link)
-    {
-        var label = link.IsImage ? new Span() : CreateLink(link.Url);
-        RenderInlines(link, label.Inlines);
-        return label;
-    }
-
-    private static Span CreateLink(string? url)
-    {
-        if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.IsHttpOrHttps())
-        {
-            return new Hyperlink
-            {
-                NavigateUri = uri,
-                Foreground = SystemColors.HotTrackBrush
-            };
-        }
-
-        return new Span();
     }
 }

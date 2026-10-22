@@ -388,15 +388,12 @@ public class EnhancedToolTipService : IDisposable
             return;
         }
 
-        if (!e.Uri.IsHttpOrHttps())
-            return;
-
         e.Handled = true;
         Close();
 
         try
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(e.Uri.OriginalString) { UseShellExecute = true });
         }
         catch (Exception exception)
         {

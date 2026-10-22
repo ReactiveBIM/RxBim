@@ -2,6 +2,7 @@
 
 using Commands;
 using RxBim.Application.Ribbon;
+using ToolTipExamples;
 
 /// <summary>
 /// Demonstrates optional Markdown tooltips without replacing native tooltips on other buttons.
@@ -30,6 +31,8 @@ internal static class EnhancedToolTipRibbonExtensions
             .CommandButton<EnhancedToolTipCommand>("TipPopup", button => ConfigurePopup(button, "Popup"))
             .CommandButton<EnhancedToolTipCommand>(
                 "TipPopupOnly", button => ConfigurePopupOnly(button, "Popup only"))
+            .CommandButton<EnhancedToolTipCommand>(
+                "TipRenderer", button => ConfigureRenderer(button, "Картинка\nи таблица"))
             .CommandButton<Cmd3>("TipAttribute", button => button.Text("From\nattribute"))
             .ToggleCommandButton<EnhancedToolTipCommand>("TipToggle", button => button
                 .Text("Toggle")
@@ -52,7 +55,9 @@ internal static class EnhancedToolTipRibbonExtensions
                 .LargeImage(@"img\num1_32.png", ThemeType.Dark)
                 .LargeImage(@"img\num1_32_light.png", ThemeType.Light)
                 .CommandButton<EnhancedToolTipCommand>("TipMenuNative", button => ConfigureNative(button, "Native"))
-                .CommandButton<EnhancedToolTipCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))));
+                .CommandButton<EnhancedToolTipCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))
+                .CommandButton<EnhancedToolTipCommand>(
+                    "TipMenuRenderer", button => ConfigureRenderer(button, "Картинка и таблица"))));
 
     private static void ConfigureButton(ICommandButtonBuilder button, string text) => button
         .Text(text)
@@ -72,6 +77,12 @@ internal static class EnhancedToolTipRibbonExtensions
     {
         ConfigureNative(button, text);
         button.EnhancedToolTip(Markdown);
+    }
+
+    private static void ConfigureRenderer(ICommandButtonBuilder button, string text)
+    {
+        ConfigureButton(button, text);
+        button.EnhancedToolTip(EnhancedToolTipSampleContent.Markdown);
     }
 
     private static void ConfigurePopupOnly(ICommandButtonBuilder button, string text)

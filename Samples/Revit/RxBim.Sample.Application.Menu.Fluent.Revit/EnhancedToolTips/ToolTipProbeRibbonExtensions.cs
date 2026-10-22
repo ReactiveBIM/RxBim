@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit.EnhancedToolTips;
 
 using RxBim.Application.Ribbon;
+using ToolTipExamples;
 
 /// <summary>
 /// Adds isolated comparisons of native tooltips and interactive popups.
@@ -45,6 +46,8 @@ internal static class ToolTipProbeRibbonExtensions
             .CommandButton<ToolTipProbeCommand>("TipNative", button => ConfigureNative(button, "Native"))
             .CommandButton<ToolTipProbeCommand>("TipPopup", button => ConfigurePopup(button, "Popup\nwith native"))
             .CommandButton<ToolTipProbeCommand>("TipPopupOnly", button => ConfigurePopupOnly(button, "Popup\nonly"))
+            .CommandButton<ToolTipProbeCommand>(
+                "TipRenderer", button => ConfigureRenderer(button, "Картинка\nи таблица"))
             .CommandButton<Cmd3>("TipAttribute", button => button.Text("From\nattribute"))
             .StackedItems(items => items
                 .CommandButton<ToolTipProbeCommand>("TipStackNative", button => ConfigureNative(button, "Native"))
@@ -58,7 +61,9 @@ internal static class ToolTipProbeRibbonExtensions
                 .LargeImage(@"img\command_32.ico", ThemeType.Dark)
                 .LargeImage(@"img\command_32_light.ico", ThemeType.Light)
                 .CommandButton<ToolTipProbeCommand>("TipMenuNative", button => ConfigureNative(button, "Native"))
-                .CommandButton<ToolTipProbeCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))));
+                .CommandButton<ToolTipProbeCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))
+                .CommandButton<ToolTipProbeCommand>(
+                    "TipMenuRenderer", button => ConfigureRenderer(button, "Картинка и таблица"))));
     }
 
     private static void ConfigureButton(ICommandButtonBuilder button, string text)
@@ -82,6 +87,12 @@ internal static class ToolTipProbeRibbonExtensions
     {
         ConfigureNative(button, text);
         button.EnhancedToolTip(Markdown);
+    }
+
+    private static void ConfigureRenderer(ICommandButtonBuilder button, string text)
+    {
+        ConfigureButton(button, text);
+        button.EnhancedToolTip(EnhancedToolTipSampleContent.Markdown);
     }
 
     private static void ConfigurePopupOnly(ICommandButtonBuilder button, string text)
