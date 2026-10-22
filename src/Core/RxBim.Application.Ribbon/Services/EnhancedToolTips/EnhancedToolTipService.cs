@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -15,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using static Interop.RibbonNativeMethods;
 
 /// <summary>
 /// Displays interactive Markdown tooltips for explicitly configured ribbon buttons.
@@ -212,10 +212,6 @@ public class EnhancedToolTipService : IDisposable
         _popup.CustomPopupPlacementCallback = null;
         DisplayFailed = null;
     }
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool GetCursorPos(out ScreenPoint point);
 
     private void OnPostProcessInput(object sender, ProcessInputEventArgs e)
     {
@@ -449,20 +445,6 @@ public class EnhancedToolTipService : IDisposable
         }
 
         _closeTimer.Stop();
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct ScreenPoint
-    {
-        /// <summary>
-        /// Horizontal screen coordinate in physical pixels.
-        /// </summary>
-        public int X;
-
-        /// <summary>
-        /// Vertical screen coordinate in physical pixels.
-        /// </summary>
-        public int Y;
     }
 
     /// <summary>

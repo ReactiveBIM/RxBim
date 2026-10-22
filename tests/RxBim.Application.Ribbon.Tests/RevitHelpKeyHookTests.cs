@@ -3,11 +3,12 @@ namespace RxBim.Application.Ribbon.Tests;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using FluentAssertions;
 using Services;
 using Xunit;
+using static NativeMethods;
+using static Interop.RibbonNativeMethods;
 
 public class RevitHelpKeyHookTests
 {
@@ -144,6 +145,60 @@ public class RevitHelpKeyHookTests
         });
     }
 
+    [Fact]
+    public void QueuedF1AndItsSeparateNativeHelpRequestAreBothConsumed()
+    {
+        RunOnMessageThread(() =>
+        {
+            var helpCalls = 0;
+            using var hook = new RevitHelpKeyHook(() => { helpCalls++; return true; });
+
+            ReadMessage(0x100, F1Key).message.Should().Be(0);
+            ReadMessage(0x4D).message.Should().Be(0);
+            ReadMessage(0x100, F1Key, KeyRepeated).message.Should().Be(0);
+            ReadMessage(0x4D).message.Should().Be(0);
+            ReadMessage(0x101, F1Key, KeyReleased).message.Should().Be(0);
+            // Suppression is consumed by the matching request, not left active for unrelated help.
+            ReadMessage(0x4D).message.Should().Be(0x4D);
+
+            helpCalls.Should().Be(1);
+        });
+    }
+
+    [Fact]
+    public void NativeHelpRequestRemainsUnchangedWithoutEnhancedHelp()
+    {
+        RunOnMessageThread(() =>
+        {
+            using var hook = new RevitHelpKeyHook(() => false);
+
+            ReadMessage(0x100, F1Key).message.Should().Be(0x100);
+            ReadMessage(0x4D).message.Should().Be(0x4D);
+            ReadMessage(0x101, F1Key, KeyReleased).message.Should().Be(0x101);
+        });
+    }
+
+    [Fact]
+    public void DisposingHookLeavesQueuedNativeHelpUnchanged()
+    {
+        RunOnMessageThread(() =>
+        {
+            var hook = new RevitHelpKeyHook(() => true);
+            ReadMessage(0x100, F1Key).message.Should().Be(0);
+
+            hook.Dispose();
+
+            ReadMessage(0x4D).message.Should().Be(0x4D);
+        });
+    }
+
+    private static System.Windows.Interop.MSG ReadMessage(int message, int key = 0, long flags = 0)
+    {
+        PostThreadMessage(GetCurrentThreadId(), message, key, (nint)flags).Should().BeTrue();
+        PeekMessage(out var result, 0, message, message, 1).Should().BeTrue();
+        return result;
+    }
+
     private static bool HandleKey(RevitHelpKeyHook hook, int key, long flags = 0, int code = 0) =>
         hook.TryHandleKey(code, new IntPtr(key), new IntPtr(flags));
 
@@ -169,9 +224,4 @@ public class RevitHelpKeyHookTests
         if (failure is not null)
             ExceptionDispatchInfo.Capture(failure).Throw();
     }
-
-    [DllImport("user32.dll", EntryPoint = "PeekMessageW")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool PeekMessage(out System.Windows.Interop.MSG message,
-        IntPtr window, int min, int max, int remove);
 }

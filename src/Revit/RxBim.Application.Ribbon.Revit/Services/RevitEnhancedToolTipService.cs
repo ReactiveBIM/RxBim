@@ -74,9 +74,7 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
 
     private static void OpenHelp(string url)
     {
-        RevitHelpKeyHook.TraceHelp($"Queue help: {url}{Environment.NewLine}{Environment.StackTrace}");
-
-        // ShellExecute can pump messages. Return from the keyboard hook before starting the browser.
+        // ShellExecute can pump messages. Return from the input hook before starting the browser.
         Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => OpenQueuedHelp(url)));
     }
 
@@ -84,7 +82,6 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
     {
         try
         {
-            RevitHelpKeyHook.TraceHelp($"Open queued help: {url}");
             LinkLauncher.Open(url);
         }
         catch (Exception exception)
