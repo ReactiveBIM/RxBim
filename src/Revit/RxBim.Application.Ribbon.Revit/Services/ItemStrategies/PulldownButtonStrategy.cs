@@ -19,20 +19,20 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, PullDownButton pullDownButtonConfig)
+        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, PullDownButton itemConfig)
         {
-            var pulldownButtonData = CreatePulldownButtonData(pullDownButtonConfig);
+            var pulldownButtonData = CreatePulldownButtonData(itemConfig);
             var pulldownButton = (PulldownButton)ribbonPanel.AddItem(pulldownButtonData);
-            _ribbonPanelItemService.RegisterButton(pulldownButton, pullDownButtonConfig);
-            _ribbonPanelItemService.CreateButtonsForPullDown(pullDownButtonConfig, pulldownButton);
-            _ribbonPanelItemService.RegisterEnhancedToolTip(pullDownButtonConfig, tab, ribbonPanel.Title);
-            _ribbonPanelItemService.SetButtonTextVisibility(pullDownButtonConfig, tab, ribbonPanel.Title);
+            _ribbonPanelItemService.RegisterButton(pulldownButton, itemConfig);
+            _ribbonPanelItemService.CreateButtonsForPullDown(itemConfig, pulldownButton);
+            _ribbonPanelItemService.RegisterEnhancedToolTip(itemConfig, tab, ribbonPanel.Title);
+            _ribbonPanelItemService.SetButtonTextVisibility(itemConfig, tab, ribbonPanel.Title);
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData GetItemForStack(PullDownButton pullDownButtonConfig)
+        protected override RibbonItemData GetItemForStack(PullDownButton itemConfig)
         {
-            return CreatePulldownButtonData(pullDownButtonConfig);
+            return CreatePulldownButtonData(itemConfig);
         }
 
         private PulldownButtonData CreatePulldownButtonData(PullDownButton pullDownButtonConfig)

@@ -19,16 +19,16 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, CommandButton cmdButtonConfig)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, CommandButton itemConfig)
         {
             _panelService.AddItem(ribbonPanel,
-                _buttonService.CreateCommandButton(cmdButtonConfig, RibbonItemSize.Large));
+                _buttonService.CreateCommandButton(itemConfig, RibbonItemSize.Large));
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(CommandButton cmdButtonConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(CommandButton itemConfig, RibbonItemSize size)
         {
-            return _buttonService.CreateCommandButton(cmdButtonConfig, size, Orientation.Horizontal);
+            return _buttonService.CreateCommandButton(itemConfig, size, Orientation.Horizontal);
         }
     }
 }

@@ -67,10 +67,10 @@ namespace RxBim.Nuke.Versions
         /// <summary>
         /// Returns a tag for the project.
         /// </summary>
-        /// <param name="project">Project</param>
-        string IPublish.GetPackageTag(ProjectInfo project)
+        /// <param name="projectInfo">Project</param>
+        string IPublish.GetPackageTag(ProjectInfo projectInfo)
         {
-            return GetTagValue(project);
+            return GetTagValue(projectInfo);
         }
     }
 }

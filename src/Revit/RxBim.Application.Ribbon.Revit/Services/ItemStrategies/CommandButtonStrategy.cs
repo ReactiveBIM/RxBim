@@ -21,19 +21,19 @@
         }
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab tab, RibbonPanel panel, CommandButton cmdButtonConfig)
+        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, CommandButton itemConfig)
         {
-            var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
-            var pushButton = (PushButton)panel.AddItem(pushButtonData);
-            _ribbonPanelItemService.RegisterButton(pushButton, cmdButtonConfig);            
-            _ribbonPanelItemService.RegisterEnhancedToolTip(cmdButtonConfig, tab, panel.Title);
-            _ribbonPanelItemService.SetButtonTextVisibility(cmdButtonConfig, tab, panel.Title);
+            var pushButtonData = _ribbonPanelItemService.CreateCommandButtonData(itemConfig);
+            var pushButton = (PushButton)ribbonPanel.AddItem(pushButtonData);
+            _ribbonPanelItemService.RegisterButton(pushButton, itemConfig);
+            _ribbonPanelItemService.RegisterEnhancedToolTip(itemConfig, tab, ribbonPanel.Title);
+            _ribbonPanelItemService.SetButtonTextVisibility(itemConfig, tab, ribbonPanel.Title);
         }
 
         /// <inheritdoc />
-        protected override RibbonItemData GetItemForStack(CommandButton cmdButtonConfig)
+        protected override RibbonItemData GetItemForStack(CommandButton itemConfig)
         {
-            return _ribbonPanelItemService.CreateCommandButtonData(cmdButtonConfig);
+            return _ribbonPanelItemService.CreateCommandButtonData(itemConfig);
         }
     }
 }

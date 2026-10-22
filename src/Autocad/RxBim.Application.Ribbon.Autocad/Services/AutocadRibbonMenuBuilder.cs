@@ -63,11 +63,11 @@
         protected override bool CheckRibbonCondition() => ComponentManager.Ribbon != null;
 
         /// <inheritdoc />
-        protected override RibbonTab GetOrCreateTab(string tabName) =>
-            _tabService.GetTab(tabName) ?? _tabService.CreateTab(tabName);
+        protected override RibbonTab GetOrCreateTab(string title) =>
+            _tabService.GetTab(title) ?? _tabService.CreateTab(title);
 
         /// <inheritdoc />
-        protected override RibbonPanel GetOrCreatePanel(RibbonTab acRibbonTab, string panelName) =>
-            _panelService.GetOrCreatePanel(acRibbonTab, panelName);
+        protected override RibbonPanel GetOrCreatePanel(RibbonTab tab, string panelName) =>
+            _panelService.GetOrCreatePanel(tab, panelName);
     }
 }

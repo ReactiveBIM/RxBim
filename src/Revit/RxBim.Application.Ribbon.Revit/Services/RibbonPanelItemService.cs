@@ -40,18 +40,18 @@
         }
 
         /// <inheritdoc />
-        public RibbonCombo CreateComboBox(ComboBox itemConfig)
+        public RibbonCombo CreateComboBox(ComboBox comboBox)
         {
-            var comboBox = CreateComboBoxInternal(itemConfig);
+            var ribbonCombo = CreateComboBoxInternal(comboBox);
 
-            comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+            ribbonCombo.CurrentChanged += ComboBoxOnCurrentChanged;
 
-            foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
+            foreach (var comboBoxMember in comboBox.ComboBoxMembers)
             {
-                comboBox.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+                ribbonCombo.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
             }
 
-            return comboBox;
+            return ribbonCombo;
         }
 
         /// <inheritdoc />
