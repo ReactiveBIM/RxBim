@@ -325,19 +325,25 @@ public class EnhancedToolTipService : IDisposable
         }
     }
 
-    private CustomPopupPlacement[] GetPlacements(Size popupSize, Size targetSize, Point offset) => _beside
-        ?
-        [
-            new(new Point(_bounds.Right + PlacementGap, _bounds.Top), PopupPrimaryAxis.Vertical),
-            new(new Point(_bounds.Left - popupSize.Width - PlacementGap, _bounds.Top),
-                PopupPrimaryAxis.Vertical)
-        ]
-        :
+    private CustomPopupPlacement[] GetPlacements(Size popupSize, Size targetSize, Point offset)
+    {
+        if (_beside)
+        {
+            return
+            [
+                new(new Point(_bounds.Right + PlacementGap, _bounds.Top), PopupPrimaryAxis.Vertical),
+                new(new Point(_bounds.Left - popupSize.Width - PlacementGap, _bounds.Top),
+                    PopupPrimaryAxis.Vertical)
+            ];
+        }
+
+        return
         [
             new(new Point(_bounds.Left, _bounds.Bottom + PlacementGap), PopupPrimaryAxis.Horizontal),
             new(new Point(_bounds.Left, _bounds.Top - popupSize.Height - PlacementGap),
                 PopupPrimaryAxis.Horizontal)
         ];
+    }
 
     private void OnPreProcessInput(object sender, PreProcessInputEventArgs e)
     {
@@ -363,7 +369,7 @@ public class EnhancedToolTipService : IDisposable
         if (_disposed || handled)
             return;
 
-        if (message.message == ActivateAppMessage && message.wParam == IntPtr.Zero)
+        if (message.message == ActivateAppMessage && message.wParam == default)
         {
             Close();
             return;

@@ -6,7 +6,7 @@ using ToolTipExamples;
 /// <summary>
 /// Adds isolated comparisons of native tooltips and interactive popups.
 /// </summary>
-internal static class ToolTipProbeRibbonExtensions
+internal static class EnhancedToolTipRibbonExtensions
 {
     /// <summary>
     /// The panel that exclusively owns the probe buttons.
@@ -40,18 +40,18 @@ internal static class ToolTipProbeRibbonExtensions
     /// Adds the manual tooltip comparison panel to the sample tab.
     /// </summary>
     /// <param name="tab">The sample ribbon tab.</param>
-    public static ITabBuilder ToolTipProbePanel(this ITabBuilder tab)
+    public static ITabBuilder EnhancedToolTipPanel(this ITabBuilder tab)
     {
         return tab.Panel(PanelName, panel => panel
-            .CommandButton<ToolTipProbeCommand>("TipNative", button => ConfigureNative(button, "Native"))
-            .CommandButton<ToolTipProbeCommand>("TipPopup", button => ConfigurePopup(button, "Popup\nwith native"))
-            .CommandButton<ToolTipProbeCommand>("TipPopupOnly", button => ConfigurePopupOnly(button, "Popup\nonly"))
-            .CommandButton<ToolTipProbeCommand>(
+            .CommandButton<EnhancedToolTipCommand>("TipNative", button => ConfigureNative(button, "Native"))
+            .CommandButton<EnhancedToolTipCommand>("TipPopup", button => ConfigurePopup(button, "Popup\nwith native"))
+            .CommandButton<EnhancedToolTipCommand>("TipPopupOnly", button => ConfigurePopupOnly(button, "Popup\nonly"))
+            .CommandButton<EnhancedToolTipCommand>(
                 "TipRenderer", button => ConfigureRenderer(button, "Картинка\nи таблица"))
             .CommandButton<Cmd3>("TipAttribute", button => button.Text("From\nattribute"))
             .StackedItems(items => items
-                .CommandButton<ToolTipProbeCommand>("TipStackNative", button => ConfigureNative(button, "Native"))
-                .CommandButton<ToolTipProbeCommand>("TipStackPopup", button => ConfigurePopup(button, "Popup")))
+                .CommandButton<EnhancedToolTipCommand>("TipStackNative", button => ConfigureNative(button, "Native"))
+                .CommandButton<EnhancedToolTipCommand>("TipStackPopup", button => ConfigurePopup(button, "Popup")))
             .PullDownButton("TipMenu", menu => menu
                 .Text("Tooltip\nmenu")
                 .ToolTip("Compare native and interactive tooltips inside this menu.")
@@ -60,9 +60,9 @@ internal static class ToolTipProbeRibbonExtensions
                 .Image(@"img\command_16_light.ico", ThemeType.Light)
                 .LargeImage(@"img\command_32.ico", ThemeType.Dark)
                 .LargeImage(@"img\command_32_light.ico", ThemeType.Light)
-                .CommandButton<ToolTipProbeCommand>("TipMenuNative", button => ConfigureNative(button, "Native"))
-                .CommandButton<ToolTipProbeCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))
-                .CommandButton<ToolTipProbeCommand>(
+                .CommandButton<EnhancedToolTipCommand>("TipMenuNative", button => ConfigureNative(button, "Native"))
+                .CommandButton<EnhancedToolTipCommand>("TipMenuPopup", button => ConfigurePopup(button, "Popup"))
+                .CommandButton<EnhancedToolTipCommand>(
                     "TipMenuRenderer", button => ConfigureRenderer(button, "Картинка и таблица"))));
     }
 

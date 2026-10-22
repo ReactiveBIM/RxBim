@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Threading;
 using Autodesk.Windows;
 using RibbonButton = Autodesk.Windows.RibbonButton;
 using RibbonItem = Autodesk.Windows.RibbonItem;
@@ -13,9 +15,10 @@ using RibbonItem = Autodesk.Windows.RibbonItem;
 internal sealed class RevitEnhancedToolTipService : IDisposable
 {
     private readonly MenuData _menuData;
-    private readonly EnhancedToolTipService _toolTips = new(() => ComponentManager.Ribbon, LinkLauncher.Open);
+    private readonly EnhancedToolTipService _toolTips = new(() => ComponentManager.Ribbon, OpenHelp);
     private readonly Dictionary<RibbonButton, bool> _nativeToolTips = [];
     private readonly HashSet<RibbonListButton> _lists = [];
+    private RevitHelpKeyHook? _helpKeyHook;
     private bool _subscribed;
     private bool _failed;
     private bool _disposed;
@@ -69,6 +72,27 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
         _toolTips.Dispose();
     }
 
+    private static void OpenHelp(string url)
+    {
+        RevitHelpKeyHook.TraceHelp($"Queue help: {url}{Environment.NewLine}{Environment.StackTrace}");
+
+        // ShellExecute can pump messages. Return from the keyboard hook before starting the browser.
+        Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => OpenQueuedHelp(url)));
+    }
+
+    private static void OpenQueuedHelp(string url)
+    {
+        try
+        {
+            RevitHelpKeyHook.TraceHelp($"Open queued help: {url}");
+            LinkLauncher.Open(url);
+        }
+        catch (Exception exception)
+        {
+            Trace.TraceError("Could not open the Revit ribbon tooltip help: {0}", exception);
+        }
+    }
+
     private static bool HasEnhancedToolTip(Button config) =>
         !string.IsNullOrWhiteSpace(config.EnhancedToolTip) ||
         (config is PullDownButton pullDown && pullDown.CommandButtonsList.Any(HasEnhancedToolTip));
@@ -119,6 +143,17 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
 
         if (!_subscribed)
         {
+            try
+            {
+                _helpKeyHook = new RevitHelpKeyHook(_toolTips.TryOpenHelp);
+            }
+            catch (Exception exception)
+            {
+                Trace.TraceError("Could not install the Revit tooltip help hook: {0}", exception);
+                OnDisplayFailed(this, EventArgs.Empty);
+                return;
+            }
+
             ComponentManager.ToolTipOpened += OnNativeToolTipOpened;
             _subscribed = true;
         }
@@ -163,6 +198,9 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
 
     private void RestoreNativeToolTips()
     {
+        _helpKeyHook?.Dispose();
+        _helpKeyHook = null;
+
         if (_subscribed)
         {
             ComponentManager.ToolTipOpened -= OnNativeToolTipOpened;

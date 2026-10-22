@@ -9,7 +9,7 @@ using Shared;
 /// Confirms that tooltip probes do not interfere with executing ribbon commands.
 /// </summary>
 [Transaction(TransactionMode.Manual)]
-public class ToolTipProbeCommand : RxBimCommand
+public class EnhancedToolTipCommand : RxBimCommand
 {
     /// <summary>
     /// Displays confirmation without changing the document.

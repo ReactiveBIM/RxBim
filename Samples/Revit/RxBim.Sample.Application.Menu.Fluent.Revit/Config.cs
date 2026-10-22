@@ -18,7 +18,7 @@
                     .PanelsFromAttributes()
                     .PanelsFromBuilder()
                     .TextVisibilityPanels()
-                    .ToolTipProbePanel()));
+                    .EnhancedToolTipPanel()));
         }
     }
 }
