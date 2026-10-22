@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autodesk.Revit.UI;
 using Autodesk.Windows;
 using RibbonButton = Autodesk.Windows.RibbonButton;
 using RibbonItem = Autodesk.Windows.RibbonItem;
@@ -14,7 +13,7 @@ using RibbonItem = Autodesk.Windows.RibbonItem;
 internal sealed class RevitEnhancedToolTipService : IDisposable
 {
     private readonly MenuData _menuData;
-    private readonly EnhancedToolTipService _toolTips = new(() => ComponentManager.Ribbon, OpenHelp);
+    private readonly EnhancedToolTipService _toolTips = new(() => ComponentManager.Ribbon, LinkLauncher.Open);
     private readonly Dictionary<RibbonButton, bool> _nativeToolTips = [];
     private readonly HashSet<RibbonListButton> _lists = [];
     private bool _subscribed;
@@ -87,9 +86,6 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
             }
         }
     }
-
-    private static void OpenHelp(string url) =>
-        new ContextualHelp(ContextualHelpType.Url, url).Launch();
 
     private void Register(Button config, IEnumerable<RibbonItem> items, RibbonListButton? parent = null)
     {

@@ -45,7 +45,7 @@ public class EnhancedToolTipService : IDisposable
     /// Creates the popup and its timers on the host UI thread.
     /// </summary>
     /// <param name="getOwner">Returns the ribbon element that owns the popup.</param>
-    /// <param name="openHelp">Opens a button's help address using the host's help mechanism.</param>
+    /// <param name="openHelp">Opens a button's help address.</param>
     public EnhancedToolTipService(Func<FrameworkElement?> getOwner, Action<string> openHelp)
     {
         _getOwner = getOwner ?? throw new ArgumentNullException(nameof(getOwner));
@@ -393,7 +393,7 @@ public class EnhancedToolTipService : IDisposable
 
         try
         {
-            Process.Start(new ProcessStartInfo(e.Uri.OriginalString) { UseShellExecute = true });
+            LinkLauncher.Open(e.Uri.OriginalString);
         }
         catch (Exception exception)
         {

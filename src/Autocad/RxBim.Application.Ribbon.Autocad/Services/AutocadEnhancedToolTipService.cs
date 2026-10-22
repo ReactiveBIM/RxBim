@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Threading;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.Windows;
@@ -147,7 +146,7 @@ internal sealed class AutocadEnhancedToolTipService : IAutocadEnhancedToolTipSer
 
         try
         {
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            LinkLauncher.Open(url);
         }
         finally
         {

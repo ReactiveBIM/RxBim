@@ -22,7 +22,7 @@ internal static class EnhancedToolTipContent
         typeof(EnhancedToolTipContent).Assembly);
 
     /// <summary>
-    /// Gets the marker identifying the footer link that opens host-specific help.
+    /// Gets the marker identifying the footer link that opens the configured help address.
     /// </summary>
     internal static object HelpLinkTag { get; } = new();
 
