@@ -15,7 +15,7 @@ using RibbonItem = Autodesk.Windows.RibbonItem;
 internal sealed class RevitEnhancedToolTipService : IDisposable
 {
     private readonly MenuData _menuData;
-    private readonly EnhancedToolTipService _toolTips = new(() => ComponentManager.Ribbon, OpenHelp);
+    private readonly EnhancedToolTipService _toolTips;
     private readonly Dictionary<RibbonButton, bool> _nativeToolTips = [];
     private readonly HashSet<RibbonListButton> _lists = [];
     private RevitHelpKeyHook? _helpKeyHook;
@@ -27,9 +27,11 @@ internal sealed class RevitEnhancedToolTipService : IDisposable
     /// Creates the Revit adapter on the ribbon UI thread.
     /// </summary>
     /// <param name="menuData">Ribbon configuration and command assembly data.</param>
-    public RevitEnhancedToolTipService(MenuData menuData)
+    /// <param name="renderer">The configured tooltip body renderer.</param>
+    public RevitEnhancedToolTipService(MenuData menuData, IEnhancedToolTipRenderer renderer)
     {
         _menuData = menuData;
+        _toolTips = new EnhancedToolTipService(() => ComponentManager.Ribbon, OpenHelp, renderer);
         _toolTips.DisplayFailed += OnDisplayFailed;
     }
 

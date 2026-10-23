@@ -8,10 +8,12 @@ using System;
 public static class EnhancedToolTipBuilderExtensions
 {
     /// <summary>
-    /// Sets an interactive Markdown tooltip while retaining the native tooltip as a fallback.
+    /// Sets an interactive tooltip while retaining the native tooltip as a fallback.
     /// </summary>
     /// <param name="builder">A button builder that supports enhanced tooltips.</param>
-    /// <param name="markdown">Markdown content. Empty content retains the native tooltip.</param>
+    /// <param name="markdown">
+    /// Content formatted by the registered renderer. Empty content retains the native tooltip.
+    /// </param>
     /// <typeparam name="TBuilder">The fluent button builder type.</typeparam>
     /// <returns>The original builder.</returns>
     public static TBuilder EnhancedToolTip<TBuilder>(this IButtonBuilder<TBuilder> builder, string? markdown)

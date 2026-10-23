@@ -11,7 +11,8 @@
         public bool? ShowText { get; set; }
 
         /// <summary>
-        /// Optional Markdown content displayed in an interactive tooltip instead of the native tooltip.
+        /// Optional content displayed by the registered renderer in an interactive tooltip.
+        /// Replaces the native tooltip while the interactive tooltip is available.
         /// Null, empty or whitespace content preserves the native tooltip.
         /// </summary>
         public string? EnhancedToolTip { get; set; }

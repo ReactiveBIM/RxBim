@@ -25,12 +25,14 @@ internal sealed class AutocadEnhancedToolTipService : IAutocadEnhancedToolTipSer
     /// Initializes the AutoCAD adapter for the shared interactive tooltip service.
     /// </summary>
     /// <param name="menuData">The menu metadata used to display command versions.</param>
-    public AutocadEnhancedToolTipService(MenuData menuData)
+    /// <param name="renderer">The configured tooltip body renderer.</param>
+    public AutocadEnhancedToolTipService(MenuData menuData, IEnhancedToolTipRenderer renderer)
     {
         _menuData = menuData;
         _toolTips = new EnhancedToolTipService(
             () => ComponentManager.Ribbon,
-            OpenHelp);
+            OpenHelp,
+            renderer);
         _toolTips.DisplayFailed += OnDisplayFailed;
     }
 

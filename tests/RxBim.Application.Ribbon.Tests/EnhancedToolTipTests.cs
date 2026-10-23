@@ -12,6 +12,7 @@
     using System.Windows.Media.Imaging;
     using ConfigurationBuilders;
     using FluentAssertions;
+    using Markdown;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Shared;
@@ -164,6 +165,51 @@
             });
         }
 
+        [Fact]
+        public void DefaultRendererDisplaysMarkupLiterally()
+        {
+            RunOnUiThread(() =>
+            {
+                using var provider = CreateMenuServices().BuildServiceProvider();
+                var renderer = provider.GetRequiredService<IEnhancedToolTipRenderer>();
+                const string content = "**Details** &amp; [Help](https://example.com/help)";
+
+                var card = (Border)EnhancedToolTipContent.Create(string.Empty, content, null, null, renderer);
+
+                var document = ((FlowDocumentScrollViewer)card.Child).Document;
+                GetDocumentText(document).Should().Be(content);
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                paragraph.Inlines.Should().ContainSingle().Which.Should().BeOfType<Run>();
+            });
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void MarkdownRegistrationWorksBeforeOrAfterMenuRegistration(bool registerMarkdownFirst)
+        {
+            RunOnUiThread(() =>
+            {
+                var services = new ServiceCollection();
+                if (registerMarkdownFirst)
+                    services.AddMarkdownToolTips();
+
+                services.AddMenu<MenuBuilderStub>(_ => { }, typeof(AttributedCommand).Assembly);
+                if (!registerMarkdownFirst)
+                    services.AddMarkdownToolTips();
+
+                using var provider = services.BuildServiceProvider();
+                var renderer = provider.GetRequiredService<IEnhancedToolTipRenderer>();
+
+                var document = renderer.Render("**Details**", 360);
+
+                provider.GetServices<IEnhancedToolTipRenderer>().Should().ContainSingle();
+                var paragraph = document.Blocks.OfType<Paragraph>().Should().ContainSingle().Subject;
+                paragraph.Inlines.Should().Contain(inline => inline.FontWeight == FontWeights.Bold);
+                GetDocumentText(document).Should().Be("Details");
+            });
+        }
+
         [Theory]
         [InlineData("A &amp; B", "A & B")]
         [InlineData("&lt;b&gt;", "<b>")]
@@ -259,7 +305,7 @@
                 const string version = "Version **literal**";
 
                 var card = (Border)EnhancedToolTipContent.Create(
-                    title, "**Details**", "https://example.com/help", version);
+                    title, "**Details**", "https://example.com/help", version, new MarkdigEnhancedToolTipRenderer());
 
                 var document = ((FlowDocumentScrollViewer)card.Child).Document;
                 var heading = document.Blocks.FirstBlock.Should().BeOfType<Paragraph>().Subject;
@@ -296,8 +342,19 @@
 
         private static FlowDocument RenderMarkdown(string markdown)
         {
-            var card = (Border)EnhancedToolTipContent.Create(string.Empty, markdown, null, null);
+            var services = CreateMenuServices();
+            services.AddMarkdownToolTips();
+            using var provider = services.BuildServiceProvider();
+            var renderer = provider.GetRequiredService<IEnhancedToolTipRenderer>();
+            var card = (Border)EnhancedToolTipContent.Create(string.Empty, markdown, null, null, renderer);
             return ((FlowDocumentScrollViewer)card.Child).Document;
+        }
+
+        private static IServiceCollection CreateMenuServices()
+        {
+            var services = new ServiceCollection();
+            services.AddMenu<MenuBuilderStub>(_ => { }, typeof(AttributedCommand).Assembly);
+            return services;
         }
 
         private static string GetDocumentText(FlowDocument document) =>

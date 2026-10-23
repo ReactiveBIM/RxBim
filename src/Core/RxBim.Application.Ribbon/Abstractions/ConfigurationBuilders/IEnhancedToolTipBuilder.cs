@@ -6,8 +6,10 @@
 public interface IEnhancedToolTipBuilder
 {
     /// <summary>
-    /// Sets Markdown content for the interactive tooltip.
+    /// Sets content for the interactive tooltip.
     /// </summary>
-    /// <param name="markdown">Markdown content, or empty content to retain the native tooltip.</param>
+    /// <param name="markdown">
+    /// Content formatted by the registered renderer, or empty content to retain the native tooltip.
+    /// </param>
     void SetEnhancedToolTip(string? markdown);
 }

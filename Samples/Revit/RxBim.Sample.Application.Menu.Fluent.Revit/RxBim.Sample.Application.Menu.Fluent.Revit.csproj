@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Revit\RxBim.Application.Revit.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Application.Ribbon.Revit\RxBim.Application.Ribbon.Revit.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Application.Ribbon.Markdown\RxBim.Application.Ribbon.Markdown.csproj" />
     <ProjectReference Include="..\..\..\src\Revit\RxBim.Command.Revit\RxBim.Command.Revit.csproj" />
   </ItemGroup>
   <ItemGroup>

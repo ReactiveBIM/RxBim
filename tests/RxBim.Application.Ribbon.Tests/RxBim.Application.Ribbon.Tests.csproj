@@ -31,6 +31,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
+        <ProjectReference Include="..\..\src\Core\RxBim.Application.Ribbon.Markdown\RxBim.Application.Ribbon.Markdown.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,10 +6,9 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using BimTeam.Markdig.Wpf;
 
 /// <summary>
-/// Builds a scrollable Markdown card with separate help and version information.
+/// Builds a scrollable tooltip card with separate help and version information.
 /// </summary>
 internal static class EnhancedToolTipContent
 {
@@ -30,16 +29,19 @@ internal static class EnhancedToolTipContent
     /// Creates a tooltip card whose hyperlinks raise navigation requests.
     /// </summary>
     /// <param name="title">The command title.</param>
-    /// <param name="markdown">The Markdown body, which may also be ordinary text.</param>
+    /// <param name="content">The body formatted by the configured renderer.</param>
     /// <param name="helpUrl">Optional help address opened by the host.</param>
     /// <param name="version">Optional version text rendered without parsing.</param>
+    /// <param name="renderer">The renderer used to create the body document.</param>
     /// <returns>The interactive tooltip card.</returns>
-    internal static FrameworkElement Create(string title, string markdown, string? helpUrl, string? version)
+    internal static FrameworkElement Create(
+        string title,
+        string content,
+        string? helpUrl,
+        string? version,
+        IEnhancedToolTipRenderer renderer)
     {
-        var document = MarkdownWpf.ToFlowDocument(markdown, options: new MarkdownRenderOptions
-        {
-            ImageMaxWidth = ContentWidth
-        });
+        var document = renderer.Render(content, ContentWidth);
 
         if (!string.IsNullOrWhiteSpace(title))
         {

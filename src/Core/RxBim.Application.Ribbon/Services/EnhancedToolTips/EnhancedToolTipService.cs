@@ -17,7 +17,7 @@ using System.Windows.Threading;
 using static Interop.RibbonNativeMethods;
 
 /// <summary>
-/// Displays interactive Markdown tooltips for explicitly configured ribbon buttons.
+/// Displays interactive tooltips for explicitly configured ribbon buttons.
 /// </summary>
 public class EnhancedToolTipService : IDisposable
 {
@@ -34,6 +34,7 @@ public class EnhancedToolTipService : IDisposable
     private readonly InputManager _inputManager = InputManager.Current;
     private readonly Func<FrameworkElement?> _getOwner;
     private readonly Action<string> _openHelp;
+    private readonly IEnhancedToolTipRenderer _renderer;
     private object? _button;
     private FrameworkElement? _target;
     private FrameworkElement? _content;
@@ -42,14 +43,29 @@ public class EnhancedToolTipService : IDisposable
     private bool _disposed;
 
     /// <summary>
-    /// Creates the popup and its timers on the host UI thread.
+    /// Creates a plain-text popup and its timers on the host UI thread.
     /// </summary>
     /// <param name="getOwner">Returns the ribbon element that owns the popup.</param>
     /// <param name="openHelp">Opens a button's help address.</param>
     public EnhancedToolTipService(Func<FrameworkElement?> getOwner, Action<string> openHelp)
+        : this(getOwner, openHelp, new PlainTextEnhancedToolTipRenderer())
+    {
+    }
+
+    /// <summary>
+    /// Creates the popup with the specified body renderer on the host UI thread.
+    /// </summary>
+    /// <param name="getOwner">Returns the ribbon element that owns the popup.</param>
+    /// <param name="openHelp">Opens a button's help address.</param>
+    /// <param name="renderer">The renderer used to create tooltip body documents.</param>
+    public EnhancedToolTipService(
+        Func<FrameworkElement?> getOwner,
+        Action<string> openHelp,
+        IEnhancedToolTipRenderer renderer)
     {
         _getOwner = getOwner ?? throw new ArgumentNullException(nameof(getOwner));
         _openHelp = openHelp ?? throw new ArgumentNullException(nameof(openHelp));
+        _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         _popup.Placement = PlacementMode.Custom;
         _popup.CustomPopupPlacementCallback = GetPlacements;
         _showTimer.Tick += OnShowTimerTick;
@@ -65,7 +81,7 @@ public class EnhancedToolTipService : IDisposable
     /// Registers or updates a button only when it has nonempty enhanced tooltip content.
     /// </summary>
     /// <param name="button">The ribbon button used as the WPF control's data context.</param>
-    /// <param name="configuration">The button configuration containing Markdown and help information.</param>
+    /// <param name="configuration">The button configuration containing tooltip content and help information.</param>
     /// <param name="version">Optional version text displayed verbatim in the footer.</param>
     /// <param name="parentList">The button's owning drop-down, when present.</param>
     /// <returns>Whether the button has enhanced content and was registered.</returns>
@@ -304,7 +320,7 @@ public class EnhancedToolTipService : IDisposable
             _bounds = new Rect(owner.PointFromScreen(_target.PointToScreen(new Point(0, 0))), _target.RenderSize);
             _beside = registration.ParentList is not null;
             _content = EnhancedToolTipContent.Create(
-                registration.Title, registration.Markdown, registration.HelpUrl, registration.Version);
+                registration.Title, registration.Content, registration.HelpUrl, registration.Version, _renderer);
             _content.MouseEnter += OnContentMouseEnter;
             _content.MouseLeave += OnContentMouseLeave;
             _content.AddHandler(
@@ -451,13 +467,13 @@ public class EnhancedToolTipService : IDisposable
     /// Stores the content and placement of a registered button.
     /// </summary>
     /// <param name="title">The command title.</param>
-    /// <param name="markdown">The Markdown body.</param>
+    /// <param name="content">The tooltip body formatted by the configured renderer.</param>
     /// <param name="helpUrl">The optional host help address.</param>
     /// <param name="version">The optional version footer.</param>
     /// <param name="parentList">The owning drop-down, when present.</param>
     private sealed class Registration(
         string title,
-        string markdown,
+        string content,
         string? helpUrl,
         string? version,
         object? parentList)
@@ -468,9 +484,9 @@ public class EnhancedToolTipService : IDisposable
         public string Title { get; } = title;
 
         /// <summary>
-        /// Gets the Markdown body.
+        /// Gets the tooltip body formatted by the configured renderer.
         /// </summary>
-        public string Markdown { get; } = markdown;
+        public string Content { get; } = content;
 
         /// <summary>
         /// Gets the host's help address.

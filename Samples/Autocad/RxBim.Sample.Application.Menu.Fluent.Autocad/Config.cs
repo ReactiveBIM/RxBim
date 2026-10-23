@@ -4,6 +4,7 @@
     using Di;
     using Microsoft.Extensions.DependencyInjection;
     using RxBim.Application.Ribbon;
+    using RxBim.Application.Ribbon.Markdown;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -11,6 +12,7 @@
         /// <inheritdoc />
         public void Configure(IServiceCollection services)
         {
+            services.AddMarkdownToolTips();
             services.AddAutocadMenu(ribbon =>
                 ribbon
                     .EnableDisplayVersion()

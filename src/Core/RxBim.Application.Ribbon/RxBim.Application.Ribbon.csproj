@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BimTeam.Markdig.Wpf" Version="1.4.2.1" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\RxBim.Di\RxBim.Di.csproj" />
         <ProjectReference Include="..\RxBim.Shared\RxBim.Shared.csproj" />
     </ItemGroup>
