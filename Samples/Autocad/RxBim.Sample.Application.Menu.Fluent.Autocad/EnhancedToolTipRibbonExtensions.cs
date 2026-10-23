@@ -18,7 +18,7 @@ internal static class EnhancedToolTipRibbonExtensions
         "[Autodesk](https://www.autodesk.com).\n\n" +
         "- Test the Help link and F1.\n" +
         "- Test the same card inside the drop-down menu.\n" +
-        "- Escape and a click outside must close the card.\n\n" +
+        "- A click outside must close the card.\n\n" +
         "The Popup only button has no configured native tooltip text.";
 
     /// <summary>

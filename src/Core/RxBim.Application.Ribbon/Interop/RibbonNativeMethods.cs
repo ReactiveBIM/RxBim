@@ -17,6 +17,24 @@ public static class RibbonNativeMethods
     public delegate nint HookProcedure(int code, nint wParam, nint lParam);
 
     /// <summary>
+    /// Processes a message delivered to a subclassed host window.
+    /// </summary>
+    /// <param name="window">The receiving window handle.</param>
+    /// <param name="message">The native message identifier.</param>
+    /// <param name="wParam">The first message parameter.</param>
+    /// <param name="lParam">The second message parameter.</param>
+    /// <param name="id">The subclass identifier.</param>
+    /// <param name="referenceData">The reference data supplied during registration.</param>
+    /// <returns>The result passed back to Windows.</returns>
+    internal delegate nint SubclassProcedure(
+        nint window,
+        uint message,
+        nint wParam,
+        nint lParam,
+        nuint id,
+        nuint referenceData);
+
+    /// <summary>
     /// Gets the cursor position in physical screen pixels.
     /// </summary>
     /// <param name="point">The cursor coordinates.</param>
@@ -62,6 +80,53 @@ public static class RibbonNativeMethods
     /// <returns>The native thread identifier.</returns>
     [DllImport("kernel32.dll")]
     public static extern uint GetCurrentThreadId();
+
+    /// <summary>
+    /// Gets the ancestor window selected by the specified Win32 flag.
+    /// </summary>
+    /// <param name="window">The starting window handle.</param>
+    /// <param name="flags">The ancestor selection flag.</param>
+    /// <returns>The ancestor handle, or zero when unavailable.</returns>
+    [DllImport("user32.dll")]
+    internal static extern nint GetAncestor(nint window, uint flags);
+
+    /// <summary>
+    /// Adds a window procedure callback on the window's owning thread.
+    /// </summary>
+    /// <param name="window">The window to observe.</param>
+    /// <param name="callback">The callback retained until it is removed.</param>
+    /// <param name="id">The identifier paired with the callback.</param>
+    /// <param name="referenceData">The reference data passed to the callback.</param>
+    /// <returns>Whether the callback was registered.</returns>
+    [DllImport("comctl32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool SetWindowSubclass(
+        nint window,
+        SubclassProcedure callback,
+        nuint id,
+        nuint referenceData);
+
+    /// <summary>
+    /// Removes a window procedure callback on the window's owning thread.
+    /// </summary>
+    /// <param name="window">The observed window.</param>
+    /// <param name="callback">The registered callback.</param>
+    /// <param name="id">The identifier paired with the callback.</param>
+    /// <returns>Whether the callback was removed.</returns>
+    [DllImport("comctl32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool RemoveWindowSubclass(nint window, SubclassProcedure callback, nuint id);
+
+    /// <summary>
+    /// Passes the message to the remaining window procedure chain.
+    /// </summary>
+    /// <param name="window">The receiving window.</param>
+    /// <param name="message">The native message identifier.</param>
+    /// <param name="wParam">The first message parameter.</param>
+    /// <param name="lParam">The second message parameter.</param>
+    /// <returns>The result of the remaining window procedures.</returns>
+    [DllImport("comctl32.dll")]
+    internal static extern nint DefSubclassProc(nint window, uint message, nint wParam, nint lParam);
 
     /// <summary>
     /// Represents a Win32 screen position in physical pixels.

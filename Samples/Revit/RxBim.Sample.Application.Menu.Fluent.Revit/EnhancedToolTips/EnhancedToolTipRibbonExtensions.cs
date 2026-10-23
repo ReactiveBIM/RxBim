@@ -29,7 +29,7 @@ internal static class EnhancedToolTipRibbonExtensions
         "3. Return to Revit and test the help link and **F1**.\n\n" +
         "### Closing and focus\n\n" +
         "- Move away and check the closing delay.\n" +
-        "- Press Escape, click outside, or switch to another application.\n" +
+        "- Click outside or switch to another application.\n" +
         "- Repeat inside the stacked buttons and the drop-down menu.\n\n" +
         "### Scrolling\n\n" +
         "The card has a limited height. Scroll this content and then follow a link. " +

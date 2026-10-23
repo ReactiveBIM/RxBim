@@ -9,6 +9,9 @@ internal static class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool PostThreadMessage(uint threadId, int message, nint wParam, nint lParam);
 
+    [DllImport("user32.dll", EntryPoint = "SendMessageW")]
+    internal static extern nint SendMessage(nint window, int message, nint wParam, nint lParam);
+
     [DllImport("user32.dll", EntryPoint = "PeekMessageW")]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool PeekMessage(out MSG message, nint window, int min, int max, int remove);

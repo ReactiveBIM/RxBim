@@ -23,6 +23,8 @@ public class EnhancedToolTipService : IDisposable
 {
     private const int KeyDownMessage = 0x100;
     private const int ActivateAppMessage = 0x1C;
+    private const int NonClientDestroyMessage = 0x82;
+    private const uint RootAncestor = 2;
     private const int F1Key = 0x70;
     private const double PlacementGap = 8;
 
@@ -35,12 +37,15 @@ public class EnhancedToolTipService : IDisposable
     private readonly Func<FrameworkElement?> _getOwner;
     private readonly Action<string> _openHelp;
     private readonly IEnhancedToolTipRenderer _renderer;
+    private readonly SubclassProcedure _ownerWindowProcedure;
+    private nint _ownerWindow;
     private object? _button;
     private FrameworkElement? _target;
     private FrameworkElement? _content;
     private Rect _bounds;
     private bool _beside;
     private bool _disposed;
+    private bool _isApplicationActive = true;
 
     /// <summary>
     /// Creates a plain-text popup and its timers on the host UI thread.
@@ -66,6 +71,7 @@ public class EnhancedToolTipService : IDisposable
         _getOwner = getOwner ?? throw new ArgumentNullException(nameof(getOwner));
         _openHelp = openHelp ?? throw new ArgumentNullException(nameof(openHelp));
         _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+        _ownerWindowProcedure = OnOwnerWindowMessage;
         _popup.Placement = PlacementMode.Custom;
         _popup.CustomPopupPlacementCallback = GetPlacements;
         _showTimer.Tick += OnShowTimerTick;
@@ -112,7 +118,7 @@ public class EnhancedToolTipService : IDisposable
             configuration.HelpUrl,
             version,
             parentList);
-        return true;
+        return TryAttachOwnerWindow();
     }
 
     /// <summary>
@@ -208,6 +214,8 @@ public class EnhancedToolTipService : IDisposable
     public void Clear()
     {
         Close();
+        DetachOwnerWindow();
+        _isApplicationActive = true;
         _inputManager.PostProcessInput -= OnPostProcessInput;
         _inputManager.PreProcessInput -= OnPreProcessInput;
         ComponentDispatcher.ThreadFilterMessage -= OnThreadMessage;
@@ -257,6 +265,9 @@ public class EnhancedToolTipService : IDisposable
             ScheduleClose();
             return;
         }
+
+        if (!TryAttachOwnerWindow() || !_isApplicationActive)
+            return;
 
         _closeTimer.Stop();
 
@@ -366,12 +377,6 @@ public class EnhancedToolTipService : IDisposable
             return;
         }
 
-        if (e.StagingItem.Input is KeyEventArgs { IsDown: true, Key: Key.Escape })
-        {
-            Close();
-            return;
-        }
-
         if (e.StagingItem.Input is KeyEventArgs { IsDown: true, Key: Key.F1 } key && TryOpenHelp())
             key.Handled = true;
     }
@@ -381,21 +386,83 @@ public class EnhancedToolTipService : IDisposable
         if (_disposed || handled)
             return;
 
-        if (message.message == ActivateAppMessage && message.wParam == default)
-        {
-            Close();
-            return;
-        }
-
-        if (message.message == KeyDownMessage &&
-            message.wParam.ToInt32() == KeyInterop.VirtualKeyFromKey(Key.Escape))
-        {
-            Close();
-            return;
-        }
-
         if (message.message == KeyDownMessage && message.wParam.ToInt32() == F1Key && TryOpenHelp())
             handled = true;
+    }
+
+    private bool TryAttachOwnerWindow()
+    {
+        try
+        {
+            if (_getOwner() is not { } owner || PresentationSource.FromVisual(owner) is not HwndSource source)
+                return true;
+
+            // The ribbon can be a child HWND; application activation is delivered to its top-level host window.
+            var window = GetAncestor(source.Handle, RootAncestor);
+            if (window == 0)
+                throw new InvalidOperationException("Could not find the ribbon owner window.");
+
+            if (window == _ownerWindow)
+                return true;
+
+            DetachOwnerWindow();
+            if (!SetWindowSubclass(window, _ownerWindowProcedure, 0, 0))
+                throw new InvalidOperationException("Could not observe the ribbon owner window.");
+
+            _ownerWindow = window;
+            _isApplicationActive = true;
+            return true;
+        }
+        catch (Exception exception)
+        {
+            Close();
+            Trace.TraceError("Could not observe ribbon tooltip activation: {0}", exception);
+            DisplayFailed?.Invoke(this, EventArgs.Empty);
+            return false;
+        }
+    }
+
+    private void DetachOwnerWindow()
+    {
+        if (_ownerWindow == 0)
+            return;
+
+        if (!RemoveWindowSubclass(_ownerWindow, _ownerWindowProcedure, 0))
+            throw new InvalidOperationException("Could not detach the ribbon owner window callback.");
+
+        _ownerWindow = 0;
+        GC.KeepAlive(_ownerWindowProcedure);
+    }
+
+    private nint OnOwnerWindowMessage(
+        nint window,
+        uint message,
+        nint wParam,
+        nint lParam,
+        nuint id,
+        nuint referenceData)
+    {
+        try
+        {
+            if (message == NonClientDestroyMessage)
+            {
+                Close();
+                DetachOwnerWindow();
+            }
+            else if (!_disposed && message == ActivateAppMessage)
+            {
+                _isApplicationActive = wParam != 0;
+                if (!_isApplicationActive)
+                    Close();
+            }
+        }
+        catch (Exception exception)
+        {
+            // Preserve the host's window procedure even when tooltip cleanup fails.
+            Trace.TraceError("Could not handle the ribbon owner window message: {0}", exception);
+        }
+
+        return DefSubclassProc(window, message, wParam, lParam);
     }
 
     private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)

@@ -48,7 +48,7 @@ The optional Markdown package uses BimTeam.Markdig.Wpf to render the body, inclu
 
 Version information follows `Ribbon.DisplayVersion` and `Ribbon.VersionPrefix`, including when native `ToolTip` is absent. It is passed separately from Markdown. The help caption follows the current UI culture, with English and Russian resources.
 
-The pointer can move from a button or drop-down entry into the card. Escape, a click outside, or application deactivation closes the popup and cancels pending display. Moving into a card from a drop-down may close the menu to release mouse capture; the card stays available for links and scrolling. Native tooltip state is restored during menu rebuilding, disposal or a display failure.
+The pointer can move from a button or drop-down entry into the card. A click outside or application deactivation closes the popup and cancels pending display. Moving into a card from a drop-down may close the menu to release mouse capture; the card stays available for links and scrolling. Native tooltip state is restored during menu rebuilding, disposal or a display failure.
 
 The fluent API uses the optional `IEnhancedToolTipBuilder` capability, preserving the existing `IButtonBuilder` interface. Custom builders can implement this capability to support the extension method.
 
