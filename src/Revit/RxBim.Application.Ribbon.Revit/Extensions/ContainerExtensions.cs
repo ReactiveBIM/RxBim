@@ -73,6 +73,7 @@
                 .AddSingleton<IButtonImageProvider, ButtonImageProvider>()
                 .AddSingleton<IRibbonButtonImageAdapter<RibbonButton>, RevitRibbonButtonImageAdapter>()
                 .AddSingleton<IThemedRibbonButtonService<RibbonButton>, ThemedRibbonButtonService<RibbonButton>>()
+                .AddSingleton<RevitEnhancedToolTipService>()
                 .AddSingleton<IRibbonPanelItemService, RibbonPanelItemService>();
         }
     }

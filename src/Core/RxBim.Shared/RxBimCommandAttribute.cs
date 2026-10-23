@@ -43,6 +43,12 @@
         public string? ToolTip { get; set; }
 
         /// <summary>
+        /// Optional content for an interactive ribbon tooltip, formatted by the registered renderer.
+        /// The native tooltip is used when this content is absent or empty.
+        /// </summary>
+        public string? EnhancedToolTip { get; set; }
+
+        /// <summary>
         /// The help url for the button.
         /// </summary>
         public string? HelpUrl { get; set; }

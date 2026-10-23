@@ -5,6 +5,8 @@
     /// <summary>
     /// Images displayed by a ribbon button.
     /// </summary>
+    /// <param name="image">The standard button image.</param>
+    /// <param name="largeImage">The large button image.</param>
     public class ButtonImages(ImageSource? image, ImageSource? largeImage)
     {
         /// <summary>

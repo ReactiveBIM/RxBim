@@ -15,7 +15,8 @@
         MenuData menuData,
         IComboBoxEventsHandler comboBoxEventsHandler,
         IButtonImageProvider imageProvider,
-        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService)
+        IThemedRibbonButtonService<RevitRibbonButton> themedButtonService,
+        RevitEnhancedToolTipService enhancedToolTipService)
         : IRibbonPanelItemService
     {
         /// <inheritdoc />
@@ -39,18 +40,18 @@
         }
 
         /// <inheritdoc />
-        public RibbonCombo CreateComboBox(ComboBox itemConfig)
+        public RibbonCombo CreateComboBox(ComboBox comboBox)
         {
-            var comboBox = CreateComboBoxInternal(itemConfig);
+            var ribbonCombo = CreateComboBoxInternal(comboBox);
 
-            comboBox.CurrentChanged += ComboBoxOnCurrentChanged;
+            ribbonCombo.CurrentChanged += ComboBoxOnCurrentChanged;
 
-            foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
+            foreach (var comboBoxMember in comboBox.ComboBoxMembers)
             {
-                comboBox.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
+                ribbonCombo.Items.Add(new RibbonItem { Name = comboBoxMember.Name, Text = comboBoxMember.Text });
             }
 
-            return comboBox;
+            return ribbonCombo;
         }
 
         /// <inheritdoc />
@@ -125,6 +126,10 @@
 
             existComboBox.CurrentChanged += ComboBoxOnCurrentChanged;
         }
+
+        /// <inheritdoc />
+        public void RegisterEnhancedToolTip(Button config, RibbonTab tab, string panelName) =>
+            enhancedToolTipService.Register(config, tab, panelName);
 
         /// <inheritdoc />
         public void SetButtonTextVisibility(Button config, RibbonTab tab, string panelName)

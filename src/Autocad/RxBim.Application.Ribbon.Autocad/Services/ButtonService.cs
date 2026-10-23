@@ -14,6 +14,7 @@
         private readonly MenuData _menuData;
         private readonly IOnlineHelpService _onlineHelpService;
         private readonly IThemedRibbonButtonService<RibbonButton> _themedButtonService;
+        private readonly IAutocadEnhancedToolTipService? _enhancedToolTipService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonService"/> class.
@@ -25,10 +26,27 @@
             MenuData menuData,
             IOnlineHelpService onlineHelpService,
             IThemedRibbonButtonService<RibbonButton> themedButtonService)
+            : this(menuData, onlineHelpService, themedButtonService, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a button service with optional interactive tooltips.
+        /// </summary>
+        /// <param name="menuData">The menu metadata.</param>
+        /// <param name="onlineHelpService">The native online help service.</param>
+        /// <param name="themedButtonService">The button image service.</param>
+        /// <param name="enhancedToolTipService">The interactive tooltip adapter.</param>
+        public ButtonService(
+            MenuData menuData,
+            IOnlineHelpService onlineHelpService,
+            IThemedRibbonButtonService<RibbonButton> themedButtonService,
+            IAutocadEnhancedToolTipService? enhancedToolTipService)
         {
             _menuData = menuData;
             _onlineHelpService = onlineHelpService;
             _themedButtonService = themedButtonService;
+            _enhancedToolTipService = enhancedToolTipService;
         }
 
         /// <inheritdoc/>
@@ -43,8 +61,13 @@
             var ribbonButton = new T();
             ribbonButton.SetProperties(config, size, orientation, forceTextSettings);
             _themedButtonService.Register(ribbonButton, config);
+
             if (addToolTip)
+            {
                 SetTooltip(ribbonButton, config.ToolTip, config.HelpUrl, config.Description);
+                _enhancedToolTipService?.Register(ribbonButton, config);
+            }
+
             return ribbonButton;
         }
 
@@ -73,6 +96,7 @@
                 SetTooltip(button, config.ToolTip, config.HelpUrl, config.Description);
             }
 
+            _enhancedToolTipService?.Register(button, config);
             return button;
         }
 
@@ -98,7 +122,9 @@
 
             foreach (var commandButtonConfig in config.CommandButtonsList)
             {
-                splitButton.Items.Add(CreateCommandButton(commandButtonConfig, size, orientation));
+                var commandButton = CreateCommandButton(commandButtonConfig, size, orientation);
+                splitButton.Items.Add(commandButton);
+                _enhancedToolTipService?.Register(commandButton, commandButtonConfig, splitButton);
             }
 
             return splitButton;
@@ -108,6 +134,7 @@
         public void ClearButtonCache()
         {
             _themedButtonService.Clear();
+            _enhancedToolTipService?.Clear();
         }
 
         private void SetTooltip(RibbonItem button, string? tooltipText, string? helpUrl, string? description)

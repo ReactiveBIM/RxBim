@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <Compile Include="..\..\Shared\EnhancedToolTipSampleContent.cs" Link="EnhancedToolTips\EnhancedToolTipSampleContent.cs" />
+    <EmbeddedResource Include="..\..\Shared\tooltip-renderer.png" LogicalName="RxBim.Sample.TooltipRendererPreview.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="img\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -8,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Autocad\RxBim.Application.Autocad.csproj" />
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Application.Ribbon.Autocad\RxBim.Application.Ribbon.Autocad.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\RxBim.Application.Ribbon.Markdown\RxBim.Application.Ribbon.Markdown.csproj" />
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Autocad\RxBim.Command.Autocad.csproj" />
     <ProjectReference Include="..\..\..\src\Autocad\RxBim.Command.Generators.Autocad\RxBim.Command.Generators.Autocad.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
@@ -68,11 +73,13 @@
     <EmbeddedResource Include="img\num3_16.jpg" />
   </ItemGroup>
   <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackageGuid>309697fd-ffff-43b8-a369-f353e424b1ca</PackageGuid>
     <UpgradeCode>3e27aaad-fb16-4ca2-8f9b-b4d6fdfe6d10</UpgradeCode>
     <Application__RxBim_Sample_Application_Menu_Fluent_Autocad_App>114e7682-d76e-45fc-8982-5275d03b9a9c</Application__RxBim_Sample_Application_Menu_Fluent_Autocad_App>
     <Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd1>e72ad2a2-e33a-410a-a5d2-42522c9620c1</Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd1>
     <Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd2>17a72fd5-725b-476e-9165-53b68e4f8291</Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd2>
     <Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd3>1e79bca3-1ab0-42c1-b8dc-cf2f745ea456</Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_Cmd3>
+    <Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_EnhancedToolTipCommand>2142fa33-b12e-4378-bc3a-f43d081b9707</Command__RxBim_Sample_Application_Menu_Fluent_Autocad_Commands_EnhancedToolTipCommand>
   </PropertyGroup>
 </Project>

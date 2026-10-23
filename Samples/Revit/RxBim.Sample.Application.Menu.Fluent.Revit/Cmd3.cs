@@ -3,6 +3,7 @@
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.UI;
     using Command.Revit;
+    using EnhancedToolTips;
     using Shared;
 
     /// <inheritdoc />
@@ -10,6 +11,7 @@
     [Regeneration(RegenerationOption.Manual)]
     [RxBimCommand(
         ToolTip = "Tooltip: I'm run command #3. Push me!",
+        EnhancedToolTip = EnhancedToolTipRibbonExtensions.Markdown,
         Text = "Command\n#3",
         Description = "Description: This is command #3",
         Image = @"img\num3_16.jpg",

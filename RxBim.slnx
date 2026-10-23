@@ -43,6 +43,7 @@
   <Folder Name="/src/Core/">
     <Project Path="src/Core/RxBim.Analyzers/RxBim.Analyzers.csproj" />
     <Project Path="src/Core/RxBim.Application.Ribbon/RxBim.Application.Ribbon.csproj" />
+    <Project Path="src/Core/RxBim.Application.Ribbon.Markdown/RxBim.Application.Ribbon.Markdown.csproj" />
     <Project Path="src/Core/RxBim.Di/RxBim.Di.csproj" />
     <Project Path="src/Core/RxBim.Logs/RxBim.Logs.csproj" />
     <Project Path="src/Core/RxBim.Nuke.Generators/RxBim.Nuke.Generators.csproj" />
