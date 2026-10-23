@@ -2,9 +2,7 @@ namespace RxBim.Application.Ribbon.Tests;
 
 using System;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Runtime.Versioning;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -13,11 +11,39 @@ using System.Windows.Threading;
 using FluentAssertions;
 using Xunit;
 using static NativeMethods;
+using static WpfTestThread;
 
 [SupportedOSPlatform("windows7.0")]
 public class EnhancedToolTipActivationTests
 {
     private const int ActivateAppMessage = 0x1C;
+
+    [Fact]
+    public void TestThreadShutsDownItsDispatcherBeforeExiting()
+    {
+        Dispatcher? dispatcher = null;
+
+        RunOnUiThread(() => dispatcher = Dispatcher.CurrentDispatcher);
+
+        dispatcher.Should().NotBeNull();
+        dispatcher!.HasShutdownFinished.Should().BeTrue();
+    }
+
+    [Fact]
+    public void FailedTestAlsoShutsDownItsDispatcherBeforeExiting()
+    {
+        Dispatcher? dispatcher = null;
+        Action test = () => RunOnUiThread(() =>
+        {
+            dispatcher = Dispatcher.CurrentDispatcher;
+            throw new InvalidOperationException("Test failure");
+        });
+
+        test.Should().Throw<InvalidOperationException>().WithMessage("Test failure");
+
+        dispatcher.Should().NotBeNull();
+        dispatcher!.HasShutdownFinished.Should().BeTrue();
+    }
 
     [Fact]
     public void SentDeactivationClosesTheVisiblePopup()
@@ -197,26 +223,4 @@ public class EnhancedToolTipActivationTests
     private static T GetField<T>(EnhancedToolTipService service, string name) =>
         (T)typeof(EnhancedToolTipService).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!
             .GetValue(service)!;
-
-    private static void RunOnUiThread(Action action)
-    {
-        Exception? failure = null;
-        var thread = new Thread(() =>
-        {
-            try
-            {
-                action();
-            }
-            catch (Exception exception)
-            {
-                failure = exception;
-            }
-        }) { IsBackground = true };
-        thread.SetApartmentState(ApartmentState.STA);
-        thread.Start();
-        thread.Join(TimeSpan.FromSeconds(10)).Should().BeTrue("the WPF check must complete");
-
-        if (failure is not null)
-            ExceptionDispatchInfo.Capture(failure).Throw();
-    }
 }

@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Runtime.ExceptionServices;
-    using System.Threading;
+    using System.Runtime.Versioning;
     using System.Windows;
     using System.Windows.Documents;
     using System.Windows.Media;
@@ -20,7 +19,9 @@
     using Border = System.Windows.Controls.Border;
     using FlowDocumentScrollViewer = System.Windows.Controls.FlowDocumentScrollViewer;
     using Image = System.Windows.Controls.Image;
+    using static WpfTestThread;
 
+    [SupportedOSPlatform("windows7.0")]
     public class EnhancedToolTipTests
     {
         [Fact]
@@ -377,28 +378,6 @@
             using var provider = services.BuildServiceProvider();
             var ribbon = provider.GetRequiredService<Ribbon>();
             return (CommandButton)((Panel)ribbon.Tabs[0].Items[0]).Items[0];
-        }
-
-        private static void RunOnUiThread(Action action)
-        {
-            Exception? failure = null;
-            var thread = new Thread(() =>
-            {
-                try
-                {
-                    action();
-                }
-                catch (Exception exception)
-                {
-                    failure = exception;
-                }
-            }) { IsBackground = true };
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join(TimeSpan.FromSeconds(10)).Should().BeTrue("the WPF check must complete");
-
-            if (failure is not null)
-                ExceptionDispatchInfo.Capture(failure).Throw();
         }
 
         [RxBimCommand(ToolTip = "Native summary", EnhancedToolTip = "**Attribute details**")]
