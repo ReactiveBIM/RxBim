@@ -3,7 +3,8 @@
     /// <summary>
     /// Base implementation of a button builder.
     /// </summary>
-    public abstract class ButtonBuilder<TButton, TButtonBuilder> : RibbonPanelItemBuilderBase<TButton, TButtonBuilder>, IButtonBuilder<TButtonBuilder>
+    public abstract class ButtonBuilder<TButton, TButtonBuilder>
+        : RibbonPanelItemBuilderBase<TButton, TButtonBuilder>, IButtonBuilder<TButtonBuilder>, IEnhancedToolTipBuilder
         where TButton : Button, new()
         where TButtonBuilder : class, IButtonBuilder<TButtonBuilder>
     {
@@ -60,5 +61,9 @@
             Item.HelpUrl = url;
             return (this as TButtonBuilder)!;
         }
+
+        /// <inheritdoc />
+        void IEnhancedToolTipBuilder.SetEnhancedToolTip(string? markdown) =>
+            Item.EnhancedToolTip = markdown;
     }
 }

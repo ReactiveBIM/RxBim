@@ -32,43 +32,46 @@
             _strategies ??= _serviceProvider.GetServices<IItemStrategy>().ToList();
 
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, StackedItems stackedItems)
+        protected override void AddItem(RibbonTab tab, RibbonPanel ribbonPanel, StackedItems itemConfig)
         {
-            var button1 = GetStackedItem(stackedItems.Items[0]);
-            var button2 = GetStackedItem(stackedItems.Items[1]);
+            var button1 = GetStackedItem(itemConfig.Items[0]);
+            var button2 = GetStackedItem(itemConfig.Items[1]);
 
             IList<RibbonItem> addedItems;
-            switch (stackedItems.Items.Count)
+            switch (itemConfig.Items.Count)
             {
                 case 2:
                     addedItems = ribbonPanel.AddStackedItems(button1, button2);
                     break;
                 case 3:
-                    var button3 = GetStackedItem(stackedItems.Items[2]);
+                    var button3 = GetStackedItem(itemConfig.Items[2]);
                     addedItems = ribbonPanel.AddStackedItems(button1, button2, button3);
                     break;
                 default:
                     throw new InvalidOperationException("The stack size can only be 2 or 3!");
             }
 
-            for (var i = 0; i < stackedItems.Items.Count; i++)
+            for (var i = 0; i < itemConfig.Items.Count; i++)
             {
-                if (stackedItems.Items[i] is Button registeredButtonConfig &&
+                if (itemConfig.Items[i] is Button registeredButtonConfig &&
                     addedItems[i] is RevitRibbonButton registeredButton)
                 {
                     _ribbonPanelItemService.RegisterButton(registeredButton, registeredButtonConfig);
                 }
 
-                if (stackedItems.Items[i] is PullDownButton pullDownConfig &&
+                if (itemConfig.Items[i] is PullDownButton pullDownConfig &&
                     addedItems[i] is PulldownButton pullDownButton)
                 {
                     _ribbonPanelItemService.CreateButtonsForPullDown(pullDownConfig, pullDownButton);
                 }
 
-                if (stackedItems.Items[i] is Button button)
+                if (itemConfig.Items[i] is Button button)
+                {
+                    _ribbonPanelItemService.RegisterEnhancedToolTip(button, tab, ribbonPanel.Title);
                     _ribbonPanelItemService.SetButtonTextVisibility(button, tab, ribbonPanel.Title);
+                }
 
-                if (stackedItems.Items[i] is ComboBox comboBoxConfig &&
+                if (itemConfig.Items[i] is ComboBox comboBoxConfig &&
                     addedItems[i] is Autodesk.Revit.UI.ComboBox addedComboBox)
                 {
                     _ribbonPanelItemService.SetComboBoxProperties(comboBoxConfig, addedComboBox, tab.Title, ribbonPanel.Title);

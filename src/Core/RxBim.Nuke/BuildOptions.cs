@@ -80,10 +80,10 @@ namespace RxBim.Nuke
                 GetType()
                     .GetProperties()
                     .Select(p => (
-                        val: ToString(p.GetValue(this)),
-                        shortName: p.GetCustomAttribute<OptionAttribute>()?.ShortName))
-                    .Where(tuple => !string.IsNullOrEmpty(tuple.val))
-                    .Select(tuple => $"-{tuple.shortName} {tuple.val}"));
+                        Value: ToString(p.GetValue(this)),
+                        ShortName: p.GetCustomAttribute<OptionAttribute>()?.ShortName))
+                    .Where(tuple => !string.IsNullOrEmpty(tuple.Value))
+                    .Select(tuple => $"-{tuple.ShortName} {tuple.Value}"));
         }
 
         private string? ToString(object? value)

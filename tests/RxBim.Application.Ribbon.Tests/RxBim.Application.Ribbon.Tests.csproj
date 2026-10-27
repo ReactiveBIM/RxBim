@@ -25,6 +25,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="..\..\src\Revit\RxBim.Application.Ribbon.Revit\Services\RevitHelpKeyHook.cs"
+                 Link="Revit\RevitHelpKeyHook.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\src\Core\RxBim.Application.Ribbon\RxBim.Application.Ribbon.csproj" />
     </ItemGroup>
 

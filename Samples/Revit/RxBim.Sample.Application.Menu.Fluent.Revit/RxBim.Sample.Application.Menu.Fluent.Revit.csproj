@@ -56,6 +56,7 @@
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3"/>
   </ItemGroup>
   <PropertyGroup>
+    <UseWpf>true</UseWpf>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackageGuid>dd8e4558-cde8-431f-a621-4cb25304bfce</PackageGuid>
     <UpgradeCode>09f0658d-e4c2-4725-a50a-98b6dbd15fa9</UpgradeCode>
