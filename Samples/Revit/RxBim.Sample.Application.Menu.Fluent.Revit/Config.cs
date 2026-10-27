@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Sample.Application.Menu.Fluent.Revit
 {
     using Di;
-    using EnhancedToolTips;
     using Microsoft.Extensions.DependencyInjection;
     using RxBim.Application.Ribbon;
-    using RxBim.Application.Ribbon.Markdown;
 
     /// <inheritdoc />
     public class Config : IApplicationConfiguration
@@ -12,15 +10,13 @@
         /// <inheritdoc />
         public void Configure(IServiceCollection services)
         {
-            services.AddMarkdownToolTips();
             services.AddRevitMenu(ribbon => ribbon
                 .EnableDisplayVersion()
                 .SetVersionPrefix("Version: ")
                 .Tab("RxBim", tab => tab
                     .PanelsFromAttributes()
                     .PanelsFromBuilder()
-                    .TextVisibilityPanels()
-                    .EnhancedToolTipPanel()));
+                    .TextVisibilityPanels()));
         }
     }
 }
