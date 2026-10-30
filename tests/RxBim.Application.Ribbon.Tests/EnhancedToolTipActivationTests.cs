@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
+using System.Windows.Input;
 using System.Windows.Threading;
 using FluentAssertions;
 using Xunit;
@@ -193,6 +194,52 @@ public class EnhancedToolTipActivationTests
             }
         });
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ClickingACommandPreventsItsTooltipFromReopeningUntilThePointerLeaves(bool visible)
+    {
+        RunOnUiThread(() =>
+        {
+            var command = new object();
+            var button = new Button { DataContext = command };
+            using var host = CreateHostWindow();
+            host.RootVisual = button;
+            using var service = new EnhancedToolTipService(() => button, _ => { });
+            service.Register(command, new CommandButton { EnhancedToolTip = "Details" });
+            var timer = GetField<DispatcherTimer>(service, "_showTimer");
+            var popup = GetField<Popup>(service, "_popup");
+            UpdateTarget(service, button);
+            timer.IsEnabled.Should().BeTrue();
+
+            if (visible)
+            {
+                popup.Child = new Border();
+                popup.IsOpen = true;
+            }
+
+            InputManager.Current.ProcessInput(new MouseButtonEventArgs(
+                Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+            {
+                RoutedEvent = Mouse.PreviewMouseDownEvent,
+                Source = button
+            });
+            UpdateTarget(service, button);
+
+            popup.IsOpen.Should().BeFalse("clicking the command must dismiss its visible tooltip");
+            timer.IsEnabled.Should().BeFalse("later mouse input must not reopen the clicked command's tooltip");
+
+            UpdateTarget(service, null);
+            UpdateTarget(service, button);
+
+            timer.IsEnabled.Should().BeTrue("leaving and hovering the command again must restore its tooltip");
+        });
+    }
+
+    private static void UpdateTarget(EnhancedToolTipService service, DependencyObject? source) =>
+        typeof(EnhancedToolTipService).GetMethod("UpdateTarget", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(service, [source]);
 
     private static HwndSource CreateHostWindow() => new(new HwndSourceParameters("Tooltip native host")
     {

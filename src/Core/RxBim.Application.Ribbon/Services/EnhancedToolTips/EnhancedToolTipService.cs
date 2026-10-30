@@ -40,6 +40,7 @@ public class EnhancedToolTipService : IDisposable
     private readonly SubclassProcedure _ownerWindowProcedure;
     private nint _ownerWindow;
     private object? _button;
+    private object? _dismissedButton;
     private FrameworkElement? _target;
     private FrameworkElement? _content;
     private Rect _bounds;
@@ -221,6 +222,7 @@ public class EnhancedToolTipService : IDisposable
         ComponentDispatcher.ThreadFilterMessage -= OnThreadMessage;
         _buttons.Clear();
         _openLists.Clear();
+        _dismissedButton = null;
     }
 
     /// <inheritdoc />
@@ -257,7 +259,17 @@ public class EnhancedToolTipService : IDisposable
             UIElement3D element => element,
             _ => null
         };
+        UpdateTarget(source);
+    }
+
+    private void UpdateTarget(DependencyObject? source)
+    {
         var (button, target) = FindTarget(source);
+
+        if (button is not null && ReferenceEquals(button, _dismissedButton))
+            return;
+
+        _dismissedButton = null;
 
         if (button is null || target is null || _openLists.Contains(button))
         {
@@ -370,9 +382,14 @@ public class EnhancedToolTipService : IDisposable
 
     private void OnPreProcessInput(object sender, PreProcessInputEventArgs e)
     {
-        if (e.StagingItem.Input is MouseButtonEventArgs { ButtonState: MouseButtonState.Pressed } &&
+        if (e.StagingItem.Input is MouseButtonEventArgs mouse &&
+            (mouse.RoutedEvent == Mouse.PreviewMouseDownEvent || mouse.RoutedEvent == Mouse.MouseDownEvent) &&
             !IsPointerOverContent())
         {
+            // Ignore later mouse input over this command until the pointer leaves it.
+            if (_button is not null)
+                _dismissedButton = _button;
+
             Close();
             return;
         }
