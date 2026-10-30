@@ -16,6 +16,7 @@
     using FlowDocumentScrollViewer = System.Windows.Controls.FlowDocumentScrollViewer;
     using static WpfTestThread;
 
+    [Collection(nameof(WpfTestThread))]
     [SupportedOSPlatform("windows7.0")]
     public class EnhancedToolTipTests
     {
