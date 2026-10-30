@@ -17,6 +17,16 @@
         public const string BaseCommandClassName = "RxBimCommand";
 
         /// <summary>
+        /// Command name constructor parameter name.
+        /// </summary>
+        public const string CommandNameParameter = "commandName";
+
+        /// <summary>
+        /// Command flags constructor parameter name.
+        /// </summary>
+        public const string CommandFlagsParameter = "flags";
+
+        /// <summary>
         /// Command flags type name.
         /// </summary>
         public const string CommandFlags = nameof(CommandFlags);
@@ -25,11 +35,6 @@
         /// Default command flags value.
         /// </summary>
         public const string DefaultCommandFlag = CommandFlags + ".Modal";
-
-        /// <summary>
-        /// Command flags separator.
-        /// </summary>
-        public const string FlagsSeparator = " | ";
 
         /// <summary>
         /// Command class source name.
