@@ -4,6 +4,9 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+#if NETCOREAPP
+    using System.Runtime.Loader;
+#endif
 
     /// <summary>
     /// Extensions for the <see cref="Assembly"/> class.
@@ -19,16 +22,14 @@
         public static Type GetTypeByName(this Assembly assembly, string typeName)
         {
             // todo use regex
-            var strings = typeName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+            var strings = typeName.Split([","], StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToArray();
 
             var type = strings.Length switch
             {
                 1 => assembly.GetType(typeName),
-                _ => Assembly
-                    .LoadFrom(Path.Combine(assembly.GetAssemblyDirectory(), strings[1] + ".dll"))
-                    .GetType(strings[0])
+                _ => LoadCommandAssembly(assembly, strings[1]).GetType(strings[0])
             };
 
             if (type is null)
@@ -49,6 +50,20 @@
                 : Path.Combine(GetAssemblyDirectory(assembly), fullOrRelativePath);
 
             return File.Exists(path) ? new Uri(path, UriKind.Absolute) : null;
+        }
+
+        private static Assembly LoadCommandAssembly(Assembly menuAssembly, string commandAssemblyName)
+        {
+            var path = Path.Combine(menuAssembly.GetAssemblyDirectory(), commandAssemblyName + ".dll");
+#if NETCOREAPP
+            // Keep ribbon metadata and WPF windows in the same context as the application.
+            var context = AssemblyLoadContext.GetLoadContext(menuAssembly);
+
+            if (context is not null && context != AssemblyLoadContext.Default)
+                return context.LoadFromAssemblyPath(path);
+#endif
+
+            return Assembly.LoadFrom(path);
         }
 
         private static string GetAssemblyDirectory(this Assembly assembly)
