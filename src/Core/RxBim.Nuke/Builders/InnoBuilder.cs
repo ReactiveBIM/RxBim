@@ -18,6 +18,9 @@
     /// </summary>
     public class InnoBuilder : IssBuilder
     {
+        private const string SetupRunningMessage = "{0} setup has detected that another instance is currently running.%n%n"
+            + "Please close all instances of it now, then click OK to continue, or Cancel to exit.";
+
         private readonly BuildOptions _buildOptions;
         private readonly string _projInstallDir;
 
@@ -27,23 +30,29 @@
         {
             _buildOptions = buildOptions;
 
+            var projectName = buildOptions.ProjectName.Ensure();
             var installDir = buildOptions.InstallDir.Ensure().Replace("%AppDataFolder%", "{userappdata}");
-            _projInstallDir = $@"{installDir}\{buildOptions.ProjectName}";
+            _projInstallDir = $@"{installDir}\{projectName}";
             var outputFileName = setupFileName ?? $"{buildOptions.OutFileName}_{buildOptions.Version}";
 
             _setupBuilder = Setup.Create(buildOptions.ProductProjectName)
                 .AppId($"{{{{{buildOptions.PackageGuid}}}")
+                .SetupMutex(projectName)
                 .AppVersion(buildOptions.Version)
                 .DefaultDirName(_projInstallDir)
                 .UsePreviousAppDir(YesNo.No)
                 .PrivilegesRequired(PrivilegesRequired.Lowest)
                 .OutputBaseFilename(outputFileName)
                 .DisableDirPage(YesNo.Yes);
+
+            // Inno Setup shows this message when the setup mutex is taken; the default text blames the application.
+            Messages.CreateEntry().Parameter("SetupAppRunningError", string.Format(SetupRunningMessage, projectName), false);
         }
 
         /// <summary>
         /// Creates an instance of <see cref="InnoBuilder"/>.
         /// </summary>
+        /// <remarks>All versions of a project share its name as the setup mutex.</remarks>
         /// <param name="buildOptions">Setup options.</param>
         /// <param name="setupFileName">Setup file name.</param>
         public static InnoBuilder Create(BuildOptions buildOptions, string? setupFileName = null) => new(buildOptions, setupFileName);
