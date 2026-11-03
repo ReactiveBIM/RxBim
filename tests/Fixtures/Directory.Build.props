@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <NoWarn>${NoWarn};CS1591</NoWarn>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <GenerateDependencyFile>true</GenerateDependencyFile>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    </PropertyGroup>
+</Project>

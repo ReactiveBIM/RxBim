@@ -1,8 +1,0 @@
-﻿<Project>
-    
-    <PropertyGroup>
-       
-    </PropertyGroup>
-
-    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
-</Project>

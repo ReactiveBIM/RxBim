@@ -1,27 +1,27 @@
 ﻿<Solution>
-  <Folder Name="/samples/">
-    <File Path="Samples/Directory.Build.Props" />
+  <Folder Name="/Samples/">
+    <File Path="Samples/Directory.Build.props" />
   </Folder>
-  <Folder Name="/samples/Autocad/">
+  <Folder Name="/Samples/Autocad/">
     <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Main.Autocad/RxBim.Sample.AdditionalApp.Main.Autocad.csproj" />
-    <Project Path="samples/Autocad/RxBim.Sample.Application.Autocad/RxBim.Sample.Application.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Application.Autocad/RxBim.Sample.Application.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Config.Autocad/RxBim.Sample.Application.Menu.Config.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad.csproj" />
-    <Project Path="samples/Autocad/RxBim.Sample.Command.Autocad/RxBim.Sample.Command.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Command.Autocad/RxBim.Sample.Command.Autocad.csproj" />
   </Folder>
-  <Folder Name="/samples/Civil/">
+  <Folder Name="/Samples/Civil/">
     <Project Path="Samples/Civil/RxBim.Sample.Application.Civil/RxBim.Sample.Application.Civil.csproj" />
     <Project Path="Samples/Civil/RxBim.Sample.Command.Civil/RxBim.Sample.Command.Civil.csproj" />
   </Folder>
-  <Folder Name="/samples/Revit/">
+  <Folder Name="/Samples/Revit/">
     <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Config.Revit/RxBim.Sample.Application.Menu.Config.Revit.csproj" />
     <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Fluent.Revit/RxBim.Sample.Application.Menu.Fluent.Revit.csproj" />
     <Project Path="Samples/Revit/RxBim.Sample.Command.Revit/RxBim.Sample.Command.Revit.csproj" />
   </Folder>
   <Folder Name="/SolutionFolder/">
     <File Path=".gitignore" />
-    <File Path="Common.Build.Props" />
+    <File Path="Directory.Build.props" />
     <File Path="LICENSE" />
     <File Path="Readme.md" />
     <File Path="stylecop.ruleset" />
@@ -63,18 +63,21 @@
     <Project Path="src/Revit/RxBim.Logs.Revit/RxBim.Logs.Revit.csproj" />
     <Project Path="src/Revit/RxBim.Nuke.Revit/RxBim.Nuke.Revit.csproj" />
   </Folder>
+  <Folder Name="/tests/Fixtures/">
+    <File Path="tests\Fixtures\Directory.Build.props" />
+    <Project Path="tests/Fixtures/Dependency/RxBim.Shared.Tests.Dependency.csproj" />
+    <Project Path="tests/Fixtures/First/RxBim.Shared.Tests.First.csproj" />
+    <Project Path="tests/Fixtures/Second/RxBim.Shared.Tests.Second.csproj" />
+    <Project Path="tests/Fixtures/WpfProbe/RxBim.Shared.Tests.WpfProbe.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/RxBim.Shared.Tests/RxBim.Shared.Tests.csproj" />
+    <File Path="tests/Directory.Build.props" />
+    <File Path="tests\Directory.Build.props" />
     <Project Path="tests/RxBim.Analyzers.Tests/RxBim.Analyzers.Tests.csproj" />
     <Project Path="tests/RxBim.Application.Ribbon.Tests/RxBim.Application.Ribbon.Tests.csproj" />
     <Project Path="tests/RxBim.Di.Tests/RxBim.Di.Tests.csproj" />
     <Project Path="tests/RxBim.Nuke.Tests/RxBim.Nuke.Tests.csproj" />
-  </Folder>
-  <Folder Name="/tests/Fixtures/">
-    <Project Path="tests/RxBim.Shared.Tests/Fixtures/Dependency/RxBim.Shared.Tests.Dependency.csproj" />
-    <Project Path="tests/RxBim.Shared.Tests/Fixtures/First/RxBim.Shared.Tests.First.csproj" />
-    <Project Path="tests/RxBim.Shared.Tests/Fixtures/Second/RxBim.Shared.Tests.Second.csproj" />
-    <Project Path="tests/RxBim.Shared.Tests/Fixtures/WpfProbe/RxBim.Shared.Tests.WpfProbe.csproj" />
   </Folder>
   <Project Path="build/_build.csproj">
     <Build Project="false" />

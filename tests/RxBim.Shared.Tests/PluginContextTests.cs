@@ -168,7 +168,7 @@ public class PluginContextTests
 
         try
         {
-            var path = Path.Combine(directory.DirectoryPath, ".", FirstAssemblyName + ".dll").ToUpperInvariant();
+            var path = Path.Combine(directory.DirectoryPath, ".", FirstAssemblyName + ".dll");
             var type = source.LoadFromAssemblyPath(path).GetType(FirstAssemblyName + ".FirstPlugin")!;
             var second = PluginContext.CreateInstanceInReusedContext(type);
             Assert.Same(ContextOf(first), ContextOf(second));

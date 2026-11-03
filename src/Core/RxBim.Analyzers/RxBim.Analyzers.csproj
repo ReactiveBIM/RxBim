@@ -2,8 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-        <Configurations>Debug;Release</Configurations>
+        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
     <PropertyGroup>

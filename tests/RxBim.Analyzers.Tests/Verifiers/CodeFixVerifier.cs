@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -134,8 +133,7 @@ namespace TestHelper
 
                         var join = string.Join("\r\n", newCompilerDiagnostics.Select(d => d.ToString()));
                         var fullString = syntaxNode.ToFullString();
-                        Assert.IsTrue(false,
-                            $"Fix introduced new compiler diagnostics:\r\n{join}\r\n\r\nNew document:\r\n{fullString}\r\n");
+                        false.Should().BeTrue($"Fix introduced new compiler diagnostics:\r\n{join}\r\n\r\nNew document:\r\n{fullString}\r\n");
                     }
                 }
 

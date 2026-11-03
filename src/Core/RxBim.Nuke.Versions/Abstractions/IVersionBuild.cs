@@ -33,7 +33,7 @@ namespace RxBim.Nuke.Versions
             .Description("Resets the solution to its default version value.")
             .Executes(() =>
             {
-                this.From<IHasSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.Props")
+                this.From<IHasSolution>().Solution.Directory.GlobFiles("**/RxBim.Build.props")
                     .ForEach(f => f.DeleteFile());
             });
 

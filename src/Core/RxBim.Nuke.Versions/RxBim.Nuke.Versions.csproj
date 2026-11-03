@@ -2,10 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
+        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="BimLab.Nuke" Version="2026.1.7" />
+        <PackageReference Include="NuGet.Packaging" Version="7.9.0" />
+        <PackageReference Include="SSH.NET" Version="2026.0.0" />
+        <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.14" />
     </ItemGroup>
 
     <ItemGroup>

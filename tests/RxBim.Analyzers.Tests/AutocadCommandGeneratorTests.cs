@@ -5,12 +5,10 @@ namespace RxBim.Analyzers.Tests
     using Command.Generators.Autocad;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Verifies the command name and flags emitted by the AutoCAD generator without loading AutoCAD.
     /// </summary>
-    [TestClass]
     public class AutocadCommandGeneratorTests
     {
         /// <summary>
@@ -19,20 +17,20 @@ namespace RxBim.Analyzers.Tests
         /// <param name="arguments">The source attribute arguments.</param>
         /// <param name="expectedName">The expected generated CommandMethod name.</param>
         /// <param name="expectedFlags">The expected generated CommandMethod flags.</param>
-        [DataTestMethod]
-        [DataRow("\"GpRenameSymbols\", Text = \"Button text\"", "GpRenameSymbols", 0L)]
-        [DataRow("CommandName, Text = \"Button text\"", "GpRenameSymbols", 0L)]
-        [DataRow("CommandNames.Name, Text = \"Button text\"", "GpRenameSymbols", 0L)]
-        [DataRow("nameof(TestCommand), Text = \"Button text\"", "TestCommand", 0L)]
-        [DataRow("flags: CommandFlags.Session, commandName: CommandNames.Name, Text = \"Button text\"",
+        [Theory]
+        [InlineData("\"GpRenameSymbols\", Text = \"Button text\"", "GpRenameSymbols", 0L)]
+        [InlineData("CommandName, Text = \"Button text\"", "GpRenameSymbols", 0L)]
+        [InlineData("CommandNames.Name, Text = \"Button text\"", "GpRenameSymbols", 0L)]
+        [InlineData("nameof(TestCommand), Text = \"Button text\"", "TestCommand", 0L)]
+        [InlineData("flags: CommandFlags.Session, commandName: CommandNames.Name, Text = \"Button text\"",
             "GpRenameSymbols", 1L)]
-        [DataRow("CommandFlags.Session, Text = \"Button text\"", "TestCommand", 1L)]
-        [DataRow("CommandName, Flags", "GpRenameSymbols", 3L)]
-        [DataRow("CommandNames.Flags", "TestCommand", 3L)]
-        [DataRow("CommandName, CommandFlags.Session | CommandFlags.UsePickSet", "GpRenameSymbols", 3L)]
-        [DataRow("CommandName, (CommandFlags)3", "GpRenameSymbols", 3L)]
-        [DataRow("CommandName, CommandFlags.Session & ~CommandFlags.Session", "GpRenameSymbols", 0L)]
-        [DataRow("CommandName, CommandFlags.High | CommandFlags.Session", "GpRenameSymbols", 1099511627777L)]
+        [InlineData("CommandFlags.Session, Text = \"Button text\"", "TestCommand", 1L)]
+        [InlineData("CommandName, Flags", "GpRenameSymbols", 3L)]
+        [InlineData("CommandNames.Flags", "TestCommand", 3L)]
+        [InlineData("CommandName, CommandFlags.Session | CommandFlags.UsePickSet", "GpRenameSymbols", 3L)]
+        [InlineData("CommandName, (CommandFlags)3", "GpRenameSymbols", 3L)]
+        [InlineData("CommandName, CommandFlags.Session & ~CommandFlags.Session", "GpRenameSymbols", 0L)]
+        [InlineData("CommandName, CommandFlags.High | CommandFlags.Session", "GpRenameSymbols", 1099511627777L)]
         public void GeneratesCommandRegistrationFromConstructorArguments(
             string arguments, string expectedName, long expectedFlags)
         {
@@ -88,14 +86,15 @@ namespace RxBim.Analyzers.Tests
 
             var errors = diagnostics.Concat(generated.GetDiagnostics())
                 .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
-            Assert.AreEqual(0, errors.Length,
-                string.Join(Environment.NewLine, errors.Select(error => error.ToString())));
+
+            errors.Length.Should().Be(0, string.Join(Environment.NewLine, errors.Select(error => error.ToString())));
             var command = generated.GetTypeByMetadataName("Example.TestCommandGenerated")!
                 .GetMembers("TestCommandExecute").OfType<IMethodSymbol>().Single();
             var registration = command.GetAttributes().Single(attribute =>
                 attribute.AttributeClass?.Name == "CommandMethodAttribute");
-            Assert.AreEqual(expectedName, registration.ConstructorArguments[0].Value);
-            Assert.AreEqual(expectedFlags, registration.ConstructorArguments[1].Value);
+            registration.ConstructorArguments[0].Value.Should().Be(expectedName);
+            registration.ConstructorArguments[1].Value.Should().Be(expectedFlags);
+
         }
     }
 }

@@ -4,6 +4,8 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net472</TargetFramework>
         <IsPackable>false</IsPackable>
+        <NotRefenceApi>true</NotRefenceApi>
+        <Description>RxBim msi build tool</Description>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -17,9 +19,5 @@
     <ItemGroup>
         <ProjectReference Include="..\RxBim.MsiBuilder\RxBim.MsiBuilder.csproj"/>
     </ItemGroup>
-
-    <PropertyGroup>
-        <Description>RxBim msi build tool</Description>
-    </PropertyGroup>
 
 </Project>

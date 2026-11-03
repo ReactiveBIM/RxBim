@@ -2,8 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <Configurations>Debug;Release</Configurations>
+        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
     <ItemGroup>

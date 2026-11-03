@@ -4,6 +4,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
         <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1903;NU1902</WarningsNotAsErrors>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(MSBuildProjectName.Contains('Sample')) AND '$(ApplicationVersion)' != '' AND '$(ApplicationVersion)' >= '2025'">
@@ -11,14 +12,14 @@
     </PropertyGroup>
 
     <Choose>
-        <When Condition=" $(MSBuildProjectName.Contains('Revit')) ">
+        <When Condition=" $(MSBuildProjectName.Contains('Revit')) AND !$(MSBuildProjectName.Contains('Nuke'))  ">
             <PropertyGroup>
                 <TargetFramework>net472</TargetFramework>
                 <PlatformTarget>x64</PlatformTarget>
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' AND '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' AND '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>RVT2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -27,7 +28,11 @@
                     <ItemGroup>
                         <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime"/>
                     </ItemGroup>
-                </When>
+                </When><Otherwise>
+                <ItemGroup>
+                    <PackageReference Include="Revit_All_Main_Versions_API_x64555" Version="2019.0.1" ExcludeAssets="runtime"/>
+                </ItemGroup>
+            </Otherwise>
             </Choose>
 
         </When>
@@ -38,7 +43,7 @@
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>ACAD2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -50,14 +55,14 @@
                 </When>
             </Choose>
         </When>
-        <When Condition="$(MSBuildProjectName.Contains('Civil'))">
+        <When Condition="$(MSBuildProjectName.Contains('Civil')) AND !$(MSBuildProjectName.Contains('Nuke')) ">
             <PropertyGroup>
                 <TargetFramework>net472</TargetFramework>
                 <PlatformTarget>x64</PlatformTarget>
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>ACAD2019;CIVIL2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -102,8 +107,8 @@
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))"
-            Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))"
+            Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
 
     <PropertyGroup Condition="$(IsPackable) != false">
         <PackageId Condition="$(NotRefenceApi) == true">$(MSBuildProjectName)</PackageId>

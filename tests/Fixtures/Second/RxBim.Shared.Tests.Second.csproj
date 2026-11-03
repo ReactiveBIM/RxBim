@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Dependency\RxBim.Shared.Tests.Dependency.csproj" />
+  </ItemGroup>
+</Project>

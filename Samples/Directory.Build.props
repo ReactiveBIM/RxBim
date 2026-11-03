@@ -1,0 +1,8 @@
+﻿<Project>
+    <PropertyGroup>
+        <IsPackable>False</IsPackable>
+    </PropertyGroup>
+    
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Build.props, $(MSBuildThisFileDirectory)../))"/>
+    
+</Project>

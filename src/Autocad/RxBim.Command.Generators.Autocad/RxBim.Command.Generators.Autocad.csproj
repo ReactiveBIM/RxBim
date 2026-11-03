@@ -2,8 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <Configurations>Debug;Release</Configurations>
+        <LangVersion>14</LangVersion>
+        <Nullable>enable</Nullable>
+        <NotRefenceApi>true</NotRefenceApi>
     </PropertyGroup>
 
     <PropertyGroup>

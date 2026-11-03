@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TestHelper;
 #pragma warning disable 1591
@@ -11,10 +10,9 @@ namespace RxBim.Analyzers.Tests
     using Analyzers;
 
     /// <inheritdoc />
-    [TestClass]
     public class RxBimAnalyzersUnitTest : CodeFixVerifier
     {
-        [TestMethod]
+        [Fact]
         public void CommandTest()
         {
             var test = @"
@@ -41,7 +39,7 @@ namespace RxBim.CommandExample
             VerifyCSharpDiagnostic(test, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandMethodTest()
         {
             var test = @"
@@ -71,7 +69,7 @@ namespace RxBim.CommandExample
             VerifyCSharpDiagnostic(test, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void AppTest()
         {
             var test = @"
@@ -110,7 +108,7 @@ namespace RxBim.CommandExample
             VerifyCSharpDiagnostic(test, expected, expected2);
         }
 
-        [TestMethod]
+        [Fact]
         public void AppMethodsTest()
         {
             var test = @"
@@ -156,7 +154,7 @@ namespace RxBim.CommandExample
             VerifyCSharpDiagnostic(test, expected, expected2);
         }
 
-        [TestMethod]
+        [Fact]
         public void FixAddingCommandMethod()
         {
             var test = @"namespace RxBim.CommandExample
@@ -185,7 +183,7 @@ namespace RxBim.CommandExample
             VerifyCSharpFix(test, fixtest);
         }
 
-        [TestMethod]
+        [Fact]
         public void FixCommandMethodReturnType()
         {
             var test = @"namespace RxBim.CommandExample
