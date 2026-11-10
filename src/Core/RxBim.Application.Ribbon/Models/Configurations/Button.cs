@@ -5,7 +5,17 @@
     /// </summary>
     public abstract class Button : RibbonPanelItemBase
     {
-        private string? _helpUrl;
+        /// <summary>
+        /// Controls button text visibility. Null preserves automatic visibility.
+        /// </summary>
+        public bool? ShowText { get; set; }
+
+        /// <summary>
+        /// Optional content displayed by the registered renderer in an interactive tooltip.
+        /// Replaces the native tooltip while the interactive tooltip is available.
+        /// Null, empty or whitespace content preserves the native tooltip.
+        /// </summary>
+        public string? EnhancedToolTip { get; set; }
 
         /// <summary>
         /// The URI string for default large button image.
@@ -27,8 +37,26 @@
         /// </summary>
         public string? HelpUrl
         {
-            get => _helpUrl;
-            set => _helpUrl = value.GetAbsoluteUrl();
+            get;
+            set => field = value.GetAbsoluteUrl();
+        }
+
+        /// <summary>
+        /// Resolves the button image path for the specified color theme.
+        /// </summary>
+        /// <param name="themeType">User interface color theme.</param>
+        public string? ResolveImagePath(ThemeType themeType)
+        {
+            return themeType is ThemeType.Light ? ImageLight ?? Image : Image;
+        }
+
+        /// <summary>
+        /// Resolves the large button image path for the specified color theme.
+        /// </summary>
+        /// <param name="themeType">User interface color theme.</param>
+        public string? ResolveLargeImagePath(ThemeType themeType)
+        {
+            return themeType is ThemeType.Light ? LargeImageLight ?? LargeImage : LargeImage;
         }
     }
 }

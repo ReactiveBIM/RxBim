@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Application.Ribbon.ItemFromConfigStrategies
 {
+    using System;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -22,7 +23,9 @@
         /// <inheritdoc />
         public IRibbonPanelItem CreateForStack(IConfigurationSection itemSection)
         {
-            return itemSection.Get<T>();
+            return itemSection.Get<T>() is { } item
+                ? item
+                : throw new InvalidOperationException($"Could not read ribbon item from section '{itemSection.Path}'.");
         }
     }
 }

@@ -6,6 +6,7 @@
     using ConfigurationBuilders;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <summary>
     /// Contains DI Container Extensions for Ribbon Menu.
@@ -85,6 +86,7 @@
         private static void AddBuilder<T>(this IServiceCollection services, Assembly assembly)
             where T : class, IRibbonMenuBuilder
         {
+            services.TryAddSingleton<IEnhancedToolTipRenderer>(new PlainTextEnhancedToolTipRenderer());
             services
                 .AddSingleton(new MenuData { MenuAssembly = assembly })
                 .Scan(scan => scan
@@ -98,7 +100,7 @@
 
         private static Ribbon GetMenuConfiguration(IServiceProvider serviceProvider, IConfiguration? cfg)
         {
-            cfg ??= serviceProvider.GetService<IConfiguration>();
+            cfg ??= serviceProvider.GetRequiredService<IConfiguration>();
             var strategies = serviceProvider.GetServices<IItemFromConfigStrategy>().ToList();
 
             var builder = new RibbonBuilder();

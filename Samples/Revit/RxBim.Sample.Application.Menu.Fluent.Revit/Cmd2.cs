@@ -14,9 +14,19 @@
         Description = "Description: This is command #2",
         Image = @"img\num2_16.bmp",
         LargeImage = @"img\num2_32.bmp",
+        SmallImageLight = @"img\num2_16_light.bmp",
+        LargeImageLight = @"img\num2_32_light.bmp",
         HelpUrl = "https://www.google.com/")]
     public class Cmd2 : RxBimCommand
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// cmd.
         /// </summary>

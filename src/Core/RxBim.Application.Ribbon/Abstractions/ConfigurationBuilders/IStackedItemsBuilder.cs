@@ -20,6 +20,18 @@
             Action<ICommandButtonBuilder>? builder = null);
 
         /// <summary>
+        /// Adds a new toggle command button to the stack.
+        /// </summary>
+        /// <param name="name">The button internal name.</param>
+        /// <param name="commandType">A class which implements command.
+        ///     This command will be executed when the user clicks the button.</param>
+        /// <param name="builder">The button builder.</param>
+        IStackedItemsBuilder ToggleCommandButton(
+            string name,
+            Type commandType,
+            Action<IToggleCommandButtonBuilder>? builder = null);
+
+        /// <summary>
         /// Adds a new pull down button to the stack.
         /// </summary>
         /// <param name="name">The button internal name.</param>

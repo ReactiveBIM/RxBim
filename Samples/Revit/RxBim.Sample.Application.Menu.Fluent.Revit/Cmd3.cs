@@ -14,9 +14,19 @@
         Description = "Description: This is command #3",
         Image = @"img\num3_16.jpg",
         LargeImage = @"img\num3_32.jpg",
+        SmallImageLight = @"img\num3_16_light.jpg",
+        LargeImageLight = @"img\num3_32_light.jpg",
         HelpUrl = "https://www.autodesk.com/")]
     public class Cmd3 : RxBimCommand
     {
+#if NETCOREAPP
+        /// <inheritdoc />
+        protected override bool RunInSeparatedContext => true;
+
+        /// <inheritdoc />
+        protected override bool ReuseSeparatedContext => true;
+#endif
+
         /// <summary>
         /// cmd.
         /// </summary>

@@ -18,5 +18,11 @@
         /// </summary>
         /// <param name="url">URL address.</param>
         TButtonBuilder HelpUrl(string url);
+
+        /// <summary>
+        /// Sets button text visibility while preserving the text for the tooltip.
+        /// </summary>
+        /// <param name="showText">Whether to show the button text.</param>
+        TButtonBuilder ShowText(bool showText);
     }
 }

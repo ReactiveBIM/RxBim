@@ -1,4 +1,4 @@
-#pragma warning disable SA1600
+﻿#pragma warning disable SA1600
 namespace RxBim.Logs.Settings.Configuration
 {
     using System;
@@ -161,7 +161,9 @@ namespace RxBim.Logs.Settings.Configuration
             AssemblyFinder assemblyFinder)
         {
             var serilogAssembly = typeof(ILogger).Assembly;
-            var assemblies = new Dictionary<string, Assembly> { [serilogAssembly.FullName] = serilogAssembly };
+
+            // Assemblies obtained through typeof and Assembly.Load have a full name.
+            var assemblies = new Dictionary<string, Assembly> { [serilogAssembly.FullName!] = serilogAssembly };
 
             var usingSection = section.GetSection("Using");
             if (usingSection.GetChildren().Any())
@@ -175,16 +177,16 @@ namespace RxBim.Logs.Settings.Configuration
                     }
 
                     var assembly = Assembly.Load(new AssemblyName(simpleName));
-                    if (!assemblies.ContainsKey(assembly.FullName))
-                        assemblies.Add(assembly.FullName, assembly);
+                    if (!assemblies.ContainsKey(assembly.FullName!))
+                        assemblies.Add(assembly.FullName!, assembly);
                 }
             }
 
             foreach (var assemblyName in assemblyFinder.FindAssembliesContainingName("serilog"))
             {
                 var assumed = Assembly.Load(assemblyName);
-                if (assumed != null && !assemblies.ContainsKey(assumed.FullName))
-                    assemblies.Add(assumed.FullName, assumed);
+                if (assumed != null && !assemblies.ContainsKey(assumed.FullName!))
+                    assemblies.Add(assumed.FullName!, assumed);
             }
 
             return assemblies.Values.ToList().AsReadOnly();
@@ -198,12 +200,12 @@ namespace RxBim.Logs.Settings.Configuration
                    || paramInfo.ParameterType == typeof(IConfiguration);
         }
 
-        private static bool ParameterNameMatches(string actualParameterName, string suppliedName)
+        private static bool ParameterNameMatches(string? actualParameterName, string suppliedName)
         {
             return suppliedName.Equals(actualParameterName, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool ParameterNameMatches(string actualParameterName, IEnumerable<string> suppliedNames)
+        private static bool ParameterNameMatches(string? actualParameterName, IEnumerable<string> suppliedNames)
         {
             return suppliedNames.Any(s => ParameterNameMatches(actualParameterName, s));
         }
@@ -307,7 +309,7 @@ namespace RxBim.Logs.Settings.Configuration
                 .ToList();
         }
 
-        private static LogEventLevel ParseLogEventLevel(string value)
+        private static LogEventLevel ParseLogEventLevel(string? value)
         {
             if (!Enum.TryParse(value, out LogEventLevel parsedLevel))
                 throw new InvalidOperationException($"The value {value} is not a valid Serilog level.");
@@ -520,7 +522,8 @@ namespace RxBim.Logs.Settings.Configuration
 
             foreach (var enrichPropertyDirective in propertiesDirective.GetChildren())
             {
-                loggerConfiguration.Enrich.WithProperty(enrichPropertyDirective.Key, enrichPropertyDirective.Value);
+                // Serilog supports null as an event property value.
+                loggerConfiguration.Enrich.WithProperty(enrichPropertyDirective.Key, enrichPropertyDirective.Value!);
             }
         }
 

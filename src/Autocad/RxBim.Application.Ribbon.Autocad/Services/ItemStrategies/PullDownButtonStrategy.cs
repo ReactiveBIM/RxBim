@@ -22,17 +22,17 @@
         protected override void AddItem(
             RibbonTab ribbonTab,
             RibbonPanel ribbonPanel,
-            PullDownButton pullDownButtonConfig)
+            PullDownButton itemConfig)
         {
-            var orientation = pullDownButtonConfig.GetOrientation();
+            var orientation = itemConfig.GetOrientation();
             _panelService.AddItem(ribbonPanel,
-                _buttonService.CreatePullDownButton(pullDownButtonConfig, RibbonItemSize.Large, orientation));
+                _buttonService.CreatePullDownButton(itemConfig, RibbonItemSize.Large, orientation));
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(PullDownButton pullDownButtonConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(PullDownButton itemConfig, RibbonItemSize size)
         {
-            return _buttonService.CreatePullDownButton(pullDownButtonConfig, size, Orientation.Horizontal);
+            return _buttonService.CreatePullDownButton(itemConfig, size, Orientation.Horizontal);
         }
     }
 }

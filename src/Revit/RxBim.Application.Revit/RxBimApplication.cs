@@ -3,7 +3,6 @@
     using System;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Events;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
     using Ribbon;
     using Shared;
@@ -22,10 +21,19 @@
         private object? _isolatedApplicationInstance;
 
         /// <summary>
-        /// Allows you to turn off plugin execution in separated context. Might be useful for debugging
-        /// via Addin Manager.
+        /// Enables plugin execution in an isolated context managed by RxBim.
+        /// In Revit 2026 and newer, set it to <see langword="false"/> to let the manifest select
+        /// Revit's context. For the RxBim context, <c>UseRevitContext=true</c> or an omitted setting
+        /// is preferred to avoid nesting it inside Revit's isolated context.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
+
+        /// <summary>
+        /// Reuses the context for the application's DLL directory until Revit exits.
+        /// Applies only when <see cref="RunInSeparatedContext"/> is enabled.
+        /// Enable this setting for the application's commands as well to share the same context.
+        /// </summary>
+        protected virtual bool ReuseSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -35,13 +43,14 @@
             if (RunInSeparatedContext)
             {
                 var type = GetType();
-                if (PluginContext.IsCurrentContextDefault(type))
+                if (!PluginContext.IsCurrentContextRxBim(type))
                 {
+                    if (ReuseSeparatedContext)
+                        return StartInReusedContext(type, application);
+
                     _isolatedApplicationInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (_isolatedApplicationInstance is IExternalApplication app)
-                    {
                         return app.OnStartup(application);
-                    }
                 }
             }
 #endif
@@ -61,15 +70,36 @@
         /// <inheritdoc />
         public Result OnShutdown(UIControlledApplication application)
         {
-            #if NETCOREAPP
-            if (PluginContext.IsCurrentContextDefault(GetType()) && _isolatedApplicationInstance is IExternalApplication app)
+#if NETCOREAPP
+            if (_isolatedApplicationInstance is IExternalApplication app)
             {
                 return app.OnShutdown(application);
             }
-            #endif
+#endif
 
             return ShutdownApplication();
         }
+
+#if NETCOREAPP
+        private Result StartInReusedContext(Type type, UIControlledApplication application)
+        {
+            IExternalApplication app;
+
+            try
+            {
+                app = (IExternalApplication)PluginContext.CreateInstanceInReusedContext(type);
+            }
+            catch (Exception exception)
+            {
+                // Report loading failures instead of starting the application without the requested isolation.
+                TaskDialog.Show(nameof(RxBim), exception.ToString());
+                return Result.Failed;
+            }
+
+            _isolatedApplicationInstance = app;
+            return app.OnStartup(application);
+        }
+#endif
 
         private Result ExecuteApplication(UIControlledApplication application)
         {
@@ -89,9 +119,16 @@
 
         private Result ShutdownApplication()
         {
-            var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
-            var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
-            return result.MapResultToRevitResult();
+            try
+            {
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
+                var result = methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
+                return result.MapResultToRevitResult();
+            }
+            finally
+            {
+                (_serviceProvider as IDisposable)?.Dispose();
+            }
         }
 
         private void ApplicationIdling(object? sender, IdlingEventArgs e)
@@ -105,7 +142,7 @@
 
                     _uiApplicationProxy.Initialize(uiApp);
 
-                    var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                    var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                     methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
                 }
                 catch (Exception exception)

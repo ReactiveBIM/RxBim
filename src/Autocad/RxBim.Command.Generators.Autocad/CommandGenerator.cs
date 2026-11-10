@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using Extensions;
@@ -31,6 +32,23 @@
             _context = context;
             var attributeSymbol = GetAttribute();
             AddCommands(attributeSymbol);
+        }
+
+        private static object? ReadConstructorArgument(AttributeData? attribute, string parameterName)
+        {
+            if (attribute?.AttributeConstructor is null)
+                return null;
+
+            // Roslyn orders arguments by constructor parameters and evaluates defaults, constants and enum expressions.
+            var parameters = attribute.AttributeConstructor.Parameters;
+
+            for (var index = 0; index < parameters.Length; index++)
+            {
+                if (parameters[index].Name == parameterName)
+                    return attribute.ConstructorArguments[index].Value;
+            }
+
+            return null;
         }
 
         private INamedTypeSymbol GetAttribute()
@@ -94,14 +112,28 @@
                 .Select(
                     s =>
                     {
-                        var tokens = GetAttributeTokens(s, attributeSymbol);
+                        var attribute = GetCommandAttribute(s, attributeSymbol);
+                        var commandName = ReadConstructorArgument(attribute, CommandNameParameter) as string ?? Empty;
+                        var flags = ReadConstructorArgument(attribute, CommandFlagsParameter);
+                        var flagsLiteral = flags is null
+                            ? Empty
+                            : $"({CommandFlags}){Convert.ToString(flags, CultureInfo.InvariantCulture)}";
+
                         return (
                             ((BaseNamespaceDeclarationSyntax)s.Parent!).Name.ToString(),
                             s.Identifier.Text,
-                            tokens.ReadCommandName(),
-                            tokens.ReadCommandFlags());
+                            commandName,
+                            flagsLiteral);
                     })
                 .ToList();
+        }
+
+        private AttributeData? GetCommandAttribute(ClassDeclarationSyntax declaredClass, ISymbol? attributeSymbol)
+        {
+            var semanticModel = _context.Compilation.GetSemanticModel(declaredClass.SyntaxTree);
+            var declaredSymbol = semanticModel.GetDeclaredSymbol(declaredClass);
+            return declaredSymbol?.GetAttributes().FirstOrDefault(data =>
+                SymbolEqualityComparer.Default.Equals(data.AttributeClass, attributeSymbol));
         }
 
         private bool CheckForCommandType(BaseTypeDeclarationSyntax typeDeclarationSyntax)
@@ -118,29 +150,6 @@
             }
 
             return false;
-        }
-
-        private List<SyntaxToken> GetAttributeTokens(SyntaxNode declaredClass, ISymbol? attributeSymbol)
-        {
-            if (attributeSymbol == null)
-            {
-                return new List<SyntaxToken>();
-            }
-
-            var semanticModel = _context.Compilation.GetSemanticModel(declaredClass.SyntaxTree);
-
-            return declaredClass
-                .DescendantNodes()
-                .OfType<AttributeSyntax>()
-                .FirstOrDefault(
-                    a => a.DescendantTokens()
-                        .Any(
-                            dt =>
-                                dt.IsKind(SyntaxKind.IdentifierToken) &&
-                                dt.Parent != null &&
-                                semanticModel.GetTypeInfo(dt.Parent).Type?.Name == attributeSymbol.Name))
-                ?.DescendantTokens()
-                .ToList()!;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Sample.Command.Autocad
 {
+    using System;
     using Abstractions;
     using Di;
     using Logs.Autocad;
@@ -21,9 +22,10 @@
             services.AddTransient<SomeViewModel>();
             services.AddAutocadLogs();
 
-            services.AddSingleton(serviceProvider => serviceProvider.GetService<IConfiguration>()
+            services.AddSingleton(serviceProvider => serviceProvider.GetRequiredService<IConfiguration>()
                 .GetSection(nameof(PluginSettings))
-                .Get<PluginSettings>());
+                .Get<PluginSettings>()
+                ?? throw new InvalidOperationException($"Configuration section '{nameof(PluginSettings)}' is missing or empty."));
         }
     }
 }

@@ -20,6 +20,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="NuGet.Frameworks" Version="7.9.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,7 +30,7 @@
         <!-- Common build related files -->
 
         <None Include="..\.nuke" LinkBase="config" />
-        
+
         <None Include="..\build.sh" LinkBase="scripts" />
         <None Include="..\build.ps1" LinkBase="scripts" />
 
@@ -47,6 +48,7 @@
     <ItemGroup>
         <ProjectReference Include="..\src\Core\RxBim.Nuke.Versions\RxBim.Nuke.Versions.csproj" />
         <ProjectReference Include="..\src\Revit\RxBim.Nuke.Revit\RxBim.Nuke.Revit.csproj" />
+        <ProjectReference Include="..\src\Autocad\RxBim.Nuke.AutoCAD\RxBim.Nuke.AutoCAD.csproj" />
         <ProjectReference Include="..\src\Core\RxBim.Nuke\RxBim.Nuke.csproj" />
         <ProjectReference Include="..\src\Core\RxBim.Nuke.Generators\RxBim.Nuke.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>

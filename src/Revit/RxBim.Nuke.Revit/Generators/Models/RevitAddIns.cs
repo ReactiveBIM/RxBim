@@ -11,5 +11,10 @@
         /// List of addins.
         /// </summary>
         public List<AddIn>? AddIn { get; set; }
+
+        /// <summary>
+        /// Revit addin manifest settings.
+        /// </summary>
+        public ManifestSettings? ManifestSettings { get; set; }
     }
 }

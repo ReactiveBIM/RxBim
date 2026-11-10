@@ -15,4 +15,11 @@ internal static class UrlExtensions
     {
         return string.IsNullOrEmpty(url) ? string.Empty : new Uri(url).AbsoluteUri;
     }
+
+    /// <summary>
+    /// Checks whether an absolute URI uses HTTP or HTTPS.
+    /// </summary>
+    /// <param name="uri">The absolute URI to check.</param>
+    /// <returns>Whether the URI uses HTTP or HTTPS.</returns>
+    public static bool IsHttpOrHttps(this Uri uri) => uri.Scheme is "http" or "https";
 }

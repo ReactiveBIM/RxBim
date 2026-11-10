@@ -10,16 +10,16 @@
     public class ComboBoxStrategy(IPanelService panelService, IComboBoxEventsHandler comboBoxEventsHandler, MenuData menuData) : ItemStrategyBase<ComboBox>
     {
         /// <inheritdoc />
-        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, ComboBox comboBoxConfig)
+        protected override void AddItem(RibbonTab ribbonTab, RibbonPanel ribbonPanel, ComboBox itemConfig)
         {
             var existComboBox = ribbonTab.Panels.SelectMany(p => p.Source.Items)
                 .OfType<RibbonRowPanel>()
                 .SelectMany(r => r.Items)
                 .OfType<RibbonCombo>()
-                .FirstOrDefault(i => i.Name?.Equals(comboBoxConfig.Name) ?? false);
+                .FirstOrDefault(i => i.Name?.Equals(itemConfig.Name) ?? false);
             if (existComboBox != null)
             {
-                foreach (var comboBoxMember in comboBoxConfig.ComboBoxMembers)
+                foreach (var comboBoxMember in itemConfig.ComboBoxMembers)
                 {
                     existComboBox.Items.Add(new RibbonItem
                     {
@@ -35,13 +35,13 @@
                 return;
             }
 
-            panelService.AddItem(ribbonPanel, CreateComboBox(comboBoxConfig));
+            panelService.AddItem(ribbonPanel, CreateComboBox(itemConfig));
         }
 
         /// <inheritdoc />
-        protected override RibbonItem GetItemForStack(ComboBox comboBoxConfig, RibbonItemSize size)
+        protected override RibbonItem GetItemForStack(ComboBox itemConfig, RibbonItemSize size)
         {
-            return CreateComboBox(comboBoxConfig);
+            return CreateComboBox(itemConfig);
         }
 
         private RibbonCombo CreateComboBox(ComboBox comboBoxConfig)

@@ -2,9 +2,9 @@
 {
     using ViewModels;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// <content>
+    /// Interaction logic for SomeWindow.xaml
+    /// </content>
     public partial class SomeWindow
     {
         /// <inheritdoc/>

@@ -43,6 +43,9 @@
             try
             {
                 var uiApp = serviceProvider.GetService<UIApplication>();
+                if (uiApp is null)
+                    return;
+
                 config.Enrich.With(new RevitEnricher(uiApp, pluginAssembly));
             }
             catch

@@ -12,8 +12,6 @@
     /// </summary>
     public class MenuData
     {
-        private Assembly? _menuAssembly;
-
         /// <summary>
         /// Ribbon configuration
         /// </summary>
@@ -24,8 +22,8 @@
         /// </summary>
         public Assembly MenuAssembly
         {
-            get => _menuAssembly ?? throw new InvalidOperationException("No value set!");
-            set => _menuAssembly = value;
+            get => field ?? throw new InvalidOperationException("No value set!");
+            set;
         }
 
         /// <summary>
@@ -84,12 +82,44 @@
         public string? GetTooltipContent(CommandButton cmdButtonConfig, Type commandType)
         {
             var toolTip = cmdButtonConfig.ToolTip;
-            if (RibbonConfiguration is null || toolTip is null || !RibbonConfiguration.DisplayVersion)
+
+            if (RibbonConfiguration is not { DisplayVersion: true } ribbon || toolTip is null)
                 return toolTip;
+
             if (toolTip.Length > 0)
                 toolTip += Environment.NewLine;
-            toolTip += $"{RibbonConfiguration.VersionPrefix}{commandType.Assembly.GetName().Version}";
+
+            toolTip += FormatToolTipVersion(commandType, ribbon);
             return toolTip;
         }
+
+        /// <summary>
+        /// Returns version information for an enhanced tooltip independently of native tooltip text.
+        /// </summary>
+        /// <param name="button">The button whose command assembly supplies the version.</param>
+        /// <returns>
+        /// The formatted version, or null when version display is disabled or no command is assigned.
+        /// </returns>
+        public string? GetEnhancedToolTipVersion(Button button)
+        {
+            if (RibbonConfiguration is not { DisplayVersion: true } ribbon)
+                return null;
+
+            var commandTypeName = button switch
+            {
+                CommandButton command => command.CommandType,
+                ToggleCommandButton toggle => toggle.CommandType,
+                _ => null
+            };
+
+            if (string.IsNullOrWhiteSpace(commandTypeName))
+                return null;
+
+            var commandType = MenuAssembly.GetTypeByName(commandTypeName!);
+            return FormatToolTipVersion(commandType, ribbon);
+        }
+
+        private static string FormatToolTipVersion(Type commandType, Ribbon ribbon) =>
+            ribbon.VersionPrefix + commandType.Assembly.GetName().Version;
     }
 }

@@ -23,6 +23,13 @@ namespace RxBim.Application.Autocad
         /// via Addin Manager.
         /// </summary>
         protected virtual bool RunInSeparatedContext => false;
+
+        /// <summary>
+        /// Reuses the context for the application's DLL directory until AutoCAD exits.
+        /// Applies only when <see cref="RunInSeparatedContext"/> is enabled.
+        /// Enable this setting for the application's commands as well to share the same context.
+        /// </summary>
+        protected virtual bool ReuseSeparatedContext => false;
 #endif
 
         /// <inheritdoc />
@@ -32,8 +39,14 @@ namespace RxBim.Application.Autocad
             if (RunInSeparatedContext)
             {
                 var type = GetType();
-                if (PluginContext.IsCurrentContextDefault(type))
+                if (!PluginContext.IsCurrentContextRxBim(type))
                 {
+                    if (ReuseSeparatedContext)
+                    {
+                        InitializeInReusedContext(type);
+                        return;
+                    }
+
                     var appInstance = PluginContext.CreateInstanceInNewContext(type);
                     if (appInstance is IExtensionApplication application)
                     {
@@ -67,6 +80,26 @@ namespace RxBim.Application.Autocad
         /// </summary>
         protected virtual bool CanBeStarted() => true;
 
+#if NETCOREAPP
+        private void InitializeInReusedContext(Type type)
+        {
+            IExtensionApplication application;
+
+            try
+            {
+                application = (IExtensionApplication)PluginContext.CreateInstanceInReusedContext(type);
+            }
+            catch (Exception exception)
+            {
+                // Report loading failures without initializing in the original context.
+                Application.ShowAlertDialog($"Error: {exception}");
+                return;
+            }
+
+            application.Initialize();
+        }
+#endif
+
         private void ApplicationOnIdle(object? sender, EventArgs e)
         {
             Application.Idle -= ApplicationOnIdle;
@@ -86,7 +119,7 @@ namespace RxBim.Application.Autocad
 
                 MenuBuilderUtility.BuildMenu(_serviceProvider);
 
-                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.StartMethodName);
             }
             catch (Exception exception)
@@ -104,12 +137,16 @@ namespace RxBim.Application.Autocad
 
             try
             {
-                var methodCaller = _serviceProvider.GetService<IMethodCaller<PluginResult>>();
+                var methodCaller = _serviceProvider.GetRequiredService<IMethodCaller<PluginResult>>();
                 methodCaller.InvokeMethod(_serviceProvider, Constants.ShutdownMethodName);
             }
             catch (Exception exception)
             {
                 Application.ShowAlertDialog($"Error: {exception}");
+            }
+            finally
+            {
+                (_serviceProvider as IDisposable)?.Dispose();
             }
         }
     }

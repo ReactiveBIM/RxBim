@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using Bimlab.Nuke.Components;
 using JetBrains.Annotations;
@@ -16,7 +16,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     FetchDepth = 0,
     OnPushBranches = new[]
     {
-        DevelopBranch, FeatureBranches, BugfixBranches
+        DevelopBranch, BugfixBranches
     },
     InvokedTargets = new[]
     {
@@ -25,6 +25,17 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     ImportSecrets = new[]
     {
         "NUGET_API_KEY", "ALL_PACKAGES"
+    })]
+[GitHubActions("FeatureCI",
+    GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
+    OnPushBranches = new[]
+    {
+        FeatureBranches
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Test), nameof(ICompile.Compile)
     })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
@@ -56,7 +67,14 @@ partial class Build : RevitRxBimBuild, IVersions
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().Compile);
+    public static int Main()
+    {
+        var project = EnvironmentInfo.GetNamedArgument<string>("project");
+        return project?.EndsWith(".Autocad", StringComparison.OrdinalIgnoreCase) == true ||
+               project?.EndsWith(".Civil", StringComparison.OrdinalIgnoreCase) == true
+            ? Execute<AutocadBuild>(x => x.Compile)
+            : Execute<Build>(x => x.From<IPublish>().Compile);
+    }
 
     public Target Test => _ => _
         .Before<IClean>()

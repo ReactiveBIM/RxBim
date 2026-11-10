@@ -193,6 +193,14 @@
         /// <returns>True if the version name is found. Otherwise, returns false.</returns>
         public static bool TryGetAppVersionNumber(this Project project, out string versionNumber)
         {
+            // Source-based samples use project references instead of versioned RxBim packages.
+            var applicationVersion = project.GetProperty("ApplicationVersion");
+            if (int.TryParse(applicationVersion, out _))
+            {
+                versionNumber = applicationVersion!;
+                return true;
+            }
+
             var reg = new Regex("RxBim\\.(Command|Application)(\\..*|.*)");
             var outputs = DotNet($"list {project.Path} package", logOutput: false, logInvocation: false);
 
@@ -224,7 +232,7 @@
             versionNumber = string.Empty;
             return false;
         }
-        
+
         /// <summary>
         /// Commits changes to GIT.
         /// </summary>

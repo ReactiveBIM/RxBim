@@ -66,7 +66,8 @@
             {
                 if (!tabSection.Exists())
                     continue;
-                var tab = CreateTab(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value);
+                var tab = CreateTab(tabSection.GetSection(nameof(Application.Ribbon.Tab.Name)).Value
+                    ?? throw new InvalidOperationException($"Tab name is missing in section '{tabSection.Path}'."));
                 tab.LoadFromConfig(tabSection, fromConfigStrategies);
             }
         }
@@ -80,9 +81,9 @@
             }
 
             var headerSection = config.GetSection(nameof(Ribbon.VersionPrefix));
-            if (headerSection.Exists())
+            if (headerSection.Value is { } versionPrefix)
             {
-                _ribbon.VersionPrefix = headerSection.Value;
+                _ribbon.VersionPrefix = versionPrefix;
             }
         }
 

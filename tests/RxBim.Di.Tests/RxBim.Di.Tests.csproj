@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <NoWarn>CS1591</NoWarn>
         <Configurations>Debug;Release</Configurations>
         <IsPackable>false</IsPackable>
@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\Core\RxBim.Di\RxBim.Di.csproj"/>
         <ProjectReference Include="..\..\src\Core\RxBim.Logs\RxBim.Logs.csproj"/>
         <ProjectReference Include="..\..\src\Core\RxBim.Shared\RxBim.Shared.csproj"/>
     </ItemGroup>

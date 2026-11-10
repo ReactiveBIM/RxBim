@@ -3,7 +3,9 @@
     using System.Linq;
     using global::Nuke.Common;
     using global::Nuke.Common.IO;
+    using global::Nuke.Common.Tooling;
     using global::Nuke.Common.Tools.DotNet;
+    using global::Nuke.Common.Utilities;
     using global::Nuke.Common.Utilities.Collections;
     using static global::Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -52,7 +54,8 @@
         {
             DotNetBuild(settings => settings
                 .SetProjectFile(Solution.Path)
-                .SetConfiguration(Configuration));
+                .SetConfiguration(Configuration)
+                .Apply(CompileSettings));
         }
 
         /// <inheritdoc cref="Restore"/>

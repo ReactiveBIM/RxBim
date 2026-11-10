@@ -115,8 +115,9 @@ namespace RxBim.Logs.Settings.Configuration
             Action<LoggerEnrichmentConfiguration> configureEnricher,
             LogEventLevel enrichFromLevel = LevelAlias.Minimum,
             LoggingLevelSwitch? levelSwitch = null)
-            => levelSwitch != null ? loggerEnrichmentConfiguration.AtLevel(levelSwitch, configureEnricher)
-                                   : loggerEnrichmentConfiguration.AtLevel(enrichFromLevel, configureEnricher);
+            => levelSwitch != null
+                ? loggerEnrichmentConfiguration.AtLevel(levelSwitch, configureEnricher)
+                : loggerEnrichmentConfiguration.AtLevel(enrichFromLevel, configureEnricher);
 
         private static LoggerConfiguration FromLogContext(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration)
             => loggerEnrichmentConfiguration.FromLogContext();

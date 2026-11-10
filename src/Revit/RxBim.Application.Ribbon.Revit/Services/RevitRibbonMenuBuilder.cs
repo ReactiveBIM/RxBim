@@ -4,6 +4,7 @@
     using System.Linq;
     using Autodesk.Revit.UI;
     using Autodesk.Windows;
+    using Microsoft.Extensions.DependencyInjection;
     using UIFramework;
     using RibbonPanel = Autodesk.Revit.UI.RibbonPanel;
 
@@ -13,15 +14,28 @@
     public class RevitRibbonMenuBuilder : RibbonMenuBuilderBase<RibbonTab, RibbonPanel>
     {
         private readonly UIControlledApplication _application;
+        private readonly IThemedRibbonButtonService<Autodesk.Revit.UI.RibbonButton> _themedButtonService;
+        private readonly RevitEnhancedToolTipService? _enhancedToolTipService;
 
         /// <inheritdoc />
         public RevitRibbonMenuBuilder(
             UIControlledApplication application,
             MenuData menuData,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IThemedRibbonButtonService<Autodesk.Revit.UI.RibbonButton> themedButtonService)
             : base(menuData, serviceProvider)
         {
             _application = application;
+            _themedButtonService = themedButtonService;
+            _enhancedToolTipService = serviceProvider.GetService<RevitEnhancedToolTipService>();
+        }
+
+        /// <inheritdoc />
+        protected override void PreBuildActions()
+        {
+            base.PreBuildActions();
+            _enhancedToolTipService?.Clear();
+            _themedButtonService.Run();
         }
 
         /// <inheritdoc />

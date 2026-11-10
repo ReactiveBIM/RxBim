@@ -7,28 +7,40 @@
     <None Update="img\num1_16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="img\num1_16_light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="img\num1_32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="img\num1_32_light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup>   
+  <ItemGroup>
     <None Remove="img\command_16.png" />
     <EmbeddedResource Include="img\command_16.ico" />
+    <EmbeddedResource Include="img\command_16_light.ico" />
     <EmbeddedResource Include="img\command_16.png" />
     <None Remove="img\command_32.png" />
     <EmbeddedResource Include="img\command_32.ico" />
+    <EmbeddedResource Include="img\command_32_light.ico" />
     <EmbeddedResource Include="img\command_32.png" />
     <None Remove="img\num2_16.png" />
     <EmbeddedResource Include="img\num2_16.bmp" />
+    <EmbeddedResource Include="img\num2_16_light.bmp" />
     <EmbeddedResource Include="img\num2_16.png" />
     <None Remove="img\num2_32.png" />
     <EmbeddedResource Include="img\num2_32.bmp" />
+    <EmbeddedResource Include="img\num2_32_light.bmp" />
     <EmbeddedResource Include="img\num2_32.png" />
     <None Remove="img\num3_16.png" />
     <EmbeddedResource Include="img\num3_16.jpg" />
+    <EmbeddedResource Include="img\num3_16_light.jpg" />
     <EmbeddedResource Include="img\num3_16.png" />
     <None Remove="img\num3_32.png" />
     <EmbeddedResource Include="img\num3_32.jpg" />
+    <EmbeddedResource Include="img\num3_32_light.jpg" />
     <EmbeddedResource Include="img\num3_32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -39,9 +51,9 @@
   <PropertyGroup>
     <PackageGuid>fe36e6d8-1d3d-4d84-8fea-dfdc5f28b4cf</PackageGuid>
     <UpgradeCode>c14de912-977b-46dd-8ada-3c3dcc2eb009</UpgradeCode>
-    <Application__RxBim_Application_Menu_Config_Revit_Sample_App>9e285422-82a1-4200-a082-1f95ea544f59</Application__RxBim_Application_Menu_Config_Revit_Sample_App>
-    <Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd1>4ff2873e-827f-45b2-9043-20285f492985</Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd1>
-    <Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd2>93f90cbb-9e59-45b8-91fe-ff5414dd9478</Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd2>
-    <Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd3>7dde2bad-edba-4778-aeae-e03069b2e8ff</Command__RxBim_Application_Menu_Config_Revit_Sample_Commands_Cmd3>
+    <Application__RxBim_Sample_Application_Menu_Config_Revit_App>9e285422-82a1-4200-a082-1f95ea544f59</Application__RxBim_Sample_Application_Menu_Config_Revit_App>
+    <Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd1>4ff2873e-827f-45b2-9043-20285f492985</Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd1>
+    <Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd2>93f90cbb-9e59-45b8-91fe-ff5414dd9478</Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd2>
+    <Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd3>7dde2bad-edba-4778-aeae-e03069b2e8ff</Command__RxBim_Sample_Application_Menu_Config_Revit_Commands_Cmd3>
   </PropertyGroup>
 </Project>
