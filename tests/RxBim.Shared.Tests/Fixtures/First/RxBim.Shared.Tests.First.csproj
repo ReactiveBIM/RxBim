@@ -4,6 +4,7 @@
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
     <GenerateDependencyFile>true</GenerateDependencyFile>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
     <!-- Exercise the production dispatch across contexts without requiring a running AutoCAD host. -->

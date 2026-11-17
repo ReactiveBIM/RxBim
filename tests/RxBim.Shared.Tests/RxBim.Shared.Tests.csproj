@@ -5,7 +5,7 @@
     <Configurations>Debug;Release</Configurations>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-  <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))" />
+  <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.props, $(MSBuildThisFileDirectory)))" />
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="xunit" Version="2.4.0" />

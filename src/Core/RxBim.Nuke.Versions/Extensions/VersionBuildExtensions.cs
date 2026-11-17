@@ -80,7 +80,7 @@
                 .Where(appVersion.IsApplicableFor)
                 .ForEach(p =>
                 {
-                    File.WriteAllText(p.Directory / "RxBim.Build.Props", appVersion.ToProjectProps(), Encoding.UTF8);
+                    File.WriteAllText(p.Directory / "RxBim.Build.props", appVersion.ToProjectProps(), Encoding.UTF8);
                     Log.Information("Project {Project} set up for {App}", p.Name, appVersion.Description);
                 });
         }

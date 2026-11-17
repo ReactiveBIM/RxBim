@@ -3,6 +3,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <IsPackable>false</IsPackable>
     <GenerateDependencyFile>true</GenerateDependencyFile>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependency\RxBim.Shared.Tests.Dependency.csproj" />

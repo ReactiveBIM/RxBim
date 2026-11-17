@@ -18,7 +18,7 @@
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' AND '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' AND '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>RVT2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -38,7 +38,7 @@
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>ACAD2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -57,7 +57,7 @@
             </PropertyGroup>
 
             <Choose>
-                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
+                <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
                     <PropertyGroup>
                         <DefineConstants>ACAD2019;CIVIL2019</DefineConstants>
                         <ApplicationVersion>2019</ApplicationVersion>
@@ -102,8 +102,8 @@
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))"
-            Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))"
+            Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
 
     <PropertyGroup Condition="$(IsPackable) != false">
         <PackageId Condition="$(NotRefenceApi) == true">$(MSBuildProjectName)</PackageId>

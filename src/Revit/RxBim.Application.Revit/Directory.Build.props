@@ -1,0 +1,8 @@
+﻿<Project>
+    
+    <PropertyGroup>
+       
+    </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.props, $(MSBuildThisFileDirectory)))" />
+</Project>

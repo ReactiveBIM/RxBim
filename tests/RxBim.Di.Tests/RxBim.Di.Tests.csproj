@@ -6,7 +6,7 @@
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))"/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.props, $(MSBuildThisFileDirectory)))"/>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.7.0"/>

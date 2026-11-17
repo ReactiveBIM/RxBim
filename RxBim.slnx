@@ -1,27 +1,27 @@
 ﻿<Solution>
-  <Folder Name="/samples/">
-    <File Path="Samples/Directory.Build.Props" />
+  <Folder Name="/Samples/">
+    <File Path="Samples/Directory.Build.props" />
   </Folder>
-  <Folder Name="/samples/Autocad/">
+  <Folder Name="/Samples/Autocad/">
     <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad/RxBim.Sample.AdditionalApp.Additional.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.AdditionalApp.Main.Autocad/RxBim.Sample.AdditionalApp.Main.Autocad.csproj" />
-    <Project Path="samples/Autocad/RxBim.Sample.Application.Autocad/RxBim.Sample.Application.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Application.Autocad/RxBim.Sample.Application.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Config.Autocad/RxBim.Sample.Application.Menu.Config.Autocad.csproj" />
     <Project Path="Samples/Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad/RxBim.Sample.Application.Menu.Fluent.Autocad.csproj" />
-    <Project Path="samples/Autocad/RxBim.Sample.Command.Autocad/RxBim.Sample.Command.Autocad.csproj" />
+    <Project Path="Samples/Autocad/RxBim.Sample.Command.Autocad/RxBim.Sample.Command.Autocad.csproj" />
   </Folder>
-  <Folder Name="/samples/Civil/">
+  <Folder Name="/Samples/Civil/">
     <Project Path="Samples/Civil/RxBim.Sample.Application.Civil/RxBim.Sample.Application.Civil.csproj" />
     <Project Path="Samples/Civil/RxBim.Sample.Command.Civil/RxBim.Sample.Command.Civil.csproj" />
   </Folder>
-  <Folder Name="/samples/Revit/">
+  <Folder Name="/Samples/Revit/">
     <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Config.Revit/RxBim.Sample.Application.Menu.Config.Revit.csproj" />
     <Project Path="Samples/Revit/RxBim.Sample.Application.Menu.Fluent.Revit/RxBim.Sample.Application.Menu.Fluent.Revit.csproj" />
     <Project Path="Samples/Revit/RxBim.Sample.Command.Revit/RxBim.Sample.Command.Revit.csproj" />
   </Folder>
   <Folder Name="/SolutionFolder/">
     <File Path=".gitignore" />
-    <File Path="Common.Build.Props" />
+    <File Path="Common.Build.props" />
     <File Path="LICENSE" />
     <File Path="Readme.md" />
     <File Path="stylecop.ruleset" />

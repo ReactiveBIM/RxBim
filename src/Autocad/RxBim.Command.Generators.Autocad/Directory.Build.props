@@ -1,8 +1,9 @@
 ﻿<Project>
+
     <PropertyGroup>
         <NotRefenceApi>true</NotRefenceApi>
        
     </PropertyGroup>
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.Props, $(MSBuildThisFileDirectory)))"/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(Common.Build.props, $(MSBuildThisFileDirectory)))"/>
 </Project>
