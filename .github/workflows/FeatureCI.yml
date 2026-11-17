@@ -10,3 +10,11 @@ jobs:
     uses: ./.github/workflows/Feature-template.yml
     with:
       appversion: "SetVersion2019"
+  feat_2020:
+    uses: ./.github/workflows/Feature-template.yml
+    with:
+      appversion: "SetVersion2020"
+  feat_2021:
+    uses: ./.github/workflows/Feature-template.yml
+    with:
+      appversion: "SetVersion2021"
