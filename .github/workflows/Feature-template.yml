@@ -1,0 +1,27 @@
+name: Feature CI Template
+
+on:
+  workflow_call:
+    inputs:
+      appversion:
+        description: "Application Version"
+        required: true
+        type: string
+
+jobs:
+  test:
+    name: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Run Tests'
+        run: ./build.cmd set-version-${{ inputs.appversion }} test

@@ -1,0 +1,39 @@
+name: CI Template
+
+on:
+  workflow_call:
+    inputs:
+      appversion:
+        description: "Application Version"
+        required: true
+        type: string
+
+jobs:
+  test-and-publish:
+    name: test-and-publish
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: NuGet Login
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+      - name: 'Test and Publish'
+        run: ./build.cmd set-version-${{ inputs.appversion }} test publish --all-packages
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v5
+        with:
+          name: packages
+          path: artifacts/packages

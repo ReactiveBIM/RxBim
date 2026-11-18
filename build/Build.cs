@@ -10,7 +10,7 @@ using RxBim.Nuke.Revit;
 using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[UnsetVisualStudioEnvironmentVariables]
+/*[UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
@@ -51,7 +51,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     ImportSecrets = new[]
     {
         "NUGET_API_KEY", "ALL_PACKAGES"
-    })]
+    })]*/
 [PublicAPI]
 partial class Build : RevitRxBimBuild, IVersions
 {
