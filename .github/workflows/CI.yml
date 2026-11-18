@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - 'bugfix/**'
+      - 'release/**'
+      - 'hotfix/**'
+jobs:
+  feat_2019:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2019"
+  feat_2020:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2020"
+  feat_2021:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2021"
+  feat_2022:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2022"
+  feat_2023:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2023"
+  feat_2024:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2024"
+  feat_2025:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2025"
+  feat_2026:
+    uses: ./.github/workflows/CI-template.yml
+    with:
+      appversion: "SetVersion2026"
