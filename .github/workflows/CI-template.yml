@@ -32,7 +32,7 @@ jobs:
         with:
           user: max-eroshkin
       - name: 'Test and Publish'
-        run: ./build.cmd set-version-${{ inputs.appversion }} test publish --all-packages
+        run: ./build.cmd set-version-${{ inputs.appversion }} test publish
         env:
           NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
       - name: 'Upload artifacts'
